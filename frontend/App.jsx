@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from './src/components/Navbar';
+import Toolbar from './src/components/Toolbar';
+import Content from './src/components/Content';
 
 export default function App() {
   const [activePage, setActivePage] = useState('home');
@@ -10,12 +12,8 @@ export default function App() {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
 
-          <View style={{ height: 56, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Placeholder Toolbar</Text>
-          </View>
-          <View style={{ flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Placeholder Content</Text>
-          </View>
+          <Toolbar />
+          <Content />
           <Navbar activePage={activePage} setActivePage={setActivePage}/>
         
         </View>

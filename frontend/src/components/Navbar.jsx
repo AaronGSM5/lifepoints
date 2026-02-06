@@ -6,7 +6,7 @@ export default function Navbar({ activePage, setActivePage }) {
   const insets = useSafeAreaInsets()
 
   return (
-      <View style={[styles.container, { paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right }]}>
+      <View style={[styles.container, { height: 64 + insets.bottom, paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right }]}>
           <TouchableOpacity onPress={() => setActivePage("home")} style={styles.button}>
             <Ionicons name={activePage === "home" ? "home" : "home-outline"} size={26} color="white" />
           </TouchableOpacity>
@@ -22,7 +22,6 @@ export default function Navbar({ activePage, setActivePage }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 64,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
