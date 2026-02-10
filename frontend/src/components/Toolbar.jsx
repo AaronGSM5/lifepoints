@@ -6,7 +6,7 @@ export default function Toolbar() {
 
   return (
       <View style={[styles.container, { height: 56 + insets.top, paddingTop: insets.top, paddingLeft: insets.left, paddingRight: insets.right }]}>
-        <Text>Toolbar Placeholder</Text>
+        <Text>LifePoints</Text>
       </View>
   )
 }
