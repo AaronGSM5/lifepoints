@@ -21,14 +21,14 @@ export default function Toolbar() {
   const onBack = () => router.back();
 
   const notifScale = useRef(new Animated.Value(1)).current;
-  const animateNotif = () => {
+  const animateNotification = () => {
     Animated.sequence([
       Animated.timing(notifScale, { toValue: 1.12, duration: 120, useNativeDriver: false }),
       Animated.timing(notifScale, { toValue: 1, duration: 100, useNativeDriver: false }),
     ]).start();
   };
 
-  const onNotif = () => router.push('/notifications');
+  const onNotification = () => router.push('/notifications');
 
   return (
     <View style={[styles.container, { 
@@ -52,7 +52,7 @@ export default function Toolbar() {
       <Text style={styles.text}>LifePoints</Text>
 
       {/* Notifications */}
-      <Pressable onPress={onNotif} onPressOut={animateNotif}>
+      <Pressable onPress={onNotification} onPressOut={animateNotification}>
         <Animated.View style={{ transform: [{ scale: notifScale }] }}>
           <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={26} color="white" />
         </Animated.View>
