@@ -27,8 +27,8 @@ export default function Navbar() {
         const scale = useRef(new Animated.Value(1)).current;
 
         const animatePop = () => {
-            Animated.timing(scale, { toValue: 1.1, duration: 200, useNativeDriver: true }).start(() => {
-              Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start()
+            Animated.timing(scale, { toValue: 1.12, duration: 180, useNativeDriver: false }).start(() => {
+              Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: false }).start()
             })
         }
 
@@ -54,45 +54,6 @@ export default function Navbar() {
   );
 }
 
-// export default function Navbar() {
-//   const insets = useSafeAreaInsets();
-//   const pathname = usePathname();
-
-//   // Hilfsfunktion: prüft, ob Route aktiv ist
-//   const isActive = (route) => pathname === route;
-
-//   return (
-//     <View style={[styles.container, { 
-//       height: 64 + insets.bottom, 
-//       paddingBottom: insets.bottom, 
-//       paddingLeft: insets.left, 
-//       paddingRight: insets.right 
-//     }]}>
-//       <TouchableOpacity onPress={() => router.push("/home")} style={styles.button}>
-//         <Ionicons 
-//           name={isActive("/home") ? "home" : "home-outline"} 
-//           size={26} 
-//           color="white" 
-//         />
-//       </TouchableOpacity>
-//       <TouchableOpacity onPress={() => router.push("/shop")} style={styles.button}>
-//         <Ionicons 
-//           name={isActive("/shop") ? "bag" : "bag-outline"} 
-//           size={26} 
-//           color="white" 
-//         />
-//       </TouchableOpacity>
-//       <TouchableOpacity onPress={() => router.push("/profile")} style={styles.button}>
-//         <Ionicons 
-//           name={isActive("/profile") ? "person" : "person-outline"} 
-//           size={26} 
-//           color="white" 
-//         />
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -101,9 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black'
   },
   button: {
-    // borderWidth: 1,       // React Native erwartet borderWidth, nicht border
-    // borderColor: 'grey',
-    borderRadius: 24,     // in RN Prozentangaben nicht erlaubt, stattdessen Pixel
+    borderRadius: 24,
     width: 48,
     height: 48,
     alignItems: 'center',
