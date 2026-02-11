@@ -1,6 +1,7 @@
 import { ScrollView } from 'react-native';
-import NotificationEnty from "../../src/components/NotificationEntry";
+import NotificationEntry from "@/components/NotificationEntry";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toolbar from '@/components/Toolbar';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets()
@@ -25,10 +26,13 @@ export default function NotificationsScreen() {
   ];
 
   return (
+    <>
+      <Toolbar />
       <ScrollView contentContainerStyle={{ paddingVertical: 16, paddingHorizontal: Math.max(16, insets.left + insets.right), paddingBottom: 16 }}>
         {mockNotifications.map((note, index) => (
-          <NotificationEnty key={index} notification={note} />
+          <NotificationEntry key={index} notification={note} />
         ))}
       </ScrollView>
+    </>
   );
 }

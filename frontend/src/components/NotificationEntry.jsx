@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native';
 import React from 'react';
+import { MyTheme } from '@/constants/Colors';
 
 export default function NotificationEntry({ notification }) {
   return (
     <View
       style={{
-        backgroundColor: '#333',        // dunkle Card
+        backgroundColor: MyTheme.primary,        // dunkle Card
         padding: 16,                     // innenabstand
         borderRadius: 12,                // abgerundete Ecken
         marginBottom: 12,                // Abstand zur nächsten Karte
@@ -18,7 +19,7 @@ export default function NotificationEntry({ notification }) {
     >
       <Text
         style={{
-          color: 'white',
+          color: MyTheme.text,
           fontSize: 16,
           fontWeight: '500',
         }}

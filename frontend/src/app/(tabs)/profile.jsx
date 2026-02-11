@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MyTheme } from '@/constants/Colors';
 
 export default function ProfileScreen() {
 
@@ -16,9 +17,9 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Hintergrund Gradient */}
+      {/* Background Gradient */}
       <LinearGradient
-        colors={['#2E1D3B', '#121212']}
+        colors={[ MyTheme.background, '#121212']}
         style={styles.background}
       />
         {/* ScrollView? */}
@@ -28,7 +29,7 @@ export default function ProfileScreen() {
           <View style={styles.profileHeader}>
             <View style={styles.avatarContainer}>
               <Image 
-                source={require('../../public/assets/icon-profile.png')}
+                source={require('@/../public/assets/icon-profile.png')}
                 style={styles.avatar} 
               />
               <View style={styles.levelBadge}>
@@ -37,7 +38,7 @@ export default function ProfileScreen() {
             </View>
 
             <Text style={styles.userName}>{mockProfile.profileName}</Text>
-            <Text style={styles.userClass}>{mockProfile.profileClass} • <Text style={{color: '#FF00FF'}}>{mockProfile.profileRank}</Text></Text>
+            <Text style={styles.userClass}>{mockProfile.profileClass} • <Text style={{color: MyTheme.secondaryAccent}}>{mockProfile.profileRank}</Text></Text>
 
             {/* XP Bar */}
             <View style={styles.xpContainer}>
@@ -58,17 +59,17 @@ export default function ProfileScreen() {
             <View style={styles.actionButtons}>
               <TouchableOpacity style={styles.editButtonWrapper}>
                 <LinearGradient
-                  colors={['#FF00CC', '#333399']}
+                  colors={[ MyTheme.secondaryAccent, '#333399']}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={styles.gradientButton}
                 >
-                  <MaterialCommunityIcons name="pencil" size={16} color="#fff" style={{marginRight: 5}}/>
+                  <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.text} style={{marginRight: 5}}/>
                   <Text style={styles.btnText}>Edit Profile</Text>
                 </LinearGradient>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.shareButton}>
-                <Ionicons name="share-social-outline" size={16} color="#fff" style={{marginRight: 5}} />
+                <Ionicons name="share-social-outline" size={16} color={MyTheme.text} style={{marginRight: 5}} />
                 <Text style={styles.btnText}>Share Stats</Text>
               </TouchableOpacity>
             </View>
@@ -77,7 +78,7 @@ export default function ProfileScreen() {
           {/* Stats Section */}
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeader}>
-              <Ionicons name="stats-chart" size={20} color="#FF00FF" />
+              <Ionicons name="stats-chart" size={20} color={MyTheme.secondaryAccent} />
               <Text style={styles.sectionTitle}>STATS</Text>
             </View>
 
@@ -97,11 +98,11 @@ export default function ProfileScreen() {
                  <Text style={styles.sectionTitle}>TROPHIES</Text>
                </View>
                <TouchableOpacity>
-                 <Text style={{color: '#FF00FF', fontSize: 12}}>View All</Text>
+                 <Text style={{color: '#FFD700', fontSize: 12}}>View All</Text>
                </TouchableOpacity>
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginTop: 15}}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginTop: 25}}>
               <TrophyCard title="Sugar Free Week" icon="candy-cane" />
               <TrophyCard title="Early Riser" icon="sun" />
               <TrophyCard title="Gym Rat" icon="dumbbell" />
@@ -118,7 +119,7 @@ export default function ProfileScreen() {
 const StatCard = ({ label, value, icon, color, badge, blurred }) => (
   <View style={styles.statCard}>
     <View style={styles.statTop}>
-      {blurred ? <><Text style={[styles.statValue, { filter: 'blur(4.5px)' }]}>{value}</Text><Text style={{ color: 'white', fontWeight: 'bold', borderWidth: 1, borderColor: 'gold', borderRadius: 10, paddingVertical: 2, paddingHorizontal: 5}}>GET +</Text></> : <Text style={styles.statValue}>{value}</Text>}
+      {blurred ? <><Text style={[styles.statValue, { filter: 'blur(4.5px)' }]}>{value}</Text><Text style={{ color: MyTheme.text, fontWeight: 'bold', borderWidth: 1, borderColor: 'gold', borderRadius: 10, paddingVertical: 2, paddingHorizontal: 5}}>GET +</Text></> : <Text style={styles.statValue}>{value}</Text>}
       <FontAwesome5 name={icon} size={16} color={color || "#666"} />
     </View>
     <Text style={styles.statLabel}>{label}</Text>
@@ -133,7 +134,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred }) => (
 const TrophyCard = ({ title, icon }) => (
   <View style={styles.trophyContainer}>
     <View style={styles.trophyIconBox}>
-      <FontAwesome5 name={icon} size={24} color="#FFD700" />
+      <FontAwesome5 name={icon} size={24} color='#FFD700' />
     </View>
     <Text style={styles.trophyText}>{title}</Text>
   </View>
@@ -142,7 +143,7 @@ const TrophyCard = ({ title, icon }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212', // Fallback
+    backgroundColor: MyTheme.background, // Fallback
   },
   background: {
     position: 'absolute',
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     left: -10,
     right: -10,
     bottom: -10,
-    backgroundColor: 'rgba(0, 255, 255, 0.3)',
+    backgroundColor: MyTheme.primaryAccent,
     borderRadius: 100,
     blurRadius: 20, // Funktioniert nicht überall perfekt in RN, oft braucht man ein Bild
   },
@@ -187,33 +188,33 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    borderWidth: 3,
-    borderColor: '#2A2A2A',
+    borderWidth: 1,
+    borderColor: MyTheme.secondary,
   },
   levelBadge: {
     position: 'absolute',
     bottom: -5,
     alignSelf: 'center',
-    backgroundColor: '#FF00FF',
+    backgroundColor: MyTheme.secondaryAccent,
     paddingHorizontal: 10,
     paddingVertical: 2,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#121212',
+    borderColor: MyTheme.background,
   },
   levelText: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 10,
     fontWeight: 'bold',
   },
   userName: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 5,
   },
   userClass: {
-    color: '#A9A9A9', // Grey
+    color: MyTheme.muted,
     fontSize: 12,
     marginTop: 2,
     marginBottom: 15,
@@ -229,8 +230,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 5,
   },
-  xpLabel: { color: '#666', fontSize: 10, fontWeight: 'bold' },
-  xpValue: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
+  xpLabel: { color: MyTheme.muted, fontSize: 10, fontWeight: 'bold' },
+  xpValue: { color: MyTheme.text, fontSize: 10, fontWeight: 'bold' },
   progressBarBg: {
     height: 8,
     backgroundColor: '#333',
@@ -269,7 +270,7 @@ const styles = StyleSheet.create({
     borderColor: '#333',
   },
   btnText: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sectionTitle: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 14,
     fontWeight: 'bold',
     marginLeft: 10,
@@ -305,12 +306,12 @@ const styles = StyleSheet.create({
   },
   statCard: {
     width: '48%', // Knapp unter 50% für 2 Spalten
-    backgroundColor: '#1E1B2E',
+    backgroundColor: MyTheme.primary,
     borderRadius: 15,
     padding: 15,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: MyTheme.secondary,
   },
   statTop: {
     flexDirection: 'row',
@@ -319,18 +320,18 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   statValue: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 20,
     fontWeight: 'bold',
   },
   statLabel: {
-    color: '#888',
+    color: MyTheme.muted,
     fontSize: 10,
     fontWeight: '600',
     marginTop: 5,
   },
   statBadge: {
-    backgroundColor: '#333',
+    backgroundColor: MyTheme.primaryAccent,
     marginTop: 10,
     alignSelf: 'flex-start',
     paddingHorizontal: 8,
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   statBadgeText: {
-    color: '#00FF7F', // Spring Green
+    color: MyTheme.text,
     fontSize: 9,
     fontWeight: 'bold',
   },
@@ -352,46 +353,17 @@ const styles = StyleSheet.create({
   trophyIconBox: {
     width: 60,
     height: 60,
-    backgroundColor: '#252525',
+    backgroundColor: MyTheme.primary,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: MyTheme.secondary,
     marginBottom: 8,
   },
   trophyText: {
-    color: '#fff',
+    color: MyTheme.text,
     fontSize: 11,
     textAlign: 'center',
   },
 });
-
-// import { View, Text, Image, Pressable } from "react-native";
-
-// export default function ProfileScreen() {
-
-//   const mockProfile = {
-//     backgroundImg: '',
-//     profileName: 'Tomhtzx',
-//     profileRank: 'Elite',
-//     profileLevel: '42',
-//     profileXp: '3450'
-//   }
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <View style={{ backgroundColor: 'green', flex: 4, alignItems: 'center', justifyContent: 'center' }}>
-//         <Image style={{width: 50, height: 50}} source={require('../../public/assets/icon-profile.png')} />
-//         <Text>{mockProfile.profileName}</Text>
-//         <Text>{mockProfile.profileRank}</Text>
-//         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}><Text>XP PROGRESS</Text><Text>{mockProfile.profileXp} / {1000 + (mockProfile.profileLevel - 1) * 300}</Text></View>
-//         <View style={{ flexDirection: 'row' }}>
-//         <Pressable><Text>Edit Profile</Text></Pressable>
-//         <Pressable><Text>Share Stats</Text></Pressable>
-//         </View>
-//       </View>
-//       <View style={{ backgroundColor: 'grey', flex: 4 }}><Text>Stats</Text></View>
-//       <View style={{ backgroundColor: 'gold', flex: 2 }}><Text>Trophies</Text></View>
-//     </View>
-//   );
-// }

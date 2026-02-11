@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { useRef } from 'react';
+import { MyTheme } from '@/constants/Colors';
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -57,9 +58,9 @@ export default function Toolbar() {
           <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={24} color="white" />
         </Animated.View>
       </Pressable> : pathname === '/settings' ? <Pressable>
-        <Ionicons name="settings" size={24} color="#fff" />
+        <Ionicons name="settings" size={24} color="white" />
         </Pressable> : <Pressable>
-          <Ionicons name="settings-outline" size={24} color="#fff" />
+          <Ionicons name="settings-outline" size={24} color="white" />
         </Pressable>}
     </View>
   );
@@ -67,13 +68,13 @@ export default function Toolbar() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    backgroundColor: MyTheme.background,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   text: {
-    color: 'white',
+    color: MyTheme.text,
     fontSize: 20,
     fontWeight: 'bold'
   }

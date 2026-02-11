@@ -1,50 +1,66 @@
 import { View, Pressable, StyleSheet, Animated } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
-import { router, usePathname } from 'expo-router';
 import { useRef } from 'react';
+import { MyTheme } from '@/constants/Colors';
 
-export default function Navbar() {
+export default function Navbar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
-  const pathname = usePathname();
 
-  const tabs = [
-    { route: "/home", icon: "home" },
-    { route: "/shop", icon: "bag" },
-    { route: "/profile", icon: "person" },
-  ];
-
-  const isActive = (route) => pathname === route;
+  // Da Expo uns nur die Routen-Namen gibt (home, shop, profile),
+  // mappen wir hier die passenden Icons dazu.
+  const iconMap = {
+    home: "home",
+    shop: "bag",
+    profile: "person"
+  };
 
   return (
     <View style={[styles.container, { 
       height: 64 + insets.bottom, 
       paddingBottom: insets.bottom, 
-      paddingLeft: insets.left, 
-      paddingRight: insets.right 
+      backgroundColor: MyTheme.primary,
+      borderTopWidth: 1,
+      borderTopColor: MyTheme.secondary
     }]}>
-      {tabs.map(({ route, icon }) => {
+      
+      {state.routes.map((route, index) => {
+        const isFocused = state.index === index;
+        const iconName = iconMap[route.name] || "help-circle";
+
+        // Animation Hook
         const scale = useRef(new Animated.Value(1)).current;
 
         const animatePop = () => {
-            Animated.timing(scale, { toValue: 1.12, duration: 180, useNativeDriver: false }).start(() => {
-              Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: false }).start()
-            })
-        }
+          Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
+            Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start();
+          });
+        };
 
-        const onPress = () => router.push(route);
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+          animatePop();
+        };
 
         return (
           <Pressable
-            key={route}
+            key={route.key}
             onPress={onPress}
-            onPressOut={animatePop}
+            style={styles.tabButton}
           >
-            <Animated.View style={[styles.button, { transform: [{ scale }] }]}>
+            <Animated.View style={{ transform: [{ scale }] }}>
               <Ionicons 
-                name={isActive(route) ? icon : `${icon}-outline`} 
+                name={isFocused ? iconName : `${iconName}-outline`} 
                 size={26} 
-                color="white" 
+                color={isFocused ? MyTheme.primaryAccent : MyTheme.text}
               />
             </Animated.View>
           </Pressable>
@@ -58,13 +74,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: 'black'
+    alignItems: 'center'
   },
-  button: {
-    borderRadius: 24,
-    width: 48,
-    height: 48,
+  tabButton: {
+    flex: 1,
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   }

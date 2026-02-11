@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { MaterialCommunityIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MyTheme } from '@/constants/Colors';
 
 export default function TaskCard({ title, difficulty, xp, lp }) {
   
@@ -75,7 +76,7 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#424242',
+    backgroundColor: MyTheme.primary,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    color: '#FFFFFF',
+    color: MyTheme.text,
     fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: {
-    color: '#FFFFFF',
+    color: MyTheme.text,
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 4,
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   xpText: {
-    color: 'white',
+    color: MyTheme.text,
     fontSize: 10,
     fontWeight: 'bold',
   }
