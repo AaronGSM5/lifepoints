@@ -41,22 +41,26 @@ export default function Toolbar() {
       {canGoBack ? (
         <Pressable onPress={onBack} onPressOut={animateBack}>
           <Animated.View style={{ transform: [{ scale: backScale }] }}>
-            <Ionicons name="chevron-back" size={26} color="white" />
+            <Ionicons name="chevron-back" size={24} color="white" />
           </Animated.View>
         </Pressable>
       ) : (
-        <View style={{ width: 26 }} /> // Placeholder for center text
+        <View style={{ width: 24 }} /> // Placeholder for center text
       )}
 
       {/* Title */}
       <Text style={styles.text}>LifePoints</Text>
 
       {/* Notifications */}
-      <Pressable onPress={onNotification} onPressOut={animateNotification}>
+      {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
         <Animated.View style={{ transform: [{ scale: notifScale }] }}>
-          <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={26} color="white" />
+          <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={24} color="white" />
         </Animated.View>
-      </Pressable>
+      </Pressable> : pathname === '/settings' ? <Pressable>
+        <Ionicons name="settings" size={24} color="#fff" />
+        </Pressable> : <Pressable>
+          <Ionicons name="settings-outline" size={24} color="#fff" />
+        </Pressable>}
     </View>
   );
 }
