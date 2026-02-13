@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import TaskList from "@/components/TaskList";
 import FloatingFilterButton from "@/components/FloatingFilterButton";
 import { MyTheme } from "@/constants/Colors";
@@ -22,7 +22,7 @@ export default function HomeScreen() {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   background: {
     position: 'absolute',
     left: 0,
@@ -36,10 +36,11 @@ const styles = {
   borderWidth: 1,
   minHeight: 200,
   borderColor: MyTheme.secondary,
-  marginBottom: 20,
+  marginTop: Spacing.md,
+  marginBottom: Spacing.xl,
   backgroundColor: MyTheme.primary
   },
   taskListContainer: {
     paddingBottom: Spacing.xl
   }
-}
+})

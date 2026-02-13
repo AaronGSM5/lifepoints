@@ -1,7 +1,12 @@
-import { ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import NotificationEntry from "@/components/NotificationEntry";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ScreenWrapper from '@/components/ScreenWrapper';
 import Toolbar from '@/components/Toolbar';
+import { MyTheme } from '@/constants/Colors';
+import { Spacing } from '@/constants/Spacing';
+import AppText from '@/components/AppText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets()
@@ -16,23 +21,36 @@ export default function NotificationsScreen() {
     { title: 'NIEMALS FLUSSABWÄRTS' },
     { title: 'okEE' },
     { title: 'Sie dürfen' },
-    { title: '(Werde dafür lowkey bezahlt)' },
-    { title: 'Mock Note 12' },
-    { title: 'Mock Note 13' },
-    { title: 'Mock Note 14' },
-    { title: 'Mock Note 15' },
-    { title: 'Mock Note 16' },
-    { title: 'Mock Note 17' }
+    { title: '(Werde dafür lowkey bezahlt)' }
   ];
 
   return (
-    <>
-      <Toolbar />
-      <ScrollView contentContainerStyle={{ paddingVertical: 16, paddingHorizontal: Math.max(16, insets.left + insets.right), paddingBottom: 16 }}>
-        {mockNotifications.map((note, index) => (
-          <NotificationEntry key={index} notification={note} />
-        ))}
-      </ScrollView>
-    </>
+    <View style={{ flex: 1 }}>
+        <Toolbar />
+      <ScreenWrapper scrollable={true}>
+        <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
+        <View style={styles.header}>
+          <AppText type="h1">Mitteilungen</AppText>
+        </View>
+        <View style={[
+          styles.listContainer, 
+          { paddingBottom: insets.bottom + Spacing.xl }
+        ]}>
+          {mockNotifications.map((note, index) => (
+            <NotificationEntry key={index} notification={note} />
+          ))}
+        </View>
+      </ScreenWrapper>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    marginTop: Spacing.md,
+    marginBottom: Spacing.lg
+  },
+  listContainer: {
+    gap: Spacing.sm,
+  }
+})
