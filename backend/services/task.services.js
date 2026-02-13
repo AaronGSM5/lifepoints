@@ -1,7 +1,7 @@
-import mockTasks from "../lib/data/tasks"
+import mockTasks from "../lib/data/tasks.js"
 
 const getAllTasks = async () => {
   return mockTasks
 }
 
-module.exports = { getAllTasks }
+export default { getAllTasks }

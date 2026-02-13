@@ -1,4 +1,4 @@
-import * as TaskServices from "../services/task.services"
+import TaskServices from "../services/task.services.js"
 
 const getAllTasks = async (req, res) => {
   const data = await TaskServices.getAllTasks()
