@@ -1,21 +1,43 @@
-import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Dimensions, Animated, Easing } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5, Feather } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
+import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
+import ScreenWrapper from '@/components/ScreenWrapper';
+import { useFocusEffect } from 'expo-router';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = (width - 48) / 2; // Berechnet Breite für 2-Spalten Grid
+const CARD_WIDTH = (width - (Spacing.md * 3)) / 2; // Width for 2-Column Grid
 
 export default function ShopScreen() {
   const categories = ['All', 'Food', 'Fashion', 'Tech', 'Beauty'];
 
-  return (
-    <View style={styles.container}>
+  // 1. Animations-Wert (0 bis 60 für 60%)
+  const animatedWalletProgress = useRef(new Animated.Value(0)).current;
+  
+  const walletWidth = animatedWalletProgress.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
 
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          
+  useFocusEffect(
+    useCallback(() => {
+      animatedWalletProgress.setValue(0); // Reset
+      
+      Animated.timing(animatedWalletProgress, {
+        toValue: 60, // Mock-Wert: 60%
+        duration: 1500,
+        easing: Easing.bezier(0.4, 0, 0.2, 1),
+        useNativeDriver: false,
+      }).start();
+    }, [])
+  );
+
+  return (
+    <ScreenWrapper scrollable={true}>
+      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
           {/* 1. Wallet Card */}
           <LinearGradient
             colors={[ MyTheme.background, '#121212']}
@@ -27,23 +49,23 @@ export default function ShopScreen() {
             </View>
             
             <View style={styles.pointsRow}>
-              <AppText type='title' style={{ fontSize: 32 }}>1,250</AppText>
-              <AppText type='title' style={styles.pointsLabel}> LP</AppText>
+              <AppText type='h1'>1.250</AppText>
+              <AppText type='title' style={styles.pointsLabel}>LP</AppText>
             </View>
 
             {/* Progress Bar */}
             <View style={styles.progressBarContainer}>
               <View style={styles.progressBarBg}>
-                <View style={[styles.progressBarFill, { width: '60%' }]} />
+                <Animated.View style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent}]} />
               </View>
-              <AppText type='caption' style={{ fontSize: 10 }}>750 pts until Gold Tier</AppText>
+              <AppText type='caption'>750 pts until Gold Tier</AppText>
             </View>
           </LinearGradient>
 
           {/* 2. Filter Tabs */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer} contentContainerStyle={{ gap: Spacing.sm }}>
             {categories.map((cat, index) => (
-              <TouchableOpacity key={index} style={index === 0 ? styles.activeTab : styles.inactiveTab}>
+              <TouchableOpacity key={index}>
                 {index === 0 ? (
                   <LinearGradient
                     colors={[ MyTheme.secondary, MyTheme.primary]}
@@ -53,7 +75,9 @@ export default function ShopScreen() {
                     <AppText type='title' style={{ fontSize: 12 }}>{cat}</AppText>
                   </LinearGradient>
                 ) : (
-                  <AppText type='title' style={{ fontSize: 12, color: MyTheme.muted }}>{cat}</AppText>
+                  <View style={styles.inactiveTab}>
+                    <AppText type='title' style={{ fontSize: 12, color: MyTheme.muted }}>{cat}</AppText>
+                  </View>
                 )}
               </TouchableOpacity>
             ))}
@@ -61,7 +85,7 @@ export default function ShopScreen() {
 
           {/* 3. Featured Reward */}
           <View style={styles.sectionHeader}>
-            <Ionicons name="flash" size={18} color="#F27121" style={{marginRight: 8}} />
+            <Ionicons name="flash" size={18} color="#F27121" />
             <AppText type='title'>Featured Reward</AppText>
           </View>
 
@@ -76,16 +100,16 @@ export default function ShopScreen() {
             
             <View style={styles.featuredContent}>
               <View style={styles.bestValueBadge}>
-                <AppText type='body' style={styles.bestValueText}>BEST VALUE</AppText>
+                <AppText type='caption' style={styles.bestValueText}>BEST VALUE</AppText>
               </View>
               
-              <AppText type='title'>Free Month Premium</AppText>
+              <AppText type='h2'>Free Month Premium</AppText>
               <AppText type='caption' style={styles.featuredSubtitle}>Spotify Individual Plan</AppText>
               
               <View style={styles.featuredFooter}>
                 <View>
-                  <AppText type='caption' style={styles.oldPrice}>2,500 PTS</AppText>
-                  <AppText type='title'>2,000 PTS</AppText>
+                  <AppText type='caption' style={{ textDecorationLine: 'line-through' }}>2.500 PTS</AppText>
+                  <AppText type='title'>2.000 PTS</AppText>
                 </View>
                 <TouchableOpacity style={styles.redeemButton}>
                   <AppText type='title' style={styles.redeemText}>Redeem</AppText>
@@ -94,26 +118,26 @@ export default function ShopScreen() {
             </View>
           </LinearGradient>
 
-          {/* 4. For You Grid */}
-          <AppText type='title' style={{marginTop: 25, marginBottom: 15}}>For You</AppText>
+          {/* 4. 'For You' Grid */}
+          <AppText type='title' style={{marginTop: Spacing.lg, marginBottom: Spacing.md}}>For You</AppText>
           
           <View style={styles.gridContainer}>
             <RewardCard 
-              image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop"
+              image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"
               brand="ADIDAS"
               title="15% Off Storewide"
               points="450"
               icon="shopping-bag"
             />
             <RewardCard 
-              image="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop"
+              image="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400"
               brand="STARBUCKS"
               title="Free Tall Coffee"
               points="300"
               icon="coffee"
             />
             <RewardCard 
-              image="https://images.unsplash.com/photo-1605218427368-35b81a3dd64c?q=80&w=400&auto=format&fit=crop" // Tech image
+              image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400"
               brand="AMAZON"
               title="$10 Gift Card"
               points="2,000"
@@ -121,17 +145,14 @@ export default function ShopScreen() {
               isLocked
             />
              <RewardCard 
-              image="https://images.unsplash.com/photo-1556906781-9a412961d289?q=80&w=400&auto=format&fit=crop"
+              image="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400"
               brand="NIKE"
               title="20% Off Shoes"
               points="800"
               icon="shopping-bag"
             />
           </View>
-
-        </ScrollView>
-
-    </View>
+    </ScreenWrapper>
   );
 }
 
@@ -147,9 +168,9 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
       </View>
     </View>
     
-    <View style={{ padding: 12 }}>
-      <AppText type='body' style={styles.cardBrand}>{brand}</AppText>
-      <AppText type='body' style={styles.cardTitle}>{title}</AppText>
+    <View style={{ padding: Spacing.sm, gap: 2 }}>
+      <AppText type='caption' style={styles.cardBrand}>{brand}</AppText>
+      <AppText type='body' style={{ fontFamily: 'Inter-Bold' }} numberOfLines={2}>{title}</AppText>
       
       <View style={styles.cardFooter}>
         <AppText type='body' style={[styles.cardPoints, isLocked && {color: MyTheme.muted}]}>
@@ -175,150 +196,201 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
 // --- Styles ---
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyTheme.background,
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
   },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 120, // Platz für Bottom Bar
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    marginBottom: 20,
-  },
-
   // Wallet Card
   walletCard: {
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
     borderWidth: 1,
     borderColor: MyTheme.secondary,
-    marginVertical: 25,
+    marginVertical: Spacing.md,
   },
   walletHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: Spacing.sm,
   },
-  walletLabel: { fontSize: 10, fontWeight: 'bold' },
-  pointsRow: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15 },
-  pointsLabel: { color: MyTheme.primaryAccent, marginBottom: 5 },
+  walletLabel: {
+    fontFamily: 'Inter-Bold',
+    opacity: 0.8
+  },
+  pointsRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: Spacing.md
+  },
+  pointsLabel: {
+    color: MyTheme.primaryAccent,
+    marginLeft: Spacing.xs
+  },
   progressBarBg: {
-    height: 6,
+    height: 8,
     backgroundColor: '#333',
-    borderRadius: 3,
-    marginBottom: 8,
+    borderRadius: Spacing.borderRadius.full,
+    marginBottom: Spacing.xs,
+    overflow: 'hidden'
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: 3,
+    borderRadius: Spacing.borderRadius.full
   },
-
   // Tabs
   tabsContainer: {
-    marginBottom: 25,
-    flexDirection: 'row',
+    marginBottom: Spacing.lg,
+    // flexDirection: 'row',
   },
-  activeTab: { marginRight: 10, borderRadius: 20, overflow: 'hidden' },
+  activeTabGradient: {
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: Spacing.borderRadius.full
+  },
   inactiveTab: { 
-    marginRight: 10, 
-    borderRadius: 20, 
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: Spacing.borderRadius.full, 
     borderWidth: 1, 
     borderColor: '#333', 
     backgroundColor: '#1b222e',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
   },
-  activeTabGradient: {
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-  },
-
   // Featured Reward
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    marginBottom: Spacing.sm
+  },
   featuredCard: {
-    borderRadius: 20,
-    padding: 20,
-    height: 220,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
+    minHeight: 240,
     justifyContent: 'space-between',
-    position: 'relative',
-    overflow: 'hidden',
   },
   featuredIconContainer: {
-    width: 35, height: 35,
+    width: 36,
+    height: 36,
     backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 8,
-    justifyContent: 'center', alignItems: 'center',
+    borderRadius: Spacing.borderRadius.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  featuredContent: { marginTop: 10 },
+  featuredContent: {
+    marginTop: Spacing.md,
+    gap: Spacing.xs
+  },
   bestValueBadge: {
-    backgroundColor: 'rgba(47, 196, 146, 0.2)',
-    paddingHorizontal: 6, paddingVertical: 3,
-    borderRadius: 5, alignSelf: 'flex-start',
-    marginBottom: 8, borderWidth: 1, borderColor: 'rgba(47, 196, 146, 0.5)'
+    backgroundColor: 'rgba(0, 255, 127, 0.2)',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 2,
+    borderRadius: Spacing.borderRadius.sm,
+    alignSelf: 'flex-start',
+    marginBottom: Spacing.xs,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 127, 0.8)'
   },
-  bestValueText: { color: '#00FF7F', fontSize: 10, fontWeight: 'bold' },
-  featuredSubtitle: { color: 'rgba(248,250,252,0.8)', fontSize: 12, marginBottom: 15 },
-  featuredFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  oldPrice: { fontSize: 10, textDecorationLine: 'line-through' },
+  bestValueText: {
+    color: '#00FF7F',
+    fontSize: 12,
+    fontFamily: 'Inter-Bold'
+  },
+  featuredSubtitle: {
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: Spacing.md
+  },
+  featuredFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  },
   redeemButton: {
     backgroundColor: MyTheme.text,
-    paddingVertical: 6, paddingHorizontal: 18,
-    borderRadius: 20,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Spacing.borderRadius.full,
   },
-  redeemText: { color: '#E94057', fontSize: 12, fontWeight: 'semibold' },
-
+  redeemText: {
+    color: '#E94057',
+    fontSize: 14,
+    fontFamily: 'Inter-Bold'
+  },
   // Grid
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: Spacing.md,
+    paddingBottom: Spacing.xl
   },
   gridCard: {
     width: CARD_WIDTH,
     backgroundColor: MyTheme.primary,
-    borderRadius: 15,
-    marginBottom: 15,
+    borderRadius: Spacing.borderRadius.md,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: MyTheme.secondary,
   },
   cardImageContainer: {
     height: 100,
-    position: 'relative',
+    backgroundColor: '#333'
   },
-  cardImage: { width: '100%', height: '100%' },
+  cardImage: {
+    width: '100%',
+    height: '100%'
+  },
   cardIconBadge: {
     position: 'absolute',
-    top: '50%', left: '50%',
-    marginLeft: -15, marginTop: -15,
-    width: 30, height: 30,
-    backgroundColor: 'rgba(0,0,0,0.55)',
-    borderRadius: 15,
-    justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1, 
-    borderColor: 'rgba(68, 68, 68, 0.8)'
+    bottom: Spacing.sm,
+    right: Spacing.sm,
+    width: 28,
+    height: 28,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  cardBrand: { color: MyTheme.primaryAccent, fontSize: 9, textTransform: 'uppercase', fontWeight: 'bold' },
-  cardTitle: { fontSize: 13, fontWeight: 'bold' },
-  cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  cardPoints: { fontSize: 12, fontWeight: 'bold' },
+  cardBrand: {
+    color: MyTheme.primaryAccent,
+    fontFamily: 'Inter-Bold',
+    fontSize: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: Spacing.sm
+  },
+  cardPoints: {
+    fontSize: 14,
+    fontFamily: 'Inter-Bold'
+  },
   miniFab: {
-    width: 24, height: 24,
-    borderRadius: 12, backgroundColor: MyTheme.background,
-    justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1, borderColor: MyTheme.secondary
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: MyTheme.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: MyTheme.secondary
   },
-  lockedBadge: { backgroundColor: '#2A2A2A', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  lockedText: { fontSize: 9, fontWeight: 'bold' },
+  lockedBadge: {
+    backgroundColor: '#2A2A2A',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 2,
+    borderRadius: 4
+  },
+  lockedText: {
+    fontSize: 10,
+    fontFamily: 'Inter-Bold'
+  },
   lockedOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(18, 18, 18, 0.5)',
+    backgroundColor: 'rgba(18, 18, 18, 0.6)',
   }
 });
