@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     _id: "ojsajokjsda",
     title: "ich grüße",

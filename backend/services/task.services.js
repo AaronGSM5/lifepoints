@@ -1,4 +1,4 @@
-const mockTasks = require("../lib/data/tasks")
+import mockTasks from "../lib/data/tasks"
 
 const getAllTasks = async () => {
   return mockTasks
