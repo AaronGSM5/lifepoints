@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import AppText from "@/components/AppText";
 
 export default function LoginScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Login</Text>
+      <AppText type="body">Login</AppText>
     </View>
   );
 }

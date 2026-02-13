@@ -1,8 +1,10 @@
-import { View, Pressable, StyleSheet, Animated, Text } from 'react-native';
+import { View, Pressable, StyleSheet, Animated } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { useRef } from 'react';
+import { MyTheme } from '@/constants/Colors';
+import AppText from './AppText';
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -49,7 +51,7 @@ export default function Toolbar() {
       )}
 
       {/* Title */}
-      <Text style={styles.text}>LifePoints</Text>
+      <AppText type='h2'>LifePoints</AppText>
 
       {/* Notifications */}
       {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
@@ -57,9 +59,9 @@ export default function Toolbar() {
           <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={24} color="white" />
         </Animated.View>
       </Pressable> : pathname === '/settings' ? <Pressable>
-        <Ionicons name="settings" size={24} color="#fff" />
+        <Ionicons name="settings" size={24} color="white" />
         </Pressable> : <Pressable>
-          <Ionicons name="settings-outline" size={24} color="#fff" />
+          <Ionicons name="settings-outline" size={24} color="white" />
         </Pressable>}
     </View>
   );
@@ -67,14 +69,9 @@ export default function Toolbar() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    backgroundColor: MyTheme.background,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  text: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold'
   }
 });

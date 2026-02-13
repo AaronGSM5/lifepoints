@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import AppText from "@/components/AppText";
 
 export default function RegisterScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Register</Text>
+      <AppText type="body">Register</AppText>
     </View>
   );
 }

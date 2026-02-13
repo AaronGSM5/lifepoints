@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MyTheme } from '@/constants/Colors';
 
 const FloatingFilterButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -55,18 +56,18 @@ const FloatingFilterButton = () => {
 
 
   // Hilfsfunktion für die kleinen Buttons
-  const SubButton = ({ iconName, iconLibrary, onPress, color = "#FF4081" }) => {
+  const SubButton = ({ iconName, iconLibrary, onPress }) => {
     
     const IconTag = iconLibrary === 'MaterialCommunityIcons' ? MaterialCommunityIcons : Ionicons;
     return (
       <TouchableOpacity 
-        style={[styles.roundButton, styles.subButton, { backgroundColor: color }]} 
+        style={[styles.roundButton, styles.subButton, { backgroundColor: MyTheme.secondary }]} 
         onPress={onPress}
         activeOpacity={0.7}
         // Verhindert Klicks, wenn das Menü geschlossen ist (aber noch unsichtbar da ist)
         pointerEvents={isExpanded ? 'auto' : 'none'} 
       >
-        <IconTag name={iconName} size={24} color="black" />
+        <IconTag name={iconName} size={24} color={MyTheme.text} />
       </TouchableOpacity>
     );
   };
@@ -85,7 +86,7 @@ const FloatingFilterButton = () => {
            <Ionicons 
              name={isExpanded ? "close" : "filter"} 
              size={24} 
-             color="black" 
+             color={MyTheme.text} 
            />
         </Animated.View>
       </TouchableOpacity>
@@ -99,25 +100,21 @@ const FloatingFilterButton = () => {
         <SubButton 
             iconName="heart"
             iconLibrary="Ionicons"
-            color="white" // Pink
             onPress={() => console.log("Herz gedrückt")} 
         />
         <SubButton 
             iconName="emoticon-happy-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Gelb/Orange
             onPress={() => console.log("Smiley gedrückt")} 
         />
          <SubButton 
             iconName="emoticon-neutral-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Lila
             onPress={() => console.log("Stern gedrückt")} 
         />
          <SubButton 
             iconName="emoticon-angry-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Lila
             onPress={() => console.log("Stern gedrückt")} 
         />
         
@@ -130,7 +127,7 @@ const styles = StyleSheet.create({
   // Der Gesamtcontainer, der absolut oben links sitzt
   menuContainer: {
     position: 'absolute',
-    top: 80, // Abstand von oben (Statusbar berücksichtigen)
+    top: 20, // Abstand von oben (Statusbar berücksichtigen)
     right: 20, // Abstand von links
     zIndex: 999, // Ganz oben auf dem Stapel
     alignItems: 'center', // Zentriert die Unterbuttons unter dem Hauptbutton
@@ -151,7 +148,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   mainButton: {
-    backgroundColor: 'white',
+    backgroundColor: MyTheme.secondary,
     zIndex: 10,
   },
   subButtonsContainer: {

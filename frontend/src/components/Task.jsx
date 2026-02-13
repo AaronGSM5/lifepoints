@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { MaterialCommunityIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { View, StyleSheet, Pressable } from 'react-native';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MyTheme } from '@/constants/Colors';
+import AppText from './AppText';
+import { Spacing } from '@/constants/Spacing';
 
 export default function TaskCard({ title, difficulty, xp, lp }) {
   
@@ -9,23 +12,20 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
       case 'easy':
         return { 
           icon: 'emoticon-happy-outline', 
-          color: '#4ADE80',
-          shadowColor: '#4ADE80'
+          color: '#4ADE80'
         };
       case 'medium':
         return { 
           icon: 'emoticon-neutral-outline',
-          color: '#FACC15',
-          shadowColor: '#FACC15'
+          color: '#FACC15'
         };
       case 'hard':
         return { 
           icon: 'emoticon-angry-outline', 
-          color: '#F87171',
-          shadowColor: '#F87171'
+          color: '#F87171'
         };
       default:
-        return { icon: 'emoticon-outline', color: '#ccc' };
+        return { icon: 'emoticon-outline', color: MyTheme.muted };
     }
   };
 
@@ -35,9 +35,9 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
     <View style={styles.card}>
       {/* --- Header: Titel und Herz --- */}
       <View style={styles.headerRow}>
-        <Text style={styles.title}>{title}</Text>
+        <AppText type='title' style={{ flex: 1, marginRight: Spacing.sm }}>{title}</AppText>
         <Pressable hitSlop={10}>
-          <Ionicons name="heart" size={24} color="#FF005C" />
+          <Ionicons name="heart-outline" size={24} color={MyTheme.muted} />
         </Pressable>
       </View>
       {/* --- Body: Großes Icon und Werte --- */}
@@ -57,14 +57,14 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
         <View style={styles.statsContainer}>
           {/* LP (Blüten) */}
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{lp}</Text>
-            <MaterialCommunityIcons name="flower-tulip" size={20} color="#FFC0CB" style={{marginLeft: 4}} />
+            <AppText type='title' style={{ fontSize: 16 }}>{lp}</AppText>
+            <MaterialCommunityIcons name="flower-tulip" size={18} color="#FFC0CB" style={{marginLeft: 4}} />
           </View>
           {/* XP Badge */}
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{xp}</Text>
+            <AppText type='title' style={{ fontSize: 16 }}>{xp}</AppText>
             <View style={styles.xpBadge}>
-              <Text style={styles.xpText}>XP</Text>
+              <AppText type='caption' style={{ color: MyTheme.text, fontFamily: 'Inter-Bold' }}>XP</AppText>
             </View>
           </View>
         </View>
@@ -75,80 +75,59 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#424242',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
+    marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: MyTheme.secondary
     // Optional: Schatten für Tiefe
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 5,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 10,
-  },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-    marginRight: 10,
+    marginBottom: Spacing.md,
   },
   bodyRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   iconContainer: {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60,
-    height: 60,
+    width: 55,
+    height: 55,
   },
   glow: {
     position: 'absolute',
     width: 40,
     height: 40,
     borderRadius: 20,
-    opacity: 0.2,
-  },
-  mainIcon: {
-    zIndex: 1,
+    opacity: 0.15,
   },
   statsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 15,
+    gap: Spacing.md,
   },
   statItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  statValue: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
   xpBadge: {
-    backgroundColor: '#22C55E',
-    borderRadius: 20,
+    borderRadius: Spacing.borderRadius.sm,
     paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingVertical: 2,
+    backgroundColor: '#22C55E',
     marginLeft: 4,
-    minWidth: 30,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  xpText: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: 'bold',
   }
 });
