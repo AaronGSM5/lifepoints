@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
+import AppText from '@/components/AppText';
 
 export default function ProfileScreen() {
 
@@ -33,18 +34,18 @@ export default function ProfileScreen() {
                 style={styles.avatar} 
               />
               <View style={styles.levelBadge}>
-                <Text style={styles.levelText}>LVL {mockProfile.profileLevel}</Text>
+                <AppText type='body' style={{ fontSize: 10, fontWeight: 'bold' }}>LVL {mockProfile.profileLevel}</AppText>
               </View>
             </View>
 
-            <Text style={styles.userName}>{mockProfile.profileName}</Text>
-            <Text style={styles.userClass}>{mockProfile.profileClass} • <Text style={{color: MyTheme.secondaryAccent}}>{mockProfile.profileRank}</Text></Text>
+            <AppText type='h2'>{mockProfile.profileName}</AppText>
+            <AppText type='caption' style={{ marginTop: 2, marginBottom: 15 }}>{mockProfile.profileClass} • <AppText type='caption' style={{color: MyTheme.secondaryAccent}}>{mockProfile.profileRank}</AppText></AppText>
 
             {/* XP Bar */}
             <View style={styles.xpContainer}>
               <View style={styles.xpHeader}>
-                <Text style={styles.xpLabel}>XP PROGRESS</Text>
-                <Text style={styles.xpValue}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</Text>
+                <AppText type='caption' style={styles.xpLabel}>XP PROGRESS</AppText>
+                <AppText type='body' style={styles.xpValue}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</AppText>
               </View>
               <View style={styles.progressBarBg}>
                 <LinearGradient
@@ -64,13 +65,13 @@ export default function ProfileScreen() {
                   style={styles.gradientButton}
                 >
                   <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.text} style={{marginRight: 5}}/>
-                  <Text style={styles.btnText}>Edit Profile</Text>
+                  <AppText type='title' style={{ fontSize: 14 }}>Edit Profile</AppText>
                 </LinearGradient>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.shareButton}>
                 <Ionicons name="share-social-outline" size={16} color={MyTheme.text} style={{marginRight: 5}} />
-                <Text style={styles.btnText}>Share Stats</Text>
+                <AppText type='title' style={{ fontSize: 14 }}>Share Stats</AppText>
               </TouchableOpacity>
             </View>
           </View>
@@ -78,8 +79,8 @@ export default function ProfileScreen() {
           {/* Stats Section */}
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeader}>
-              <Ionicons name="stats-chart" size={20} color={MyTheme.secondaryAccent} />
-              <Text style={styles.sectionTitle}>STATS</Text>
+              <Ionicons name="stats-chart" size={18} color={MyTheme.secondaryAccent} />
+              <AppText type='title' style={styles.sectionTitle}>STATS</AppText>
             </View>
 
             <View style={styles.statsGrid}>
@@ -94,11 +95,11 @@ export default function ProfileScreen() {
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeaderRow}>
                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                 <FontAwesome5 name="trophy" size={18} color="#FFD700" style={{marginRight: 8}}/>
-                 <Text style={styles.sectionTitle}>TROPHIES</Text>
+                 <FontAwesome5 name="trophy" size={18} color="#FFD700" />
+                 <AppText type='title' style={styles.sectionTitle}>TROPHIES</AppText>
                </View>
                <TouchableOpacity>
-                 <Text style={{color: '#FFD700', fontSize: 12}}>View All</Text>
+                 <AppText type='body' style={{color: '#FFD700', fontSize: 12}}>View All</AppText>
                </TouchableOpacity>
             </View>
 
@@ -119,13 +120,13 @@ export default function ProfileScreen() {
 const StatCard = ({ label, value, icon, color, badge, blurred }) => (
   <View style={styles.statCard}>
     <View style={styles.statTop}>
-      {blurred ? <><Text style={[styles.statValue, { filter: 'blur(4.5px)' }]}>{value}</Text><Text style={{ color: MyTheme.text, fontWeight: 'bold', borderWidth: 1, borderColor: 'gold', borderRadius: 10, paddingVertical: 2, paddingHorizontal: 5}}>GET +</Text></> : <Text style={styles.statValue}>{value}</Text>}
+      {blurred ? <><AppText type='title' style={[styles.statValue, { filter: 'blur(4.5px)' }]}>{value}</AppText><AppText type='body' style={{ color: MyTheme.text, fontWeight: 'bold', borderWidth: 1, borderColor: 'gold', borderRadius: 10, paddingVertical: 2, paddingHorizontal: 5}}>GET +</AppText></> : <AppText type='title' style={styles.statValue}>{value}</AppText>}
       <FontAwesome5 name={icon} size={16} color={color || "#666"} />
     </View>
-    <Text style={styles.statLabel}>{label}</Text>
+    <AppText type='caption' style={{ fontSize: 10 }}>{label}</AppText>
     {badge && (
       <View style={styles.statBadge}>
-        <Text style={styles.statBadgeText}>{badge}</Text>
+        <AppText type='body' style={{ fontSize: 10 }}>{badge}</AppText>
       </View>
     )}
   </View>
@@ -136,7 +137,7 @@ const TrophyCard = ({ title, icon }) => (
     <View style={styles.trophyIconBox}>
       <FontAwesome5 name={icon} size={24} color='#FFD700' />
     </View>
-    <Text style={styles.trophyText}>{title}</Text>
+    <AppText type='body' style={styles.trophyText}>{title}</AppText>
   </View>
 );
 
@@ -152,15 +153,6 @@ const styles = StyleSheet.create({
     top: 0,
     height: '100%',
   },
-  safeArea: {
-    flex: 1,
-  },
-  headerNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-  },
   scrollContent: {
     paddingBottom: 100,
   },
@@ -174,16 +166,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 15,
   },
-  glowEffect: {
-    position: 'absolute',
-    top: -10,
-    left: -10,
-    right: -10,
-    bottom: -10,
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: 100,
-    blurRadius: 20, // Funktioniert nicht überall perfekt in RN, oft braucht man ein Bild
-  },
   avatar: {
     width: 100,
     height: 100,
@@ -193,31 +175,13 @@ const styles = StyleSheet.create({
   },
   levelBadge: {
     position: 'absolute',
-    bottom: -5,
+    bottom: -10,
     alignSelf: 'center',
     backgroundColor: MyTheme.secondaryAccent,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    borderRadius: 10,
+    paddingHorizontal: 6,
+    borderRadius: 15,
     borderWidth: 2,
     borderColor: MyTheme.background,
-  },
-  levelText: {
-    color: MyTheme.text,
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  userName: {
-    color: MyTheme.text,
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 5,
-  },
-  userClass: {
-    color: MyTheme.muted,
-    fontSize: 12,
-    marginTop: 2,
-    marginBottom: 15,
   },
 
   // XP Styles
@@ -230,8 +194,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 5,
   },
-  xpLabel: { color: MyTheme.muted, fontSize: 10, fontWeight: 'bold' },
-  xpValue: { color: MyTheme.text, fontSize: 10, fontWeight: 'bold' },
+  xpLabel: { fontSize: 10, fontWeight: 'bold' },
+  xpValue: { fontSize: 10, fontWeight: 'bold' },
   progressBarBg: {
     height: 8,
     backgroundColor: '#333',
@@ -269,11 +233,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#333',
   },
-  btnText: {
-    color: MyTheme.text,
-    fontSize: 12,
-    fontWeight: '600',
-  },
 
   // Sections Common
   sectionContainer: {
@@ -291,9 +250,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sectionTitle: {
-    color: MyTheme.text,
     fontSize: 14,
-    fontWeight: 'bold',
     marginLeft: 10,
   },
 
@@ -320,15 +277,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   statValue: {
-    color: MyTheme.text,
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  statLabel: {
-    color: MyTheme.muted,
-    fontSize: 10,
-    fontWeight: '600',
-    marginTop: 5,
   },
   statBadge: {
     backgroundColor: MyTheme.primaryAccent,
@@ -337,11 +287,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 5,
-  },
-  statBadgeText: {
-    color: MyTheme.text,
-    fontSize: 9,
-    fontWeight: 'bold',
   },
 
   // Trophies
@@ -362,8 +307,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   trophyText: {
-    color: MyTheme.text,
     fontSize: 11,
-    textAlign: 'center',
+    textAlign: 'center'
   },
 });

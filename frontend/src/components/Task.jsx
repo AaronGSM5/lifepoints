@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
+import AppText from './AppText';
 
 export default function TaskCard({ title, difficulty, xp, lp }) {
   
@@ -36,7 +37,7 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
     <View style={styles.card}>
       {/* --- Header: Titel und Herz --- */}
       <View style={styles.headerRow}>
-        <Text style={styles.title}>{title}</Text>
+        <AppText type='title'>{title}</AppText>
         <Pressable hitSlop={10}>
           <Ionicons name="heart" size={24} color="#FF005C" />
         </Pressable>
@@ -58,14 +59,14 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
         <View style={styles.statsContainer}>
           {/* LP (Blüten) */}
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{lp}</Text>
+            <AppText type='body'>{lp}</AppText>
             <MaterialCommunityIcons name="flower-tulip" size={20} color="#FFC0CB" style={{marginLeft: 4}} />
           </View>
           {/* XP Badge */}
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{xp}</Text>
+            <AppText type='body'>{xp}</AppText>
             <View style={styles.xpBadge}>
-              <Text style={styles.xpText}>XP</Text>
+              <AppText type='title' style={{ fontSize: 13 }}>XP</AppText>
             </View>
           </View>
         </View>
@@ -92,13 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 10,
-  },
-  title: {
-    color: MyTheme.text,
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-    marginRight: 10,
   },
   bodyRow: {
     flexDirection: 'row',
@@ -131,12 +125,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  statValue: {
-    color: MyTheme.text,
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
   xpBadge: {
     backgroundColor: '#22C55E',
     borderRadius: 20,
@@ -146,10 +134,5 @@ const styles = StyleSheet.create({
     minWidth: 30,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  xpText: {
-    color: MyTheme.text,
-    fontSize: 10,
-    fontWeight: 'bold',
   }
 });

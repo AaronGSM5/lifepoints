@@ -1,6 +1,7 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import { MyTheme } from '@/constants/Colors';
+import AppText from './AppText';
 
 export default function NotificationEntry({ notification }) {
   return (
@@ -17,15 +18,9 @@ export default function NotificationEntry({ notification }) {
         elevation: 4,                    // Android Schatten
       }}
     >
-      <Text
-        style={{
-          color: MyTheme.text,
-          fontSize: 16,
-          fontWeight: '500',
-        }}
-      >
+      <AppText type='body'>
         {notification.title}
-      </Text>
+      </AppText>
     </View>
   );
 }

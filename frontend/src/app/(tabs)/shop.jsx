@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5, Feather } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
+import AppText from '@/components/AppText';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2; // Berechnet Breite für 2-Spalten Grid
@@ -21,13 +22,13 @@ export default function ShopScreen() {
             style={styles.walletCard}
           >
             <View style={styles.walletHeader}>
-              <Text style={styles.walletLabel}>YOUR POINTS</Text>
+              <AppText type='caption' style={styles.walletLabel}>YOUR POINTS</AppText>
               <Ionicons name="wallet-outline" size={20} color={MyTheme.primaryAccent} />
             </View>
             
             <View style={styles.pointsRow}>
-              <Text style={styles.pointsValue}>1,250</Text>
-              <Text style={styles.pointsLabel}> LP</Text>
+              <AppText type='title' style={{ fontSize: 32 }}>1,250</AppText>
+              <AppText type='title' style={styles.pointsLabel}> LP</AppText>
             </View>
 
             {/* Progress Bar */}
@@ -35,7 +36,7 @@ export default function ShopScreen() {
               <View style={styles.progressBarBg}>
                 <View style={[styles.progressBarFill, { width: '60%' }]} />
               </View>
-              <Text style={styles.progressText}>750 pts until Gold Tier</Text>
+              <AppText type='caption' style={{ fontSize: 10 }}>750 pts until Gold Tier</AppText>
             </View>
           </LinearGradient>
 
@@ -49,10 +50,10 @@ export default function ShopScreen() {
                     style={styles.activeTabGradient}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
                   >
-                    <Text style={styles.activeTabText}>{cat}</Text>
+                    <AppText type='title' style={{ fontSize: 12 }}>{cat}</AppText>
                   </LinearGradient>
                 ) : (
-                  <Text style={styles.inactiveTabText}>{cat}</Text>
+                  <AppText type='title' style={{ fontSize: 12, color: MyTheme.muted }}>{cat}</AppText>
                 )}
               </TouchableOpacity>
             ))}
@@ -61,7 +62,7 @@ export default function ShopScreen() {
           {/* 3. Featured Reward */}
           <View style={styles.sectionHeader}>
             <Ionicons name="flash" size={18} color="#F27121" style={{marginRight: 8}} />
-            <Text style={styles.sectionTitle}>Featured Reward</Text>
+            <AppText type='title'>Featured Reward</AppText>
           </View>
 
           <LinearGradient
@@ -75,26 +76,26 @@ export default function ShopScreen() {
             
             <View style={styles.featuredContent}>
               <View style={styles.bestValueBadge}>
-                <Text style={styles.bestValueText}>BEST VALUE</Text>
+                <AppText type='body' style={styles.bestValueText}>BEST VALUE</AppText>
               </View>
               
-              <Text style={styles.featuredTitle}>Free Month Premium</Text>
-              <Text style={styles.featuredSubtitle}>Spotify Individual Plan</Text>
+              <AppText type='title'>Free Month Premium</AppText>
+              <AppText type='caption' style={styles.featuredSubtitle}>Spotify Individual Plan</AppText>
               
               <View style={styles.featuredFooter}>
                 <View>
-                  <Text style={styles.oldPrice}>2,500 PTS</Text>
-                  <Text style={styles.newPrice}>2,000 PTS</Text>
+                  <AppText type='caption' style={styles.oldPrice}>2,500 PTS</AppText>
+                  <AppText type='title'>2,000 PTS</AppText>
                 </View>
                 <TouchableOpacity style={styles.redeemButton}>
-                  <Text style={styles.redeemText}>Redeem</Text>
+                  <AppText type='title' style={styles.redeemText}>Redeem</AppText>
                 </TouchableOpacity>
               </View>
             </View>
           </LinearGradient>
 
           {/* 4. For You Grid */}
-          <Text style={[styles.sectionTitle, {marginTop: 25, marginBottom: 15}]}>For You</Text>
+          <AppText type='title' style={{marginTop: 25, marginBottom: 15}}>For You</AppText>
           
           <View style={styles.gridContainer}>
             <RewardCard 
@@ -146,17 +147,17 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
       </View>
     </View>
     
-    <View style={styles.cardContent}>
-      <Text style={styles.cardBrand}>{brand}</Text>
-      <Text style={styles.cardTitle}>{title}</Text>
+    <View style={{ padding: 12 }}>
+      <AppText type='body' style={styles.cardBrand}>{brand}</AppText>
+      <AppText type='body' style={styles.cardTitle}>{title}</AppText>
       
       <View style={styles.cardFooter}>
-        <Text style={[styles.cardPoints, isLocked && {color: MyTheme.muted}]}>
+        <AppText type='body' style={[styles.cardPoints, isLocked && {color: MyTheme.muted}]}>
           {points} PTS
-        </Text>
+        </AppText>
         {isLocked ? (
            <View style={styles.lockedBadge}>
-             <Text style={styles.lockedText}>Locked</Text>
+             <AppText type='caption' style={styles.lockedText}>Locked</AppText>
            </View>
         ) : (
            <TouchableOpacity style={styles.miniFab}>
@@ -178,9 +179,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: MyTheme.background,
   },
-  safeArea: {
-    flex: 1,
-  },
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 120, // Platz für Bottom Bar
@@ -192,11 +190,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     marginBottom: 20,
-  },
-  headerTitle: {
-    color: MyTheme.text,
-    fontSize: 20,
-    fontWeight: 'bold',
   },
 
   // Wallet Card
@@ -212,10 +205,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  walletLabel: { color: MyTheme.muted, fontSize: 10, fontWeight: 'bold' },
+  walletLabel: { fontSize: 10, fontWeight: 'bold' },
   pointsRow: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15 },
-  pointsValue: { color: MyTheme.text, fontSize: 32, fontWeight: 'bold' },
-  pointsLabel: { color: MyTheme.primaryAccent, fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
+  pointsLabel: { color: MyTheme.primaryAccent, marginBottom: 5 },
   progressBarBg: {
     height: 6,
     backgroundColor: '#333',
@@ -227,7 +219,6 @@ const styles = StyleSheet.create({
     backgroundColor: MyTheme.primaryAccent,
     borderRadius: 3,
   },
-  progressText: { color: MyTheme.muted, fontSize: 10 },
 
   // Tabs
   tabsContainer: {
@@ -248,12 +239,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
   },
-  activeTabText: { color: MyTheme.text, fontSize: 12, fontWeight: 'bold' },
-  inactiveTabText: { color: MyTheme.muted, fontSize: 12, fontWeight: 'bold' },
 
   // Featured Reward
   sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
-  sectionTitle: { color: MyTheme.text, fontSize: 16, fontWeight: 'bold' },
   featuredCard: {
     borderRadius: 20,
     padding: 20,
@@ -271,22 +259,20 @@ const styles = StyleSheet.create({
   featuredContent: { marginTop: 10 },
   bestValueBadge: {
     backgroundColor: 'rgba(47, 196, 146, 0.2)',
-    paddingHorizontal: 8, paddingVertical: 4,
+    paddingHorizontal: 6, paddingVertical: 3,
     borderRadius: 5, alignSelf: 'flex-start',
     marginBottom: 8, borderWidth: 1, borderColor: 'rgba(47, 196, 146, 0.5)'
   },
   bestValueText: { color: '#00FF7F', fontSize: 10, fontWeight: 'bold' },
-  featuredTitle: { color: MyTheme.text, fontSize: 18, fontWeight: 'bold' },
   featuredSubtitle: { color: 'rgba(248,250,252,0.8)', fontSize: 12, marginBottom: 15 },
   featuredFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  oldPrice: { color: MyTheme.muted, fontSize: 10, textDecorationLine: 'line-through' },
-  newPrice: { color: MyTheme.text, fontSize: 18, fontWeight: 'bold' },
+  oldPrice: { fontSize: 10, textDecorationLine: 'line-through' },
   redeemButton: {
     backgroundColor: MyTheme.text,
-    paddingVertical: 8, paddingHorizontal: 20,
+    paddingVertical: 6, paddingHorizontal: 18,
     borderRadius: 20,
   },
-  redeemText: { color: '#E94057', fontSize: 12, fontWeight: 'bold' },
+  redeemText: { color: '#E94057', fontSize: 12, fontWeight: 'semibold' },
 
   // Grid
   gridContainer: {
@@ -319,11 +305,10 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderColor: 'rgba(68, 68, 68, 0.8)'
   },
-  cardContent: { padding: 12 },
-  cardBrand: { color: MyTheme.primaryAccent, fontSize: 9, fontWeight: 'bold', marginBottom: 4, textTransform: 'uppercase' },
-  cardTitle: { color: MyTheme.text, fontSize: 13, fontWeight: 'bold', marginBottom: 10 },
+  cardBrand: { color: MyTheme.primaryAccent, fontSize: 9, textTransform: 'uppercase', fontWeight: 'bold' },
+  cardTitle: { fontSize: 13, fontWeight: 'bold' },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  cardPoints: { color: MyTheme.text, fontSize: 12, fontWeight: 'bold' },
+  cardPoints: { fontSize: 12, fontWeight: 'bold' },
   miniFab: {
     width: 24, height: 24,
     borderRadius: 12, backgroundColor: MyTheme.background,
@@ -331,7 +316,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: MyTheme.secondary
   },
   lockedBadge: { backgroundColor: '#2A2A2A', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  lockedText: { color: MyTheme.muted, fontSize: 8, fontWeight: 'bold' },
+  lockedText: { fontSize: 9, fontWeight: 'bold' },
   lockedOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(18, 18, 18, 0.5)',

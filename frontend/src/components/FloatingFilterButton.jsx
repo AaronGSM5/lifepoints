@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
 
@@ -56,7 +56,7 @@ const FloatingFilterButton = () => {
 
 
   // Hilfsfunktion für die kleinen Buttons
-  const SubButton = ({ iconName, iconLibrary, onPress, color = MyTheme.secondary }) => {
+  const SubButton = ({ iconName, iconLibrary, onPress }) => {
     
     const IconTag = iconLibrary === 'MaterialCommunityIcons' ? MaterialCommunityIcons : Ionicons;
     return (
@@ -100,25 +100,21 @@ const FloatingFilterButton = () => {
         <SubButton 
             iconName="heart"
             iconLibrary="Ionicons"
-            color="white" // Pink
             onPress={() => console.log("Herz gedrückt")} 
         />
         <SubButton 
             iconName="emoticon-happy-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Gelb/Orange
             onPress={() => console.log("Smiley gedrückt")} 
         />
          <SubButton 
             iconName="emoticon-neutral-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Lila
             onPress={() => console.log("Stern gedrückt")} 
         />
          <SubButton 
             iconName="emoticon-angry-outline"
             iconLibrary="MaterialCommunityIcons"
-            color="white" // Lila
             onPress={() => console.log("Stern gedrückt")} 
         />
         

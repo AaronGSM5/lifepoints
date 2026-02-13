@@ -1,9 +1,10 @@
-import { View, Pressable, StyleSheet, Animated, Text } from 'react-native';
+import { View, Pressable, StyleSheet, Animated } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { useRef } from 'react';
 import { MyTheme } from '@/constants/Colors';
+import AppText from './AppText';
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -50,7 +51,7 @@ export default function Toolbar() {
       )}
 
       {/* Title */}
-      <Text style={styles.text}>LifePoints</Text>
+      <AppText type='h2'>LifePoints</AppText>
 
       {/* Notifications */}
       {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
@@ -72,10 +73,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  text: {
-    color: MyTheme.text,
-    fontSize: 20,
-    fontWeight: 'bold'
   }
 });

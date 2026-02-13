@@ -1,11 +1,11 @@
-import { MyTheme } from "@/constants/Colors";
-import { View, Text } from "react-native";
+import AppText from "@/components/AppText";
+import { View } from "react-native";
 
 export default function Home() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: MyTheme.text }}>🎉 Expo Router works 🎉</Text>
-      <Text style={{ color: MyTheme.text }}>Go to /home</Text>
+      <AppText type="body">🎉 Expo Router works 🎉</AppText>
+      <AppText type="body">Go to /home</AppText>
     </View>
   );
 }
