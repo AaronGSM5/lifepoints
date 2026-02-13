@@ -1,8 +1,8 @@
-import { View, Pressable, StyleSheet, Animated } from 'react-native';
+import { View, Pressable, StyleSheet, Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from '@expo/vector-icons';
-import { useRef } from 'react';
-import { MyTheme } from '@/constants/Colors';
+import { Ionicons } from "@expo/vector-icons";
+import { useRef } from "react";
+import { MyTheme } from "@/constants/Colors";
 
 export default function Navbar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
@@ -12,18 +12,23 @@ export default function Navbar({ state, descriptors, navigation }) {
   const iconMap = {
     home: "home",
     shop: "bag",
-    profile: "person"
+    profile: "person",
+    Tasks: "book"
   };
 
   return (
-    <View style={[styles.container, { 
-      height: 64 + insets.bottom, 
-      paddingBottom: insets.bottom, 
-      backgroundColor: MyTheme.primary,
-      borderTopWidth: 1,
-      borderTopColor: MyTheme.secondary
-    }]}>
-      
+    <View
+      style={[
+        styles.container,
+        {
+          height: 64 + insets.bottom,
+          paddingBottom: insets.bottom,
+          backgroundColor: MyTheme.primary,
+          borderTopWidth: 1,
+          borderTopColor: MyTheme.secondary
+        }
+      ]}
+    >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
         const iconName = iconMap[route.name] || "help-circle";
@@ -39,9 +44,9 @@ export default function Navbar({ state, descriptors, navigation }) {
 
         const onPress = () => {
           const event = navigation.emit({
-            type: 'tabPress',
+            type: "tabPress",
             target: route.key,
-            canPreventDefault: true,
+            canPreventDefault: true
           });
 
           if (!isFocused && !event.defaultPrevented) {
@@ -51,15 +56,11 @@ export default function Navbar({ state, descriptors, navigation }) {
         };
 
         return (
-          <Pressable
-            key={route.key}
-            onPress={onPress}
-            style={styles.tabButton}
-          >
+          <Pressable key={route.key} onPress={onPress} style={styles.tabButton}>
             <Animated.View style={{ transform: [{ scale }] }}>
-              <Ionicons 
-                name={isFocused ? iconName : `${iconName}-outline`} 
-                size={26} 
+              <Ionicons
+                name={isFocused ? iconName : `${iconName}-outline`}
+                size={26}
                 color={isFocused ? MyTheme.primaryAccent : MyTheme.text}
               />
             </Animated.View>
@@ -72,14 +73,14 @@ export default function Navbar({ state, descriptors, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   tabButton: {
     flex: 1,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
