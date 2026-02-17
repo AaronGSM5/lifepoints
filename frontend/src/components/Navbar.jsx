@@ -11,11 +11,15 @@ export default function Navbar({ state, descriptors, navigation }) {
   // mappen wir hier die passenden Icons dazu.
   const iconMap = {
     home: "home",
+    tasks: "book",
     shop: "bag",
     profile: "person",
-    Tasks: "book"
   };
-
+  // Reihenfolge der Tabs in der Navbar
+  const orderedRoutes = [...state.routes].sort((a, b) => {
+    const order = ["home", "tasks", "shop", "profile"];
+    return order.indexOf(a.name) - order.indexOf(b.name);
+  });
   return (
     <View
       style={[
@@ -29,8 +33,8 @@ export default function Navbar({ state, descriptors, navigation }) {
         }
       ]}
     >
-      {state.routes.map((route, index) => {
-        const isFocused = state.index === index;
+      {orderedRoutes.map((route, index) => {
+        const isFocused = state.routes[state.index].key === route.key;
         const iconName = iconMap[route.name] || "help-circle";
 
         // Animation Hook
