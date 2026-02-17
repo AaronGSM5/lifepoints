@@ -9,7 +9,8 @@ export default function ScreenWrapper({ children, scrollable = true, style }) {
     <Container 
       style={[styles.container, style]}
       // Falls es ein ScrollView ist, brauchen wir contentContainerStyle für das Padding
-      contentContainerStyle={scrollable ? styles.content : undefined}
+      contentContainerStyle={scrollable ? [styles.content, { flexGrow: 1 }] : undefined}
+      keyboardShouldPersistTaps="handled"
     >
       {!scrollable ? (
         <View style={[styles.content, style]}>
