@@ -10,7 +10,7 @@ export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
-  const canGoBack = pathname !== '/home' && pathname !== '/shop' && pathname !== '/profile';
+  const canGoBack = pathname !== '/home' && pathname !== '/tasks' && pathname !== '/shop' && pathname !== '/profile';
   const backScale = useRef(new Animated.Value(1)).current;
 
   const animateBack = () => {
