@@ -1,15 +1,14 @@
-version: '3.8'
-
 services:
   # MongoDB Database
   mongodb:
-    image: mongo:7
+    image: mongo:latest
     container_name: lifepoints-mongodb
-    ports:
-      - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password123
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_INITDB_DATABASE=lifepoints
+    ports:
+      - "27030:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -19,6 +18,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    command: mongod --logpath=/dev/null -v # --quiet
 
   # Express.js Backend
   backend:
@@ -30,7 +30,6 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      MONGO_URI: mongodb://root:password123@mongodb:27017/lifepoints?authSource=admin
       MONGO_HOST: mongodb
       MONGO_PORT: 27017
       MONGO_DB: lifepoints
@@ -44,23 +43,23 @@ services:
     restart: unless-stopped
 
   # Expo/React Native Frontend
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: lifepoints-frontend
-    ports:
-      - "8081:8081"
-      - "19000:19000"
-      - "19001:19001"
-    environment:
-      EXPO_PUBLIC_API_URL: http://localhost:3000
-      NODE_ENV: production
-    depends_on:
-      - backend
-    networks:
-      - lifepoints-network
-    restart: unless-stopped
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: lifepoints-frontend
+  #   ports:
+  #     - "8081:8081"
+  #     - "19000:19000"
+  #     - "19001:19001"
+  #   environment:
+  #     EXPO_PUBLIC_API_URL: http://localhost:3000
+  #     NODE_ENV: production
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - lifepoints-network
+  #   restart: unless-stopped
 
 networks:
   lifepoints-network:
@@ -68,3 +67,4 @@ networks:
 
 volumes:
   mongodb_data:
+

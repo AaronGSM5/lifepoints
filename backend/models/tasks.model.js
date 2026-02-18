@@ -1,0 +1,22 @@
+const mongoose = require('mongoose');
+
+const taskSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  lifepoints: {
+    type: Number,
+    default: 0
+  },
+  category: {
+    type: [String],
+    default: []
+  },
+  active: {
+    type: Boolean,
+    default: true
+  }
+});
+
+module.exports = mongoose.model('Tasks', taskSchema);

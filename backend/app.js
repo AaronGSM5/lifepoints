@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import helmet from "helmet"
+import mongoose from "mongoose"
 
 import v1Router from './routers/v1.router.js'
 
@@ -15,9 +16,13 @@ const PORT = process.env.PORT || 3000;
   app.use(express.urlencoded({ limit: "12mb", extended: true }));
 
   try {
+    await mongoose.connect("mongodb://localhost:27030/lifepoints");
+    console.log("✅ Connected to MongoDB");
+
     app.use("/api/v1", v1Router);
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error:", error);
+    process.exit(1);
   }
 
   app.listen(PORT, () => {
