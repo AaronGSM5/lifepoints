@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { StyleSheet, View, Image, Pressable, ScrollView, Animated, Easing } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -7,7 +7,7 @@ import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
 import ScreenWrapper from '@/components/ScreenWrapper';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 
 export default function ProfileScreen() {
   const mockProfile = {
@@ -156,7 +156,7 @@ export default function ProfileScreen() {
                  <FontAwesome5 name="trophy" size={18} color="#FFD700" />
                  <AppText type='title'>TROPHIES</AppText>
                </View>
-               <Pressable>
+               <Pressable onPress={() => router.push('/trophies')}>
                  {/* <AppText type='caption' style={{color: MyTheme.primaryAccent }}>View All</AppText> */}
                  <AppText type='caption' style={{ color: '#FFD700' }}>View All</AppText>
                </Pressable>

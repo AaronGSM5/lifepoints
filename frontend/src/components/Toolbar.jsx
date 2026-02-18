@@ -1,14 +1,18 @@
-import { View, Pressable, StyleSheet, Animated } from 'react-native';
+import { View, Pressable, StyleSheet, Animated, Image, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { useRef } from 'react';
 import { MyTheme } from '@/constants/Colors';
-import AppText from './AppText';
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
+
+  const screenWidth = Dimensions.get('window').width;
+  const maxLogoWidth = 180;  // max 180 px breit
+  const logoWidth = Math.min(screenWidth * 0.4, maxLogoWidth);
+  const logoHeight = logoWidth / 3.75;
 
   const canGoBack = pathname !== '/home' && pathname !== '/tasks' && pathname !== '/shop' && pathname !== '/profile';
   const backScale = useRef(new Animated.Value(1)).current;
@@ -51,7 +55,11 @@ export default function Toolbar() {
       )}
 
       {/* Title */}
-      <AppText type='h2'>LifePoints</AppText>
+      <Image
+      source={require('@/../public/assets/lifepointsLogo.png')}
+      style={{ width: logoWidth, height: logoHeight }}
+      resizeMode="contain"
+    />
 
       {/* Notifications */}
       {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
@@ -73,5 +81,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  appTitle: {
+
   }
 });
