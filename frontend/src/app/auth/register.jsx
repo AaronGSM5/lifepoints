@@ -124,38 +124,45 @@ export default function RegisterScreen() {
             />
 
           <View style={[styles.passwordContainer, { borderWidth: 1, borderColor: passwordBorderColor }]}>
-            <TextInput
-              value={passwordInput}
-              onChangeText={(text) => {
-                setPasswordInput(text)
-                const newStatus = {}
-                passwordRules.forEach((rule) => {
-                  newStatus[rule.name] = rule.validate(text)
-                })
-                setPasswordRuleStatus(newStatus)
-              }}
-              placeholder="Password"
-              placeholderTextColor={MyTheme.muted}
-              underlineColorAndroid="transparent"
-              secureTextEntry={passwordIsShown}
-              style={[styles.passwordInput, { outlineStyle: 'none' }]}
-            />
-            <Pressable
-              onPress={() => setPasswordIsShown(!passwordIsShown)}
-              hitSlop={10}
-            >
-              <Ionicons name={ passwordIsShown ? 'eye-outline' : 'eye-off-outline'} size={22} color='white' />
-            </Pressable>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                value={passwordInput}
+                onChangeText={(text) => {
+                  setPasswordInput(text)
+                  const newStatus = {}
+                  passwordRules.forEach((rule) => {
+                    newStatus[rule.name] = rule.validate(text)
+                  })
+                  setPasswordRuleStatus(newStatus)
+                }}
+                placeholder="Password"
+                placeholderTextColor={MyTheme.muted}
+                underlineColorAndroid="transparent"
+                secureTextEntry={passwordIsShown}
+                style={[styles.passwordInput, { outlineStyle: 'none' }]}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Pressable
+                onPress={() => setPasswordIsShown(!passwordIsShown)}
+                hitSlop={10}
+                style={{ marginRight: 8 }}
+              >
+                <Ionicons name={ passwordIsShown ? 'eye-outline' : 'eye-off-outline'} size={22} color='white' />
+              </Pressable>
 
-            {passwordInput.length > 0 && <Pressable
-              onPress={() => setIsRuleOverlayVisible(true)}
-              hitSlop={10}
-            >
-              <Ionicons name={ allRulesPassed ? 'checkmark-circle-outline' : 'alert-circle-outline'} size={22} color={ allRulesPassed ? MyTheme.primaryAccent : 'red' } style={{ marginLeft: Spacing.sm }} />
-            </Pressable>}
+              {passwordInput.length > 0 && (<Pressable
+                onPress={() => setIsRuleOverlayVisible(true)}
+                hitSlop={10}
+              >
+                <Ionicons name={ allRulesPassed ? 'checkmark-circle-outline' : 'information-circle-outline'} size={22} color={ allRulesPassed ? MyTheme.primaryAccent : 'red' } />
+              </Pressable>
+            )}
+            </View>
           </View>
 
           <View style={[styles.passwordContainer, { borderWidth: 1, borderColor: passwordCheckBorderColor }]}>
+            <View style={{ flex: 1 }}>
             <TextInput
               value={repeatPasswordInput}
               onChangeText={setRepeatPasswordInput}
@@ -165,11 +172,14 @@ export default function RegisterScreen() {
               secureTextEntry={true}
               style={[styles.passwordInput, { outlineStyle: 'none' }]}
             />
-            {passwordsFilled && !passwordsMatch ? (
-              <Ionicons name='close-circle-outline' size={22} color='red' />
-            ) : passwordsMatch ? (
-              <Ionicons name='checkmark-circle-outline' size={22} color={MyTheme.primaryAccent} />
-            ) : null}
+            </View>
+            <View>
+              {passwordsFilled && !passwordsMatch ? (
+                <Ionicons name='close-circle-outline' size={22} color='red' />
+              ) : passwordsMatch ? (
+                <Ionicons name='checkmark-circle-outline' size={22} color={MyTheme.primaryAccent} />
+              ) : null}
+            </View>
           </View>
 
           {/* Overlay */}

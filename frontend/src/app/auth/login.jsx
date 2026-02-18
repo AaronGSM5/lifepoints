@@ -47,6 +47,7 @@ export default function LoginScreen() {
             />
 
           <View style={styles.passwordContainer}>
+            <View style={{ flex: 1 }}>
             <TextInput
               value={passwordInput}
               onChangeText={setPasswordInput}
@@ -56,6 +57,7 @@ export default function LoginScreen() {
               secureTextEntry={passwordIsShown}
               style={[styles.passwordInput, { outlineStyle: 'none' }]}
             />
+            </View>
             <Pressable
               onPress={() => setPasswordIsShown(!passwordIsShown)}
               hitSlop={10}
