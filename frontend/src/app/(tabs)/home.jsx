@@ -3,10 +3,9 @@ import {
   Text, 
   View, 
   ScrollView, 
-  TouchableOpacity, 
+  Pressable, 
   TextInput,
   Image,
-  Pressable,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import ScreenWrapper from '@/components/ScreenWrapper';
@@ -27,7 +26,7 @@ export default function HomeScreen() {
         {/* ACTIVE TASKS */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionLabel}>ACTIVE TASKS</Text>
+            <AppText style={styles.sectionLabel}>ACTIVE TASKS</AppText>
             <View style={styles.pulseDot} />
           </View>
           
@@ -36,23 +35,23 @@ export default function HomeScreen() {
               <Ionicons name="timer" size={20} color={MyTheme.primaryAccent} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.taskTitle}>Morning Vitality</Text>
+              <AppText type='title' style={styles.taskTitle}>Morning Vitality</AppText>
             </View>
             <View style={styles.lpContainer}>
-              <Text style={styles.lpValue}>1,500</Text>
-              <Text style={styles.lpUnit}>LP</Text>
+              <AppText type='caption' style={styles.lpValue}>1,500</AppText>
+              <AppText type='caption' style={styles.lpUnit}>LP</AppText>
             </View>
-            <TouchableOpacity style={styles.finishButton}>
-              <Text style={styles.finishButtonText}>FINISH</Text>
-            </TouchableOpacity>
+            <Pressable style={styles.finishButton}>
+              <AppText type='caption' style={styles.finishButtonText}>FINISH</AppText>
+            </Pressable>
           </View>
         </View>
 
         {/* RECOMMENDED TASKS */}
         <View style={styles.section}>
           <View style={styles.sectionHeaderRow}>
-            <Text style={styles.sectionLabel}>RECOMMENDED TASKS</Text>
-            <TouchableOpacity><AppText style={styles.seeAllText}>See all</AppText></TouchableOpacity>
+            <AppText style={styles.sectionLabel}>RECOMMENDED TASKS</AppText>
+            <Pressable><AppText type='caption' style={styles.seeAllText}>See all</AppText></Pressable>
           </View>
           
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
@@ -63,12 +62,12 @@ export default function HomeScreen() {
             ].map((item, index) => (
               <View key={index} style={styles.recomCard}>
                 <MaterialIcons name={item.icon} size={28} color={item.color} style={styles.recomIcon} />
-                <Text style={styles.recomTitle}>{item.title}</Text>
+                <AppText type='title' style={styles.recomTitle}>{item.title}</AppText>
                 <View style={styles.recomFooter}>
-                  <Text style={styles.recomLP}>{item.lp} <Text style={{fontSize: 8}}>LP</Text></Text>
-                  <TouchableOpacity style={styles.addButton}>
+                  <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{fontSize: 8, color: MyTheme.primaryAccent}}>LP</AppText></AppText>
+                  <Pressable style={styles.addButton}>
                     <Ionicons name="add" size={18} color={MyTheme.primaryAccent} />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               </View>
             ))}
@@ -77,15 +76,15 @@ export default function HomeScreen() {
 
         {/* PRODUCTIVITY CHART */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>PRODUCTIVITY</Text>
-          <Text style={styles.productivityText}>You earned <Text style={{color: MyTheme.primaryAccent}}>2,450 LP</Text> this week!</Text>
+          <AppText style={styles.sectionLabel}>PRODUCTIVITY</AppText>
+          <AppText type='title' style={styles.productivityText}>You earned <AppText type='title' style={{color: MyTheme.primaryAccent}}>2,450 LP</AppText> this week!</AppText>
           
           <View style={styles.chartCard}>
             <View style={styles.chartContainer}>
               {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
                 <View key={i} style={styles.chartColumnWrapper}>
-                  <View style={[styles.chartBar, { height: `${h}%`, opacity: h/100 }]} />
-                  <Text style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</Text>
+                  <View style={[styles.chartBar, { height: `${h}%`, opacity: `${h/100}` }]} />
+                  <AppText type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
                 </View>
               ))}
             </View>
@@ -239,8 +238,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   lpContainer: {
-    alignItems: 'flex-end',
-    marginRight: 10,
+    flexDirection: 'row',
+    gap: Spacing.xs,
+    marginRight: Spacing.md,
   },
   lpValue: {
     color: MyTheme.primaryAccent,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   lpUnit: {
     color: MyTheme.primaryAccent,
-    fontSize: 8,
+    fontSize: 13,
     fontFamily: 'Inter-Bold',
   },
   finishButton: {
@@ -278,8 +278,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   recomTitle: {
-    color: MyTheme.text,
-    fontFamily: 'Inter-Bold',
     fontSize: 14,
   },
   recomFooter: {
@@ -290,7 +288,6 @@ const styles = StyleSheet.create({
   },
   recomLP: {
     color: MyTheme.primaryAccent,
-    fontFamily: 'Inter-Bold',
     fontSize: 12,
   },
   addButton: {
@@ -302,10 +299,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productivityText: {
-    color: MyTheme.text,
-    fontSize: 18,
-    fontFamily: 'Inter-Bold',
-    marginBottom: 15,
+    marginBottom: Spacing.md,
   },
   chartCard: {
     backgroundColor: MyTheme.primary,
@@ -330,10 +324,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 6,
   },
   chartDay: {
-    color: MyTheme.muted,
     fontSize: 9,
     fontFamily: 'Inter-Bold',
-    marginTop: 8,
+    marginTop: Spacing.sm,
   },
   suggestionBox: {
     backgroundColor: '#1e293b',
