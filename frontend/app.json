@@ -16,7 +16,7 @@
       "bundleIdentifier": "com.lifepoints.app",
       "supportsTablet": true,
       "infoPlist": {
-        "CFBundleDisplayName": "LP" 
+        "CFBundleDisplayName": "LP"
       }
     },
     "android": {
@@ -35,6 +35,12 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d2ef5c41-32bb-4ffc-a884-d094cebe2bfb"
+      }
+    }
   }
 }
