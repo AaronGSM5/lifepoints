@@ -143,7 +143,7 @@ export default function ProfileScreen() {
 
             <View style={styles.statsGrid}>
               <StatCard label="DAY STREAK" value="45" icon="fire" color="#FF5733" badge="Best: 52" />
-              <StatCard label="TOTAL POINTS" value="12.4k" icon="diamond" color="#C70039" badge="Top 5%" />
+              <StatCard label="TOTAL POINTS" value="12.4k" icon="gem" color="#007ec7" badge="Top 5%" />
               <StatCard label="BAD HABITS AVOIDED" value="120" icon="ban" color="#900C3F" blurred />
               <StatCard label="MEMBER SINCE" value="2023" icon="calendar" color="#581845" />
             </View>

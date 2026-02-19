@@ -1,19 +1,24 @@
-import { View, ScrollView, StyleSheet } from 'react-native';
-// import { MyTheme } from '@/constants/Colors';
+import { View, ScrollView } from 'react-native';
 import { Spacing } from '@/constants/Spacing';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function ScreenWrapper({ children, scrollable = true, style }) {
+export default function ScreenWrapper({ children, scrollable = true, withOffset = false, style }) {
+  const insets = useSafeAreaInsets()
   const Container = scrollable ? ScrollView : View;
+
+  const contentStyles = [
+    { paddingHorizontal: Spacing.md, paddingTop: withOffset ? (insets.top + Spacing.md) : Spacing.md, paddingBottom: Math.max(insets.bottom, Spacing.md), },
+    style
+  ];
 
   return (
     <Container 
-      style={[styles.container, style]}
-      // Falls es ein ScrollView ist, brauchen wir contentContainerStyle für das Padding
-      contentContainerStyle={scrollable ? [styles.content, { flexGrow: 1 }] : undefined}
+      style={{ flex: 1 }}
+      contentContainerStyle={scrollable ? [contentStyles, { flexGrow: 1 }] : undefined}
       keyboardShouldPersistTaps="handled"
     >
       {!scrollable ? (
-        <View style={[styles.content, style]}>
+        <View style={[contentStyles]}>
           {children}
         </View>
       ) : (
@@ -22,15 +27,3 @@ export default function ScreenWrapper({ children, scrollable = true, style }) {
     </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: MyTheme.background,
-  },
-  content: {
-    paddingHorizontal: Spacing.md, // 16px Rand links/rechts
-    paddingTop: Spacing.md,        // 16px Luft zur Toolbar
-    // paddingBottom: Spacing.xl,     // Viel Platz unten
-  }
-});

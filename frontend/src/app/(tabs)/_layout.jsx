@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import Navbar from "@/components/Navbar.jsx";
-import Toolbar from "@/components/Toolbar.jsx";
 import { MyTheme } from "@/constants/Colors";
 
 export default function TabsLayout() {
@@ -8,7 +7,7 @@ export default function TabsLayout() {
     <Tabs
       tabBar={(props) => <Navbar {...props} />}
       screenOptions={{
-        header: () => <Toolbar />,
+        headerShown: false,
         contentStyle: { backgroundColor: MyTheme.background }
       }}
     >
