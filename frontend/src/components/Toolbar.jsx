@@ -56,10 +56,16 @@ export default function Toolbar() {
 
       {/* Title */}
       <Image
-      source={require('@/../public/assets/lifepointsLogo.png')}
+      source={require('@/../public/assets/adaptive-icon.png')}
       style={{ width: logoWidth, height: logoHeight }}
       resizeMode="contain"
     />
+    {/* Alternative Title (Lifepoints text) */}
+      {/* <Image
+      source={require('@/../public/assets/lifepointsLogo.png')}
+      style={{ width: logoWidth, height: logoHeight }}
+      resizeMode="contain"
+    /> */}
 
       {/* Notifications */}
       {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
