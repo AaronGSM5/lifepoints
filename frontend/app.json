@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./public/assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./public/assets/splash-icon.png",
@@ -13,15 +13,21 @@
       "backgroundColor": "#0F1729"
     },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.lifepoints.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleDisplayName": "LP" 
+      }
     },
     "android": {
+      "package": "com.lifepoints.app",
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/adaptive-icon.png",
         "backgroundImage": "./public/assets/adaptive-icon-background.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./public/assets/favicon.png"
