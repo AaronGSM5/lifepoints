@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform, Image, Dimensions } from 'react-native';
 import ScreenWrapper from '@/components/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
@@ -12,12 +12,17 @@ import PasswordRulesModal from '@/components/layout/PasswordRulesModal';
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets()
+  const screenWidth = Dimensions.get('window').width;
   const [nameInput, setNameInput] = useState('')
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [repeatPasswordInput, setRepeatPasswordInput] = useState('')
   const [passwordIsShown, setPasswordIsShown] = useState(true)
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false)
+
+  const maxLogoWidth = 330;  // max 330 px breit
+  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  const logoHeight = logoWidth / 3.75;
 
   const isNameValid = (name) => {
     // Some database check (maybe some rules)
@@ -95,9 +100,17 @@ export default function RegisterScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.appIcon}>
-            <Ionicons name="bonfire-outline" size={48} color='white'/>
+            <Image
+              source={require('@/../public/assets/adaptive-icon.png')}
+              style={{ width: logoWidth, height: logoHeight }}
+              resizeMode="contain"
+            />
           </View>
-          <AppText type='h1' style={styles.headerText}>LifePoints</AppText>
+          <Image
+            source={require('@/../public/assets/lifepointsLogo.png')}
+            style={{ width: 200 }}
+            resizeMode="contain"
+          />
           <AppText type='caption' style={styles.subtitle}>Register to continue</AppText>
         </View>
 

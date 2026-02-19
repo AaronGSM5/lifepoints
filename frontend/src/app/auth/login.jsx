@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform, Dimensions, Image } from 'react-native';
 import ScreenWrapper from '@/components/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
@@ -11,10 +11,16 @@ import { Ionicons } from "@expo/vector-icons"
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets()
+  const screenWidth = Dimensions.get('window').width;
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [passwordIsShown, setPasswordIsShown] = useState(true)
   const isLoginDisabled = !emailInput || !passwordInput
+
+  const maxLogoWidth = 330;  // max 330 px breit
+  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  const logoHeight = logoWidth / 3.75;
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -27,7 +33,11 @@ export default function LoginScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.appIcon}>
-          <Ionicons name="bonfire-outline" size={48} color="white"/>
+          <Image
+            source={require('@/../public/assets/adaptive-icon.png')}
+            style={{ width: logoWidth, height: logoHeight }}
+            resizeMode="contain"
+          />
           </View>
           <AppText type="h1" style={styles.headerText}>Welcome back</AppText>
           <AppText type="caption" style={styles.subtitle}>Log in to continue</AppText>
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
     marginTop: Spacing.lg
   },
   headerText: {
-    marginTop: Spacing.xs
+    marginTop: Spacing.xs,
   },
   subtitle: {
     marginTop: Spacing.sm,
