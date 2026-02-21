@@ -11,13 +11,14 @@ export default function Navbar({ state, descriptors, navigation }) {
   // mappen wir hier die passenden Icons dazu.
   const iconMap = {
     home: "home",
+    communities: "people",
     tasks: "book",
     shop: "bag",
     profile: "person",
   };
   // Reihenfolge der Tabs in der Navbar
   const orderedRoutes = [...state.routes].sort((a, b) => {
-    const order = ["home", "tasks", "shop", "profile"];
+    const order = ["home", "tasks", "communities", "shop", "profile"];
     return order.indexOf(a.name) - order.indexOf(b.name);
   });
   return (

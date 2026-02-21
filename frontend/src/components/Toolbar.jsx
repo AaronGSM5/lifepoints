@@ -8,7 +8,7 @@ export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
-  const mainTabs = ['/home', '/tasks', '/shop', '/profile'];
+  const mainTabs = ['/home', '/tasks', "/communities", '/shop', '/profile'];
   const isMainTab = mainTabs.includes(pathname);
 
   // Responsive Logo
@@ -17,10 +17,10 @@ export default function Toolbar() {
   const logoHeight = logoWidth / 3.75;
 
   return (
-    <View style={[styles.container, { 
-      height: 56 + insets.top, 
-      paddingTop: insets.top, 
-      paddingLeft: Math.max(12, insets.left), 
+    <View style={[styles.container, {
+      height: 56 + insets.top,
+      paddingTop: insets.top,
+      paddingLeft: Math.max(12, insets.left),
       paddingRight: Math.max(12, insets.right)
     }]}>
       {/* Back-Button */}
@@ -34,13 +34,13 @@ export default function Toolbar() {
 
       {/* Title */}
       <View style={styles.centerSection}>
-      <Image
-      source={require('@/../public/assets/adaptive-icon.png')}
-      style={{ width: logoWidth, height: logoHeight }}
-      resizeMode="contain"
-    />
-    </View>
-    {/* Alternative Title (Lifepoints text) */}
+        <Image
+          source={require('@/../public/assets/adaptive-icon.png')}
+          style={{ width: logoWidth, height: logoHeight }}
+          resizeMode="contain"
+        />
+      </View>
+      {/* Alternative Title (Lifepoints text) */}
       {/* <Image
       source={require('@/../public/assets/lifepointsLogo.png')}
       style={{ width: logoWidth, height: logoHeight }}
@@ -48,7 +48,7 @@ export default function Toolbar() {
     /> */}
 
       <View style={[styles.sideSection, { alignItems: 'flex-end' }]}>
-      {pathname === '/profile' ? (
+        {pathname === '/profile' ? (
           <Pressable onPress={() => router.push('/settings')}>
             <Ionicons name={'settings-outline'} size={24} color='white' />
           </Pressable>
@@ -60,7 +60,7 @@ export default function Toolbar() {
           /* Placeholder damit Logo mittig bleibt */
           <View style={{ width: 40 }} />
         )}
-        </View>
+      </View>
     </View>
   );
 }
