@@ -3,7 +3,6 @@ import {
   View,
   ScrollView,
   Pressable,
-  TextInput,
   Image,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -11,9 +10,14 @@ import ScreenWrapper from '@/components/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
-import { Typography } from '@/constants/Typography';
+import AppInput from '@/components/layout/AppInput';
+import { useState } from 'react';
 
 export default function HomeScreen() {
+  const [suggestionInput, setSuggestionInput] = useState('')
+  const handleSendSuggestion = () => {
+    console.log("Mock Send")
+  }
   return (
     <ScreenWrapper scrollable>
 
@@ -98,20 +102,7 @@ export default function HomeScreen() {
             <AppText type='caption'>Earn LP if your idea gets added!</AppText>
           </View>
         </View>
-        <View style={styles.inputWrapper}>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              placeholder="I want to see a task for..."
-              placeholderTextColor={MyTheme.muted}
-              style={styles.input}
-            />
-          </View>
-          <View>
-            <Pressable style={styles.sendButton}>
-              <Ionicons name="send" size={18} color="white" />
-            </Pressable>
-          </View>
-        </View>
+          <AppInput bottomMargin={false} placeholder="I want to see a task for..." value={suggestionInput} onChangeText={setSuggestionInput} rightIcon='send' onRightIconPress={handleSendSuggestion} />
       </View>
 
     </ScreenWrapper>
@@ -268,26 +259,6 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius.full,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Spacing.sm,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: MyTheme.background,
-    borderRadius: Spacing.borderRadius.md,
-    padding: Spacing.sm
-  },
-  input: {
-    flex: 1,
-    color: MyTheme.text,
-    ...Typography.body
-  },
-  sendButton: {
-    width: 36,
-    height: 36,
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginRight: Spacing.md,
   },
 });

@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   StyleSheet, 
-  View, 
-  TextInput, 
+  View,
   ScrollView, 
   TouchableOpacity 
 } from 'react-native';
@@ -11,21 +10,15 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/AppText";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import AppInput from '@/components/layout/AppInput';
 
 export default function CommunitiesScreen() {
+  const [searchQuery, setSearchQuery] = useState('')
   return (
     <ScreenWrapper scrollable>
 
         {/* Search Bar */}
-        <View style={styles.searchBox}>
-          <MaterialIcons name="search" size={20} color={MyTheme.muted} style={styles.searchIcon} />
-          <TextInput 
-            style={styles.searchInput} 
-            placeholder="Search communities..."
-            placeholderTextColor={MyTheme.muted}
-          />
-        </View>
-        
+        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
         {/* Create Community Section */}
         <View style={styles.createCard}>
           <View style={styles.createCardLeft}>
