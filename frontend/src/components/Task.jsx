@@ -64,7 +64,7 @@ export default function TaskCard({ title, difficulty, xp, lp }) {
           <View style={styles.statItem}>
             <AppText type='title' style={{ fontSize: 16 }}>{xp}</AppText>
             <View style={styles.xpBadge}>
-              <AppText type='caption' style={{ color: MyTheme.text, fontFamily: 'Inter-Bold' }}>XP</AppText>
+              <AppText bold type='caption' style={{ color: MyTheme.text }}>XP</AppText>
             </View>
           </View>
         </View>

@@ -65,9 +65,7 @@ export default function ProfileScreen() {
   // }, [targetPercentage]);
 
   return (
-    <ScreenWrapper scrollable={true}>
-      {/* Background Gradient */}
-      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />   
+    <ScreenWrapper scrollable>
           {/* Avatar Section */}
           <View style={styles.profileHeader}>
             <View style={styles.avatarContainer}>
@@ -76,7 +74,7 @@ export default function ProfileScreen() {
                 style={styles.avatar} 
               />
               <View style={styles.levelBadge}>
-                <AppText type='caption' style={{ fontSize: 10, color: MyTheme.text, fontFamily: 'Inter-Bold' }}>LVL {mockProfile.profileLevel}</AppText>
+                <AppText bold type='caption' style={{ fontSize: 10, color: MyTheme.text }}>LVL {mockProfile.profileLevel}</AppText>
               </View>
             </View>
 
@@ -88,8 +86,8 @@ export default function ProfileScreen() {
             {/* XP Bar */}
             <View style={styles.xpContainer}>
               <View style={styles.xpHeader}>
-                <AppText type='caption' style={styles.xpLabel}>XP PROGRESS</AppText>
-                <AppText type='body' style={styles.xpValue}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</AppText>
+                <AppText bold type='caption'>XP PROGRESS</AppText>
+                <AppText bold type='caption' style={{ color: MyTheme.text }}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</AppText>
               </View>
               <View style={styles.progressBarBg}>
                 {/* Wir nutzen Animated.View als Container für den Gradienten */}
@@ -222,13 +220,6 @@ const TrophyCard = ({ title, icon }) => (
 );
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   // Profile Header Styles
   profileHeader: {
     alignItems: 'center',
@@ -263,16 +254,7 @@ const styles = StyleSheet.create({
   xpHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Spacing.xs,
-  },
-  xpLabel: {
-    fontSize: 10,
-    fontFamily: 'Inter-Bold',
-    opacity: 0.8
-  },
-  xpValue: {
-    fontSize: 10,
-    fontFamily: 'Inter-Bold'
+    marginBottom: Spacing.sm,
   },
   progressBarBg: {
     height: 8,

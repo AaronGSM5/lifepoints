@@ -2,9 +2,12 @@ import { Text } from 'react-native';
 import { MyTheme } from "@/constants/Colors";
 import { Typography } from "@/constants/Typography";
 
-export default function AppText({ children, type = 'body', style, ...props }) {
+export default function AppText({ children, type = 'body', bold = false, style, ...props }) {
   
   const getFontFamily = () => {
+
+    if (bold) return 'Inter-Bold';
+
     switch (type) {
       case 'h1':
       case 'h2':

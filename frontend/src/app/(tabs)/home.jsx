@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   Pressable,
@@ -9,7 +8,6 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import ScreenWrapper from '@/components/ScreenWrapper';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
@@ -18,7 +16,6 @@ import { Typography } from '@/constants/Typography';
 export default function HomeScreen() {
   return (
     <ScreenWrapper scrollable>
-      <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.background} />
 
       <View style={styles.heroSection}>
         <Image source={require('../../../public/assets/sportevent.png')} style={styles.heroImage} resizeMode="cover" />
@@ -27,7 +24,7 @@ export default function HomeScreen() {
       {/* ACTIVE TASKS */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <AppText style={styles.sectionLabel}>ACTIVE TASKS</AppText>
+          <AppText bold style={styles.sectionLabel}>ACTIVE TASKS</AppText>
           <View style={styles.pulseDot} />
         </View>
 
@@ -36,14 +33,14 @@ export default function HomeScreen() {
             <Ionicons name="timer" size={20} color={MyTheme.primaryAccent} />
           </View>
           <View style={{ flex: 1 }}>
-            <AppText type='title' style={styles.taskTitle}>Morning Vitality</AppText>
+            <AppText bold type='title'>Morning Vitality</AppText>
           </View>
           <View style={styles.lpContainer}>
-            <AppText type='caption' style={styles.lpValue}>1,500</AppText>
-            <AppText type='caption' style={styles.lpUnit}>LP</AppText>
+            <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>1,500</AppText>
+            <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>LP</AppText>
           </View>
           <Pressable style={styles.finishButton}>
-            <AppText type='caption' style={styles.finishButtonText}>FINISH</AppText>
+            <AppText bold type='caption' style={{ color: MyTheme.text }}>FINISH</AppText>
           </Pressable>
         </View>
       </View>
@@ -51,8 +48,8 @@ export default function HomeScreen() {
       {/* RECOMMENDED TASKS */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
-          <AppText style={styles.sectionLabel}>RECOMMENDED TASKS</AppText>
-          <Pressable><AppText type='caption' style={styles.seeAllText}>See all</AppText></Pressable>
+          <AppText bold style={styles.sectionLabel}>RECOMMENDED TASKS</AppText>
+          <Pressable><AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText></Pressable>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
@@ -77,7 +74,7 @@ export default function HomeScreen() {
 
       {/* PRODUCTIVITY CHART */}
       <View style={styles.section}>
-        <AppText style={styles.sectionLabel}>PRODUCTIVITY</AppText>
+        <AppText bold style={styles.sectionLabel}>PRODUCTIVITY</AppText>
         <AppText type='title' style={styles.productivityText}>You earned <AppText type='title' style={{ color: MyTheme.primaryAccent }}>2,450 LP</AppText> this week!</AppText>
 
         <View style={styles.chartCard}>
@@ -85,7 +82,7 @@ export default function HomeScreen() {
             {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
               <View key={i} style={styles.chartColumnWrapper}>
                 <View style={[styles.chartBar, { height: `${h}%`, opacity: h / 100 }]} />
-                <AppText type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
+                <AppText bold type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
               </View>
             ))}
           </View>
@@ -122,13 +119,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%"
-  },
   heroSection: {
     width: "100%",
     aspectRatio: 16 / 9,
@@ -156,7 +146,6 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 11,
-    fontFamily: 'Inter-Bold',
     color: MyTheme.muted,
     letterSpacing: 1,
   },
@@ -185,35 +174,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: Spacing.sm,
   },
-  taskTitle: {
-    fontFamily: 'Inter-Bold',
-    fontSize: 14,
-  },
   lpContainer: {
     flexDirection: 'row',
     gap: Spacing.xs,
     marginRight: Spacing.md,
-  },
-  lpValue: {
-    color: MyTheme.primaryAccent,
-    fontFamily: 'Inter-Bold',
-    fontSize: 13,
-  },
-  lpUnit: {
-    color: MyTheme.primaryAccent,
-    fontSize: 13,
-    fontFamily: 'Inter-Bold',
   },
   finishButton: {
     backgroundColor: MyTheme.primaryAccent,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.xs,
     borderRadius: Spacing.borderRadius.sm,
-  },
-  finishButtonText: {
-    color: MyTheme.text,
-    fontSize: 10,
-    fontFamily: 'Inter-Bold',
   },
   horizontalScroll: {
     marginHorizontal: -Spacing.lg,
@@ -279,7 +249,6 @@ const styles = StyleSheet.create({
   },
   chartDay: {
     fontSize: 9,
-    fontFamily: 'Inter-Bold',
     marginTop: Spacing.sm,
   },
   suggestionBox: {
@@ -321,9 +290,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  seeAllText: {
-    color: MyTheme.primaryAccent,
-    fontSize: 11,
-    fontFamily: 'Inter-Bold',
-  }
 });
