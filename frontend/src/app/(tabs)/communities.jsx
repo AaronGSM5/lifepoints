@@ -38,9 +38,9 @@ export default function CommunitiesScreen() {
 
         {/* My Communities Section */}
         <View style={styles.sectionHeader}>
-          <AppText bold style={styles.sectionTitle}>My Communities</AppText>
+          <AppText type='title'>My Communities</AppText>
           <TouchableOpacity>
-            <AppText bold style={styles.seeAllText}>See all</AppText>
+            <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText>
           </TouchableOpacity>
         </View>
 
@@ -57,8 +57,8 @@ export default function CommunitiesScreen() {
         </ScrollView>
 
         {/* Recommended Section */}
-        <View style={[styles.sectionHeader, { marginTop: Spacing?.xl || 24 }]}>
-          <AppText bold style={styles.sectionTitle}>Recommended for you</AppText>
+        <View style={[styles.sectionHeader, { marginTop: Spacing.md }]}>
+          <AppText type='title'>Recommended for you</AppText>
         </View>
 
         <View style={styles.recommendedList}>
@@ -158,13 +158,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: Spacing.md,
-  },
-  sectionTitle: {
-    fontSize: 18,
-  },
-  seeAllText: {
-    color: MyTheme.primaryAccent,
-    fontSize: 14,
   },
   horizontalScroll: {
     paddingBottom: Spacing.sm,
