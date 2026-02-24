@@ -36,15 +36,14 @@ export default function ShopScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable={true}>
-      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
+    <ScreenWrapper scrollable>
           {/* 1. Wallet Card */}
           <LinearGradient
             colors={[ MyTheme.background, '#121212']}
             style={styles.walletCard}
           >
             <View style={styles.walletHeader}>
-              <AppText type='caption' style={styles.walletLabel}>YOUR POINTS</AppText>
+              <AppText bold type='caption' style={{ opacity: 0.8 }}>YOUR POINTS</AppText>
               <Ionicons name="wallet-outline" size={20} color={MyTheme.primaryAccent} />
             </View>
             
@@ -100,7 +99,7 @@ export default function ShopScreen() {
             
             <View style={styles.featuredContent}>
               <View style={styles.bestValueBadge}>
-                <AppText type='caption' style={styles.bestValueText}>BEST VALUE</AppText>
+                <AppText bold type='caption' style={{ color: '#00FF7F' }}>BEST VALUE</AppText>
               </View>
               
               <AppText type='h2'>Free Month Premium</AppText>
@@ -112,7 +111,7 @@ export default function ShopScreen() {
                   <AppText type='title'>2.000 PTS</AppText>
                 </View>
                 <TouchableOpacity style={styles.redeemButton}>
-                  <AppText type='title' style={styles.redeemText}>Redeem</AppText>
+                  <AppText bold type='title' style={styles.redeemText}>Redeem</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -169,16 +168,16 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
     </View>
     
     <View style={{ padding: Spacing.sm, gap: 2 }}>
-      <AppText type='caption' style={styles.cardBrand}>{brand}</AppText>
-      <AppText type='body' style={{ fontFamily: 'Inter-Bold' }} numberOfLines={2}>{title}</AppText>
+      <AppText bold type='caption' style={styles.cardBrand}>{brand}</AppText>
+      <AppText bold type='body' numberOfLines={2}>{title}</AppText>
       
       <View style={styles.cardFooter}>
-        <AppText type='body' style={[styles.cardPoints, isLocked && {color: MyTheme.muted}]}>
+        <AppText bold type='body' style={[{ fontSize: 14 }, isLocked && {color: MyTheme.muted}]}>
           {points} PTS
         </AppText>
         {isLocked ? (
            <View style={styles.lockedBadge}>
-             <AppText type='caption' style={styles.lockedText}>Locked</AppText>
+             <AppText bold type='caption' style={{ fontSize: 10 }}>Locked</AppText>
            </View>
         ) : (
            <TouchableOpacity style={styles.miniFab}>
@@ -196,13 +195,6 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
 // --- Styles ---
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   // Wallet Card
   walletCard: {
     borderRadius: Spacing.borderRadius.lg,
@@ -215,10 +207,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: Spacing.sm,
-  },
-  walletLabel: {
-    fontFamily: 'Inter-Bold',
-    opacity: 0.8
   },
   pointsRow: {
     flexDirection: 'row',
@@ -293,11 +281,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 255, 127, 0.8)'
   },
-  bestValueText: {
-    color: '#00FF7F',
-    fontSize: 12,
-    fontFamily: 'Inter-Bold'
-  },
   featuredSubtitle: {
     color: 'rgba(255,255,255,0.7)',
     marginBottom: Spacing.md
@@ -316,7 +299,6 @@ const styles = StyleSheet.create({
   redeemText: {
     color: '#E94057',
     fontSize: 14,
-    fontFamily: 'Inter-Bold'
   },
   // Grid
   gridContainer: {
@@ -354,7 +336,6 @@ const styles = StyleSheet.create({
   },
   cardBrand: {
     color: MyTheme.primaryAccent,
-    fontFamily: 'Inter-Bold',
     fontSize: 10,
     textTransform: 'uppercase',
     letterSpacing: 0.5
@@ -364,10 +345,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: Spacing.sm
-  },
-  cardPoints: {
-    fontSize: 14,
-    fontFamily: 'Inter-Bold'
   },
   miniFab: {
     width: 28,
@@ -384,10 +361,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.sm,
     paddingVertical: 2,
     borderRadius: 4
-  },
-  lockedText: {
-    fontSize: 10,
-    fontFamily: 'Inter-Bold'
   },
   lockedOverlay: {
     ...StyleSheet.absoluteFillObject,
