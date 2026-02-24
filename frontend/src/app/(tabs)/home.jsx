@@ -4,6 +4,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  Animated,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import ScreenWrapper from '@/components/ScreenWrapper';
@@ -11,13 +12,34 @@ import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
 import AppInput from '@/components/layout/AppInput';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Typography } from '@/constants/Typography';
 
 export default function HomeScreen() {
   const [suggestionInput, setSuggestionInput] = useState('')
   const handleSendSuggestion = () => {
     console.log("Mock Send")
   }
+
+  const pulseAnim = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 0.9,
+          duration: 1700,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0.3,
+          duration: 1000, 
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [pulseAnim]);
+
   return (
     <ScreenWrapper scrollable>
 
@@ -29,7 +51,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <AppText bold style={styles.sectionLabel}>ACTIVE TASKS</AppText>
-          <View style={styles.pulseDot} />
+          <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />
         </View>
 
         <View style={styles.taskCardActive}>
@@ -45,7 +67,6 @@ export default function HomeScreen() {
           </View>
           <Pressable style={styles.finishButton}>
             <Ionicons name='checkmark' size={20} />
-            {/* <AppText type='caption' style={styles.finishButtonText}>FINISH</AppText> */}
           </Pressable>
         </View>
       </View>
@@ -57,7 +78,7 @@ export default function HomeScreen() {
           <Pressable><AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText></Pressable>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: Spacing.lg }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll} contentContainerStyle={styles.horizontalScrollContent}>
           {[
             { title: 'Deep Breathing', lp: '500', icon: 'self-improvement', color: '#3B82F6' },
             { title: 'Fast Walk', lp: '750', icon: 'directions-run', color: '#10B981' },
@@ -86,7 +107,7 @@ export default function HomeScreen() {
           <View style={styles.chartContainer}>
             {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
               <View key={i} style={styles.chartColumnWrapper}>
-                <View style={[styles.chartBar, { height: `${h}%`, opacity: h / 100 }]} />
+                <View style={[styles.chartBar, { height: `${h}%`, opacity: Math.max(0.25, h / 100) }]} />
                 <AppText bold type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
               </View>
             ))}
@@ -184,6 +205,12 @@ const styles = StyleSheet.create({
     color: MyTheme.primaryAccent,
     fontSize: 15,
     fontFamily: 'Inter-Bold',
+  },
+  horizontalScroll: {
+    marginHorizontal: -Spacing.lg, 
+  },
+  horizontalScrollContent: {
+    paddingHorizontal: Spacing.lg,
   },
   finishButton: {
     width: 36,
