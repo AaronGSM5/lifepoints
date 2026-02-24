@@ -1,8 +1,8 @@
-import { Text } from 'react-native';
+import { Animated, Text } from 'react-native';
 import { MyTheme } from "@/constants/Colors";
 import { Typography } from "@/constants/Typography";
 
-export default function AppText({ children, type = 'body', bold = false, style, ...props }) {
+const AppText = ({ children, type = 'body', bold = false, animated = false, style, ...props }) => {
   
   const getFontFamily = () => {
 
@@ -25,9 +25,13 @@ export default function AppText({ children, type = 'body', bold = false, style, 
     ...Typography[type],
   };
 
+  const TextComponent = animated ? Animated.Text : Text
+
   return (
-    <Text style={[baseStyle, style]} {...props}>
+    <TextComponent style={[baseStyle, style]} {...props}>
       {children}
-    </Text>
+    </TextComponent>
   );
 }
+
+export default AppText

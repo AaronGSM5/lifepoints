@@ -8,6 +8,7 @@ import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
 import ScreenWrapper from '@/components/ScreenWrapper';
 import { router, useFocusEffect } from 'expo-router';
+import TrophyCard from '@/components/TrophyCard';
 
 export default function ProfileScreen() {
   const mockProfile = {
@@ -162,9 +163,9 @@ export default function ProfileScreen() {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.trophyScroll}>
               <TrophyCard title="Gym Rat" icon="dumbbell" />
-              <TrophyCard title="Early Riser" icon="sun" />
+              <TrophyCard title="Early Riser" icon="sun" unlocked/>
               <TrophyCard title="Cyborg" icon="robot" />
-              <TrophyCard title="Reader" icon="book" />
+              <TrophyCard title="Reader" icon="book" unlocked />
               <TrophyCard title="Sugar Free" icon="candy-cane" />
               <TrophyCard title="Sleeper" icon="bed" />
             </ScrollView>
@@ -207,15 +208,6 @@ const StatCard = ({ label, value, icon, color, badge, blurred }) => (
         <AppText type='caption' style={{ fontSize: 10, color: MyTheme.text }}>{badge}</AppText>
       </View>
     )}
-  </View>
-);
-
-const TrophyCard = ({ title, icon }) => (
-  <View style={styles.trophyItem}>
-    <View style={styles.trophyIconBox}>
-      <FontAwesome5 name={icon} size={24} color='#FFD700' />
-    </View>
-    <AppText type='caption' style={styles.trophyText}>{title}</AppText>
   </View>
 );
 

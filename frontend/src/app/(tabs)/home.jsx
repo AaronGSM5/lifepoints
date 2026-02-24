@@ -4,6 +4,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  Animated,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import ScreenWrapper from '@/components/ScreenWrapper';
@@ -11,13 +12,34 @@ import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
 import AppInput from '@/components/layout/AppInput';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Typography } from '@/constants/Typography';
 
 export default function HomeScreen() {
   const [suggestionInput, setSuggestionInput] = useState('')
   const handleSendSuggestion = () => {
     console.log("Mock Send")
   }
+
+  const pulseAnim = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 0.9,
+          duration: 1700,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0.3,
+          duration: 1000, 
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [pulseAnim]);
+
   return (
     <ScreenWrapper scrollable>
 
@@ -29,7 +51,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <AppText bold style={styles.sectionLabel}>ACTIVE TASKS</AppText>
-          <View style={styles.pulseDot} />
+          <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />
         </View>
 
         <View style={styles.taskCardActive}>
@@ -44,7 +66,7 @@ export default function HomeScreen() {
             <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>LP</AppText>
           </View>
           <Pressable style={styles.finishButton}>
-            <AppText bold type='caption' style={{ color: MyTheme.text }}>FINISH</AppText>
+            <Ionicons name='checkmark' size={20} />
           </Pressable>
         </View>
       </View>
@@ -56,7 +78,7 @@ export default function HomeScreen() {
           <Pressable><AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText></Pressable>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll} contentContainerStyle={styles.horizontalScrollContent}>
           {[
             { title: 'Deep Breathing', lp: '500', icon: 'self-improvement', color: '#3B82F6' },
             { title: 'Fast Walk', lp: '750', icon: 'directions-run', color: '#10B981' },
@@ -66,7 +88,7 @@ export default function HomeScreen() {
               <MaterialIcons name={item.icon} size={28} color={item.color} style={styles.recomIcon} />
               <AppText type='title' style={styles.recomTitle}>{item.title}</AppText>
               <View style={styles.recomFooter}>
-                <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{ fontSize: 8, color: MyTheme.primaryAccent }}>LP</AppText></AppText>
+                <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{ fontSize: 12, color: MyTheme.primaryAccent }}>LP</AppText></AppText>
                 <Pressable style={styles.addButton}>
                   <Ionicons name="add" size={18} color={MyTheme.primaryAccent} />
                 </Pressable>
@@ -85,7 +107,7 @@ export default function HomeScreen() {
           <View style={styles.chartContainer}>
             {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
               <View key={i} style={styles.chartColumnWrapper}>
-                <View style={[styles.chartBar, { height: `${h}%`, opacity: h / 100 }]} />
+                <View style={[styles.chartBar, { height: `${h}%`, opacity: Math.max(0.25, h / 100) }]} />
                 <AppText bold type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
               </View>
             ))}
@@ -154,31 +176,54 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.3)',
+    borderColor: 'rgba(16, 185, 129, 0.25)',
   },
   taskIconContainer: {
     width: 36,
     height: 36,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(16, 185, 129, 0.16)',
     borderRadius: Spacing.borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Spacing.sm,
+    marginRight: Spacing.md,
+  },
+  taskTitle: {
+    fontFamily: 'Inter-Bold',
+    fontSize: 16,
   },
   lpContainer: {
     flexDirection: 'row',
     gap: Spacing.xs,
     marginRight: Spacing.md,
   },
-  finishButton: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.sm,
+  lpValue: {
+    color: MyTheme.primaryAccent,
+    fontFamily: 'Inter-Bold',
+    fontSize: 15,
+  },
+  lpUnit: {
+    color: MyTheme.primaryAccent,
+    fontSize: 15,
+    fontFamily: 'Inter-Bold',
   },
   horizontalScroll: {
-    marginHorizontal: -Spacing.lg,
+    marginHorizontal: -Spacing.lg, 
+  },
+  horizontalScrollContent: {
     paddingHorizontal: Spacing.lg,
+  },
+  finishButton: {
+    width: 36,
+    height: 36,
+    backgroundColor: MyTheme.primaryAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: Spacing.borderRadius.full,
+  },
+  finishButtonText: {
+    color: MyTheme.text,
+    fontSize: 10,
+    fontFamily: 'Inter-Bold',
   },
   recomCard: {
     width: 160,
@@ -201,7 +246,7 @@ const styles = StyleSheet.create({
   },
   recomLP: {
     color: MyTheme.primaryAccent,
-    fontSize: 12,
+    fontSize: 15,
   },
   addButton: {
     width: 32,
@@ -259,6 +304,31 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius.full,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Spacing.md,
+    marginRight: Spacing.sm,
   },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: MyTheme.background,
+    borderRadius: Spacing.borderRadius.md,
+    padding: Spacing.sm
+  },
+  input: {
+    flex: 1,
+    color: MyTheme.text,
+    paddingLeft: Spacing.xs,
+    ...Typography.body
+  },
+  sendButton: {
+    width: 36,
+    height: 36,
+    backgroundColor: MyTheme.primaryAccent,
+    borderRadius: Spacing.borderRadius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  seeAllText: {
+    color: MyTheme.primaryAccent,
+    fontFamily: 'Inter-Bold',
+  }
 });
