@@ -80,7 +80,7 @@ export default function ProfileScreen() {
             </View>
 
             <AppText type='h1'>{mockProfile.profileName}</AppText>
-            <AppText bold type='caption' style={{ marginTop: Spacing.xs }}>
+            <AppText type='caption' style={{ marginTop: Spacing.xs }}>
               {mockProfile.profileClass} • <AppText bold type='caption' style={{color: MyTheme.primaryAccent}}>{mockProfile.profileRank}</AppText>
             </AppText>
 
@@ -205,7 +205,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred }) => (
 
     {badge && (
       <View style={styles.statBadge}>
-        <AppText type='caption' style={{ fontSize: 10, color: MyTheme.text }}>{badge}</AppText>
+        <AppText bold type='caption' style={{ fontSize: 10, color: MyTheme.text }}>{badge}</AppText>
       </View>
     )}
   </View>
