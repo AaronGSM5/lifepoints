@@ -75,13 +75,13 @@ export default function ProfileScreen() {
                 style={styles.avatar} 
               />
               <View style={styles.levelBadge}>
-                <AppText bold type='caption' style={{ fontSize: 10, color: MyTheme.text }}>LVL {mockProfile.profileLevel}</AppText>
+                <AppText bold type='caption' style={{ color: MyTheme.text }}>LVL {mockProfile.profileLevel}</AppText>
               </View>
             </View>
 
             <AppText type='h1'>{mockProfile.profileName}</AppText>
-            <AppText type='caption' style={{ marginTop: Spacing.xs }}>
-              {mockProfile.profileClass} • <AppText type='caption' style={{color: MyTheme.secondaryAccent}}>{mockProfile.profileRank}</AppText>
+            <AppText bold type='caption' style={{ marginTop: Spacing.xs }}>
+              {mockProfile.profileClass} • <AppText bold type='caption' style={{color: MyTheme.primaryAccent}}>{mockProfile.profileRank}</AppText>
             </AppText>
 
             {/* XP Bar */}
@@ -97,8 +97,8 @@ export default function ProfileScreen() {
                 >
                   <LinearGradient
                     // Alternate design in primary accent?
-                    // colors={[MyTheme.primaryAccent, '#333399']}
-                    colors={['#8A2387', '#E94057', '#F27121']}
+                    colors={[MyTheme.primaryAccent, '#335399']}
+                    // colors={['#8A2387', '#E94057', '#F27121']}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     style={StyleSheet.absoluteFill}
                   />
@@ -111,22 +111,22 @@ export default function ProfileScreen() {
               <Pressable style={styles.editButtonWrapper}>
                 <LinearGradient
                   // Alternate design in primary Accent
-                  // colors={[ MyTheme.primaryAccent, '#1a9a6c']}
-                  colors={[ MyTheme.secondaryAccent, '#333399']}
+                  colors={[ MyTheme.primaryAccent]}
+                  // colors={[ MyTheme.secondaryAccent, '#333399']}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={styles.gradientButton}
                 >
                   {/* For the Alternative Design in primary Accent */}
-                  {/* <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.background} style={{marginRight: 5}}/>
-                  <AppText type='title' style={{ fontSize: 14, color: MyTheme.background }}>Edit Profile</AppText> */}
-                  <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.text} />
-                  <AppText type='title' style={{ fontSize: 14 }}>Edit Profile</AppText>
+                  <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.background} style={{marginRight: 5}}/>
+                  <AppText bold type='title' style={{ fontSize: 14, color: MyTheme.background }}>Edit Profile</AppText>
+                  {/* <MaterialCommunityIcons name="pencil" size={16} color={MyTheme.text} />
+                  <AppText type='title' style={{ fontSize: 14 }}>Edit Profile</AppText> */}
                 </LinearGradient>
               </Pressable>
 
               <Pressable style={styles.shareButton}>
                 <Ionicons name="share-social-outline" size={16} color={MyTheme.text} />
-                <AppText type='title' style={{ fontSize: 14 }}>Share Stats</AppText>
+                <AppText bold type='title' style={{ fontSize: 14 }}>Share Stats</AppText>
               </Pressable>
             </View>
           </View>
@@ -135,9 +135,9 @@ export default function ProfileScreen() {
           <View style={{ marginTop: Spacing.xl }}>
             <View style={styles.sectionHeader}>
               {/* Alternative design in primary accent */}
-              {/* <Ionicons name="stats-chart" size={18} color={MyTheme.primaryAccent} /> */}
-              <Ionicons name="stats-chart" size={18} color={MyTheme.secondaryAccent} />
-              <AppText type='title'>YOUR STATS</AppText>
+              <Ionicons name="stats-chart" size={18} color={MyTheme.primaryAccent} />
+              {/* <Ionicons name="stats-chart" size={18} color={MyTheme.secondaryAccent} /> */}
+              <AppText type='title'>Your Stats</AppText>
             </View>
 
             <View style={styles.statsGrid}>
@@ -153,17 +153,17 @@ export default function ProfileScreen() {
             <View style={styles.sectionHeaderRow}>
                <View style={{flexDirection: 'row', alignItems: 'center', gap: Spacing.sm}}>
                  <FontAwesome5 name="trophy" size={18} color="#FFD700" />
-                 <AppText type='title'>TROPHIES</AppText>
+                 <AppText type='title'>Trophies</AppText>
                </View>
                <Pressable onPress={() => router.push('/trophies')}>
                  {/* <AppText type='caption' style={{color: MyTheme.primaryAccent }}>View All</AppText> */}
-                 <AppText type='caption' style={{ color: '#FFD700' }}>View All</AppText>
+                 <AppText bold type='caption' style={{ color: '#FFD700' }}>See all</AppText>
                </Pressable>
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.trophyScroll}>
-              <TrophyCard title="Gym Rat" icon="dumbbell" />
-              <TrophyCard title="Early Riser" icon="sun" unlocked/>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
+              <TrophyCard title="Gym Rat" icon="dumbbell"/>
+              <TrophyCard title="Early Riser" icon="sun" unlocked />
               <TrophyCard title="Cyborg" icon="robot" />
               <TrophyCard title="Reader" icon="book" unlocked />
               <TrophyCard title="Sugar Free" icon="candy-cane" />
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -Spacing.sm,
     alignSelf: 'center',
-    backgroundColor: MyTheme.secondaryAccent,
+    backgroundColor: MyTheme.primaryAccent,
     paddingHorizontal: Spacing.sm,
     borderRadius: Spacing.borderRadius.full,
     borderWidth: 2,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.md
+    marginBottom: Spacing.md,
   },
   // Stats Grid
   statsGrid: {
@@ -342,28 +342,5 @@ const styles = StyleSheet.create({
   getMoreText: {
     color: 'gold',
     fontSize: 12
-  },
-  // Trophies
-  trophyScroll: {
-    gap: Spacing.md
-  },
-  trophyItem: {
-    alignItems: 'center',
-    width: 80,
-  },
-  trophyIconBox: {
-    width: 60,
-    height: 60,
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    marginBottom: Spacing.xs,
-  },
-  trophyText: {
-    fontSize: 12,
-    textAlign: 'center'
-  },
+  }
 });
