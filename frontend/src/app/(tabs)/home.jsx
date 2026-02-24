@@ -13,7 +13,6 @@ import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
 import AppInput from '@/components/layout/AppInput';
 import { useEffect, useRef, useState } from 'react';
-import { Typography } from '@/constants/Typography';
 
 export default function HomeScreen() {
   const [suggestionInput, setSuggestionInput] = useState('')
@@ -50,7 +49,7 @@ export default function HomeScreen() {
       {/* ACTIVE TASKS */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <AppText bold style={styles.sectionLabel}>ACTIVE TASKS</AppText>
+          <AppText type='title'>Active Tasks</AppText>
           <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />
         </View>
 
@@ -74,7 +73,7 @@ export default function HomeScreen() {
       {/* RECOMMENDED TASKS */}
       <View style={styles.section}>
         <View style={styles.sectionHeaderRow}>
-          <AppText bold style={styles.sectionLabel}>RECOMMENDED TASKS</AppText>
+          <AppText type='title'>Recommended Tasks</AppText>
           <Pressable><AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText></Pressable>
         </View>
 
@@ -100,8 +99,7 @@ export default function HomeScreen() {
 
       {/* PRODUCTIVITY CHART */}
       <View style={styles.section}>
-        <AppText bold style={styles.sectionLabel}>PRODUCTIVITY</AppText>
-        <AppText type='title' style={styles.productivityText}>You earned <AppText type='title' style={{ color: MyTheme.primaryAccent }}>2,450 LP</AppText> this week!</AppText>
+        <AppText type='title' style={{ marginBottom: Spacing.md }}>You earned <AppText type='title' style={{ color: MyTheme.primaryAccent }}>2,450 LP</AppText> this week!</AppText>
 
         <View style={styles.chartCard}>
           <View style={styles.chartContainer}>
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
   heroSection: {
     width: "100%",
     aspectRatio: 16 / 9,
-    // minHeight: 200,
     marginBottom: Spacing.lg
   },
   heroImage: {
@@ -149,18 +146,13 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.md,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.sm,
-  },
-  sectionLabel: {
-    fontSize: 11,
-    color: MyTheme.muted,
-    letterSpacing: 1,
+    marginBottom: Spacing.md,
   },
   pulseDot: {
     width: Spacing.xs + 2,
@@ -256,9 +248,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  productivityText: {
-    marginBottom: Spacing.md,
-  },
   chartCard: {
     backgroundColor: MyTheme.primary,
     borderRadius: Spacing.borderRadius.lg,
@@ -306,29 +295,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: Spacing.sm,
   },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: MyTheme.background,
-    borderRadius: Spacing.borderRadius.md,
-    padding: Spacing.sm
-  },
-  input: {
-    flex: 1,
-    color: MyTheme.text,
-    paddingLeft: Spacing.xs,
-    ...Typography.body
-  },
-  sendButton: {
-    width: 36,
-    height: 36,
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  seeAllText: {
-    color: MyTheme.primaryAccent,
-    fontFamily: 'Inter-Bold',
-  }
 });
