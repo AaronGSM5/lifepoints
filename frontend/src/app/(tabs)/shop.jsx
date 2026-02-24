@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Dimensions, Animated, Easing } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5, Feather } from '@expo/vector-icons';
@@ -12,11 +12,49 @@ const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - (Spacing.md * 3)) / 2; // Width for 2-Column Grid
 
 export default function ShopScreen() {
+  const [activeCat, setActiveCat] = useState('all')
   const categories = ['All', 'Food', 'Fashion', 'Tech', 'Beauty'];
+  const mockCoupons = [
+            {
+              image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
+              brand: "ADIDAS",
+              title: "15% Off Storewide",
+              points: 450,
+              icon: "shopping-bag",
+              category: 'fashion',
+              isLocked: false
+            },
+            {
+              image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400",
+              brand: "STARBUCKS",
+              title: "Free Tall Coffee",
+              points: 300,
+              icon: "coffee",
+              category: 'food',
+              isLocked: false
+            },
+            {
+              image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400",
+              brand: "AMAZON",
+              title: "$10 Gift Card",
+              points: 2000,
+              icon: "lock",
+              category: 'tech',
+              isLocked: true
+            },
+            {
+              image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400",
+              brand: "NIKE",
+              title: "20% Off Shoes",
+              points: 800,
+              icon: "shopping-bag",
+              category: 'fashion',
+              isLocked: false
+            },
+          ]
 
   // 1. Animations-Wert (0 bis 60 für 60%)
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
-  
   const walletWidth = animatedWalletProgress.interpolate({
     inputRange: [0, 100],
     outputRange: ['0%', '100%'],
@@ -27,7 +65,7 @@ export default function ShopScreen() {
       animatedWalletProgress.setValue(0); // Reset
       
       Animated.timing(animatedWalletProgress, {
-        toValue: 60, // Mock-Wert: 60%
+        toValue: 60,
         duration: 1500,
         easing: Easing.bezier(0.4, 0, 0.2, 1),
         useNativeDriver: false,
@@ -37,13 +75,13 @@ export default function ShopScreen() {
 
   return (
     <ScreenWrapper scrollable>
-          {/* 1. Wallet Card */}
+          {/* Wallet Card */}
           <LinearGradient
             colors={[ MyTheme.background, '#121212']}
             style={styles.walletCard}
           >
             <View style={styles.walletHeader}>
-              <AppText bold type='caption' style={{ opacity: 0.8 }}>YOUR POINTS</AppText>
+              <AppText bold type='caption' style={{ opacity: 0.9 }}>YOUR POINTS</AppText>
               <Ionicons name="wallet-outline" size={20} color={MyTheme.primaryAccent} />
             </View>
             
@@ -61,101 +99,107 @@ export default function ShopScreen() {
             </View>
           </LinearGradient>
 
-          {/* 2. Filter Tabs */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer} contentContainerStyle={{ gap: Spacing.sm }}>
+          {/* Filter Tabs */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer} contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}>
             {categories.map((cat, index) => (
-              <TouchableOpacity key={index}>
-                {index === 0 ? (
+              <TouchableOpacity key={index} onPress={() => setActiveCat(cat.toLowerCase())}>
+                {cat.toLowerCase() === activeCat ? (
                   <LinearGradient
                     colors={[ MyTheme.secondary, MyTheme.primary]}
                     style={styles.activeTabGradient}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
                   >
-                    <AppText type='title' style={{ fontSize: 12 }}>{cat}</AppText>
+                    <AppText bold type='title' style={{ fontSize: 14 }}>{cat}</AppText>
                   </LinearGradient>
                 ) : (
                   <View style={styles.inactiveTab}>
-                    <AppText type='title' style={{ fontSize: 12, color: MyTheme.muted }}>{cat}</AppText>
+                    <AppText bold type='title' style={{ fontSize: 14, color: MyTheme.muted }}>{cat}</AppText>
                   </View>
                 )}
               </TouchableOpacity>
             ))}
           </ScrollView>
 
-          {/* 3. Featured Reward */}
-          <View style={styles.sectionHeader}>
-            <Ionicons name="flash" size={18} color="#F27121" />
+          {/* Featured Reward */}
+          <View style={{ marginBottom: Spacing.md }}>
             <AppText type='title'>Featured Reward</AppText>
           </View>
 
-          <LinearGradient
-            colors={['#8A2387', '#E94057', '#F27121']} // Sunset Gradient
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-            style={styles.featuredCard}
-          >
-            <View style={styles.featuredIconContainer}>
-               <FontAwesome5 name="music" size={20} color="#fff" />
-            </View>
-            
-            <View style={styles.featuredContent}>
-              <View style={styles.bestValueBadge}>
-                <AppText bold type='caption' style={{ color: '#00FF7F' }}>BEST VALUE</AppText>
+          <View style={styles.featuredWrapper}>
+            <LinearGradient
+              colors={['#8A2387', '#E94057', '#F27121']}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              style={styles.featuredCard}
+            >
+              <View style={styles.featuredIconContainer}>
+                <FontAwesome5 name="music" size={20} color="#fff" />
               </View>
               
-              <AppText type='h2'>Free Month Premium</AppText>
-              <AppText type='caption' style={styles.featuredSubtitle}>Spotify Individual Plan</AppText>
-              
-              <View style={styles.featuredFooter}>
-                <View>
-                  <AppText type='caption' style={{ textDecorationLine: 'line-through' }}>2.500 PTS</AppText>
-                  <AppText type='title'>2.000 PTS</AppText>
+              <View style={styles.featuredContent}>
+                <View style={styles.bestValueBadge}>
+                  <AppText bold type='caption' style={{ color: '#00FF7F' }}>BEST VALUE</AppText>
                 </View>
-                <TouchableOpacity style={styles.redeemButton}>
-                  <AppText bold type='title' style={styles.redeemText}>Redeem</AppText>
+                
+                <AppText type='h2'>Free Month Premium</AppText>
+                <AppText type='caption' style={styles.featuredSubtitle}>Spotify Individual Plan</AppText>
+                
+                <View style={styles.featuredFooter}>
+                  <View>
+                    <AppText type='caption' style={{ textDecorationLine: 'line-through' }}>2.500 PTS</AppText>
+                    <AppText type='title'>2.000 PTS</AppText>
+                  </View>
+                  <TouchableOpacity style={styles.redeemButton}>
+                    <AppText bold type='title' style={styles.redeemText}>Redeem</AppText>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </LinearGradient>
+          </View>
+
+          {/* 'For You' Grid */}
+          <AppText type='title' style={{marginTop: Spacing.lg, marginBottom: Spacing.md}}>
+            {activeCat.toLowerCase() === 'all' ? 'For You' : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`}
+          </AppText>
+          <View style={styles.gridContainer}>
+            {mockCoupons.filter(c => activeCat.toLowerCase() === 'all' || c.category === activeCat.toLowerCase()).length > 0 ? (
+              mockCoupons.filter(c => activeCat === 'all' || c.category === activeCat).map((c, index) => (
+                <RewardCard 
+                  key={c.id || index}
+                  image={c.image}
+                  brand={c.brand}
+                  title={c.title}
+                  points={c.points}
+                  icon={c.icon}
+                  isLocked={c.isLocked}
+                />
+              ))
+            ) : (
+              // Empty State
+              <View style={styles.emptyContainer}>
+                <View style={styles.emptyIconCircle}>
+                  <Feather name="search" size={32} color={MyTheme.muted} />
+                </View>
+                <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
+                  No Rewards Found
+                </AppText>
+                <AppText type="caption" style={{ textAlign: 'center', color: MyTheme.muted }}>
+                  We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
+                </AppText>
+
+                <TouchableOpacity 
+                  style={styles.resetButton} 
+                  onPress={() => setActiveCat('all')}
+                >
+                  <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+                    Reset filter
+                  </AppText>
                 </TouchableOpacity>
               </View>
-            </View>
-          </LinearGradient>
-
-          {/* 4. 'For You' Grid */}
-          <AppText type='title' style={{marginTop: Spacing.lg, marginBottom: Spacing.md}}>For You</AppText>
-          
-          <View style={styles.gridContainer}>
-            <RewardCard 
-              image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"
-              brand="ADIDAS"
-              title="15% Off Storewide"
-              points="450"
-              icon="shopping-bag"
-            />
-            <RewardCard 
-              image="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400"
-              brand="STARBUCKS"
-              title="Free Tall Coffee"
-              points="300"
-              icon="coffee"
-            />
-            <RewardCard 
-              image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400"
-              brand="AMAZON"
-              title="$10 Gift Card"
-              points="2,000"
-              icon="lock" // Locked item
-              isLocked
-            />
-             <RewardCard 
-              image="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400"
-              brand="NIKE"
-              title="20% Off Shoes"
-              points="800"
-              icon="shopping-bag"
-            />
+            )}
           </View>
     </ScreenWrapper>
   );
 }
-
-// --- Sub-Components ---
 
 const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
   <View style={styles.gridCard}>
@@ -187,12 +231,10 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
       </View>
     </View>
     
-    {/* Locked Overlay Effect */}
+    {/* Locked Overlay */}
     {isLocked && <View style={styles.lockedOverlay} />}
   </View>
 );
-
-// --- Styles ---
 
 const styles = StyleSheet.create({
   // Wallet Card
@@ -231,33 +273,37 @@ const styles = StyleSheet.create({
   // Tabs
   tabsContainer: {
     marginBottom: Spacing.lg,
-    // flexDirection: 'row',
+    marginHorizontal: -Spacing.lg,
   },
   activeTabGradient: {
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: Spacing.borderRadius.full
+    paddingVertical: Spacing.sm + 2,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Spacing.borderRadius.full,
+    borderWidth: 1,
+    borderColor: MyTheme.secondary,
   },
   inactiveTab: { 
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm + 2,
+    paddingHorizontal: Spacing.lg,
     borderRadius: Spacing.borderRadius.full, 
     borderWidth: 1, 
-    borderColor: '#333', 
-    backgroundColor: '#1b222e',
+    borderColor: 'rgba(255, 255, 255, 0.08)', 
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
-  // Featured Reward
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-    marginBottom: Spacing.sm
+  featuredWrapper: {
+    borderRadius: Spacing.borderRadius.lg,
+    shadowColor: '#E94057',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.7,
+    shadowRadius: 25,
+    elevation: 10,
   },
   featuredCard: {
     borderRadius: Spacing.borderRadius.lg,
     padding: Spacing.md,
     minHeight: 240,
     justifyContent: 'space-between',
+    overflow: 'hidden',
   },
   featuredIconContainer: {
     width: 36,
@@ -305,7 +351,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: Spacing.md,
-    paddingBottom: Spacing.xl
+    paddingBottom: Spacing.xl,
   },
   gridCard: {
     width: CARD_WIDTH,
@@ -365,5 +411,29 @@ const styles = StyleSheet.create({
   lockedOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(18, 18, 18, 0.6)',
+  },
+  emptyContainer: {
+    width: '100%',
+    paddingVertical: Spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 200
+  },
+  emptyIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+  resetButton: {
+    marginTop: Spacing.md,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderWidth: 1,
+    borderColor: MyTheme.primaryAccent,
+    borderRadius: Spacing.borderRadius.full,
   }
 });
