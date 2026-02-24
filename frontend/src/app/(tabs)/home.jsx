@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   Pressable,
@@ -43,7 +42,8 @@ export default function HomeScreen() {
             <AppText type='caption' style={styles.lpUnit}>LP</AppText>
           </View>
           <Pressable style={styles.finishButton}>
-            <AppText type='caption' style={styles.finishButtonText}>FINISH</AppText>
+            <Ionicons name='checkmark' size={20} />
+            {/* <AppText type='caption' style={styles.finishButtonText}>FINISH</AppText> */}
           </Pressable>
         </View>
       </View>
@@ -55,7 +55,7 @@ export default function HomeScreen() {
           <Pressable><AppText type='caption' style={styles.seeAllText}>See all</AppText></Pressable>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: Spacing.lg }}>
           {[
             { title: 'Deep Breathing', lp: '500', icon: 'self-improvement', color: '#3B82F6' },
             { title: 'Fast Walk', lp: '750', icon: 'directions-run', color: '#10B981' },
@@ -65,7 +65,7 @@ export default function HomeScreen() {
               <MaterialIcons name={item.icon} size={28} color={item.color} style={styles.recomIcon} />
               <AppText type='title' style={styles.recomTitle}>{item.title}</AppText>
               <View style={styles.recomFooter}>
-                <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{ fontSize: 8, color: MyTheme.primaryAccent }}>LP</AppText></AppText>
+                <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{ fontSize: 12, color: MyTheme.primaryAccent }}>LP</AppText></AppText>
                 <Pressable style={styles.addButton}>
                   <Ionicons name="add" size={18} color={MyTheme.primaryAccent} />
                 </Pressable>
@@ -174,20 +174,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.3)',
+    borderColor: 'rgba(16, 185, 129, 0.25)',
   },
   taskIconContainer: {
     width: 36,
     height: 36,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(16, 185, 129, 0.16)',
     borderRadius: Spacing.borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Spacing.sm,
+    marginRight: Spacing.md,
   },
   taskTitle: {
     fontFamily: 'Inter-Bold',
-    fontSize: 14,
+    fontSize: 16,
   },
   lpContainer: {
     flexDirection: 'row',
@@ -197,27 +197,25 @@ const styles = StyleSheet.create({
   lpValue: {
     color: MyTheme.primaryAccent,
     fontFamily: 'Inter-Bold',
-    fontSize: 13,
+    fontSize: 15,
   },
   lpUnit: {
     color: MyTheme.primaryAccent,
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: 'Inter-Bold',
   },
   finishButton: {
+    width: 36,
+    height: 36,
     backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: Spacing.borderRadius.full,
   },
   finishButtonText: {
     color: MyTheme.text,
     fontSize: 10,
     fontFamily: 'Inter-Bold',
-  },
-  horizontalScroll: {
-    marginHorizontal: -Spacing.lg,
-    paddingHorizontal: Spacing.lg,
   },
   recomCard: {
     width: 160,
@@ -240,7 +238,7 @@ const styles = StyleSheet.create({
   },
   recomLP: {
     color: MyTheme.primaryAccent,
-    fontSize: 12,
+    fontSize: 15,
   },
   addButton: {
     width: 32,
@@ -311,6 +309,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: MyTheme.text,
+    paddingLeft: Spacing.xs,
     ...Typography.body
   },
   sendButton: {
@@ -323,7 +322,6 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     color: MyTheme.primaryAccent,
-    fontSize: 11,
     fontFamily: 'Inter-Bold',
   }
 });
