@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Ionicons } from "@expo/vector-icons"
-import PasswordRulesModal from '@/components/PasswordRulesModal';
+import PasswordRulesModal from '@/components/auth/PasswordRulesModal';
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets()

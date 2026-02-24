@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import NotificationEntry from "@/components/NotificationEntry";
+import NotificationEntry from "@/components/notifications/NotificationEntry";
 import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/ui/AppText';
