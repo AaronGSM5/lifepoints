@@ -5,10 +5,10 @@ import { BlurView } from 'expo-blur';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import AppText from '@/components/ui/AppText';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { router, useFocusEffect } from 'expo-router';
-import TrophyCard from '@/components/TrophyCard';
+import TrophyCard from '@/components/trophies/TrophyCard';
 
 export default function ProfileScreen() {
   const mockProfile = {

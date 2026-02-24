@@ -1,14 +1,14 @@
 import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform, Image, Dimensions } from 'react-native';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
+import AppText from '@/components/ui/AppText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Ionicons } from "@expo/vector-icons"
-import PasswordRulesModal from '@/components/layout/PasswordRulesModal';
+import PasswordRulesModal from '@/components/PasswordRulesModal';
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets()

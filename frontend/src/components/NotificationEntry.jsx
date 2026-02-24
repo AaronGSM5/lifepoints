@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
-import AppText from './AppText';
+import AppText from '@/components/ui/AppText';
 
 export default function NotificationEntry({ notification }) {
   return (

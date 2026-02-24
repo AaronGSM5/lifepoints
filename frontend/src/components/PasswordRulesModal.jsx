@@ -1,6 +1,6 @@
 import { View, StyleSheet, Modal, Pressable } from "react-native";
 import { Ionicons } from '@expo/vector-icons'
-import AppText from "../AppText";
+import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 

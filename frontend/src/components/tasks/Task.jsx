@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { MyTheme } from '@/constants/Colors';
-import AppText from './AppText';
+import AppText from '@/components/ui/AppText';
 import { Spacing } from '@/constants/Spacing';
 
 export default function TaskCard({ title, difficulty, xp, lp }) {

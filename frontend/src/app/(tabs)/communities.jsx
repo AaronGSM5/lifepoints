@@ -8,9 +8,9 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import AppInput from '@/components/layout/AppInput';
+import AppText from "@/components/ui/AppText";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from '@/components/ui/AppInput';
 
 export default function CommunitiesScreen() {
   const [searchQuery, setSearchQuery] = useState('')

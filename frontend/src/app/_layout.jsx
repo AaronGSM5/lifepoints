@@ -10,7 +10,7 @@ import {
   Inter_600SemiBold, 
   Inter_700Bold 
 } from '@expo-google-fonts/inter';
-import Toolbar from "@/components/Toolbar";
+import Toolbar from "@/components/layout/Toolbar";
 import { View } from "react-native";
 
 // Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist

@@ -9,7 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
+import AppText from "@/components/ui/AppText";
 
 const AppInput = forwardRef(({ 
   label, 

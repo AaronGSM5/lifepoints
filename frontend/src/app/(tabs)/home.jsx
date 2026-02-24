@@ -7,11 +7,11 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
-import AppInput from '@/components/layout/AppInput';
+import AppText from '@/components/ui/AppText';
+import AppInput from '@/components/ui/AppInput';
 import { useEffect, useRef, useState } from 'react';
 
 export default function HomeScreen() {

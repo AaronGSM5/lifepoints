@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { View, Animated, StyleSheet } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
-import AppText from './AppText';
+import AppText from '@/components/ui/AppText';
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 

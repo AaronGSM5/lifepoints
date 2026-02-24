@@ -1,5 +1,5 @@
 import React from 'react';
-import Task from './Task'
+import Task from '@/components/tasks/Task'
 
 export default function TaskList() {
 

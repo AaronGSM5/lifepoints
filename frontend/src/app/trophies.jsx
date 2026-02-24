@@ -1,8 +1,8 @@
 import { View, StyleSheet } from 'react-native';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
-import TrophyCard from '@/components/TrophyCard';
+import AppText from '@/components/ui/AppText';
+import TrophyCard from '@/components/trophies/TrophyCard';
 import { useState } from 'react';
 
 const mockTrophies = [

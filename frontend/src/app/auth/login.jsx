@@ -1,8 +1,8 @@
 import { View, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform, Dimensions, Image } from 'react-native';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
+import AppText from '@/components/ui/AppText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';

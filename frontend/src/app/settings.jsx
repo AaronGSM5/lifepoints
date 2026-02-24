@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
-import ScreenWrapper from '@/components/ScreenWrapper';
+import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/AppText';
+import AppText from '@/components/ui/AppText';
 
 export default function SettingsScreen() {
   return (
