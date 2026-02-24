@@ -61,11 +61,11 @@ const FloatingFilterButton = () => {
     const IconTag = iconLibrary === 'MaterialCommunityIcons' ? MaterialCommunityIcons : Ionicons;
     return (
       <TouchableOpacity 
-        style={[styles.roundButton, styles.subButton, { backgroundColor: MyTheme.secondary }]} 
+        style={[styles.roundButton, styles.subButton, { backgroundColor: MyTheme.secondary, pointerEvents: isExpanded ? 'auto' : 'none' }]} 
         onPress={onPress}
         activeOpacity={0.7}
         // Verhindert Klicks, wenn das Menü geschlossen ist (aber noch unsichtbar da ist)
-        pointerEvents={isExpanded ? 'auto' : 'none'} 
+        // pointerEvents={isExpanded ? 'auto' : 'none'} 
       >
         <IconTag name={iconName} size={24} color={MyTheme.text} />
       </TouchableOpacity>
@@ -73,7 +73,7 @@ const FloatingFilterButton = () => {
   };
 
   return (
-    <View style={styles.menuContainer} pointerEvents="box-none">
+    <View style={styles.menuContainer}>
       
       {/* --- Der Haupt-Filter-Button --- */}
       <TouchableOpacity 
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     right: 20, // Abstand von links
     zIndex: 999, // Ganz oben auf dem Stapel
     alignItems: 'center', // Zentriert die Unterbuttons unter dem Hauptbutton
+    pointerEvents: 'box-none'
   },
   // Grundstil für alle runden Buttons
   roundButton: {

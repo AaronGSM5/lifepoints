@@ -1,36 +1,41 @@
 import { View, ScrollView, StyleSheet } from 'react-native';
-// import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MyTheme } from '@/constants/Colors';
 
-export default function ScreenWrapper({ children, scrollable = true, style }) {
-  const Container = scrollable ? ScrollView : View;
+export default function ScreenWrapper({ children, scrollable = true, withOffset = false, useGradient = true, style }) {
+  const insets = useSafeAreaInsets()
+
+  const contentStyles = [
+    { paddingHorizontal: Spacing.md, paddingTop: withOffset ? (insets.top + Spacing.md) : Spacing.md, paddingBottom: Math.max(insets.bottom, Spacing.md), },
+    style
+  ];
 
   return (
-    <Container 
-      style={[styles.container, style]}
-      // Falls es ein ScrollView ist, brauchen wir contentContainerStyle für das Padding
-      contentContainerStyle={scrollable ? [styles.content, { flexGrow: 1 }] : undefined}
+    <View style={styles.wrapper}>
+      { useGradient && <LinearGradient colors={[MyTheme.background, "#121212"]} style={StyleSheet.absoluteFillObject} /> }
+    {scrollable ? (
+    <ScrollView 
+      style={{ flex: 1 }}
+      contentContainerStyle={[contentStyles, { flexGrow: 1 }]}
       keyboardShouldPersistTaps="handled"
-    >
-      {!scrollable ? (
-        <View style={[styles.content, style]}>
+      showsVerticalScrollIndicator={false}
+      >
+      {children}
+      </ScrollView>
+      ) : (
+        <View style={[{ flex: 1 }, contentStyles]}>
           {children}
         </View>
-      ) : (
-        children
       )}
-    </Container>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     flex: 1,
-    // backgroundColor: MyTheme.background,
-  },
-  content: {
-    paddingHorizontal: Spacing.md, // 16px Rand links/rechts
-    paddingTop: Spacing.md,        // 16px Luft zur Toolbar
-    // paddingBottom: Spacing.xl,     // Viel Platz unten
+    backgroundColor: MyTheme.background, // backgroundColor if useGradient = false
   }
 });

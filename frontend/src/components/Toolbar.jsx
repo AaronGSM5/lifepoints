@@ -1,76 +1,66 @@
-import { View, Pressable, StyleSheet, Animated, Image, Dimensions } from 'react-native';
+import { View, Pressable, StyleSheet, Image, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
-import { useRef } from 'react';
 import { MyTheme } from '@/constants/Colors';
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
+  const mainTabs = ['/home', '/tasks', "/communities", '/shop', '/profile'];
+  const isMainTab = mainTabs.includes(pathname);
+
+  // Responsive Logo
   const screenWidth = Dimensions.get('window').width;
-  const maxLogoWidth = 180;  // max 180 px breit
-  const logoWidth = Math.min(screenWidth * 0.4, maxLogoWidth);
+  const logoWidth = Math.min(screenWidth * 0.4, 180);
   const logoHeight = logoWidth / 3.75;
 
-  const canGoBack = pathname !== '/home' && pathname !== '/tasks' && pathname !== '/shop' && pathname !== '/profile';
-  const backScale = useRef(new Animated.Value(1)).current;
-
-  const animateBack = () => {
-    Animated.sequence([
-      Animated.timing(backScale, { toValue: 1.12, duration: 120, useNativeDriver: false }),
-      Animated.timing(backScale, { toValue: 1, duration: 100, useNativeDriver: false }),
-    ]).start();
-  };
-
-  const onBack = () => router.back();
-
-  const notifScale = useRef(new Animated.Value(1)).current;
-  const animateNotification = () => {
-    Animated.sequence([
-      Animated.timing(notifScale, { toValue: 1.12, duration: 120, useNativeDriver: false }),
-      Animated.timing(notifScale, { toValue: 1, duration: 100, useNativeDriver: false }),
-    ]).start();
-  };
-
-  const onNotification = () => router.push('/notifications');
-
   return (
-    <View style={[styles.container, { 
-      height: 56 + insets.top, 
-      paddingTop: insets.top, 
-      paddingLeft: Math.max(12, insets.left), 
+    <View style={[styles.container, {
+      height: 56 + insets.top,
+      paddingTop: insets.top,
+      paddingLeft: Math.max(12, insets.left),
       paddingRight: Math.max(12, insets.right)
     }]}>
       {/* Back-Button */}
-      {canGoBack ? (
-        <Pressable onPress={onBack} onPressOut={animateBack}>
-          <Animated.View style={{ transform: [{ scale: backScale }] }}>
-            <Ionicons name="chevron-back" size={24} color="white" />
-          </Animated.View>
-        </Pressable>
-      ) : (
-        <View style={{ width: 24 }} /> // Placeholder for center text
-      )}
+      <View style={styles.sideSection}>
+        {!isMainTab && (
+          <Pressable onPress={() => router.back()}>
+            <Ionicons name={'chevron-back'} size={24} color='white' />
+          </Pressable>
+        )}
+      </View>
 
       {/* Title */}
-      <Image
+      <View style={styles.centerSection}>
+        <Image
+          source={require('@/../public/assets/adaptive-icon.png')}
+          style={{ width: logoWidth, height: logoHeight }}
+          resizeMode="contain"
+        />
+      </View>
+      {/* Alternative Title (Lifepoints text) */}
+      {/* <Image
       source={require('@/../public/assets/lifepointsLogo.png')}
       style={{ width: logoWidth, height: logoHeight }}
       resizeMode="contain"
-    />
+    /> */}
 
-      {/* Notifications */}
-      {pathname !== '/profile' ? <Pressable onPress={onNotification} onPressOut={animateNotification}>
-        <Animated.View style={{ transform: [{ scale: notifScale }] }}>
-          <Ionicons name={pathname === '/notifications' ? "notifications" : "notifications-outline"} size={24} color="white" />
-        </Animated.View>
-      </Pressable> : pathname === '/settings' ? <Pressable>
-        <Ionicons name="settings" size={24} color="white" />
-        </Pressable> : <Pressable>
-          <Ionicons name="settings-outline" size={24} color="white" />
-        </Pressable>}
+      <View style={[styles.sideSection, { alignItems: 'flex-end' }]}>
+        {pathname === '/profile' ? (
+          <Pressable onPress={() => router.push('/settings')}>
+            <Ionicons name={'settings-outline'} size={24} color='white' />
+          </Pressable>
+        ) : isMainTab && pathname !== '/profile' ? (
+          <Pressable onPress={() => router.push('/notifications')}>
+            <Ionicons name={'notifications-outline'} size={24} color='white' />
+          </Pressable>
+        ) : (
+          /* Placeholder damit Logo mittig bleibt */
+          <View style={{ width: 40 }} />
+        )}
+      </View>
     </View>
   );
 }
@@ -79,10 +69,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: MyTheme.background,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
-  appTitle: {
-
+  sideSection: {
+    flex: 1, // Nimmt jeweils 1/3 ein
+    justifyContent: 'center',
+  },
+  centerSection: {
+    flex: 2, // Logo bekommt mehr Platz
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });

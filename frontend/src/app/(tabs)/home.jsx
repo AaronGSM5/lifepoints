@@ -1,46 +1,264 @@
-import { StyleSheet, View } from "react-native";
-import TaskList from "@/components/TaskList";
-import FloatingFilterButton from "@/components/FloatingFilterButton";
-import { MyTheme } from "@/constants/Colors";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Pressable,
+  Image,
+} from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import ScreenWrapper from '@/components/ScreenWrapper';
+import { MyTheme } from '@/constants/Colors';
+import { Spacing } from '@/constants/Spacing';
+import AppText from '@/components/AppText';
+import AppInput from '@/components/layout/AppInput';
+import { useState } from 'react';
 
 export default function HomeScreen() {
+  const [suggestionInput, setSuggestionInput] = useState('')
+  const handleSendSuggestion = () => {
+    console.log("Mock Send")
+  }
   return (
-    <ScreenWrapper scrollable={true}>
-      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
-      <FloatingFilterButton />
+    <ScreenWrapper scrollable>
+
       <View style={styles.heroSection}>
-        <AppText type="body">Das ist jetzt die Section?</AppText>
+        <Image source={require('../../../public/assets/sportevent.png')} style={styles.heroImage} resizeMode="cover" />
       </View>
-      <View style={styles.taskListContainer}>
-        <TaskList />
+
+      {/* ACTIVE TASKS */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <AppText bold style={styles.sectionLabel}>ACTIVE TASKS</AppText>
+          <View style={styles.pulseDot} />
+        </View>
+
+        <View style={styles.taskCardActive}>
+          <View style={styles.taskIconContainer}>
+            <Ionicons name="timer" size={20} color={MyTheme.primaryAccent} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <AppText bold type='title'>Morning Vitality</AppText>
+          </View>
+          <View style={styles.lpContainer}>
+            <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>1,500</AppText>
+            <AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>LP</AppText>
+          </View>
+          <Pressable style={styles.finishButton}>
+            <AppText bold type='caption' style={{ color: MyTheme.text }}>FINISH</AppText>
+          </Pressable>
+        </View>
       </View>
+
+      {/* RECOMMENDED TASKS */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeaderRow}>
+          <AppText bold style={styles.sectionLabel}>RECOMMENDED TASKS</AppText>
+          <Pressable><AppText bold type='caption' style={{ color: MyTheme.primaryAccent }}>See all</AppText></Pressable>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+          {[
+            { title: 'Deep Breathing', lp: '500', icon: 'self-improvement', color: '#3B82F6' },
+            { title: 'Fast Walk', lp: '750', icon: 'directions-run', color: '#10B981' },
+            { title: 'Read 5 Pages', lp: '300', icon: 'menu-book', color: '#F472B6' }
+          ].map((item, index) => (
+            <View key={index} style={styles.recomCard}>
+              <MaterialIcons name={item.icon} size={28} color={item.color} style={styles.recomIcon} />
+              <AppText type='title' style={styles.recomTitle}>{item.title}</AppText>
+              <View style={styles.recomFooter}>
+                <AppText type='title' style={styles.recomLP}>{item.lp} <AppText type='title' style={{ fontSize: 8, color: MyTheme.primaryAccent }}>LP</AppText></AppText>
+                <Pressable style={styles.addButton}>
+                  <Ionicons name="add" size={18} color={MyTheme.primaryAccent} />
+                </Pressable>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* PRODUCTIVITY CHART */}
+      <View style={styles.section}>
+        <AppText bold style={styles.sectionLabel}>PRODUCTIVITY</AppText>
+        <AppText type='title' style={styles.productivityText}>You earned <AppText type='title' style={{ color: MyTheme.primaryAccent }}>2,450 LP</AppText> this week!</AppText>
+
+        <View style={styles.chartCard}>
+          <View style={styles.chartContainer}>
+            {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
+              <View key={i} style={styles.chartColumnWrapper}>
+                <View style={[styles.chartBar, { height: `${h}%`, opacity: h / 100 }]} />
+                <AppText bold type='caption' style={styles.chartDay}>{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</AppText>
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+
+      {/* SUGGESTION INPUT */}
+      <View style={styles.suggestionBox}>
+        <View style={styles.suggestionHeader}>
+          <View style={styles.bulbIcon}><Ionicons name="bulb-outline" size={20} color="white" /></View>
+          <View>
+            <AppText type='title' >Suggest a Task</AppText>
+            <AppText type='caption'>Earn LP if your idea gets added!</AppText>
+          </View>
+        </View>
+          <AppInput bottomMargin={false} placeholder="I want to see a task for..." value={suggestionInput} onChangeText={setSuggestionInput} rightIcon='send' onRightIconPress={handleSendSuggestion} />
+      </View>
+
     </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   heroSection: {
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderWidth: 1,
-  minHeight: 200,
-  borderColor: MyTheme.secondary,
-  marginTop: Spacing.md,
-  marginBottom: Spacing.xl,
-  backgroundColor: MyTheme.primary
+    width: "100%",
+    aspectRatio: 16 / 9,
+    // minHeight: 200,
+    marginBottom: Spacing.lg
   },
-  taskListContainer: {
-    paddingBottom: Spacing.xl
-  }
-})
+  heroImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: Spacing.borderRadius.lg
+  },
+  section: {
+    marginBottom: Spacing.lg,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+  sectionLabel: {
+    fontSize: 11,
+    color: MyTheme.muted,
+    letterSpacing: 1,
+  },
+  pulseDot: {
+    width: Spacing.xs + 2,
+    height: Spacing.xs + 2,
+    borderRadius: Spacing.borderRadius.full,
+    backgroundColor: MyTheme.primaryAccent,
+    marginLeft: Spacing.sm,
+  },
+  taskCardActive: {
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(16, 185, 129, 0.3)',
+  },
+  taskIconContainer: {
+    width: 36,
+    height: 36,
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    borderRadius: Spacing.borderRadius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Spacing.sm,
+  },
+  lpContainer: {
+    flexDirection: 'row',
+    gap: Spacing.xs,
+    marginRight: Spacing.md,
+  },
+  finishButton: {
+    backgroundColor: MyTheme.primaryAccent,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: Spacing.borderRadius.sm,
+  },
+  horizontalScroll: {
+    marginHorizontal: -Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+  },
+  recomCard: {
+    width: 160,
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
+    marginRight: Spacing.md,
+  },
+  recomIcon: {
+    marginBottom: Spacing.sm,
+  },
+  recomTitle: {
+    fontSize: 14,
+  },
+  recomFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: Spacing.md,
+  },
+  recomLP: {
+    color: MyTheme.primaryAccent,
+    fontSize: 12,
+  },
+  addButton: {
+    width: 32,
+    height: 32,
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    borderRadius: Spacing.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productivityText: {
+    marginBottom: Spacing.md,
+  },
+  chartCard: {
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.lg,
+    minHeight: 200,
+  },
+  chartContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+    marginTop: Spacing.md
+  },
+  chartColumnWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: "flex-end",
+  },
+  chartBar: {
+    width: '70%',
+    backgroundColor: MyTheme.primaryAccent,
+    borderTopLeftRadius: Spacing.borderRadius.sm,
+    borderTopRightRadius: Spacing.borderRadius.sm,
+  },
+  chartDay: {
+    fontSize: 9,
+    marginTop: Spacing.sm,
+  },
+  suggestionBox: {
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.lg,
+  },
+  suggestionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
+  },
+  bulbIcon: {
+    width: 40,
+    height: 40,
+    backgroundColor: MyTheme.primaryAccent,
+    borderRadius: Spacing.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Spacing.md,
+  },
+});

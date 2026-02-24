@@ -1,16 +1,11 @@
 import { View, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import ScreenWrapper from '@/components/ScreenWrapper';
-import Toolbar from '@/components/Toolbar';
 import { MyTheme } from '@/constants/Colors';
 import { Spacing } from '@/constants/Spacing';
 import AppText from '@/components/AppText';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TrophiesScreen() {
-  const insets = useSafeAreaInsets()
-
   const mockTrophies = [
     {id: 1, title: 'Gym Rat', icon: 'dumbbell', unlocked: false},
     {id: 2, title: 'Early Riser', icon: 'sun', unlocked: false},
@@ -55,16 +50,11 @@ export default function TrophiesScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-        <Toolbar />
-      <ScreenWrapper scrollable={true}>
-        <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
+      <ScreenWrapper scrollable>
         <View style={styles.header}>
           <AppText type="h1">Trophies</AppText>
         </View>
-        <View style={[
-          styles.trophiesContainer, 
-          { paddingBottom: insets.bottom + Spacing.xl }
-        ]}>
+        <View style={styles.trophiesContainer}>
         {mockTrophies.map((trophy) => (
           <TrophyCard key={trophy.id} title={trophy.title} icon={trophy.icon} unlocked={trophy.unlocked}/>
         ))}
@@ -75,13 +65,6 @@ export default function TrophiesScreen() {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   header: {
     marginTop: Spacing.md,
     marginBottom: Spacing.lg
@@ -90,6 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: Spacing.lg,
+    paddingBottom: Spacing.xl
   },
   trophyItem: {
     alignItems: 'center',

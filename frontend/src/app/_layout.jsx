@@ -10,6 +10,8 @@ import {
   Inter_600SemiBold, 
   Inter_700Bold 
 } from '@expo-google-fonts/inter';
+import Toolbar from "@/components/Toolbar";
+import { View } from "react-native";
 
 // Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist
 SplashScreen.preventAutoHideAsync();
@@ -35,12 +37,14 @@ export default function RootLayout() {
   }
 
   return (
+    <View style={{ flex: 1, backgroundColor: MyTheme.background }}>
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style="light" translucent backgroundColor="transparent" />
       
       <Stack
         screenOptions={{
-          headerShown: false,
+          header: () => <Toolbar />,
+          headerShown: true,
           contentStyle: { backgroundColor: MyTheme.background },
         }}
       >
@@ -56,7 +60,15 @@ export default function RootLayout() {
             animation: 'slide_from_bottom',
           }} 
         />
+
+        <Stack.Screen 
+          name="settings" 
+          options={{ 
+            animation: 'slide_from_bottom',
+          }} 
+        />
       </Stack>
     </SafeAreaProvider>
+    </View>
   );
 }

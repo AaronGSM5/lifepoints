@@ -65,9 +65,7 @@ export default function ProfileScreen() {
   // }, [targetPercentage]);
 
   return (
-    <ScreenWrapper scrollable={true}>
-      {/* Background Gradient */}
-      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />   
+    <ScreenWrapper scrollable>
           {/* Avatar Section */}
           <View style={styles.profileHeader}>
             <View style={styles.avatarContainer}>
@@ -76,7 +74,7 @@ export default function ProfileScreen() {
                 style={styles.avatar} 
               />
               <View style={styles.levelBadge}>
-                <AppText type='caption' style={{ fontSize: 10, color: MyTheme.text, fontFamily: 'Inter-Bold' }}>LVL {mockProfile.profileLevel}</AppText>
+                <AppText bold type='caption' style={{ fontSize: 10, color: MyTheme.text }}>LVL {mockProfile.profileLevel}</AppText>
               </View>
             </View>
 
@@ -88,8 +86,8 @@ export default function ProfileScreen() {
             {/* XP Bar */}
             <View style={styles.xpContainer}>
               <View style={styles.xpHeader}>
-                <AppText type='caption' style={styles.xpLabel}>XP PROGRESS</AppText>
-                <AppText type='body' style={styles.xpValue}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</AppText>
+                <AppText bold type='caption'>XP PROGRESS</AppText>
+                <AppText bold type='caption' style={{ color: MyTheme.text }}>{mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}</AppText>
               </View>
               <View style={styles.progressBarBg}>
                 {/* Wir nutzen Animated.View als Container für den Gradienten */}
@@ -143,7 +141,7 @@ export default function ProfileScreen() {
 
             <View style={styles.statsGrid}>
               <StatCard label="DAY STREAK" value="45" icon="fire" color="#FF5733" badge="Best: 52" />
-              <StatCard label="TOTAL POINTS" value="12.4k" icon="diamond" color="#C70039" badge="Top 5%" />
+              <StatCard label="TOTAL POINTS" value="12.4k" icon="gem" color="#007ec7" badge="Top 5%" />
               <StatCard label="BAD HABITS AVOIDED" value="120" icon="ban" color="#900C3F" blurred />
               <StatCard label="MEMBER SINCE" value="2023" icon="calendar" color="#581845" />
             </View>
@@ -222,13 +220,6 @@ const TrophyCard = ({ title, icon }) => (
 );
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   // Profile Header Styles
   profileHeader: {
     alignItems: 'center',
@@ -263,16 +254,7 @@ const styles = StyleSheet.create({
   xpHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Spacing.xs,
-  },
-  xpLabel: {
-    fontSize: 10,
-    fontFamily: 'Inter-Bold',
-    opacity: 0.8
-  },
-  xpValue: {
-    fontSize: 10,
-    fontFamily: 'Inter-Bold'
+    marginBottom: Spacing.sm,
   },
   progressBarBg: {
     height: 8,
