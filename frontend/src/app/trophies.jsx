@@ -12,42 +12,42 @@ export default function TrophiesScreen() {
   const insets = useSafeAreaInsets()
 
   const mockTrophies = [
-    {id: 1, title: 'Gym Rat', icon: 'dumbbell'},
-    {id: 2, title: 'Early Riser', icon: 'sun'},
-    {id: 3, title: 'Cyborg', icon: 'robot'},
-    {id: 4, title: 'Reader', icon: 'book'},
-    {id: 5, title: 'Sugar Free', icon: 'candy-cane'},
-    {id: 6, title: 'Sleeper', icon: 'bed'},
-    {id: 7, title: 'Gym Rat', icon: 'dumbbell'},
-    {id: 8, title: 'Early Riser', icon: 'sun'},
-    {id: 9, title: 'Cyborg', icon: 'robot'},
-    {id: 10, title: 'Reader', icon: 'book'},
-    {id: 11, title: 'Sugar Free', icon: 'candy-cane'},
-    {id: 12, title: 'Sleeper', icon: 'bed'},
-    {id: 13, title: 'Gym Rat', icon: 'dumbbell'},
-    {id: 14, title: 'Early Riser', icon: 'sun'},
-    {id: 15, title: 'Cyborg', icon: 'robot'},
-    {id: 16, title: 'Reader', icon: 'book'},
-    {id: 17, title: 'Sugar Free', icon: 'candy-cane'},
-    {id: 18, title: 'Sleeper', icon: 'bed'},
-    {id: 19, title: 'Gym Rat', icon: 'dumbbell'},
-    {id: 20, title: 'Early Riser', icon: 'sun'},
-    {id: 21, title: 'Cyborg', icon: 'robot'},
-    {id: 22, title: 'Reader', icon: 'book'},
-    {id: 23, title: 'Sugar Free', icon: 'candy-cane'},
-    {id: 24, title: 'Sleeper', icon: 'bed'},
-    {id: 25, title: 'Gym Rat', icon: 'dumbbell'},
-    {id: 26, title: 'Early Riser', icon: 'sun'},
-    {id: 27, title: 'Cyborg', icon: 'robot'},
-    {id: 28, title: 'Reader', icon: 'book'},
-    {id: 29, title: 'Sugar Free', icon: 'candy-cane'},
-    {id: 30, title: 'Sleeper', icon: 'bed'},
+    {id: 1, title: 'Gym Rat', icon: 'dumbbell', unlocked: false},
+    {id: 2, title: 'Early Riser', icon: 'sun', unlocked: false},
+    {id: 3, title: 'Cyborg', icon: 'robot', unlocked: false},
+    {id: 4, title: 'Reader', icon: 'book', unlocked: true},
+    {id: 5, title: 'Sugar Free', icon: 'candy-cane', unlocked: false},
+    {id: 6, title: 'Sleeper', icon: 'bed', unlocked: false},
+    {id: 7, title: 'Gym Rat', icon: 'dumbbell', unlocked: true},
+    {id: 8, title: 'Early Riser', icon: 'sun', unlocked: false},
+    {id: 9, title: 'Cyborg', icon: 'robot', unlocked: false},
+    {id: 10, title: 'Reader', icon: 'book', unlocked: false},
+    {id: 11, title: 'Sugar Free', icon: 'candy-cane', unlocked: false},
+    {id: 12, title: 'Sleeper', icon: 'bed', unlocked: true},
+    {id: 13, title: 'Gym Rat', icon: 'dumbbell', unlocked: false},
+    {id: 14, title: 'Early Riser', icon: 'sun', unlocked: true},
+    {id: 15, title: 'Cyborg', icon: 'robot', unlocked: false},
+    {id: 16, title: 'Reader', icon: 'book', unlocked: false},
+    {id: 17, title: 'Sugar Free', icon: 'candy-cane', unlocked: true},
+    {id: 18, title: 'Sleeper', icon: 'bed', unlocked: false},
+    {id: 19, title: 'Gym Rat', icon: 'dumbbell', unlocked: true},
+    {id: 20, title: 'Early Riser', icon: 'sun', unlocked: false},
+    {id: 21, title: 'Cyborg', icon: 'robot', unlocked: false},
+    {id: 22, title: 'Reader', icon: 'book', unlocked: false},
+    {id: 23, title: 'Sugar Free', icon: 'candy-cane', unlocked: false},
+    {id: 24, title: 'Sleeper', icon: 'bed', unlocked: false},
+    {id: 25, title: 'Gym Rat', icon: 'dumbbell', unlocked: false},
+    {id: 26, title: 'Early Riser', icon: 'sun', unlocked: false},
+    {id: 27, title: 'Cyborg', icon: 'robot', unlocked: true},
+    {id: 28, title: 'Reader', icon: 'book', unlocked: false},
+    {id: 29, title: 'Sugar Free', icon: 'candy-cane', unlocked: false},
+    {id: 30, title: 'Sleeper', icon: 'bed', unlocked: false},
   ]
 
-  const TrophyCard = ({ title, icon }) => (
+  const TrophyCard = ({ title, icon, unlocked }) => (
     <View style={styles.trophyItem}>
       <View style={styles.trophyIconBox}>
-        <FontAwesome5 name={icon} size={24} color='#FFD700' />
+        <FontAwesome5 name={icon} size={24} color={ unlocked ? '#FFD700' : '#838383' } />
       </View>
       <AppText type='caption' style={styles.trophyText}>{title}</AppText>
     </View>
@@ -66,7 +66,7 @@ export default function TrophiesScreen() {
           { paddingBottom: insets.bottom + Spacing.xl }
         ]}>
         {mockTrophies.map((trophy) => (
-          <TrophyCard key={trophy.id} title={trophy.title} icon={trophy.icon} />
+          <TrophyCard key={trophy.id} title={trophy.title} icon={trophy.icon} unlocked={trophy.unlocked}/>
         ))}
         </View>
       </ScreenWrapper>
