@@ -1,22 +1,22 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from "react-native";
 import NotificationEntry from "@/components/notifications/NotificationEntry";
-import ScreenWrapper from '@/components/layout/ScreenWrapper';
-import { Spacing } from '@/constants/Spacing';
-import AppText from '@/components/ui/AppText';
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import { Spacing } from "@/constants/Spacing";
+import AppText from "@/components/ui/AppText";
 
 export default function NotificationsScreen() {
   const mockNotifications = [
-    { title: 'Hello' },
-    { title: 'Hola' },
-    { title: 'Mahlzeit' },
-    { title: 'Ich grüße' },
-    { title: 'Hallo Bruder ich grüße dich' },
-    { title: 'Hundegebell?' },
-    { title: 'Knowledge Test' },
-    { title: 'NIEMALS FLUSSABWÄRTS' },
-    { title: 'okEE' },
-    { title: 'Sie dürfen' },
-    { title: '(Werde dafür lowkey bezahlt)' }
+    { title: "Hello" },
+    { title: "Hola" },
+    { title: "Mahlzeit" },
+    { title: "Ich grüße" },
+    { title: "Hallo Bruder ich grüße dich" },
+    { title: "Hundegebell?" },
+    { title: "Knowledge Test" },
+    { title: "NIEMALS FLUSSABWÄRTS" },
+    { title: "okEE" },
+    { title: "Sie dürfen" },
+    { title: "(Werde dafür lowkey bezahlt)" }
   ];
 
   return (
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     paddingBottom: Spacing.xl
   }
-})
+});

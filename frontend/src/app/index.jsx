@@ -5,7 +5,9 @@ export default function Home() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <AppText type="body">🎉 Expo Router works 🎉</AppText>
-      <AppText bold type="body">Go to /home</AppText>
+      <AppText bold type="body">
+        Go to /home
+      </AppText>
     </View>
   );
 }

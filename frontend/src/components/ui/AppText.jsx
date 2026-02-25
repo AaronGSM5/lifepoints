@@ -1,37 +1,35 @@
-import { Animated, Text } from 'react-native';
+import { Animated, Text } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Typography } from "@/constants/Typography";
 
-const AppText = ({ children, type = 'body', bold = false, animated = false, style, ...props }) => {
-  
+const AppText = ({ children, type = "body", bold = false, animated = false, style, ...props }) => {
   const getFontFamily = () => {
-
-    if (bold) return 'Inter-Bold';
+    if (bold) return "Inter-Bold";
 
     switch (type) {
-      case 'h1':
-      case 'h2':
-        return 'Inter-Bold';
-      case 'title':
-        return 'Inter-SemiBold';
+      case "h1":
+      case "h2":
+        return "Inter-Bold";
+      case "title":
+        return "Inter-SemiBold";
       default:
-        return 'Inter-Regular';
+        return "Inter-Regular";
     }
   };
 
   const baseStyle = {
-    color: type === 'caption' ? MyTheme.muted : MyTheme.text,
+    color: type === "caption" ? MyTheme.muted : MyTheme.text,
     fontFamily: getFontFamily(),
-    ...Typography[type],
+    ...Typography[type]
   };
 
-  const TextComponent = animated ? Animated.Text : Text
+  const TextComponent = animated ? Animated.Text : Text;
 
   return (
     <TextComponent style={[baseStyle, style]} {...props}>
       {children}
     </TextComponent>
   );
-}
+};
 
-export default AppText
+export default AppText;

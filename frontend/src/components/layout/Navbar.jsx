@@ -14,7 +14,7 @@ export default function Navbar({ state, descriptors, navigation }) {
     communities: "people",
     tasks: "book",
     shop: "bag",
-    profile: "person",
+    profile: "person"
   };
   // Reihenfolge der Tabs in der Navbar
   const orderedRoutes = [...state.routes].sort((a, b) => {

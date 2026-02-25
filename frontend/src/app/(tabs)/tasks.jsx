@@ -13,6 +13,4 @@ export default function TasksScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});
