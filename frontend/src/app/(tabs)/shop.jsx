@@ -8,6 +8,7 @@ import AppText from '@/components/ui/AppText';
 import ScreenWrapper from '@/components/layout/ScreenWrapper';
 import { useFocusEffect } from 'expo-router';
 import RewardCard from '@/components/shop/RewardCard';
+import AppButton from '@/components/ui/AppButton';
 
 export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState('all')
@@ -100,21 +101,7 @@ export default function ShopScreen() {
           {/* Filter Tabs */}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer} contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}>
             {categories.map((cat, index) => (
-              <TouchableOpacity key={index} onPress={() => setActiveCat(cat.toLowerCase())}>
-                {cat.toLowerCase() === activeCat ? (
-                  <LinearGradient
-                    colors={[ MyTheme.secondary, MyTheme.primary]}
-                    style={styles.activeTabGradient}
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                  >
-                    <AppText bold type='title' style={{ fontSize: 14 }}>{cat}</AppText>
-                  </LinearGradient>
-                ) : (
-                  <View style={styles.inactiveTab}>
-                    <AppText bold type='title' style={{ fontSize: 14, color: MyTheme.muted }}>{cat}</AppText>
-                  </View>
-                )}
-              </TouchableOpacity>
+              <AppButton key={index} title={cat} variant={cat.toLowerCase() === activeCat ? 'primary' : 'secondary'} size='md' onPress={() => setActiveCat(cat.toLowerCase())} />
             ))}
           </ScrollView>
 
@@ -183,15 +170,9 @@ export default function ShopScreen() {
                 <AppText type="caption" style={{ textAlign: 'center', color: MyTheme.muted }}>
                   We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
                 </AppText>
-
-                <TouchableOpacity 
-                  style={styles.resetButton} 
-                  onPress={() => setActiveCat('all')}
-                >
-                  <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-                    Reset filter
-                  </AppText>
-                </TouchableOpacity>
+                <View style={{ marginTop: Spacing.sm }}>
+                  <AppButton variant='outline' title={'Reset filter'} size='sm' onPress={() => setActiveCat('all')} />
+                </View>
               </View>
             )}
           </View>
@@ -332,12 +313,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing.sm,
   },
-  resetButton: {
-    marginTop: Spacing.md,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.borderRadius.full,
-  }
 });
