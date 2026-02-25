@@ -71,13 +71,6 @@ export default function RegisterScreen() {
   const isSubmitDisabled =
     !nameInput || !emailInput || !passwordsMatch || !allRulesPassed || !isEmailValidFlag || !isNameValidFlag;
 
-  if (passwordsFilled) {
-    passwordCheckBorderColor = passwordsMatch ? MyTheme.primaryAccent : "red";
-  }
-  if (passwordInput.length > 0) {
-    passwordBorderColor = allRulesPassed ? "transparent" : "red";
-  }
-
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
