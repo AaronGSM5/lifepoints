@@ -172,7 +172,7 @@ export default function ProfileScreen() {
           <TrophyCard title="Early Riser" icon="sun" unlocked />
           <TrophyCard title="Cyborg" icon="robot" />
           <TrophyCard title="Reader" icon="book" unlocked />
-          <TrophyCard title="Sugar Free" icon="candy-cane" />
+          <TrophyCard title="Sugar Free" icon="candy" />
           <TrophyCard title="Sleeper" icon="bed" />
         </ScrollView>
       </View>
