@@ -45,6 +45,7 @@ export const IconMap = {
   shopping: (props) => <MaterialCommunityIcons name="shopping-outline" {...props} />,
   shoppingCat: (props) => <Feather name="shopping-bag" {...props} />,
   coffeeCat: (props) => <Feather name="coffee" {...props} />,
+  techCat: (props) => <Feather name="smartphone" {...props} />,
   giftCat: (props) => <Feather name="gift" {...props} />,
   dumbbell: (props) => <FontAwesome5 name="dumbbell" {...props} />,
   sun: (props) => <FontAwesome5 name="sun" {...props} />,

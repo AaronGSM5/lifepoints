@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, Animated, Easing } from "react-native";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { StyleSheet, View, ScrollView, Animated, Easing, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -19,7 +19,7 @@ export default function ShopScreen() {
       brand: "ADIDAS",
       title: "15% Off Storewide",
       points: 450,
-      icon: "shopping-bag",
+      icon: "shoppingCat",
       category: "fashion",
       isLocked: false
     },
@@ -28,7 +28,7 @@ export default function ShopScreen() {
       brand: "STARBUCKS",
       title: "Free Tall Coffee",
       points: 300,
-      icon: "coffee",
+      icon: "coffeeCat",
       category: "food",
       isLocked: false
     },
@@ -37,7 +37,7 @@ export default function ShopScreen() {
       brand: "AMAZON",
       title: "$10 Gift Card",
       points: 2000,
-      icon: "lock",
+      icon: "techCat",
       category: "tech",
       isLocked: true
     },
@@ -46,7 +46,7 @@ export default function ShopScreen() {
       brand: "NIKE",
       title: "20% Off Shoes",
       points: 800,
-      icon: "shopping-bag",
+      icon: "shoppingCat",
       category: "fashion",
       isLocked: false
     }
@@ -72,140 +72,159 @@ export default function ShopScreen() {
     }, [])
   );
 
-  return (
-    <ScreenWrapper scrollable>
-      {/* Wallet Card */}
-      <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
-        <View style={styles.walletHeader}>
-          <AppText bold type="caption" style={{ opacity: 0.9 }}>
-            YOUR POINTS
-          </AppText>
-          <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
-        </View>
+  const filteredCoupons = mockCoupons.filter(
+    (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
+  );
 
-        <View style={styles.pointsRow}>
-          <AppText type="h1">1.250</AppText>
-          <AppText type="title" style={styles.pointsLabel}>
-            LP
-          </AppText>
-        </View>
-
-        {/* Progress Bar */}
-        <View style={styles.progressBarContainer}>
-          <View style={styles.progressBarBg}>
-            <Animated.View
-              style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
-            />
-          </View>
-          <AppText type="caption">750 pts until Gold Tier</AppText>
-        </View>
-      </LinearGradient>
-
-      {/* Filter Tabs */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.tabsContainer}
-        contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
-      >
-        {categories.map((cat, index) => (
-          <AppButton
-            key={index}
-            title={cat}
-            variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
-            size="md"
-            onPress={() => setActiveCat(cat.toLowerCase())}
-          />
-        ))}
-      </ScrollView>
-
-      {/* Featured Reward */}
-      <View style={{ marginBottom: Spacing.md }}>
-        <AppText type="title">Featured Reward</AppText>
-      </View>
-
-      <View style={styles.featuredWrapper}>
-        <LinearGradient
-          colors={["#8A2387", "#E94057", "#F27121"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.featuredCard}
-        >
-          <View style={styles.featuredIconContainer}>
-            <Icon name="music" size={20} />
-          </View>
-
-          <View style={styles.featuredContent}>
-            <View style={styles.bestValueBadge}>
-              <AppText bold type="caption" style={{ color: "#00FF7F" }}>
-                BEST VALUE
-              </AppText>
-            </View>
-
-            <AppText type="h2">Free Month Premium</AppText>
-            <AppText type="caption" style={styles.featuredSubtitle}>
-              Spotify Individual Plan
+  const renderHeader = useMemo(
+    () => (
+      <View>
+        {/* Wallet Card */}
+        <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
+          <View style={styles.walletHeader}>
+            <AppText bold type="caption" style={{ opacity: 0.9 }}>
+              YOUR POINTS
             </AppText>
+            <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
+          </View>
 
-            <View style={styles.featuredFooter}>
-              <View>
-                <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                  2.500 PTS
-                </AppText>
-                <AppText type="title">2.000 PTS</AppText>
-              </View>
-              <AppButton
-                variant="primary"
-                title={"Redeem"}
-                size="md"
-                textStyle={{ color: "#E94057" }}
-                bgColor="white"
+          <View style={styles.pointsRow}>
+            <AppText type="h1">1.250</AppText>
+            <AppText type="title" style={styles.pointsLabel}>
+              LP
+            </AppText>
+          </View>
+
+          {/* Progress Bar */}
+          <View style={styles.progressBarContainer}>
+            <View style={styles.progressBarBg}>
+              <Animated.View
+                style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
               />
             </View>
+            <AppText type="caption">750 pts until Gold Tier</AppText>
           </View>
         </LinearGradient>
-      </View>
 
-      {/* 'For You' Grid */}
-      <AppText type="title" style={{ marginTop: Spacing.lg, marginBottom: Spacing.md }}>
-        {activeCat.toLowerCase() === "all"
-          ? "For You"
-          : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`}
-      </AppText>
-      <View style={styles.gridContainer}>
-        {mockCoupons.filter((c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()).length >
-        0 ? (
-          mockCoupons
-            .filter((c) => activeCat === "all" || c.category === activeCat)
-            .map((c, index) => (
-              <RewardCard
-                key={c.id || index}
-                image={c.image}
-                brand={c.brand}
-                title={c.title}
-                points={c.points}
-                icon={c.icon}
-                isLocked={c.isLocked}
-              />
-            ))
-        ) : (
-          // Empty State
-          <View style={styles.emptyContainer}>
-            <View style={styles.emptyIconCircle}>
-              <Icon name="search" size={32} color={MyTheme.muted} />
+        {/* Filter Tabs */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.tabsContainer}
+          contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
+        >
+          {categories.map((cat, index) => (
+            <AppButton
+              key={index}
+              title={cat}
+              variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
+              size="md"
+              onPress={() => setActiveCat(cat.toLowerCase())}
+            />
+          ))}
+        </ScrollView>
+
+        {/* Featured Reward */}
+        <View style={{ marginBottom: Spacing.md }}>
+          <AppText type="title">Featured Reward</AppText>
+        </View>
+
+        <View style={styles.featuredWrapper}>
+          <LinearGradient
+            colors={["#8A2387", "#E94057", "#F27121"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.featuredCard}
+          >
+            <View style={styles.featuredIconContainer}>
+              <Icon name="music" size={20} />
             </View>
-            <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
-              No Rewards Found
-            </AppText>
-            <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
-              We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
-            </AppText>
-            <View style={{ marginTop: Spacing.sm }}>
-              <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />
+
+            <View style={styles.featuredContent}>
+              <View style={styles.bestValueBadge}>
+                <AppText bold type="caption" style={{ color: "#00FF7F" }}>
+                  BEST VALUE
+                </AppText>
+              </View>
+
+              <AppText type="h2">Free Month Premium</AppText>
+              <AppText type="caption" style={styles.featuredSubtitle}>
+                Spotify Individual Plan
+              </AppText>
+
+              <View style={styles.featuredFooter}>
+                <View>
+                  <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
+                    2.500 PTS
+                  </AppText>
+                  <AppText type="title">2.000 PTS</AppText>
+                </View>
+                <AppButton
+                  variant="primary"
+                  title={"Redeem"}
+                  size="md"
+                  textStyle={{ color: "#E94057" }}
+                  bgColor="white"
+                />
+              </View>
             </View>
-          </View>
-        )}
+          </LinearGradient>
+        </View>
+
+        {/* 'For You' Grid */}
+        <AppText type="title" style={{ marginTop: Spacing.lg, marginBottom: Spacing.md }}>
+          {activeCat.toLowerCase() === "all"
+            ? "For You"
+            : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`}
+        </AppText>
       </View>
+    ),
+    [activeCat, walletWidth]
+  );
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyContainer}>
+      <View style={styles.emptyIconCircle}>
+        <Icon name="search" size={32} color={MyTheme.muted} />
+      </View>
+      <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
+        No Rewards Found
+      </AppText>
+      <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
+        We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
+      </AppText>
+      <View style={{ marginTop: Spacing.sm }}>
+        <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />
+      </View>
+    </View>
+  );
+
+  return (
+    <ScreenWrapper scrollable={false}>
+      <FlatList
+        data={filteredCoupons}
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+        numColumns={2} // 🔥 Die Magie! FlatList macht das Grid automatisch
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: Spacing.xl }}
+        // Das Styling ZWISCHEN den Spalten
+        columnWrapperStyle={styles.rowGap}
+        // Fügt unseren ganzen oberen Bereich ein
+        ListHeaderComponent={renderHeader}
+        // Fügt unseren Empty State ein
+        ListEmptyComponent={renderEmptyState}
+        // Rendert die einzelnen Karten
+        renderItem={({ item }) => (
+          <RewardCard
+            image={item.image}
+            brand={item.brand}
+            title={item.title}
+            points={item.points}
+            icon={item.icon}
+            isLocked={item.isLocked}
+          />
+        )}
+      />
     </ScreenWrapper>
   );
 }
@@ -321,11 +340,10 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   // Grid
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  rowGap: {
     gap: Spacing.md,
-    paddingBottom: Spacing.xl
+    marginBottom: Spacing.md,
+    justifyContent: "space-between"
   },
   emptyContainer: {
     width: "100%",

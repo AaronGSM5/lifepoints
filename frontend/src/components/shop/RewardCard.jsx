@@ -1,62 +1,58 @@
 import { MyTheme } from "@/constants/Colors";
-import { StyleSheet, TouchableOpacity, View, Image, Dimensions } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 
-const { width } = Dimensions.get("window");
-const CARD_WIDTH = (width - Spacing.md * 3) / 2; // Width for 2-Column Grid
-
-const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
-  <View style={styles.gridCard}>
-    <View style={styles.cardImageContainer}>
-      <Image source={{ uri: image }} style={styles.cardImage} />
-      {/* Icon Overlay */}
-      <View style={styles.cardIconBadge}>
-        <Icon
-          name={icon === "shopping-bag" ? "shoppingCat" : icon === "coffee" ? "coffeeCat" : "giftCat"}
-          size={14}
-          color={MyTheme.text}
-        />
+const RewardCard = ({ image, brand, title, points, icon, isLocked }) => {
+  return (
+    <View style={styles.gridCard}>
+      <View style={styles.cardImageContainer}>
+        <Image source={{ uri: image }} style={styles.cardImage} />
+        {/* Icon Overlay */}
+        <View style={styles.cardIconBadge}>
+          <Icon name={icon} size={14} color={MyTheme.text} />
+        </View>
       </View>
-    </View>
 
-    <View style={{ padding: Spacing.sm, gap: 2 }}>
-      <AppText bold type="caption" style={styles.cardBrand}>
-        {brand}
-      </AppText>
-      <AppText bold type="body" numberOfLines={2}>
-        {title}
-      </AppText>
-
-      <View style={styles.cardFooter}>
-        <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
-          {points} PTS
+      <View style={{ padding: Spacing.sm, gap: 2 }}>
+        <AppText bold type="caption" style={styles.cardBrand}>
+          {brand}
         </AppText>
-        {isLocked ? (
-          <View style={styles.lockedBadge}>
-            <AppText bold type="caption" style={{ fontSize: 10 }}>
-              Locked
-            </AppText>
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.miniFab}>
-            <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
+        <AppText bold type="body" numberOfLines={2}>
+          {title}
+        </AppText>
 
-    {/* Locked Overlay */}
-    {isLocked && <View style={styles.lockedOverlay} />}
-  </View>
-);
+        <View style={styles.cardFooter}>
+          <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
+            {points} PTS
+          </AppText>
+          {isLocked ? (
+            <View style={styles.lockedBadge}>
+              <AppText bold type="caption" style={{ fontSize: 10 }}>
+                Locked
+              </AppText>
+            </View>
+          ) : (
+            <TouchableOpacity style={styles.miniFab}>
+              <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
+      {/* Locked Overlay */}
+      {isLocked && <View style={styles.lockedOverlay} />}
+    </View>
+  );
+};
 
 export default RewardCard;
 
 const styles = StyleSheet.create({
   gridCard: {
-    width: CARD_WIDTH,
+    flex: 1,
+    maxWidth: "48%",
     backgroundColor: MyTheme.primary,
     borderRadius: Spacing.borderRadius.md,
     overflow: "hidden",
