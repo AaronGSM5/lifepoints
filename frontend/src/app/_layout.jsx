@@ -7,9 +7,14 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
 import { View } from "react-native";
+import { ErrorFallback } from "@/components/ErrorFallback";
 
 // Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist
 SplashScreen.preventAutoHideAsync();
+
+export function ErrorBoundary({ error, retry }) {
+  return <ErrorFallback error={error} resetError={retry} />;
+}
 
 export default function RootLayout() {
   // Schriften laden

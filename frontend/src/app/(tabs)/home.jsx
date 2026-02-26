@@ -11,10 +11,14 @@ import { Icon } from "@/components/icons/Icon";
 
 export default function HomeScreen() {
   const [suggestionInput, setSuggestionInput] = useState("");
+  const [shouldCrash, setShouldCrash] = useState(false);
+
+  if (shouldCrash) {
+    throw new Error("Das ist ein provozierter Render-Crash!");
+  }
   const handleSendSuggestion = () => {
     console.log("Mock Send");
   };
-
   const pulseAnim = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
@@ -69,6 +73,7 @@ export default function HomeScreen() {
             icon={<Icon name="checkmark" size={20} />}
             iconPosition="center"
             bgColor={MyTheme.primaryAccent}
+            onPress={() => setShouldCrash(true)}
           />
         </View>
       </View>
