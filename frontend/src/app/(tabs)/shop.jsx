@@ -380,13 +380,12 @@ const styles = StyleSheet.create({
   // Grid
   gridContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     flexWrap: "wrap",
     gap: Spacing.md
   },
   gridCard: {
     flexGrow: 0,
-    // flexBasis: 160,
     width: "47%",
     backgroundColor: MyTheme.primary,
     borderRadius: Spacing.borderRadius.md,
