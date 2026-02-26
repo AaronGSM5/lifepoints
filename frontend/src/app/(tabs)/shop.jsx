@@ -12,7 +12,6 @@ import { Icon } from "@/components/icons/Icon";
 
 export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState("all");
-  const categories = ["All", "Food", "Fashion", "Tech", "Beauty"];
   const mockCoupons = [
     {
       image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
@@ -51,6 +50,8 @@ export default function ShopScreen() {
       isLocked: false
     }
   ];
+  const uniqueCategories = [...new Set(mockCoupons.map((c) => c.category))];
+  const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
 
   // 1. Animations-Wert (0 bis 60 für 60%)
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
