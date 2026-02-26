@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import Navbar from "@/components/Navbar.jsx";
+import Navbar from "@/components/layout/Navbar.jsx";
 import { MyTheme } from "@/constants/Colors";
 
 export default function TabsLayout() {

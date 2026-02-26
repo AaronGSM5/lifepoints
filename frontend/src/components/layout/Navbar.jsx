@@ -1,21 +1,12 @@
 import { View, Pressable, StyleSheet, Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { useRef } from "react";
 import { MyTheme } from "@/constants/Colors";
+import { Icon } from "../icons/Icon";
 
 export default function Navbar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
 
-  // Da Expo uns nur die Routen-Namen gibt (home, shop, profile),
-  // mappen wir hier die passenden Icons dazu.
-  const iconMap = {
-    home: "home",
-    communities: "people",
-    tasks: "book",
-    shop: "bag",
-    profile: "person",
-  };
   // Reihenfolge der Tabs in der Navbar
   const orderedRoutes = [...state.routes].sort((a, b) => {
     const order = ["home", "tasks", "communities", "shop", "profile"];
@@ -36,7 +27,7 @@ export default function Navbar({ state, descriptors, navigation }) {
     >
       {orderedRoutes.map((route, index) => {
         const isFocused = state.routes[state.index].key === route.key;
-        const iconName = iconMap[route.name] || "help-circle";
+        // const iconName = iconMap[route.name] || "help-circle";
 
         // Animation Hook
         const scale = useRef(new Animated.Value(1)).current;
@@ -63,10 +54,11 @@ export default function Navbar({ state, descriptors, navigation }) {
         return (
           <Pressable key={route.key} onPress={onPress} style={styles.tabButton}>
             <Animated.View style={{ transform: [{ scale }] }}>
-              <Ionicons
-                name={isFocused ? iconName : `${iconName}-outline`}
+              <Icon
+                name={route.name || "help"}
                 size={26}
-                color={isFocused ? MyTheme.primaryAccent : MyTheme.text}
+                color={isFocused ? MyTheme.primaryAccent : "white"}
+                outline={!isFocused}
               />
             </Animated.View>
           </Pressable>

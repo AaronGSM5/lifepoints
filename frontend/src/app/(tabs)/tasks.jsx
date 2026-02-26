@@ -1,9 +1,9 @@
 import { Image, StyleSheet, View } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import TaskList from "@/components/TaskList";
+import AppText from "@/components/ui/AppText";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import TaskList from "@/components/tasks/TaskList";
 
 export default function TasksScreen() {
   return (
@@ -13,6 +13,4 @@ export default function TasksScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});

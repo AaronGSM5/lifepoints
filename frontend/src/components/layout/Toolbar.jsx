@@ -1,33 +1,38 @@
-import { View, Pressable, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from '@expo/vector-icons';
-import { router, usePathname } from 'expo-router';
-import { MyTheme } from '@/constants/Colors';
+import { router, usePathname } from "expo-router";
+import { MyTheme } from "@/constants/Colors";
+import { Icon } from "../icons/Icon";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
-  const mainTabs = ['/home', '/tasks', "/communities", '/shop', '/profile'];
+  const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
 
   // Responsive Logo
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const logoWidth = Math.min(screenWidth * 0.4, 180);
   const logoHeight = logoWidth / 3.75;
 
   return (
-    <View style={[styles.container, {
-      height: 56 + insets.top,
-      paddingTop: insets.top,
-      paddingLeft: Math.max(12, insets.left),
-      paddingRight: Math.max(12, insets.right)
-    }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          height: 56 + insets.top,
+          paddingTop: insets.top,
+          paddingLeft: Math.max(12, insets.left),
+          paddingRight: Math.max(12, insets.right)
+        }
+      ]}
+    >
       {/* Back-Button */}
       <View style={styles.sideSection}>
         {!isMainTab && (
           <Pressable onPress={() => router.back()}>
-            <Ionicons name={'chevron-back'} size={24} color='white' />
+            <Icon name="back" />
           </Pressable>
         )}
       </View>
@@ -35,7 +40,7 @@ export default function Toolbar() {
       {/* Title */}
       <View style={styles.centerSection}>
         <Image
-          source={require('@/../public/assets/adaptive-icon.png')}
+          source={require("@/../public/assets/adaptive-icon.png")}
           style={{ width: logoWidth, height: logoHeight }}
           resizeMode="contain"
         />
@@ -47,14 +52,14 @@ export default function Toolbar() {
       resizeMode="contain"
     /> */}
 
-      <View style={[styles.sideSection, { alignItems: 'flex-end' }]}>
-        {pathname === '/profile' ? (
-          <Pressable onPress={() => router.push('/settings')}>
-            <Ionicons name={'settings-outline'} size={24} color='white' />
+      <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
+        {pathname === "/profile" ? (
+          <Pressable onPress={() => router.push("/settings")}>
+            <Icon name="settings" />
           </Pressable>
-        ) : isMainTab && pathname !== '/profile' ? (
-          <Pressable onPress={() => router.push('/notifications')}>
-            <Ionicons name={'notifications-outline'} size={24} color='white' />
+        ) : isMainTab && pathname !== "/profile" ? (
+          <Pressable onPress={() => router.push("/notifications")}>
+            <Icon name="notifications" />
           </Pressable>
         ) : (
           /* Placeholder damit Logo mittig bleibt */
@@ -68,16 +73,16 @@ export default function Toolbar() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: MyTheme.background,
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   },
   sideSection: {
     flex: 1, // Nimmt jeweils 1/3 ein
-    justifyContent: 'center',
+    justifyContent: "center"
   },
   centerSection: {
     flex: 2, // Logo bekommt mehr Platz
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

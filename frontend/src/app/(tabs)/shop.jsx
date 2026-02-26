@@ -1,12 +1,14 @@
 import React, { useCallback, useRef, useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Animated, Easing } from "react-native";
+import { StyleSheet, View, ScrollView, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons, MaterialCommunityIcons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
+import AppText from "@/components/ui/AppText";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useFocusEffect } from "expo-router";
+import RewardCard from "@/components/shop/RewardCard";
+import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
 
 export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState("all");
@@ -78,7 +80,7 @@ export default function ShopScreen() {
           <AppText bold type="caption" style={{ opacity: 0.9 }}>
             YOUR POINTS
           </AppText>
-          <Ionicons name="wallet-outline" size={20} color={MyTheme.primaryAccent} />
+          <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
         </View>
 
         <View style={styles.pointsRow}>
@@ -107,26 +109,13 @@ export default function ShopScreen() {
         contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
       >
         {categories.map((cat, index) => (
-          <TouchableOpacity key={index} onPress={() => setActiveCat(cat.toLowerCase())}>
-            {cat.toLowerCase() === activeCat ? (
-              <LinearGradient
-                colors={[MyTheme.secondary, MyTheme.primary]}
-                style={styles.activeTabGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <AppText bold type="title" style={{ fontSize: 14 }}>
-                  {cat}
-                </AppText>
-              </LinearGradient>
-            ) : (
-              <View style={styles.inactiveTab}>
-                <AppText bold type="title" style={{ fontSize: 14, color: MyTheme.muted }}>
-                  {cat}
-                </AppText>
-              </View>
-            )}
-          </TouchableOpacity>
+          <AppButton
+            key={index}
+            title={cat}
+            variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
+            size="md"
+            onPress={() => setActiveCat(cat.toLowerCase())}
+          />
         ))}
       </ScrollView>
 
@@ -143,7 +132,7 @@ export default function ShopScreen() {
           style={styles.featuredCard}
         >
           <View style={styles.featuredIconContainer}>
-            <FontAwesome5 name="music" size={20} color="#fff" />
+            <Icon name="music" size={20} />
           </View>
 
           <View style={styles.featuredContent}>
@@ -165,11 +154,13 @@ export default function ShopScreen() {
                 </AppText>
                 <AppText type="title">2.000 PTS</AppText>
               </View>
-              <TouchableOpacity style={styles.redeemButton}>
-                <AppText bold type="title" style={styles.redeemText}>
-                  Redeem
-                </AppText>
-              </TouchableOpacity>
+              <AppButton
+                variant="primary"
+                title={"Redeem"}
+                size="md"
+                textStyle={{ color: "#E94057" }}
+                bgColor="white"
+              />
             </View>
           </View>
         </LinearGradient>
@@ -201,7 +192,7 @@ export default function ShopScreen() {
           // Empty State
           <View style={styles.emptyContainer}>
             <View style={styles.emptyIconCircle}>
-              <Feather name="search" size={32} color={MyTheme.muted} />
+              <Icon name="search" size={32} color={MyTheme.muted} />
             </View>
             <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
               No Rewards Found
@@ -209,63 +200,15 @@ export default function ShopScreen() {
             <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
               We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
             </AppText>
-
-            <TouchableOpacity style={styles.resetButton} onPress={() => setActiveCat("all")}>
-              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-                Reset filter
-              </AppText>
-            </TouchableOpacity>
+            <View style={{ marginTop: Spacing.sm }}>
+              <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />
+            </View>
           </View>
         )}
       </View>
     </ScreenWrapper>
   );
 }
-
-const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
-  <View style={styles.gridCard}>
-    <View style={styles.cardImageContainer}>
-      <Image source={{ uri: image }} style={styles.cardImage} />
-      {/* Icon Overlay */}
-      <View style={styles.cardIconBadge}>
-        <Feather
-          name={icon === "shopping-bag" ? "shopping-bag" : icon === "coffee" ? "coffee" : "gift"}
-          size={14}
-          color={MyTheme.text}
-        />
-      </View>
-    </View>
-
-    <View style={{ padding: Spacing.sm, gap: 2 }}>
-      <AppText bold type="caption" style={styles.cardBrand}>
-        {brand}
-      </AppText>
-      <AppText bold type="body" numberOfLines={2}>
-        {title}
-      </AppText>
-
-      <View style={styles.cardFooter}>
-        <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
-          {points} PTS
-        </AppText>
-        {isLocked ? (
-          <View style={styles.lockedBadge}>
-            <AppText bold type="caption" style={{ fontSize: 10 }}>
-              Locked
-            </AppText>
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.miniFab}>
-            <MaterialCommunityIcons name="shopping-outline" size={14} color={MyTheme.primaryAccent} />
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
-
-    {/* Locked Overlay */}
-    {isLocked && <View style={styles.lockedOverlay} />}
-  </View>
-);
 
 const styles = StyleSheet.create({
   // Wallet Card
@@ -380,69 +323,9 @@ const styles = StyleSheet.create({
   // Grid
   gridContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     flexWrap: "wrap",
-    gap: Spacing.md
-  },
-  gridCard: {
-    flexGrow: 0,
-    width: "47%",
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.md,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  cardImageContainer: {
-    height: 100,
-    backgroundColor: "#333"
-  },
-  cardImage: {
-    width: "100%",
-    height: "100%"
-  },
-  cardIconBadge: {
-    position: "absolute",
-    bottom: Spacing.sm,
-    right: Spacing.sm,
-    width: 28,
-    height: 28,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  cardBrand: {
-    color: MyTheme.primaryAccent,
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.5
-  },
-  cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  miniFab: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: MyTheme.background,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-    borderRadius: 4
-  },
-  lockedOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(18, 18, 18, 0.6)"
+    gap: Spacing.md,
+    paddingBottom: Spacing.xl
   },
   emptyContainer: {
     width: "100%",
@@ -459,13 +342,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.sm
-  },
-  resetButton: {
-    marginTop: Spacing.md,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.borderRadius.full
   }
 });
