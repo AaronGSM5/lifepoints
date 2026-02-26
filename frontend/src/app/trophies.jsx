@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   trophiesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     gap: Spacing.lg
   }
 });
