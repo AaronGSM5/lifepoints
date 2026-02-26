@@ -12,6 +12,7 @@ import { Icon } from "@/components/icons/Icon";
 
 export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState("all");
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const mockCoupons = [
     {
       image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
@@ -52,6 +53,15 @@ export default function ShopScreen() {
   ];
   const uniqueCategories = [...new Set(mockCoupons.map((c) => c.category))];
   const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+
+    // Loading simulation
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  }, []);
 
   // 1. Animations-Wert (0 bis 60 für 60%)
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
@@ -214,6 +224,10 @@ export default function ShopScreen() {
         ListHeaderComponent={renderHeader}
         // Fügt unseren Empty State ein
         ListEmptyComponent={renderEmptyState}
+        refreshing={isRefreshing}
+        onRefresh={handleRefresh}
+        tintColor={MyTheme.primaryAccent}
+        colors={[MyTheme.primaryAccent]}
         // Rendert die einzelnen Karten
         renderItem={({ item }) => (
           <RewardCard
