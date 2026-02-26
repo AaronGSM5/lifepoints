@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { StyleSheet, View, ScrollView, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -9,6 +8,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useFocusEffect } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
 
 export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState("all");
@@ -80,7 +80,7 @@ export default function ShopScreen() {
           <AppText bold type="caption" style={{ opacity: 0.9 }}>
             YOUR POINTS
           </AppText>
-          <Ionicons name="wallet-outline" size={20} color={MyTheme.primaryAccent} />
+          <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
         </View>
 
         <View style={styles.pointsRow}>
@@ -132,7 +132,7 @@ export default function ShopScreen() {
           style={styles.featuredCard}
         >
           <View style={styles.featuredIconContainer}>
-            <FontAwesome5 name="music" size={20} color="#fff" />
+            <Icon name="music" size={20} />
           </View>
 
           <View style={styles.featuredContent}>
@@ -161,9 +161,6 @@ export default function ShopScreen() {
                 textStyle={{ color: "#E94057" }}
                 bgColor="white"
               />
-              {/* <TouchableOpacity style={styles.redeemButton}>
-                    <AppText bold type='title' style={styles.redeemText}>Redeem</AppText>
-                  </TouchableOpacity> */}
             </View>
           </View>
         </LinearGradient>
@@ -195,7 +192,7 @@ export default function ShopScreen() {
           // Empty State
           <View style={styles.emptyContainer}>
             <View style={styles.emptyIconCircle}>
-              <Feather name="search" size={32} color={MyTheme.muted} />
+              <Icon name="search" size={32} color={MyTheme.muted} />
             </View>
             <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
               No Rewards Found

@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { View, Animated, StyleSheet } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { Icon } from "../icons/Icon";
 
-const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const animValue = useRef(new Animated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
@@ -27,7 +27,7 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
 
   const iconColor = animValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ["#838383", "#FFD700"]
+    outputRange: ["#838383", MyTheme.gold]
   });
 
   const borderColor = animValue.interpolate({
@@ -55,11 +55,11 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
       <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }], borderColor: borderColor }]}>
         <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
-        <AnimatedIcon name={icon} size={24} style={{ color: iconColor }} />
+        <AnimatedIcon name={icon} size={24} color={iconColor} />
 
         {(!unlocked || justUnlocked) && (
           <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-            <FontAwesome5 name="lock" size={10} color="#FFFFFF" />
+            <Icon name="lock" size={10} color="#FFFFFF" />
           </Animated.View>
         )}
       </Animated.View>

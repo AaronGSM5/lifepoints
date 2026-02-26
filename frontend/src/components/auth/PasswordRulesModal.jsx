@@ -1,8 +1,8 @@
 import { View, StyleSheet, Modal, Pressable } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
+import { Icon } from "../icons/Icon";
 
 export default function PasswordRulesModal({ visible, onClose, passwordRules, passwordRuleStatus }) {
   return (
@@ -18,10 +18,10 @@ export default function PasswordRulesModal({ visible, onClose, passwordRules, pa
         <Pressable style={styles.modalContent} onPress={() => {}}>
           {passwordRules.map((rule) => (
             <View key={rule.name} style={styles.ruleRow}>
-              <Ionicons
+              <Icon
                 name={passwordRuleStatus[rule.name] ? "checkmark" : "close"}
-                size={18}
-                color={passwordRuleStatus[rule.name] ? "green" : "red"}
+                size={20}
+                color={passwordRuleStatus[rule.name] ? MyTheme.success : MyTheme.warning}
                 style={{ marginRight: Spacing.sm }}
               />
               <AppText>{rule.displayMessage}</AppText>

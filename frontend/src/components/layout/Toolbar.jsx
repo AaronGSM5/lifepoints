@@ -1,8 +1,8 @@
 import { View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { router, usePathname } from "expo-router";
 import { MyTheme } from "@/constants/Colors";
+import { Icon } from "../icons/Icon";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -32,7 +32,7 @@ export default function Toolbar() {
       <View style={styles.sideSection}>
         {!isMainTab && (
           <Pressable onPress={() => router.back()}>
-            <Ionicons name={"chevron-back"} size={24} color="white" />
+            <Icon name="back" />
           </Pressable>
         )}
       </View>
@@ -55,11 +55,11 @@ export default function Toolbar() {
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
           <Pressable onPress={() => router.push("/settings")}>
-            <Ionicons name={"settings-outline"} size={24} color="white" />
+            <Icon name="settings" />
           </Pressable>
         ) : isMainTab && pathname !== "/profile" ? (
           <Pressable onPress={() => router.push("/notifications")}>
-            <Ionicons name={"notifications-outline"} size={24} color="white" />
+            <Icon name="notifications" />
           </Pressable>
         ) : (
           /* Placeholder damit Logo mittig bleibt */

@@ -6,10 +6,10 @@ import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
+import { Icon } from "@/components/icons/Icon";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
@@ -136,9 +136,7 @@ export default function RegisterScreen() {
                       onPress={() => setPasswordIsShown(!passwordIsShown)}
                       size="sm"
                       variant="ghost"
-                      icon={
-                        <Ionicons name={passwordIsShown ? "eye-outline" : "eye-off-outline"} size={22} color="white" />
-                      }
+                      icon={<Icon name={passwordIsShown ? "eyeOpen" : "eyeClosed"} size={22} color="white" />}
                       iconPosition="center"
                     />
                     {passwordInput.length > 0 && (
@@ -146,8 +144,8 @@ export default function RegisterScreen() {
                         variant="ghost"
                         size="sm"
                         icon={
-                          <Ionicons
-                            name={allRulesPassed ? "checkmark-circle-outline" : "information-circle-outline"}
+                          <Icon
+                            name={allRulesPassed ? "checkmarkCircle" : "infoCircle"}
                             size={22}
                             color={allRulesPassed ? MyTheme.primaryAccent : "red"}
                           />

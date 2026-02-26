@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity, Animated, Easing } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { MyTheme } from "@/constants/Colors";
+import { Icon } from "../icons/Icon";
 
 const FloatingFilterButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -80,7 +81,7 @@ const FloatingFilterButton = () => {
       <TouchableOpacity onPress={toggleMenu} activeOpacity={0.8} style={[styles.roundButton, styles.mainButton]}>
         {/* Wir animieren das Icon, damit es sich beim Wechsel dreht */}
         <Animated.View style={{ transform: [{ rotate: mainButtonRotation }] }}>
-          <Ionicons name={isExpanded ? "close" : "filter"} size={24} color={MyTheme.text} />
+          <Icon name={isExpanded ? "close" : "filter"} size={24} color={MyTheme.text} />
         </Animated.View>
       </TouchableOpacity>
 

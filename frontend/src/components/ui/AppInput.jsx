@@ -1,10 +1,10 @@
 import React, { useState, forwardRef } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
+import { Icon } from "../icons/Icon";
 
 const AppInput = forwardRef(
   (
@@ -46,7 +46,7 @@ const AppInput = forwardRef(
         >
           {/* Linkes Icon (z.B. Search) */}
           {icon && (
-            <MaterialIcons
+            <Icon
               name={icon}
               size={20}
               color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
@@ -73,7 +73,7 @@ const AppInput = forwardRef(
             rightContent
           ) : rightIcon ? (
             <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
-              <MaterialIcons name={rightIcon} size={20} color="white" />
+              <Icon name={rightIcon} size={20} color="white" />
             </TouchableOpacity>
           ) : null}
         </View>

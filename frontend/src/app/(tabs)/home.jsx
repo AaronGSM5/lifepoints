@@ -1,5 +1,5 @@
 import { StyleSheet, View, ScrollView, Image, Animated } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -7,6 +7,7 @@ import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
 import { useEffect, useRef, useState } from "react";
 import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
 
 export default function HomeScreen() {
   const [suggestionInput, setSuggestionInput] = useState("");
@@ -48,7 +49,7 @@ export default function HomeScreen() {
 
         <View style={styles.taskCardActive}>
           <View style={styles.taskIconContainer}>
-            <Ionicons name="timer" size={20} color={MyTheme.primaryAccent} />
+            <Icon name="timer" size={20} color={MyTheme.primaryAccent} />
           </View>
           <View style={{ flex: 1 }}>
             <AppText bold type="title">
@@ -65,7 +66,7 @@ export default function HomeScreen() {
           </View>
           <AppButton
             size="sm"
-            icon={<Ionicons name="checkmark" size={20} />}
+            icon={<Icon name="checkmark" size={20} />}
             iconPosition="center"
             bgColor={MyTheme.primaryAccent}
           />
@@ -104,7 +105,7 @@ export default function HomeScreen() {
                 </AppText>
                 <AppButton
                   size="sm"
-                  icon={<Ionicons name="add" size={18} color={MyTheme.primaryAccent} />}
+                  icon={<Icon name="add" size={18} color={MyTheme.primaryAccent} />}
                   iconPosition="center"
                   bgColor={"rgba(16, 185, 129, 0.1)"}
                 />
@@ -142,7 +143,7 @@ export default function HomeScreen() {
       <View style={styles.suggestionBox}>
         <View style={styles.suggestionHeader}>
           <View style={styles.bulbIcon}>
-            <Ionicons name="bulb-outline" size={20} color="white" />
+            <Icon name="bulb" size={20} />
           </View>
           <View>
             <AppText type="title">Suggest a Task</AppText>

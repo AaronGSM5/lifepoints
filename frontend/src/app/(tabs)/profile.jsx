@@ -2,7 +2,6 @@ import React, { useCallback, useRef } from "react";
 import { StyleSheet, View, Image, ScrollView, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -10,6 +9,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { router, useFocusEffect } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
 
 export default function ProfileScreen() {
   const mockProfile = {
@@ -117,7 +117,7 @@ export default function ProfileScreen() {
           <AppButton
             variant="primary"
             title={"Edit Profile"}
-            icon={<MaterialCommunityIcons name="pencil" size={16} color={MyTheme.background} />}
+            icon={<Icon name="pencil" size={16} color={MyTheme.background} />}
             iconPosition="left"
             textStyle={{ color: MyTheme.background }}
             bgColor={MyTheme.primaryAccent}
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
           <AppButton
             variant="primary"
             title={"Share Stats"}
-            icon={<Ionicons name="share-social-outline" size={16} color={MyTheme.text} />}
+            icon={<Icon name="share" size={16} color={MyTheme.text} />}
             iconPosition="left"
             textStyle={{ color: MyTheme.text }}
             bgColor={"#2A2A2A"}
@@ -138,8 +138,8 @@ export default function ProfileScreen() {
       <View style={{ marginTop: Spacing.xl }}>
         <View style={styles.sectionHeader}>
           {/* Alternative design in primary accent */}
-          <Ionicons name="stats-chart" size={18} color={MyTheme.primaryAccent} />
-          {/* <Ionicons name="stats-chart" size={18} color={MyTheme.secondaryAccent} /> */}
+          <Icon name="statsChart" size={18} color={MyTheme.primaryAccent} />
+          {/* <Icon name="statsChart" size={18} color={MyTheme.secondaryAccent} /> */}
           <AppText type="title">Your Stats</AppText>
         </View>
 
@@ -155,14 +155,14 @@ export default function ProfileScreen() {
       <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
         <View style={styles.sectionHeaderRow}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-            <FontAwesome5 name="trophy" size={18} color="#FFD700" />
+            <Icon name="trophy" size={18} />
             <AppText type="title">Trophies</AppText>
           </View>
           <AppButton
             variant="ghost"
             title={"See all"}
             size="sm"
-            textStyle={{ color: "#FFD700" }}
+            textStyle={{ color: MyTheme.gold }}
             onPress={() => router.push("/trophies")}
           />
         </View>
@@ -205,7 +205,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred }) => (
         )}
       </View>
 
-      <FontAwesome5 name={icon} size={16} color={color} />
+      <Icon name={icon} size={16} color={color} />
     </View>
 
     <AppText type="caption" style={{ marginTop: Spacing.xs }}>

@@ -7,6 +7,7 @@ import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
 
 export default function CommunitiesScreen() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +20,7 @@ export default function CommunitiesScreen() {
         <View style={styles.createCardLeft}>
           <View style={[styles.iconBox, { backgroundColor: "rgba(47, 196, 146, 0.1)" }]}>
             {/* Nutzt MyTheme.primaryAccent für das LifePoints-Grün */}
-            <MaterialIcons name="create-new-folder" size={24} color={MyTheme.primaryAccent} />
+            <Icon name="newFolder" color={MyTheme.primaryAccent} />
           </View>
           <View>
             <AppText bold style={styles.createCardTitle}>
@@ -29,7 +30,7 @@ export default function CommunitiesScreen() {
           </View>
         </View>
         <AppButton
-          icon={<MaterialIcons name="add" size={24} color={MyTheme.background} />}
+          icon={<Icon name="add" color={MyTheme.background} />}
           iconPosition="center"
           size="sm"
           bgColor={MyTheme.primaryAccent}
@@ -75,7 +76,7 @@ export default function CommunitiesScreen() {
             </View>
             <AppButton
               size="sm"
-              icon={<MaterialIcons name="add" size={20} color={MyTheme.primaryAccent} />}
+              icon={<Icon name="add" size={20} color={MyTheme.primaryAccent} />}
               iconPosition="center"
               bgColor={"rgba(47, 196, 146, 0.1)"}
               borderStyle={{ borderWidth: 1, borderColor: "rgba(47, 196, 146, 0.2)" }}

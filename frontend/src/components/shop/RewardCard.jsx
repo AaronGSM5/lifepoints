@@ -1,8 +1,8 @@
 import { MyTheme } from "@/constants/Colors";
 import { StyleSheet, TouchableOpacity, View, Image, Dimensions } from "react-native";
 import AppText from "@/components/ui/AppText";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { Spacing } from "@/constants/Spacing";
+import { Icon } from "../icons/Icon";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = (width - Spacing.md * 3) / 2; // Width for 2-Column Grid
@@ -13,8 +13,8 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
       <Image source={{ uri: image }} style={styles.cardImage} />
       {/* Icon Overlay */}
       <View style={styles.cardIconBadge}>
-        <Feather
-          name={icon === "shopping-bag" ? "shopping-bag" : icon === "coffee" ? "coffee" : "gift"}
+        <Icon
+          name={icon === "shopping-bag" ? "shoppingCat" : icon === "coffee" ? "coffeeCat" : "giftCat"}
           size={14}
           color={MyTheme.text}
         />
@@ -41,7 +41,7 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => (
           </View>
         ) : (
           <TouchableOpacity style={styles.miniFab}>
-            <MaterialCommunityIcons name="shopping-outline" size={14} color={MyTheme.primaryAccent} />
+            <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
           </TouchableOpacity>
         )}
       </View>
