@@ -10,17 +10,9 @@ import { router, useFocusEffect } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import { mockProfile } from "@/constants/MockData";
 
 export default function ProfileScreen() {
-  const mockProfile = {
-    backgroundImg: "",
-    profileName: "Tomhtzx",
-    profileClass: "Habit Hunter Class",
-    profileRank: "Elite",
-    profileLevel: 42,
-    profileXp: 9020
-  };
-
   // // 1. Der Startwert der Animation (0%)
   const animatedWidth = useRef(new Animated.Value(0)).current;
   // // 2. Berechnung des Zielwerts (Prozentsatz)

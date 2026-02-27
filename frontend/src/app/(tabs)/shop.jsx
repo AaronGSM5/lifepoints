@@ -5,53 +5,18 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import { mockRewards } from "@/constants/MockData";
 
 export default function ShopScreen() {
+  const router = useRouter();
   const [activeCat, setActiveCat] = useState("all");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const mockCoupons = [
-    {
-      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
-      brand: "ADIDAS",
-      title: "15% Off Storewide",
-      points: 450,
-      icon: "shoppingCat",
-      category: "fashion",
-      isLocked: false
-    },
-    {
-      image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400",
-      brand: "STARBUCKS",
-      title: "Free Tall Coffee",
-      points: 300,
-      icon: "coffeeCat",
-      category: "food",
-      isLocked: false
-    },
-    {
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400",
-      brand: "AMAZON",
-      title: "$10 Gift Card",
-      points: 2000,
-      icon: "techCat",
-      category: "tech",
-      isLocked: true
-    },
-    {
-      image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400",
-      brand: "NIKE",
-      title: "20% Off Shoes",
-      points: 800,
-      icon: "shoppingCat",
-      category: "fashion",
-      isLocked: false
-    }
-  ];
-  const uniqueCategories = [...new Set(mockCoupons.map((c) => c.category))];
+
+  const uniqueCategories = [...new Set(mockRewards.map((c) => c.category))];
   const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
 
   const handleRefresh = useCallback(() => {
@@ -83,7 +48,7 @@ export default function ShopScreen() {
     }, [])
   );
 
-  const filteredCoupons = mockCoupons.filter(
+  const filteredCoupons = mockRewards.filter(
     (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
   );
 
@@ -231,12 +196,14 @@ export default function ShopScreen() {
         // Rendert die einzelnen Karten
         renderItem={({ item }) => (
           <RewardCard
+            key={item.id}
             image={item.image}
             brand={item.brand}
             title={item.title}
             points={item.points}
             icon={item.icon}
             isLocked={item.isLocked}
+            onPress={() => router.push(`/reward/${item.id}`)}
           />
         )}
       />

@@ -1,12 +1,12 @@
 import { MyTheme } from "@/constants/Colors";
-import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 
-const RewardCard = ({ image, brand, title, points, icon, isLocked }) => {
+const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress }) => {
   return (
-    <View style={styles.gridCard}>
+    <Pressable style={styles.gridCard} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Image source={{ uri: image }} style={styles.cardImage} />
         {/* Icon Overlay */}
@@ -43,7 +43,7 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked }) => {
 
       {/* Locked Overlay */}
       {isLocked && <View style={styles.lockedOverlay} />}
-    </View>
+    </Pressable>
   );
 };
 
