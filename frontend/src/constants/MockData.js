@@ -26,12 +26,6 @@ export const mockTasks = [
   { id: 9, title: "okEE", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false },
   { id: 10, title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false },
   { id: 11, title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false },
-  { id: 12, title: "Mock Task 12", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%', isLocked: false },
-  { id: 13, title: "Mock Task 13", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%', isLocked: false },
-  { id: 14, title: "Mock Task 14", difficulty: "hard", xp: 1000, lp: 2000, category: 'health', progress: '0%', isLocked: false },
-  { id: 15, title: "Mock Task 15", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '75%', isLocked: false },
-  { id: 16, title: "Mock Task 16", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%', isLocked: false },
-  { id: 17, title: "Mock Task 17", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%, isLocked: false' }
 ];
 
 export const recommendedTasks = [

@@ -84,6 +84,9 @@ export default function HomeScreen() {
           />
         </View>
       </View>
+      <View style={styles.sectionHeader}>
+        <AppText type="title">Feed</AppText>
+      </View>
     </>
   );
 

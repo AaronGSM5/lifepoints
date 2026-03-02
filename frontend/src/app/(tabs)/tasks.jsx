@@ -1,5 +1,6 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import FYTaskItem from "@/components/tasks/FYTaskItem";
+import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
@@ -50,9 +51,11 @@ const TasksScreen = () => {
         ))}
       </ScrollView>
 
-      <View style={styles.sectionHeader}>
-        <AppText type="title">All Tasks</AppText>
-      </View>
+      <AppText type="title" style={styles.sectionHeader}>
+        {activeCat.toLowerCase() === "all"
+          ? "All Tasks"
+          : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`}
+      </AppText>
 
       <ScrollView
         horizontal
@@ -73,12 +76,22 @@ const TasksScreen = () => {
     </View>
   );
 
+  const renderFooter = () => (
+    <View style={{ marginTop: Spacing.md }}>
+      <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
+        Can't find what you're searching for?
+      </AppText>
+      <SuggestTaskInput />
+    </View>
+  );
+
   return (
     <ScreenWrapper scrollable={false}>
       <FlatList
         data={filteredTasks}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
