@@ -171,3 +171,9 @@ export const mockRecommendedCommunities = [
     borderColor: "rgba(14, 165, 233, 0.1)"
   }
 ];
+
+export const mockSettings = [
+  { title: 'Cat 1', settings: ['Setting 1', 'Setting 2', 'Setting 3', 'Setting 4', 'Setting 5'] },
+  { title: 'Cat 2', settings: ['Setting 1', 'Setting 2', 'Setting 3'] },
+  { title: 'Cat 3', settings: ['Setting 1', 'Setting 2', 'Setting 3', 'Setting 4'] },
+]

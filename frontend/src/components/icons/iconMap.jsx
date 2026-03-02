@@ -38,6 +38,7 @@ export const IconMap = {
   heart: ({ outline, ...props }) => <Ionicons name={outline ? "heart-outline" : "heart"} {...props} />,
   bookmark: ({ outline, ...props }) => <Ionicons name={outline ? "bookmark-outline" : "bookmark"} {...props} />,
   dots: (props) => <MaterialCommunityIcons name="dots-vertical" {...props} />,
+  right: (props) => <Ionicons name="chevron-forward" {...props} />,
 
   // Placeholders
   newFolder: (props) => <MaterialIcons name="create-new-folder" {...props} />,
