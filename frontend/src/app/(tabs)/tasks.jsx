@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: Spacing.md
   },
   carouselContainer: {
