@@ -33,6 +33,11 @@ export const IconMap = {
   trophy: (props) => <FontAwesome5 name="trophy" {...props} color={MyTheme.gold} />,
   wallet: (props) => <Ionicons name="wallet-outline" {...props} />,
   lock: (props) => <FontAwesome5 name="lock" {...props} />,
+  plane: (props) => <Ionicons name="paper-plane-outline" {...props} />,
+  chat: (props) => <Ionicons name="chatbubbles-outline" {...props} />,
+  heart: ({ outline, ...props }) => <Ionicons name={outline ? "heart-outline" : "heart"} {...props} />,
+  bookmark: ({ outline, ...props }) => <Ionicons name={outline ? "bookmark-outline" : "bookmark"} {...props} />,
+  dots: (props) => <MaterialCommunityIcons name="dots-vertical" {...props} />,
 
   // Placeholders
   newFolder: (props) => <MaterialIcons name="create-new-folder" {...props} />,

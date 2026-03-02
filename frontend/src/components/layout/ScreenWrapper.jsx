@@ -4,14 +4,21 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
 
-export default function ScreenWrapper({ children, scrollable = true, withOffset = false, useGradient = true, style }) {
+export default function ScreenWrapper({
+  children,
+  scrollable = true,
+  withOffset = false,
+  withPaddingBottom = true,
+  useGradient = true,
+  style
+}) {
   const insets = useSafeAreaInsets();
 
   const contentStyles = [
     {
       paddingHorizontal: Spacing.md,
       paddingTop: withOffset ? insets.top + Spacing.md : Spacing.md,
-      paddingBottom: Math.max(insets.bottom, Spacing.md)
+      paddingBottom: withPaddingBottom ? Math.max(insets.bottom, Spacing.md) : 0
     },
     style
   ];

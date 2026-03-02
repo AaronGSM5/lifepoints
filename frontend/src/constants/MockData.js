@@ -7,6 +7,13 @@ export const mockProfile = {
   profileXp: 9020
 };
 
+export const mockFeedItems = [
+  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/sportSelfie2.jpg") },
+  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/sportSelfie1.jpeg") },
+  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/cooking.webp") },
+  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/helping.jpg") },
+]
+
 export const mockTasks = [
   { id: 1, title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '20%', isLocked: false },
   { id: 2, title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false },
