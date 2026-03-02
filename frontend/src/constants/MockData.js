@@ -8,24 +8,30 @@ export const mockProfile = {
 };
 
 export const mockTasks = [
-  { title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000 },
-  { title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000 },
-  { title: "Hola 👋", difficulty: "easy", xp: 500, lp: 1000 },
-  { title: "Mahlzeit 👋", difficulty: "easy", xp: 500, lp: 1000 },
-  { title: "Ich grüße 👋", difficulty: "easy", xp: 500, lp: 1000 },
-  { title: "Hundegebell?", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "Knowledge Test", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "NIEMALS FLUSSABWÄRTS", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "okEE", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500 },
-  { title: "Mock Task 12", difficulty: "hard", xp: 1000, lp: 2000 },
-  { title: "Mock Task 13", difficulty: "hard", xp: 1000, lp: 2000 },
-  { title: "Mock Task 14", difficulty: "hard", xp: 1000, lp: 2000 },
-  { title: "Mock Task 15", difficulty: "hard", xp: 1000, lp: 2000 },
-  { title: "Mock Task 16", difficulty: "hard", xp: 1000, lp: 2000 },
-  { title: "Mock Task 17", difficulty: "hard", xp: 1000, lp: 2000 }
+  { title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '20%' },
+  { title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%' },
+  { title: "Hola 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%' },
+  { title: "Mahlzeit 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%' },
+  { title: "Ich grüße 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%' },
+  { title: "Hundegebell?", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
+  { title: "Knowledge Test", difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '50%' },
+  { title: "NIEMALS FLUSSABWÄRTS", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
+  { title: "okEE", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
+  { title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%' },
+  { title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
+  { title: "Mock Task 12", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%' },
+  { title: "Mock Task 13", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%' },
+  { title: "Mock Task 14", difficulty: "hard", xp: 1000, lp: 2000, category: 'health', progress: '0%' },
+  { title: "Mock Task 15", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '75%' },
+  { title: "Mock Task 16", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%' },
+  { title: "Mock Task 17", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%' }
 ];
+
+export const recommendedTasks = [
+  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/sportevent.png") },
+  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/sportevent.png") },
+  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/sportevent.png") },
+]
 
 export const mockRewards = [
   {
@@ -119,4 +125,48 @@ export const mockTrophies = [
   { id: 28, title: "Reader", icon: "book", unlocked: false },
   { id: 29, title: "Sugar Free", icon: "candy", unlocked: false },
   { id: 30, title: "Sleeper", icon: "bed", unlocked: false }
+];
+
+
+export const mockRecommendedCommunities = [
+  {
+    title: "Zen Masters",
+    desc: "Daily meditation & focus",
+    icon: "spa",
+    iconColor: "#a855f7",
+    bgColor: "rgba(168, 85, 247, 0.2)",
+    borderColor: "rgba(168, 85, 247, 0.1)"
+  },
+  {
+    title: "Page Turners",
+    desc: "Read 15 mins every day",
+    icon: "menu-book",
+    iconColor: "#3b82f6",
+    bgColor: "rgba(59, 130, 246, 0.2)",
+    borderColor: "rgba(59, 130, 246, 0.1)"
+  },
+  {
+    title: "Marathon Elites",
+    desc: "Competitive long distance running",
+    icon: "directions-run",
+    iconColor: "#10b981",
+    bgColor: "rgba(16, 185, 129, 0.2)",
+    borderColor: "rgba(16, 185, 129, 0.1)"
+  },
+  {
+    title: "Healthy Bites",
+    desc: "Clean eating and meal prep tips",
+    icon: "restaurant",
+    iconColor: "#f97316",
+    bgColor: "rgba(249, 115, 22, 0.2)",
+    borderColor: "rgba(249, 115, 22, 0.1)"
+  },
+  {
+    title: "Hydration Heroes",
+    desc: "Track and meet water goals",
+    icon: "water-drop",
+    iconColor: "#0ea5e9",
+    bgColor: "rgba(14, 165, 233, 0.2)",
+    borderColor: "rgba(14, 165, 233, 0.1)"
+  }
 ];
