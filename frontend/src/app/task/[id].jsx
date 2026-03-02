@@ -7,21 +7,21 @@ import AppButton from "@/components/ui/AppButton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import { mockRewards } from "@/constants/MockData";
+import { mockTasks } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function RewardDetailScreen() {
+export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const reward = mockRewards.find((c) => String(c.id) === String(id));
+  const task = mockTasks.find((t) => String(t.id) === String(id));
 
-  if (!reward) {
+  if (!task) {
     return (
       <View style={styles.errorContainer}>
-        <AppText type="h2">Reward nicht gefunden 😔</AppText>
+        <AppText type="h2">Task nicht gefunden 😔</AppText>
         <AppButton title="Zurück" onPress={() => router.back()} style={{ marginTop: Spacing.md }} />
       </View>
     );
@@ -31,10 +31,13 @@ export default function RewardDetailScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
           {/* Hero-Image */}
           <View style={styles.imageContainer}>
-            <Image source={{ uri: reward.image }} style={styles.image} />
+            <Image
+              source={task.image ? { uri: task.image } : require("@/../public/assets/icon.png")}
+              style={styles.image}
+            />
 
             {/* Der Zurück-Button schwebt ÜBER dem Bild */}
             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
@@ -52,13 +55,10 @@ export default function RewardDetailScreen() {
           <View style={styles.content}>
             <View style={styles.headerRow}>
               <View style={styles.brandBadge}>
-                <Icon name={reward.icon} size={14} color={MyTheme.primaryAccent} />
-                <AppText bold type="caption" style={styles.brandText}>
-                  {reward.brand}
-                </AppText>
+                <Icon name={task.icon} size={14} color={MyTheme.primaryAccent} />
               </View>
 
-              {reward.isLocked && (
+              {task.isLocked && (
                 <View style={styles.lockedBadge}>
                   <AppText bold type="caption" style={{ fontSize: 10 }}>
                     LOCKED
@@ -68,17 +68,17 @@ export default function RewardDetailScreen() {
             </View>
 
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
-              {reward.title}
+              {task.title}
             </AppText>
             <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {reward.points} PTS
+              {task.lp} PTS
             </AppText>
 
             <AppText type="title" style={{ marginBottom: Spacing.sm }}>
               Beschreibung
             </AppText>
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
-              {reward.description}
+              {task.description}
             </AppText>
           </View>
         </ScrollView>
@@ -86,11 +86,11 @@ export default function RewardDetailScreen() {
         <View style={styles.stickyFooter}>
           <AppButton
             variant="primary"
-            title={reward.isLocked ? "Punkte sammeln zum Freischalten" : "Jetzt einlösen"}
+            title={task.isLocked ? "Level auf zum Freischalten" : "Jetzt tracken"}
             size="lg"
-            disabled={reward.isLocked}
-            style={reward.isLocked ? { opacity: 0.8 } : {}}
-            onPress={() => alert("Reward eingelöst!")}
+            disabled={task.isLocked}
+            style={task.isLocked ? { opacity: 0.8 } : {}}
+            onPress={() => alert("Task getrackt!")}
             bgColor={MyTheme.primaryAccent}
           />
         </View>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    height: 350,
+    height: 400,
     position: "relative"
   },
   image: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 130
+    height: 100
   },
   backButton: {
     position: "absolute",

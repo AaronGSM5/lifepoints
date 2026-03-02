@@ -8,23 +8,23 @@ export const mockProfile = {
 };
 
 export const mockTasks = [
-  { title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '20%' },
-  { title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%' },
-  { title: "Hola 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%' },
-  { title: "Mahlzeit 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%' },
-  { title: "Ich grüße 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%' },
-  { title: "Hundegebell?", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
-  { title: "Knowledge Test", difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '50%' },
-  { title: "NIEMALS FLUSSABWÄRTS", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
-  { title: "okEE", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
-  { title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%' },
-  { title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%' },
-  { title: "Mock Task 12", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%' },
-  { title: "Mock Task 13", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%' },
-  { title: "Mock Task 14", difficulty: "hard", xp: 1000, lp: 2000, category: 'health', progress: '0%' },
-  { title: "Mock Task 15", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '75%' },
-  { title: "Mock Task 16", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%' },
-  { title: "Mock Task 17", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%' }
+  { id: 1, title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '20%', isLocked: false },
+  { id: 2, title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false },
+  { id: 3, title: "Hola 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false },
+  { id: 4, title: "Mahlzeit 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true },
+  { id: 5, title: "Ich grüße 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false },
+  { id: 6, title: "Hundegebell?", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false },
+  { id: 7, title: "Knowledge Test", difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '50%', isLocked: false },
+  { id: 8, title: "NIEMALS FLUSSABWÄRTS", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: true },
+  { id: 9, title: "okEE", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false },
+  { id: 10, title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false },
+  { id: 11, title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false },
+  { id: 12, title: "Mock Task 12", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%', isLocked: false },
+  { id: 13, title: "Mock Task 13", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%', isLocked: false },
+  { id: 14, title: "Mock Task 14", difficulty: "hard", xp: 1000, lp: 2000, category: 'health', progress: '0%', isLocked: false },
+  { id: 15, title: "Mock Task 15", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '75%', isLocked: false },
+  { id: 16, title: "Mock Task 16", difficulty: "hard", xp: 1000, lp: 2000, category: 'social', progress: '0%', isLocked: false },
+  { id: 17, title: "Mock Task 17", difficulty: "hard", xp: 1000, lp: 2000, category: 'selfcare', progress: '0%, isLocked: false' }
 ];
 
 export const recommendedTasks = [

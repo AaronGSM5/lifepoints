@@ -1,36 +1,38 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "../ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 
-const TaskItem = ({ title, lp, progress, status, icon, isActive }) => (
-  <View style={styles.taskItem}>
-    <View style={styles.taskItemTop}>
-      <View style={styles.taskInfoMain}>
-        <View style={styles.taskIconBox}>
-          <Icon name={icon || "sun"} />
-        </View>
-        <View>
-          <AppText bold>{title}</AppText>
-          <View style={styles.taskMetaRow}>
-            <AppText bold style={{ color: MyTheme.primaryAccent }}>
-              {lp} LP
-            </AppText>
-            {status && (
-              <>
-                <AppText style={styles.dot}>•</AppText>
-                <AppText style={styles.taskStatus}>{status}</AppText>
-              </>
-            )}
+const TaskItem = ({ title, lp, progress, status, icon, isActive, onPress }) => (
+  <Pressable onPress={onPress}>
+    <View style={styles.taskItem}>
+      <View style={styles.taskItemTop}>
+        <View style={styles.taskInfoMain}>
+          <View style={styles.taskIconBox}>
+            <Icon name={icon || "sun"} />
+          </View>
+          <View>
+            <AppText bold>{title}</AppText>
+            <View style={styles.taskMetaRow}>
+              <AppText bold style={{ color: MyTheme.primaryAccent }}>
+                {lp} LP
+              </AppText>
+              {status && (
+                <>
+                  <AppText style={styles.dot}>•</AppText>
+                  <AppText style={styles.taskStatus}>{status}</AppText>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </View>
+      <View style={styles.progressBg}>
+        <View style={[styles.progressFill, { width: progress }]} />
+      </View>
     </View>
-    <View style={styles.progressBg}>
-      <View style={[styles.progressFill, { width: progress }]} />
-    </View>
-  </View>
+  </Pressable>
 );
 
 const styles = StyleSheet.create({

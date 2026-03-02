@@ -8,26 +8,19 @@ import { MyTheme } from "@/constants/Colors";
 import { mockTasks, recommendedTasks } from "@/constants/MockData";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-
-const COLORS = {
-  primary: "#f4257b",
-  backgroundDark: "#1a0d13",
-  surfaceDark: "#2d1621",
-  accentNeon: "#ff2d85",
-  textMain: "#f1f5f9",
-  textMuted: "#94a3b8",
-  white: "#ffffff"
-};
+import React, { useCallback, useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 
 const TasksScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const [activeCat, setActiveCat] = useState("all");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const uniqueCategories = [...new Set(mockTasks.map((c) => c.category))];
-  const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+  const categories = useMemo(() => {
+    const unique = [...new Set(mockTasks.map((c) => c.category))];
+    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+  }, [mockTasks]);
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -42,8 +35,8 @@ const TasksScreen = () => {
     (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
   );
 
-  return (
-    <ScreenWrapper scrollable>
+  const renderHeader = () => (
+    <View style={styles.headerContainer}>
       <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
 
       <View style={styles.sectionHeader}>
@@ -77,17 +70,39 @@ const TasksScreen = () => {
           />
         ))}
       </ScrollView>
+    </View>
+  );
 
-      <View style={styles.taskList}>
-        {filteredTasks.map((task) => (
-          <TaskItem title={task.title} lp={task.lp} progress={task.progress} status={task.limit} icon={task.icon} />
-        ))}
-      </View>
+  return (
+    <ScreenWrapper scrollable={false}>
+      <FlatList
+        data={filteredTasks}
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+        ListHeaderComponent={renderHeader}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
+        onRefresh={handleRefresh}
+        refreshing={isRefreshing}
+        renderItem={({ item }) => (
+          <TaskItem
+            title={item.title}
+            lp={item.lp}
+            progress={item.progress}
+            status={item.limit}
+            icon={item.icon}
+            onPress={() => router.push(`task/${item.id}`)}
+          />
+        )}
+      />
     </ScreenWrapper>
   );
 };
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    paddingBottom: Spacing.md
+  },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -99,11 +114,6 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     marginHorizontal: -Spacing.lg
-  },
-  taskList: {
-    marginTop: Spacing.md,
-    paddingHorizontal: Spacing.sm,
-    gap: Spacing.md
   }
 });
 
