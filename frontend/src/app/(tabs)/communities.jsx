@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MyTheme } from "@/constants/Colors";
@@ -9,13 +9,29 @@ import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { mockRecommendedCommunities } from "@/constants/MockData";
+import { Skeleton } from "moti/skeleton"; // WICHTIG: Der richtige Import
 
 export default function CommunitiesScreen() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1700);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
   return (
     <ScreenWrapper scrollable>
       {/* Search Bar */}
-      <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
+      <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.md}>
+        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
+      </Skeleton>
+      <View style={{ height: Spacing.md }} />
       {/* Create Community Section */}
       <View style={styles.createCard}>
         <View style={styles.createCardLeft}>
@@ -41,21 +57,33 @@ export default function CommunitiesScreen() {
       {/* My Communities Section */}
       <View style={styles.sectionHeader}>
         <AppText type="title">My Communities</AppText>
-        <AppButton variant="ghost" title={"See all"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
+        {!isLoading && (
+          <AppButton variant="ghost" title={"See all"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
+        )}
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {myCommunities.map((item, index) => (
-          <View key={index} style={styles.communityCard}>
-            <View style={[styles.cardIconBadge, { backgroundColor: item.color }]}>
-              <MaterialIcons name={item.icon} size={24} color="#fff" />
-            </View>
-            <AppText bold style={styles.cardTitle} numberOfLines={1}>
-              {item.title}
-            </AppText>
-            <AppText type="caption">{item.members}</AppText>
-          </View>
-        ))}
+        {isLoading
+          ? [1, 2, 3].map((i) => (
+              <View key={i} style={[styles.communityCard, { borderStyle: "none" }]}>
+                <Skeleton {...skeletonProps} width={48} height={48} radius={Spacing.borderRadius.md} />
+                <View style={{ height: Spacing.md }} />
+                <Skeleton {...skeletonProps} width={80} height={14} />
+                <View style={{ height: Spacing.xs }} />
+                <Skeleton {...skeletonProps} width={60} height={10} />
+              </View>
+            ))
+          : myCommunities.map((item, index) => (
+              <View key={index} style={styles.communityCard}>
+                <View style={[styles.cardIconBadge, { backgroundColor: item.color }]}>
+                  <MaterialIcons name={item.icon} size={24} color="#fff" />
+                </View>
+                <AppText bold style={styles.cardTitle} numberOfLines={1}>
+                  {item.title}
+                </AppText>
+                <AppText type="caption">{item.members}</AppText>
+              </View>
+            ))}
       </ScrollView>
 
       {/* Recommended Section */}
@@ -64,26 +92,36 @@ export default function CommunitiesScreen() {
       </View>
 
       <View style={styles.recommendedList}>
-        {mockRecommendedCommunities.map((item, index) => (
-          <View key={index} style={styles.recommendedItem}>
-            <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
-              <MaterialIcons name={item.icon} size={28} color={item.iconColor} />
-            </View>
-            <View style={styles.recommendedTextContainer}>
-              <AppText bold style={styles.recommendedTitle}>
-                {item.title}
-              </AppText>
-              <AppText type="caption">{item.desc}</AppText>
-            </View>
-            <AppButton
-              size="sm"
-              icon={<Icon name="add" size={20} color={MyTheme.primaryAccent} />}
-              iconPosition="center"
-              bgColor={"rgba(47, 196, 146, 0.1)"}
-              borderStyle={{ borderWidth: 1, borderColor: "rgba(47, 196, 146, 0.2)" }}
-            />
-          </View>
-        ))}
+        {isLoading
+          ? [1, 2, 3].map((i) => (
+              <View key={i} style={styles.recommendedItem}>
+                <Skeleton {...skeletonProps} width={48} height={48} radius={Spacing.borderRadius.md} />
+                <View style={{ flex: 1, gap: 8 }}>
+                  <Skeleton {...skeletonProps} width="60%" height={16} />
+                  <Skeleton {...skeletonProps} width="90%" height={12} />
+                </View>
+              </View>
+            ))
+          : mockRecommendedCommunities.map((item, index) => (
+              <View key={index} style={styles.recommendedItem}>
+                <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
+                  <MaterialIcons name={item.icon} size={28} color={item.iconColor} />
+                </View>
+                <View style={styles.recommendedTextContainer}>
+                  <AppText bold style={styles.recommendedTitle}>
+                    {item.title}
+                  </AppText>
+                  <AppText type="caption">{item.desc}</AppText>
+                </View>
+                <AppButton
+                  size="sm"
+                  icon={<Icon name="add" size={20} color={MyTheme.primaryAccent} />}
+                  iconPosition="center"
+                  bgColor={"rgba(47, 196, 146, 0.1)"}
+                  borderStyle={{ borderWidth: 1, borderColor: "rgba(47, 196, 146, 0.2)" }}
+                />
+              </View>
+            ))}
       </View>
     </ScreenWrapper>
   );

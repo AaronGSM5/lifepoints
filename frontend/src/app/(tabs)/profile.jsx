@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Image, ScrollView, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
@@ -11,8 +11,10 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { mockProfile } from "@/constants/MockData";
+import { Skeleton } from "moti/skeleton";
 
 export default function ProfileScreen() {
+  const [isLoading, setIsLoading] = useState(true);
   // // 1. Der Startwert der Animation (0%)
   const animatedWidth = useRef(new Animated.Value(0)).current;
   // // 2. Berechnung des Zielwerts (Prozentsatz)
@@ -47,6 +49,17 @@ export default function ProfileScreen() {
     }, [targetPercentage])
   );
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
+
   // Alternative Animation: nur beim ersten Laden
   // useEffect(() => {
   //   // 3. Startet die Animation, sobald die Seite lädt
@@ -62,22 +75,33 @@ export default function ProfileScreen() {
     <ScreenWrapper scrollable>
       {/* Avatar Section */}
       <View style={styles.profileHeader}>
-        <View style={styles.avatarContainer}>
-          <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
-          <View style={styles.levelBadge}>
-            <AppText bold type="caption" style={{ color: MyTheme.text }}>
-              LVL {mockProfile.profileLevel}
-            </AppText>
+        {isLoading ? (
+          <View style={{ alignItems: "center" }}>
+            <Skeleton {...skeletonProps} radius="round" width={100} height={100} />
+            <View style={{ height: Spacing.md }} />
+            <Skeleton {...skeletonProps} width={180} height={24} />
+            <View style={{ height: Spacing.xs }} />
+            <Skeleton {...skeletonProps} width={120} height={14} />
           </View>
-        </View>
-
-        <AppText type="h1">{mockProfile.profileName}</AppText>
-        <AppText type="caption" style={{ marginTop: Spacing.xs }}>
-          {mockProfile.profileClass} •{" "}
-          <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-            {mockProfile.profileRank}
-          </AppText>
-        </AppText>
+        ) : (
+          <>
+            <View style={styles.avatarContainer}>
+              <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
+              <View style={styles.levelBadge}>
+                <AppText bold type="caption">
+                  LVL {mockProfile.profileLevel}
+                </AppText>
+              </View>
+            </View>
+            <AppText type="h1">{mockProfile.profileName}</AppText>
+            <AppText type="caption" style={{ marginTop: Spacing.xs }}>
+              {mockProfile.profileClass} •{" "}
+              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+                {mockProfile.profileRank}
+              </AppText>
+            </AppText>
+          </>
+        )}
 
         {/* XP Bar */}
         <View style={styles.xpContainer}>
@@ -85,44 +109,64 @@ export default function ProfileScreen() {
             <AppText bold type="caption">
               XP PROGRESS
             </AppText>
-            <AppText bold type="caption" style={{ color: MyTheme.text }}>
-              {mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}
-            </AppText>
+            {isLoading ? (
+              <Skeleton {...skeletonProps} width={60} height={12} />
+            ) : (
+              <AppText bold type="caption" style={{ color: MyTheme.text }}>
+                {mockProfile.profileXp} / {500 + mockProfile.profileLevel * 300}
+              </AppText>
+            )}
           </View>
+
           <View style={styles.progressBarBg}>
             {/* Wir nutzen Animated.View als Container für den Gradienten */}
-            <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
-              <LinearGradient
-                // Alternate design in primary accent?
-                colors={[MyTheme.primaryAccent, "#335399"]}
-                // colors={['#8A2387', '#E94057', '#F27121']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFill}
-              />
-            </Animated.View>
+            {isLoading ? (
+              <Skeleton {...skeletonProps} width="100%" height={8} />
+            ) : (
+              <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
+                <LinearGradient
+                  // Alternate design in primary accent?
+                  colors={[MyTheme.primaryAccent, "#335399"]}
+                  // colors={['#8A2387', '#E94057', '#F27121']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={StyleSheet.absoluteFill}
+                />
+              </Animated.View>
+            )}
           </View>
         </View>
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
-          <AppButton
-            variant="primary"
-            title={"Edit Profile"}
-            icon={<Icon name="pencil" size={16} color={MyTheme.background} />}
-            iconPosition="left"
-            textStyle={{ color: MyTheme.background }}
-            bgColor={MyTheme.primaryAccent}
-          />
+          {isLoading ? (
+            <>
+              {/* Skeleton für Edit Profile */}
+              <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
+              {/* Skeleton für Share Stats */}
+              <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
+            </>
+          ) : (
+            <>
+              <AppButton
+                variant="primary"
+                title={"Edit Profile"}
+                icon={<Icon name="pencil" size={16} color={MyTheme.background} />}
+                iconPosition="left"
+                textStyle={{ color: MyTheme.background }}
+                bgColor={MyTheme.primaryAccent}
+              />
 
-          <AppButton
-            variant="primary"
-            title={"Share Stats"}
-            icon={<Icon name="share" size={16} color={MyTheme.text} />}
-            iconPosition="left"
-            textStyle={{ color: MyTheme.text }}
-            bgColor={"#2A2A2A"}
-          />
+              <AppButton
+                variant="primary"
+                title={"Share Stats"}
+                icon={<Icon name="share" size={16} color={MyTheme.text} />}
+                iconPosition="left"
+                textStyle={{ color: MyTheme.text }}
+                bgColor={"#2A2A2A"}
+              />
+            </>
+          )}
         </View>
       </View>
 
@@ -136,10 +180,21 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.statsGrid}>
-          <StatCard label="DAY STREAK" value="45" icon="fire" color="#FF5733" badge="Best: 52" />
-          <StatCard label="TOTAL POINTS" value="12.4k" icon="gem" color="#007ec7" badge="Top 5%" />
-          <StatCard label="BAD HABITS AVOIDED" value="120" icon="ban" color="#900C3F" blurred />
-          <StatCard label="MEMBER SINCE" value="2023" icon="calendar" color="#581845" />
+          {isLoading ? (
+            <>
+              <StatCardSkeleton skBase={skeletonProps} />
+              <StatCardSkeleton skBase={skeletonProps} />
+              <StatCardSkeleton skBase={skeletonProps} />
+              <StatCardSkeleton skBase={skeletonProps} />
+            </>
+          ) : (
+            <>
+              <StatCard label="DAY STREAK" value="45" icon="fire" color="#FF5733" badge="Best: 52" />
+              <StatCard label="TOTAL POINTS" value="12.4k" icon="gem" color="#007ec7" badge="Top 5%" />
+              <StatCard label="BAD HABITS AVOIDED" value="120" icon="ban" color="#900C3F" blurred />
+              <StatCard label="MEMBER SINCE" value="2023" icon="calendar" color="#581845" />
+            </>
+          )}
         </View>
       </View>
 
@@ -160,17 +215,34 @@ export default function ProfileScreen() {
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
-          <TrophyCard title="Gym Rat" icon="dumbbell" />
-          <TrophyCard title="Early Riser" icon="sun" unlocked />
-          <TrophyCard title="Cyborg" icon="robot" />
-          <TrophyCard title="Reader" icon="book" unlocked />
-          <TrophyCard title="Sugar Free" icon="candy" />
-          <TrophyCard title="Sleeper" icon="bed" />
+          {isLoading ? (
+            [1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
+            ))
+          ) : (
+            <>
+              <TrophyCard title="Gym Rat" icon="dumbbell" />
+              <TrophyCard title="Early Riser" icon="sun" unlocked />
+              <TrophyCard title="Cyborg" icon="robot" />
+              <TrophyCard title="Reader" icon="book" unlocked />
+            </>
+          )}
         </ScrollView>
       </View>
     </ScreenWrapper>
   );
 }
+
+const StatCardSkeleton = ({ skeletonProps }) => (
+  <View style={[styles.statCard, { borderColor: MyTheme.secondary }]}>
+    <View style={styles.statTop}>
+      <Skeleton {...skeletonProps} width={50} height={20} />
+      <Skeleton {...skeletonProps} width={16} height={16} radius={4} />
+    </View>
+    <View style={{ height: Spacing.sm }} />
+    <Skeleton {...skeletonProps} width={80} height={10} />
+  </View>
+);
 
 // Sub components
 const StatCard = ({ label, value, icon, color, badge, blurred }) => (

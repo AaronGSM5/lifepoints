@@ -52,7 +52,7 @@ export default RewardCard;
 const styles = StyleSheet.create({
   gridCard: {
     flex: 1,
-    maxWidth: "48%",
+    maxWidth: "100%",
     backgroundColor: MyTheme.primary,
     borderRadius: Spacing.borderRadius.md,
     overflow: "hidden",

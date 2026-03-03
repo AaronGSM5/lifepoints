@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View, ScrollView, Animated, Easing, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
@@ -10,11 +10,26 @@ import RewardCard from "@/components/shop/RewardCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { mockRewards } from "@/constants/MockData";
+import { Skeleton } from "moti/skeleton";
+
+const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState("all");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
 
   const uniqueCategories = [...new Set(mockRewards.map((c) => c.category))];
   const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
@@ -37,15 +52,16 @@ export default function ShopScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      animatedWalletProgress.setValue(0); // Reset
-
-      Animated.timing(animatedWalletProgress, {
-        toValue: 60,
-        duration: 1500,
-        easing: Easing.bezier(0.4, 0, 0.2, 1),
-        useNativeDriver: false
-      }).start();
-    }, [])
+      if (!isLoading) {
+        animatedWalletProgress.setValue(0); // Reset
+        Animated.timing(animatedWalletProgress, {
+          toValue: 60,
+          duration: 1500,
+          easing: Easing.bezier(0.4, 0, 0.2, 1),
+          useNativeDriver: false
+        }).start();
+      }
+    }, [isLoading])
   );
 
   const filteredCoupons = mockRewards.filter(
@@ -56,48 +72,53 @@ export default function ShopScreen() {
     () => (
       <View>
         {/* Wallet Card */}
-        <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
-          <View style={styles.walletHeader}>
-            <AppText bold type="caption" style={{ opacity: 0.9 }}>
-              YOUR POINTS
-            </AppText>
-            <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
-          </View>
-
-          <View style={styles.pointsRow}>
-            <AppText type="h1">1.250</AppText>
-            <AppText type="title" style={styles.pointsLabel}>
-              LP
-            </AppText>
-          </View>
-
-          {/* Progress Bar */}
-          <View style={styles.progressBarContainer}>
-            <View style={styles.progressBarBg}>
-              <Animated.View
-                style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
-              />
+        <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+          <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
+            <View style={styles.walletHeader}>
+              <AppText bold type="caption" style={{ opacity: 0.9 }}>
+                YOUR POINTS
+              </AppText>
+              <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
             </View>
-            <AppText type="caption">750 pts until Gold Tier</AppText>
-          </View>
-        </LinearGradient>
+
+            <View style={styles.pointsRow}>
+              <AppText type="h1">{isLoading ? "0.00" : "1.250"}</AppText>
+              <AppText type="title" style={styles.pointsLabel}>
+                LP
+              </AppText>
+            </View>
+
+            {/* Progress Bar */}
+            <View style={styles.progressBarContainer}>
+              <View style={styles.progressBarBg}>
+                <Animated.View
+                  style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
+                />
+              </View>
+              <AppText type="caption">750 pts until Gold Tier</AppText>
+            </View>
+          </LinearGradient>
+        </Skeleton>
 
         {/* Filter Tabs */}
+        {isLoading && <View style={{ marginTop: Spacing.sm }} />}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           style={styles.tabsContainer}
           contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
         >
-          {categories.map((cat, index) => (
-            <AppButton
-              key={index}
-              title={cat}
-              variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
-              size="md"
-              onPress={() => setActiveCat(cat.toLowerCase())}
-            />
-          ))}
+          {isLoading
+            ? [1, 2, 3, 4].map((i) => <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={20} />)
+            : categories.map((cat, index) => (
+                <AppButton
+                  key={index}
+                  title={cat}
+                  variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
+                  size="md"
+                  onPress={() => setActiveCat(cat.toLowerCase())}
+                />
+              ))}
         </ScrollView>
 
         {/* Featured Reward */}
@@ -105,47 +126,49 @@ export default function ShopScreen() {
           <AppText type="title">Featured Reward</AppText>
         </View>
 
-        <View style={styles.featuredWrapper}>
-          <LinearGradient
-            colors={["#8A2387", "#E94057", "#F27121"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.featuredCard}
-          >
-            <View style={styles.featuredIconContainer}>
-              <Icon name="music" size={20} />
-            </View>
-
-            <View style={styles.featuredContent}>
-              <View style={styles.bestValueBadge}>
-                <AppText bold type="caption" style={{ color: "#00FF7F" }}>
-                  BEST VALUE
-                </AppText>
+        <Skeleton {...skeletonProps} width="100%" height={240} radius={Spacing.borderRadius.lg}>
+          <View style={[styles.featuredWrapper, { shadowOpacity: isLoading ? 0 : 0.7 }]}>
+            <LinearGradient
+              colors={["#8A2387", "#E94057", "#F27121"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.featuredCard}
+            >
+              <View style={styles.featuredIconContainer}>
+                <Icon name="music" size={20} />
               </View>
 
-              <AppText type="h2">Free Month Premium</AppText>
-              <AppText type="caption" style={styles.featuredSubtitle}>
-                Spotify Individual Plan
-              </AppText>
-
-              <View style={styles.featuredFooter}>
-                <View>
-                  <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                    2.500 PTS
+              <View style={styles.featuredContent}>
+                <View style={styles.bestValueBadge}>
+                  <AppText bold type="caption" style={{ color: "#00FF7F" }}>
+                    BEST VALUE
                   </AppText>
-                  <AppText type="title">2.000 PTS</AppText>
                 </View>
-                <AppButton
-                  variant="primary"
-                  title={"Redeem"}
-                  size="md"
-                  textStyle={{ color: "#E94057" }}
-                  bgColor="white"
-                />
+
+                <AppText type="h2">Free Month Premium</AppText>
+                <AppText type="caption" style={styles.featuredSubtitle}>
+                  Spotify Individual Plan
+                </AppText>
+
+                <View style={styles.featuredFooter}>
+                  <View>
+                    <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
+                      2.500 PTS
+                    </AppText>
+                    <AppText type="title">2.000 PTS</AppText>
+                  </View>
+                  <AppButton
+                    variant="primary"
+                    title={"Redeem"}
+                    size="md"
+                    textStyle={{ color: "#E94057" }}
+                    bgColor="white"
+                  />
+                </View>
               </View>
-            </View>
-          </LinearGradient>
-        </View>
+            </LinearGradient>
+          </View>
+        </Skeleton>
 
         {/* 'For You' Grid */}
         <AppText type="title" style={{ marginTop: Spacing.lg, marginBottom: Spacing.md }}>
@@ -155,7 +178,7 @@ export default function ShopScreen() {
         </AppText>
       </View>
     ),
-    [activeCat, walletWidth]
+    [activeCat, walletWidth, isLoading]
   );
 
   const renderEmptyState = () => (
@@ -178,7 +201,7 @@ export default function ShopScreen() {
   return (
     <ScreenWrapper scrollable={false}>
       <FlatList
-        data={filteredCoupons}
+        data={isLoading ? SKELETON_REWARDS : filteredCoupons}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2} // 🔥 Die Magie! FlatList macht das Grid automatisch
         showsVerticalScrollIndicator={false}
@@ -188,24 +211,35 @@ export default function ShopScreen() {
         // Fügt unseren ganzen oberen Bereich ein
         ListHeaderComponent={renderHeader}
         // Fügt unseren Empty State ein
-        ListEmptyComponent={renderEmptyState}
+        ListEmptyComponent={!isLoading ? renderEmptyState : null}
         refreshing={isRefreshing}
         onRefresh={handleRefresh}
         tintColor={MyTheme.primaryAccent}
         colors={[MyTheme.primaryAccent]}
-        // Rendert die einzelnen Karten
-        renderItem={({ item }) => (
-          <RewardCard
-            key={item.id}
-            image={item.image}
-            brand={item.brand}
-            title={item.title}
-            points={item.points}
-            icon={item.icon}
-            isLocked={item.isLocked}
-            onPress={() => router.push(`/reward/${item.id}`)}
-          />
-        )}
+        renderItem={({ item }) => {
+          if (isLoading) {
+            return (
+              <View style={{ flex: 1 }}>
+                <Skeleton {...skeletonProps} width="100%" height={200} radius={Spacing.borderRadius.lg}>
+                  <View style={{ height: 200, width: "100%" }} />
+                </Skeleton>
+              </View>
+            );
+          }
+          return (
+            <View style={{ flex: 1 }}>
+              <RewardCard
+                image={item.image}
+                brand={item.brand}
+                title={item.title}
+                points={item.points}
+                icon={item.icon}
+                isLocked={item.isLocked}
+                onPress={() => router.push(`/reward/${item.id}`)}
+              />
+            </View>
+          );
+        }}
       />
     </ScreenWrapper>
   );
@@ -269,7 +303,6 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius.lg,
     shadowColor: "#E94057",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.7,
     shadowRadius: 25,
     elevation: 10
   },

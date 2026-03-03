@@ -11,15 +11,29 @@ import FeedItem from "@/components/home/FeedItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import LpChart from "@/components/home/LpChart";
 import RecommendedTasks from "@/components/RecommendedTasks";
+import { Skeleton } from "moti/skeleton";
+
+const SKELETON_FEED_ITEMS = Array.from({ length: 3 }).map((_, index) => ({
+  id: `skeleton-${index}`,
+  isSkeleton: true
+}));
 
 export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [shouldCrash, setShouldCrash] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
   }
   const pulseAnim = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     Animated.loop(
@@ -46,43 +60,57 @@ export default function HomeScreen() {
     }, 2000);
   }, []);
 
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
+
   const renderHeader = () => (
     <>
       <View style={styles.heroSection}>
-        <Image source={require("../../../public/assets/sportevent.png")} style={styles.heroImage} resizeMode="cover" />
+        <Skeleton {...skeletonProps} width={"100%"} height={"100%"} radius={Spacing.borderRadius.lg}>
+          <Image
+            source={require("../../../public/assets/sportevent.png")}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
+        </Skeleton>
       </View>
-
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <AppText type="title">Active Tasks</AppText>
-          <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />
+          {!isLoading && <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />}
         </View>
 
-        <View style={styles.taskCardActive}>
-          <View style={styles.taskIconContainer}>
-            <Icon name="timer" size={20} color={MyTheme.primaryAccent} />
+        <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+          <View style={styles.taskCardActive}>
+            <View style={styles.taskIconContainer}>
+              <Icon name="timer" size={20} color={MyTheme.primaryAccent} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <AppText bold type="title">
+                {isLoading ? " " : "Morning Vitality"}
+              </AppText>
+            </View>
+            <View style={styles.lpContainer}>
+              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+                {isLoading ? " " : "1,500"}
+              </AppText>
+              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+                {isLoading ? " " : "LP"}
+              </AppText>
+            </View>
+            <AppButton
+              size="sm"
+              icon={<Icon name="checkmark" size={20} />}
+              iconPosition="center"
+              bgColor={MyTheme.primaryAccent}
+              onPress={() => setShouldCrash(true)}
+              disabled={isLoading}
+            />
           </View>
-          <View style={{ flex: 1 }}>
-            <AppText bold type="title">
-              Morning Vitality
-            </AppText>
-          </View>
-          <View style={styles.lpContainer}>
-            <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-              1,500
-            </AppText>
-            <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-              LP
-            </AppText>
-          </View>
-          <AppButton
-            size="sm"
-            icon={<Icon name="checkmark" size={20} />}
-            iconPosition="center"
-            bgColor={MyTheme.primaryAccent}
-            onPress={() => setShouldCrash(true)}
-          />
-        </View>
+        </Skeleton>
       </View>
       <View style={styles.sectionHeader}>
         <AppText type="title">Feed</AppText>
@@ -93,7 +121,7 @@ export default function HomeScreen() {
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false}>
       <FlatList
-        data={mockFeedItems}
+        data={isLoading ? SKELETON_FEED_ITEMS : mockFeedItems}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         ListHeaderComponent={renderHeader}
         showsVerticalScrollIndicator={false}
@@ -101,7 +129,51 @@ export default function HomeScreen() {
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
-        renderItem={({ item }) => <FeedItem {...item} />}
+        renderItem={({ item }) => {
+          if (item.isSkeleton) {
+            return (
+              <View
+                style={[
+                  styles.feedItemSkeleton,
+                  { paddingBottom: Spacing.md, backgroundColor: MyTheme.primary, borderRadius: Spacing.borderRadius.md }
+                ]}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingLeft: Spacing.sm,
+                    paddingRight: Spacing.md,
+                    paddingVertical: Spacing.sm
+                  }}
+                >
+                  {/* Picture */}
+                  <Skeleton {...skeletonProps} radius="round" width={32} height={32} />
+
+                  <View style={{ marginLeft: Spacing.sm, gap: 4 }}>
+                    {/* Name */}
+                    <Skeleton {...skeletonProps} width={120} height={12} />
+                  </View>
+                </View>
+
+                {/* Content */}
+                <Skeleton {...skeletonProps} width="100%" height={350} />
+                <View
+                  style={{
+                    paddingHorizontal: Spacing.md,
+                    paddingVertical: Spacing.sm,
+                    marginTop: Spacing.xs,
+                    gap: Spacing.md
+                  }}
+                >
+                  <Skeleton {...skeletonProps} width={120} height={12} />
+                  <Skeleton {...skeletonProps} width={80} height={12} />
+                </View>
+              </View>
+            );
+          }
+          return <FeedItem {...item} />;
+        }}
       />
 
       {/* <RecommendedTasks /> */}
