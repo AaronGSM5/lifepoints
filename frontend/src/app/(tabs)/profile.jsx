@@ -28,6 +28,10 @@ export default function ProfileScreen() {
   // Animation: jedes Mal, wenn der Tab aktiv wird
   useFocusEffect(
     useCallback(() => {
+      if (isLoading) {
+        animatedWidth.setValue(0);
+        return;
+      }
       animatedWidth.setValue(0);
       const animation = Animated.timing(animatedWidth, {
         toValue: targetPercentage,
@@ -46,7 +50,7 @@ export default function ProfileScreen() {
         animation.stop();
         clearTimeout(timer);
       };
-    }, [targetPercentage])
+    }, [targetPercentage, isLoading])
   );
 
   useEffect(() => {
@@ -88,7 +92,7 @@ export default function ProfileScreen() {
             <View style={styles.avatarContainer}>
               <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
               <View style={styles.levelBadge}>
-                <AppText bold type="caption">
+                <AppText bold type="caption" style={{ color: MyTheme.text }}>
                   LVL {mockProfile.profileLevel}
                 </AppText>
               </View>
@@ -155,6 +159,7 @@ export default function ProfileScreen() {
                 iconPosition="left"
                 textStyle={{ color: MyTheme.background }}
                 bgColor={MyTheme.primaryAccent}
+                onPress={() => router.push("/setting/edit-profile")}
               />
 
               <AppButton
