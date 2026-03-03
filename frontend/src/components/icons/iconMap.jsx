@@ -39,6 +39,7 @@ export const IconMap = {
   bookmark: ({ outline, ...props }) => <Ionicons name={outline ? "bookmark-outline" : "bookmark"} {...props} />,
   dots: (props) => <MaterialCommunityIcons name="dots-vertical" {...props} />,
   right: (props) => <Ionicons name="chevron-forward" {...props} />,
+  trash: (props) => <Ionicons name="trash-outline" {...props} />,
 
   // Placeholders
   newFolder: (props) => <MaterialIcons name="create-new-folder" {...props} />,
@@ -50,6 +51,7 @@ export const IconMap = {
   music: (props) => <FontAwesome5 name="music" {...props} />,
   shopping: (props) => <MaterialCommunityIcons name="shopping-outline" {...props} />,
   shoppingCat: (props) => <Feather name="shopping-bag" {...props} />,
+  mail: (props) => <Feather name="mail" {...props} />,
   coffeeCat: (props) => <Feather name="coffee" {...props} />,
   techCat: (props) => <Feather name="smartphone" {...props} />,
   giftCat: (props) => <Feather name="gift" {...props} />,
@@ -69,5 +71,9 @@ export const IconMap = {
   hardDrive: (props) => <Feather name="hard-drive" {...props} />,
   shieldOff: (props) => <Feather name="shield-off" {...props} />,
   fileText: (props) => <Feather name="file-text" {...props} />,
-  userX: (props) => <Feather name="user-x" {...props} />
+  userX: (props) => <Feather name="user-x" {...props} />,
+  bicycle: (props) => <Ionicons name="bicycle" {...props} />,
+  camera: (props) => <Ionicons name="camera-outline" {...props} />,
+  spotify: (props) => <FontAwesome5 name="spotify" {...props} />,
+  at: (props) => <Ionicons name="at" {...props} />
 };
