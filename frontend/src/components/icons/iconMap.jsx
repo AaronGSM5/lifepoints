@@ -8,7 +8,7 @@ export const IconMap = {
   tasks: ({ outline, ...props }) => <Ionicons name={outline ? "book-outline" : "book"} {...props} />,
   shop: ({ outline, ...props }) => <Ionicons name={outline ? "bag-outline" : "bag"} {...props} />,
   profile: ({ outline, ...props }) => <Ionicons name={outline ? "person-outline" : "person"} {...props} />,
-  help: (props) => <Ionicons name="help-circle" {...props} />,
+  help: (props) => <Ionicons name="help-circle-outline" {...props} />,
 
   // Toolbar
   back: (props) => <Ionicons name="chevron-back" {...props} />,
@@ -58,5 +58,16 @@ export const IconMap = {
   robot: (props) => <FontAwesome5 name="robot" {...props} />,
   book: (props) => <FontAwesome5 name="book" {...props} />,
   candy: (props) => <FontAwesome5 name="candy-cane" {...props} />,
-  bed: (props) => <FontAwesome5 name="bed" {...props} />
+  bed: (props) => <FontAwesome5 name="bed" {...props} />,
+  user: (props) => <Feather name="user" {...props} />,
+  shield: (props) => <Feather name="shield" {...props} />,
+  link: (props) => <Feather name="link" {...props} />,
+  bell: (props) => <Feather name="bell" {...props} />,
+  star: (props) => <Feather name="star" {...props} />,
+  moon: (props) => <Feather name="moon" {...props} />,
+  globe: (props) => <Feather name="globe" {...props} />,
+  hardDrive: (props) => <Feather name="hard-drive" {...props} />,
+  shieldOff: (props) => <Feather name="shield-off" {...props} />,
+  fileText: (props) => <Feather name="file-text" {...props} />,
+  userX: (props) => <Feather name="user-x" {...props} />
 };

@@ -173,7 +173,31 @@ export const mockRecommendedCommunities = [
 ];
 
 export const mockSettings = [
-  { title: 'Cat 1', settings: ['Setting 1', 'Setting 2', 'Setting 3', 'Setting 4', 'Setting 5'] },
-  { title: 'Cat 2', settings: ['Setting 1', 'Setting 2', 'Setting 3'] },
-  { title: 'Cat 3', settings: ['Setting 1', 'Setting 2', 'Setting 3', 'Setting 4'] },
-]
+  {
+    title: 'Your Account',
+    data: [
+      { id: '1', label: 'Edit Profile', icon: 'user', type: 'link', route: '/settings/edit-profile' },
+      { id: '2', label: 'Security & Login', icon: 'shield', type: 'link', route: '/settings/security' },
+      { id: '3', label: 'Linked Services', icon: 'link', type: 'link', route: '/settings/linked-services' },
+      { id: '4', label: 'Notifications', icon: 'bell', type: 'link', route: '/settings/notifications' },
+      { id: '5', label: 'Subscription', icon: 'star', type: 'link', route: '/settings/subscription' },
+    ],
+  },
+  {
+    title: 'App Experience',
+    data: [
+      { id: '6', label: 'Appearance', icon: 'moon', type: 'bottom-sheet', actionName: 'openThemePicker' },
+      { id: '7', label: 'Language & Region', icon: 'globe', type: 'link', route: '/settings/language' },
+      { id: '8', label: 'Storage & Cache', icon: 'hardDrive', type: 'action', actionName: 'clearCache' },
+    ],
+  },
+  {
+    title: 'Support & Legal',
+    data: [
+      { id: '9', label: 'Help & Support', icon: 'help', type: 'link', route: '/settings/support' },
+      { id: '10', label: 'Privacy Policy', icon: 'shieldOff', type: 'link', route: '/settings/privacy' },
+      { id: '11', label: 'Terms of Service', icon: 'fileText', type: 'link', route: '/settings/terms' },
+      { id: '12', label: 'Delete Account', icon: 'userX', type: 'action', actionName: 'deleteAccount', danger: true },
+    ],
+  },
+];
