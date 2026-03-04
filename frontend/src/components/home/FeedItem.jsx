@@ -12,7 +12,6 @@ export default function FeedItem({ username, description, image, initialLikes = 
 
   const [lastTap, setLastTap] = useState(0);
 
-  // Animations-Werte für das Pop-up Herz
   const heartScale = useRef(new Animated.Value(0)).current;
   const heartOpacity = useRef(new Animated.Value(0)).current;
 
@@ -26,18 +25,14 @@ export default function FeedItem({ username, description, image, initialLikes = 
 
   const handleDoubleTap = () => {
     const now = Date.now();
-    const DOUBLE_PRESS_DELAY = 300; // Zeitfenster für den Doppeltipp (300ms ist Standard)
+    const DOUBLE_PRESS_DELAY = 300;
 
     if (now - lastTap < DOUBLE_PRESS_DELAY) {
-      // 1. Es war ein Doppeltipp! Premium Haptik auslösen
-
-      // 2. Nur liken, wenn es nicht schon gelikt ist (wie bei Insta)
       if (!isLiked) {
         setIsLiked(true);
         setLikesCount((prev) => prev + 1);
       }
 
-      // 3. Die epische Herz-Animation starten
       Animated.sequence([
         Animated.parallel([
           Animated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
@@ -45,17 +40,15 @@ export default function FeedItem({ username, description, image, initialLikes = 
         ]),
         Animated.delay(400), // Das Herz bleibt kurz sichtbar
         Animated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true }) // Unsichtbar wieder klein machen
+        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
       ]).start();
     } else {
-      // Es war nur ein einzelner Tipp, wir merken uns die Zeit
       setLastTap(now);
     }
   };
 
   return (
     <View style={styles.card}>
-      {/* Header (User & Options) */}
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <View style={styles.avatarPlaceholder}>
@@ -70,10 +63,8 @@ export default function FeedItem({ username, description, image, initialLikes = 
         </Pressable>
       </View>
       <View style={styles.imageContainer}>
-        {/* Image (Vollbildbreite) */}
         <Pressable onPress={handleDoubleTap}>
           <Image source={image} style={styles.feedImage} resizeMode="cover" />
-          {/* DAS POP-UP HERZ (Zentriert über dem Bild) */}
           <Animated.View
             style={[
               styles.bigHeartOverlay,
@@ -82,13 +73,12 @@ export default function FeedItem({ username, description, image, initialLikes = 
                 transform: [{ scale: heartScale }]
               }
             ]}
-            pointerEvents="none" // Wichtig: Klicks fallen durch das Herz hindurch
+            pointerEvents="none"
           >
             <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
           </Animated.View>
         </Pressable>
       </View>
-      {/* Action Bar (Like, Comment, Share, Bookmark) */}
       <View style={styles.actionBar}>
         <View style={styles.actionLeft}>
           <Pressable hitSlop={10} onPress={handleLike} style={styles.iconButton}>
@@ -106,7 +96,6 @@ export default function FeedItem({ username, description, image, initialLikes = 
         </Pressable>
       </View>
 
-      {/* Footer */}
       <View style={styles.footer}>
         <AppText bold style={styles.likesText}>
           {likesCount} {likesCount === 1 ? "Like" : "Likes"}

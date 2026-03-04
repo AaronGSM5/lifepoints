@@ -55,6 +55,13 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
     </View>
   );
 
+  const renderEmptySection = () => (
+    <View style={{ alignItems: "center", marginTop: 40 }}>
+      <Icon name="chat" size={40} color={MyTheme.muted} />
+      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>Noch keine Kommentare. Schreib den ersten!</AppText>
+    </View>
+  );
+
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <View style={styles.modalContainer}>
@@ -74,6 +81,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
                 keyExtractor={(item) => item.id}
                 renderItem={renderComment}
                 showsVerticalScrollIndicator={true}
+                ListEmptyComponent={renderEmptySection}
                 contentContainerStyle={styles.listContent}
                 style={
                   Platform.OS === "web" ? { maxHeight: SCREEN_HEIGHT * 0.75 - 130, overflowY: "auto" } : { flex: 1 }
