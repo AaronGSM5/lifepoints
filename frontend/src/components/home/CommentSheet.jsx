@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, memo, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -18,41 +18,105 @@ import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { mockComments } from "@/constants/MockData";
 
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
+const CommentItem = memo(({ item, isReply = false, onReply }) => (
+  <View style={[styles.commentRow, isReply && styles.replyRow]}>
+    <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
+    <View style={styles.commentContent}>
+      <AppText style={styles.commentText}>
+        <AppText>{item.username} </AppText>
+        {item.text}
+      </AppText>
+
+      <View style={styles.commentFooter}>
+        <AppText style={styles.commentTime}>{item.time}</AppText>
+        <Pressable onPress={onReply} hitSlop={10}>
+          <AppText style={styles.replyButton}>Antworten</AppText>
+        </Pressable>
+      </View>
+    </View>
+
+    {!isReply && (
+      <Pressable hitSlop={10} style={{ paddingLeft: 10 }}>
+        <Icon name="heart" outline size={14} color={MyTheme.muted} />
+      </Pressable>
+    )}
+  </View>
+));
+
 export default function CommentSheet({ isVisible, onClose, postId }) {
-  const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-  const safeInsets = useSafeAreaInsets();
-  const insets = safeInsets || { top: 0, bottom: 0, left: 0, right: 0 };
+  const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(mockComments);
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Ref to focus textInput onReply
+  const inputRef = useRef(null);
+
+  const handleReply = useCallback((parentComment, targetUser) => {
+    setReplyingTo({ parentId: parentComment.id, username: targetUser });
+    setCommentText(`@${targetUser} `);
+    setTimeout(() => inputRef.current?.focus(), 100);
+  }, []);
 
   const handlePostComment = () => {
     if (commentText.trim().length === 0) return;
-    const newComment = {
+    const newCommentData = {
       id: Date.now().toString(),
       username: "Du",
       avatar: "https://i.pravatar.cc/150?u=du",
       text: commentText,
       time: "Gerade eben"
     };
-    setComments([newComment, ...comments]);
+
+    if (replyingTo) {
+      const updatedComments = comments.map((cmd) => {
+        if (cmd.id === replyingTo.parentId) {
+          return {
+            ...cmd,
+            replies: [...(cmd.replies || []), newCommentData]
+          };
+        }
+        return cmd;
+      });
+      setComments(updatedComments);
+    } else {
+      setComments([newCommentData, ...comments]);
+    }
+
     setCommentText("");
+    setReplyingTo(null);
   };
 
-  const renderComment = ({ item }) => (
-    <View style={styles.commentRow}>
-      <Image source={{ uri: item.avatar }} style={styles.commentAvatar} />
-      <View style={styles.commentContent}>
-        <AppText style={styles.commentText}>
-          <AppText bold>{item.username} </AppText>
-          {item.text}
-        </AppText>
-        <AppText style={styles.commentTime}>{item.time} • Antworten</AppText>
+  const onRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1500);
+  };
+
+  const renderComment = useCallback(
+    ({ item }) => (
+      <View style={styles.commentContainer}>
+        <CommentItem item={item} onReply={() => handleReply(item, item.username)} />
+
+        {item.replies && item.replies.length > 0 && (
+          <View style={styles.repliesContainer}>
+            {item.replies.map((reply) => (
+              <CommentItem
+                key={reply.id}
+                item={reply}
+                isReply={true}
+                onReply={() => handleReply(item, reply.username)}
+              />
+            ))}
+          </View>
+        )}
       </View>
-      {/* Kleines Herz rechts zum Liken des Kommentars */}
-      <Pressable hitSlop={10} style={{ paddingLeft: 10 }}>
-        <Icon name="heart" outline size={14} color={MyTheme.muted} />
-      </Pressable>
-    </View>
+    ),
+    [handleReply]
   );
 
   const renderEmptySection = () => (
@@ -81,6 +145,8 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
                 keyExtractor={(item) => item.id}
                 renderItem={renderComment}
                 showsVerticalScrollIndicator={true}
+                onRefresh={onRefresh}
+                refreshing={isRefreshing}
                 ListEmptyComponent={renderEmptySection}
                 contentContainerStyle={styles.listContent}
                 style={
@@ -90,10 +156,24 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
               />
             </View>
             {/* Eingabefeld (Sticky at bottom) */}
+            {replyingTo && (
+              <View style={styles.replyBar}>
+                <AppText style={styles.replyBarText}>
+                  Antwort an{" "}
+                  <AppText bold style={{ fontSize: 14 }}>
+                    @{replyingTo.username}
+                  </AppText>
+                </AppText>
+                <Pressable onPress={() => setReplyingTo(null)}>
+                  <Icon name="close" size={16} color={MyTheme.muted} />
+                </Pressable>
+              </View>
+            )}
             <View style={[styles.inputSection, { paddingBottom: Math.max(insets.bottom, Spacing.md) }]}>
               <Image source={{ uri: "https://i.pravatar.cc/150?u=du" }} style={styles.inputAvatar} />
               <View style={styles.inputBubble}>
                 <TextInput
+                  ref={inputRef}
                   style={styles.textInput}
                   placeholder="Kommentieren..."
                   placeholderTextColor={MyTheme.muted}
@@ -169,7 +249,10 @@ const styles = StyleSheet.create({
   },
   commentRow: {
     flexDirection: "row",
-    marginBottom: Spacing.lg
+    paddingVertical: Spacing.sm
+  },
+  replyRow: {
+    marginBottom: Spacing.md
   },
   commentAvatar: {
     width: 36,
@@ -177,6 +260,37 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginRight: 12,
     backgroundColor: "#F0F0F0"
+  },
+  replyAvatar: {
+    width: 28, // Kleinere Avatare für Antworten
+    height: 28,
+    borderRadius: 14,
+    marginRight: 10
+  },
+  repliesContainer: {
+    marginLeft: 44,
+    borderLeftWidth: 1,
+    borderLeftColor: "rgba(255,255,255,0.05)",
+    paddingLeft: 12,
+    marginTop: -Spacing.sm,
+    marginBottom: Spacing.sm
+  },
+  replyBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.15)",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: MyTheme.separator
+  },
+  replyBarText: {
+    fontSize: 13,
+    color: MyTheme.muted
+  },
+  commentContainer: {
+    marginBottom: Spacing.sm
   },
   commentContent: {
     flex: 1
@@ -188,10 +302,18 @@ const styles = StyleSheet.create({
   },
   commentTime: {
     fontSize: 12,
-    color: MyTheme.muted,
-    marginTop: 4
+    color: MyTheme.muted
   },
-
+  commentFooter: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4, // Kleiner Abstand zum Kommentartext oben
+    gap: Spacing.md // Abstand zwischen Zeit ("2h") und dem Button ("Antworten")
+  },
+  replyButton: {
+    fontSize: 12,
+    color: MyTheme.muted
+  },
   inputSection: {
     flexDirection: "row",
     alignItems: "flex-end",
