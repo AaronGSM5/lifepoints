@@ -117,8 +117,8 @@ const TasksScreen = () => {
       <FlatList
         data={isLoading ? SKELETON_TASKS : filteredTasks}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={!isLoading ? renderFooter : null}
+        ListHeaderComponent={renderHeader()}
+        ListFooterComponent={!isLoading ? renderFooter() : null}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}

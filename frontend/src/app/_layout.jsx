@@ -6,7 +6,7 @@ import { MyTheme } from "@/constants/Colors";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
 
 // Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist
@@ -15,6 +15,11 @@ SplashScreen.preventAutoHideAsync();
 export function ErrorBoundary({ error, retry }) {
   return <ErrorFallback error={error} resetError={retry} />;
 }
+
+const initialMetrics = {
+  frame: { x: 0, y: 0, width: 0, height: 0 },
+  insets: { top: 0, left: 0, right: 0, bottom: 0 }
+};
 
 export default function RootLayout() {
   // Schriften laden
@@ -38,12 +43,12 @@ export default function RootLayout() {
 
   return (
     <View style={{ flex: 1, backgroundColor: MyTheme.background }}>
-      <SafeAreaProvider>
+      <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
         <StatusBar style="light" translucent backgroundColor="transparent" />
 
         <Stack
           screenOptions={{
-            header: () => <Toolbar />,
+            header: (props) => <Toolbar {...props} />,
             headerShown: true,
             contentStyle: { backgroundColor: MyTheme.background }
           }}

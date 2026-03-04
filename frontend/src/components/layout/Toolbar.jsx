@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.seperator
+    borderBottomColor: MyTheme.separator
   },
   sideSection: {
     flex: 1, // Nimmt jeweils 1/3 ein

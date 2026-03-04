@@ -12,6 +12,7 @@ import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import LpChart from "@/components/home/LpChart";
 import RecommendedTasks from "@/components/RecommendedTasks";
 import { Skeleton } from "moti/skeleton";
+import CommentSheet from "@/components/home/CommentSheet";
 
 const SKELETON_FEED_ITEMS = Array.from({ length: 3 }).map((_, index) => ({
   id: `skeleton-${index}`,
@@ -22,6 +23,7 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [shouldCrash, setShouldCrash] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -128,7 +130,6 @@ export default function HomeScreen() {
         ListHeaderComponent={renderHeader}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
-        // ItemSeparatorComponent={() => <View style={{ height: Spacing.lg }} />}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
@@ -139,7 +140,7 @@ export default function HomeScreen() {
                   paddingBottom: Spacing.md,
                   backgroundColor: MyTheme.primary,
                   borderBottomWidth: StyleSheet.hairlineWidth,
-                  borderBottomColor: MyTheme.seperator
+                  borderBottomColor: MyTheme.separator
                 }}
               >
                 <View
@@ -181,13 +182,18 @@ export default function HomeScreen() {
               </View>
             );
           }
-          return <FeedItem {...item} />;
+          return <FeedItem {...item} onOpenComments={(id) => setSelectedPostId(id)} />;
         }}
       />
 
       {/* <RecommendedTasks /> */}
       {/* <LpChart /> */}
       {/* <SuggestTaskInput /> */}
+      <CommentSheet
+        isVisible={selectedPostId !== null}
+        onClose={() => setSelectedPostId(null)}
+        postId={selectedPostId}
+      />
     </ScreenWrapper>
   );
 }
@@ -242,6 +248,6 @@ const styles = StyleSheet.create({
     marginRight: Spacing.md
   },
   listContent: {
-    marginBottom: Spacing.md
+    paddingBottom: Spacing.md
   }
 });

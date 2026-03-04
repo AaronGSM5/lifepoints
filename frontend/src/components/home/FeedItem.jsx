@@ -5,7 +5,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Icon } from "@/components/icons/Icon";
 import { useRef, useState } from "react";
 
-export default function FeedItem({ username, description, image, initialLikes = 120 }) {
+export default function FeedItem({ username, description, image, initialLikes = 120, id, onOpenComments }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
@@ -94,7 +94,7 @@ export default function FeedItem({ username, description, image, initialLikes = 
           <Pressable hitSlop={10} onPress={handleLike} style={styles.iconButton}>
             <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : "white"} />
           </Pressable>
-          <Pressable style={styles.iconButton}>
+          <Pressable style={styles.iconButton} hitSlop={10} onPress={() => onOpenComments(id)}>
             <Icon name="chat" />
           </Pressable>
           <Pressable style={styles.iconButton}>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: MyTheme.primary,
     paddingBottom: Spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.seperator
+    borderBottomColor: MyTheme.separator
   },
   header: {
     flexDirection: "row",
@@ -151,20 +151,18 @@ const styles = StyleSheet.create({
     backgroundColor: MyTheme.primaryAccent,
     justifyContent: "center",
     alignItems: "center"
-    // marginRight: Spacing.sm
   },
   username: {
     fontSize: 15
   },
   imageContainer: {
     width: "100%",
+    backgroundColor: MyTheme.primary,
     position: "relative"
   },
   feedImage: {
     width: "100%",
-    height: "100%",
-    aspectRatio: 4 / 5,
-    backgroundColor: MyTheme.primary
+    aspectRatio: 4 / 5
   },
   bigHeartOverlay: {
     ...StyleSheet.absoluteFillObject,
