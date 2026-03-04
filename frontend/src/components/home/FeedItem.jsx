@@ -4,16 +4,19 @@ import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "@/components/icons/Icon";
 import { useRef, useState } from "react";
+import { router } from "expo-router";
 
 export default function FeedItem({ username, description, image, initialLikes = 120, id, onOpenComments }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
-
   const [lastTap, setLastTap] = useState(0);
-
   const heartScale = useRef(new Animated.Value(0)).current;
   const heartOpacity = useRef(new Animated.Value(0)).current;
+
+  const navigateToProfile = () => {
+    router.push(`/user/${username}`);
+  };
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -50,14 +53,16 @@ export default function FeedItem({ username, description, image, initialLikes = 
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <View style={styles.headerUser}>
-          <View style={styles.avatarPlaceholder}>
-            <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
+        <Pressable onPress={navigateToProfile}>
+          <View style={styles.headerUser}>
+            <View style={styles.avatarPlaceholder}>
+              <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
+            </View>
+            <AppText bold style={styles.username}>
+              {username}
+            </AppText>
           </View>
-          <AppText bold style={styles.username}>
-            {username}
-          </AppText>
-        </View>
+        </Pressable>
         <Pressable hitSlop={15}>
           <Icon name={"dots"} size={20} color={MyTheme.muted} />
         </Pressable>

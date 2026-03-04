@@ -17,33 +17,40 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { mockComments } from "@/constants/MockData";
+import { router } from "expo-router";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const CommentItem = memo(({ item, isReply = false, onReply, onLike }) => (
-  <View style={[styles.commentRow, isReply && styles.replyRow]}>
-    <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
-    <View style={styles.commentContent}>
-      <AppText style={styles.commentText}>
-        <AppText bold>{item.username} </AppText>
-        {item.text}
-      </AppText>
-
-      <View style={styles.commentFooter}>
-        <AppText style={styles.commentTime}>{item.time}</AppText>
-        <Pressable onPress={onReply} hitSlop={10}>
-          <AppText style={styles.replyButton}>Antworten</AppText>
-        </Pressable>
-      </View>
-    </View>
-
-    {!isReply && (
-      <Pressable hitSlop={10} style={{ paddingLeft: 10 }} onPress={() => onLike(item.id)}>
-        <Icon name="heart" outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
+const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
+  return (
+    <View style={[styles.commentRow, isReply && styles.replyRow]}>
+      <Pressable onPress={() => onNavigate(item.username)}>
+        <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
       </Pressable>
-    )}
-  </View>
-));
+      <View style={styles.commentContent}>
+        <AppText style={styles.commentText}>
+          <AppText bold onPress={() => onNavigate(item.username)}>
+            {item.username}{" "}
+          </AppText>
+          {item.text}
+        </AppText>
+
+        <View style={styles.commentFooter}>
+          <AppText style={styles.commentTime}>{item.time}</AppText>
+          <Pressable onPress={onReply} hitSlop={10}>
+            <AppText style={styles.replyButton}>Antworten</AppText>
+          </Pressable>
+        </View>
+      </View>
+
+      {!isReply && (
+        <Pressable hitSlop={10} style={{ paddingLeft: 10 }} onPress={() => onLike(item.id)}>
+          <Icon name="heart" outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
+        </Pressable>
+      )}
+    </View>
+  );
+});
 
 export default function CommentSheet({ isVisible, onClose, postId }) {
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
@@ -54,6 +61,17 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   // Ref to focus textInput onReply
   const inputRef = useRef(null);
+
+  const handleNavigate = useCallback(
+    (username) => {
+      onClose();
+
+      setTimeout(() => {
+        router.push(`/user/${username}`);
+      }, 50);
+    },
+    [onClose, router]
+  );
 
   const handleLikeComment = useCallback((id) => {
     setComments((prevComments) =>
@@ -106,7 +124,12 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const renderComment = useCallback(
     ({ item }) => (
       <View style={styles.commentContainer}>
-        <CommentItem item={item} onReply={() => handleReply(item, item.username)} onLike={handleLikeComment} />
+        <CommentItem
+          item={item}
+          onReply={() => handleReply(item, item.username)}
+          onLike={handleLikeComment}
+          onNavigate={handleNavigate}
+        />
 
         {item.replies && item.replies.length > 0 && (
           <View style={styles.repliesContainer}>
@@ -116,13 +139,15 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
                 item={reply}
                 isReply={true}
                 onReply={() => handleReply(item, reply.username)}
+                onLike={handleLikeComment}
+                onNavigate={handleNavigate}
               />
             ))}
           </View>
         )}
       </View>
     ),
-    [handleReply, handleLikeComment]
+    [handleReply, handleLikeComment, handleNavigate]
   );
 
   const renderEmptySection = () => (
