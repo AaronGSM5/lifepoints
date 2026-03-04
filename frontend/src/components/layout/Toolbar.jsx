@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router, usePathname } from "expo-router";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
+import { Spacing } from "@/constants/Spacing";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -23,15 +24,15 @@ export default function Toolbar() {
         {
           height: 56 + insets.top,
           paddingTop: insets.top,
-          paddingLeft: Math.max(12, insets.left),
-          paddingRight: Math.max(12, insets.right)
+          paddingLeft: Math.max(Spacing.md, insets.left),
+          paddingRight: Math.max(Spacing.md, insets.right)
         }
       ]}
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
         {!isMainTab && (
-          <Pressable onPress={() => router.back()}>
+          <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />
           </Pressable>
         )}
@@ -54,11 +55,11 @@ export default function Toolbar() {
 
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
-          <Pressable onPress={() => router.push("/settings")}>
+          <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
             <Icon name="settings" />
           </Pressable>
         ) : isMainTab && pathname !== "/profile" ? (
-          <Pressable onPress={() => router.push("/notifications")}>
+          <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
             <Icon name="notifications" />
           </Pressable>
         ) : (
@@ -74,7 +75,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: MyTheme.background,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: MyTheme.seperator
   },
   sideSection: {
     flex: 1, // Nimmt jeweils 1/3 ein

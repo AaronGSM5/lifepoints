@@ -36,7 +36,7 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
           toValue: 0.9,
@@ -49,7 +49,9 @@ export default function HomeScreen() {
           useNativeDriver: true
         })
       ])
-    ).start();
+    );
+    animation.start();
+    return () => animation.stop();
   }, [pulseAnim]);
 
   const handleRefresh = useCallback(() => {
@@ -67,7 +69,7 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <>
+    <View style={{ paddingHorizontal: Spacing.md }}>
       <View style={styles.heroSection}>
         <Skeleton {...skeletonProps} width={"100%"} height={"100%"} radius={Spacing.borderRadius.lg}>
           <Image
@@ -115,35 +117,36 @@ export default function HomeScreen() {
       <View style={styles.sectionHeader}>
         <AppText type="title">Feed</AppText>
       </View>
-    </>
+    </View>
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
+    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false}>
       <FlatList
         data={isLoading ? SKELETON_FEED_ITEMS : mockFeedItems}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         ListHeaderComponent={renderHeader}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
+        // ItemSeparatorComponent={() => <View style={{ height: Spacing.lg }} />}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
           if (item.isSkeleton) {
             return (
               <View
-                style={[
-                  styles.feedItemSkeleton,
-                  { paddingBottom: Spacing.md, backgroundColor: MyTheme.primary, borderRadius: Spacing.borderRadius.md }
-                ]}
+                style={{
+                  paddingBottom: Spacing.md,
+                  backgroundColor: MyTheme.primary,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  borderBottomColor: MyTheme.seperator
+                }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    paddingLeft: Spacing.sm,
-                    paddingRight: Spacing.md,
+                    paddingHorizontal: Spacing.md,
                     paddingVertical: Spacing.sm
                   }}
                 >
@@ -166,8 +169,14 @@ export default function HomeScreen() {
                     gap: Spacing.md
                   }}
                 >
+                  <View style={{ flexDirection: "row", gap: Spacing.lg }}>
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                  </View>
+                  {/* Text Platzhalter */}
                   <Skeleton {...skeletonProps} width={120} height={12} />
-                  <Skeleton {...skeletonProps} width={80} height={12} />
+                  <Skeleton {...skeletonProps} width="80%" height={12} />
                 </View>
               </View>
             );

@@ -9,4 +9,5 @@ export const MyTheme = {
   muted: 'rgba(248, 250, 252, 0.5)',
   success: 'rgb(0, 240, 160)',
   warning: 'rgb(240, 0, 0)',
+  seperator: "rgba(0,0,0,0.08)"
 };

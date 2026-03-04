@@ -9,6 +9,7 @@ export default function ScreenWrapper({
   scrollable = true,
   withOffset = false,
   withPaddingBottom = true,
+  withPaddingSides = true,
   useGradient = true,
   style
 }) {
@@ -16,7 +17,7 @@ export default function ScreenWrapper({
 
   const contentStyles = [
     {
-      paddingHorizontal: Spacing.md,
+      paddingHorizontal: withPaddingSides ? Spacing.md : 0,
       paddingTop: withOffset ? insets.top + Spacing.md : Spacing.md,
       paddingBottom: withPaddingBottom ? Math.max(insets.bottom, Spacing.md) : 0
     },

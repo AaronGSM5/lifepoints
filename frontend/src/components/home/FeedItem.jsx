@@ -1,13 +1,58 @@
-import { View, StyleSheet, Image, Pressable } from "react-native";
+import { View, StyleSheet, Image, Pressable, Animated } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "@/components/icons/Icon";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-export default function FeedItem({ username, description, image }) {
+export default function FeedItem({ username, description, image, initialLikes = 120 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [likesCount, setLikesCount] = useState(initialLikes);
+
+  const [lastTap, setLastTap] = useState(0);
+
+  // Animations-Werte für das Pop-up Herz
+  const heartScale = useRef(new Animated.Value(0)).current;
+  const heartOpacity = useRef(new Animated.Value(0)).current;
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+  };
+
+  const handleSave = () => {
+    setIsSaved(!isSaved);
+  };
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300; // Zeitfenster für den Doppeltipp (300ms ist Standard)
+
+    if (now - lastTap < DOUBLE_PRESS_DELAY) {
+      // 1. Es war ein Doppeltipp! Premium Haptik auslösen
+
+      // 2. Nur liken, wenn es nicht schon gelikt ist (wie bei Insta)
+      if (!isLiked) {
+        setIsLiked(true);
+        setLikesCount((prev) => prev + 1);
+      }
+
+      // 3. Die epische Herz-Animation starten
+      Animated.sequence([
+        Animated.parallel([
+          Animated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
+          Animated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
+        ]),
+        Animated.delay(400), // Das Herz bleibt kurz sichtbar
+        Animated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true }) // Unsichtbar wieder klein machen
+      ]).start();
+    } else {
+      // Es war nur ein einzelner Tipp, wir merken uns die Zeit
+      setLastTap(now);
+    }
+  };
+
   return (
     <View style={styles.card}>
       {/* Header (User & Options) */}
@@ -20,19 +65,34 @@ export default function FeedItem({ username, description, image }) {
             {username}
           </AppText>
         </View>
-        <Pressable>
-          <Icon name={"dots"} size={20} />
+        <Pressable hitSlop={15}>
+          <Icon name={"dots"} size={20} color={MyTheme.muted} />
         </Pressable>
       </View>
       <View style={styles.imageContainer}>
         {/* Image (Vollbildbreite) */}
-        <Image source={image} style={styles.feedImage} resizeMode="cover" />
+        <Pressable onPress={handleDoubleTap}>
+          <Image source={image} style={styles.feedImage} resizeMode="cover" />
+          {/* DAS POP-UP HERZ (Zentriert über dem Bild) */}
+          <Animated.View
+            style={[
+              styles.bigHeartOverlay,
+              {
+                opacity: heartOpacity,
+                transform: [{ scale: heartScale }]
+              }
+            ]}
+            pointerEvents="none" // Wichtig: Klicks fallen durch das Herz hindurch
+          >
+            <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
+          </Animated.View>
+        </Pressable>
       </View>
       {/* Action Bar (Like, Comment, Share, Bookmark) */}
       <View style={styles.actionBar}>
         <View style={styles.actionLeft}>
-          <Pressable onPress={() => setIsLiked(!isLiked)} style={styles.iconButton}>
-            <Icon outline={!isLiked} name="heart" />
+          <Pressable hitSlop={10} onPress={handleLike} style={styles.iconButton}>
+            <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : "white"} />
           </Pressable>
           <Pressable style={styles.iconButton}>
             <Icon name="chat" />
@@ -41,7 +101,7 @@ export default function FeedItem({ username, description, image }) {
             <Icon name="plane" />
           </Pressable>
         </View>
-        <Pressable onPress={() => setIsSaved(!isSaved)} style={styles.iconButton}>
+        <Pressable hitSlop={10} onPress={handleSave} style={styles.iconButton}>
           <Icon outline={!isSaved} name="bookmark" />
         </Pressable>
       </View>
@@ -49,10 +109,13 @@ export default function FeedItem({ username, description, image }) {
       {/* Footer */}
       <View style={styles.footer}>
         <AppText bold style={styles.likesText}>
-          {Math.floor(Math.random() * 500) + 50} Likes
+          {likesCount} {likesCount === 1 ? "Like" : "Likes"}
         </AppText>
 
-        <AppText style={styles.descriptionText}>{description}</AppText>
+        <AppText style={styles.descriptionText}>
+          <AppText bold>{username} </AppText>
+          {description}
+        </AppText>
 
         <AppText type="caption" style={styles.timeAgo}>
           Vor 2 Stunden
@@ -65,15 +128,15 @@ export default function FeedItem({ username, description, image }) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: MyTheme.primary,
-    paddingBottom: Spacing.md,
-    borderRadius: Spacing.borderRadius.md
+    paddingBottom: Spacing.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: MyTheme.seperator
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingLeft: Spacing.sm,
-    paddingRight: Spacing.md,
+    paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm
   },
   headerUser: {
@@ -92,11 +155,20 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 14
   },
+  imageContainer: {
+    width: "100%",
+    position: "relative"
+  },
   feedImage: {
     width: "100%",
     height: "100%",
     aspectRatio: 4 / 5,
     backgroundColor: MyTheme.primary
+  },
+  bigHeartOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center"
   },
   actionBar: {
     flexDirection: "row",
@@ -104,15 +176,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
-    marginTop: Spacing.xs
+    marginTop: 2
   },
   actionLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: Spacing.md
+    gap: Spacing.lg
   },
   footer: {
-    paddingHorizontal: Spacing.md
+    paddingHorizontal: Spacing.md,
+    paddingBottom: Spacing.md
   },
   likesText: {
     marginBottom: 4,
