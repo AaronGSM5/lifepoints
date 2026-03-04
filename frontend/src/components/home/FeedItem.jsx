@@ -137,23 +137,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm
+    paddingVertical: Spacing.sm + 2
   },
   headerUser: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    gap: 12
   },
   avatarPlaceholder: {
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
     borderRadius: Spacing.borderRadius.full,
     backgroundColor: MyTheme.primaryAccent,
     justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.sm
+    alignItems: "center"
+    // marginRight: Spacing.sm
   },
   username: {
-    fontSize: 14
+    fontSize: 15
   },
   imageContainer: {
     width: "100%",
