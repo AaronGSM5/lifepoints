@@ -20,12 +20,12 @@ import { mockComments } from "@/constants/MockData";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const CommentItem = memo(({ item, isReply = false, onReply }) => (
+const CommentItem = memo(({ item, isReply = false, onReply, onLike }) => (
   <View style={[styles.commentRow, isReply && styles.replyRow]}>
     <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
     <View style={styles.commentContent}>
       <AppText style={styles.commentText}>
-        <AppText>{item.username} </AppText>
+        <AppText bold>{item.username} </AppText>
         {item.text}
       </AppText>
 
@@ -38,8 +38,8 @@ const CommentItem = memo(({ item, isReply = false, onReply }) => (
     </View>
 
     {!isReply && (
-      <Pressable hitSlop={10} style={{ paddingLeft: 10 }}>
-        <Icon name="heart" outline size={14} color={MyTheme.muted} />
+      <Pressable hitSlop={10} style={{ paddingLeft: 10 }} onPress={() => onLike(item.id)}>
+        <Icon name="heart" outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
       </Pressable>
     )}
   </View>
@@ -54,6 +54,12 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   // Ref to focus textInput onReply
   const inputRef = useRef(null);
+
+  const handleLikeComment = useCallback((id) => {
+    setComments((prevComments) =>
+      prevComments.map((comment) => (comment.id === id ? { ...comment, isLiked: !comment.isLiked } : comment))
+    );
+  }, []);
 
   const handleReply = useCallback((parentComment, targetUser) => {
     setReplyingTo({ parentId: parentComment.id, username: targetUser });
@@ -100,7 +106,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const renderComment = useCallback(
     ({ item }) => (
       <View style={styles.commentContainer}>
-        <CommentItem item={item} onReply={() => handleReply(item, item.username)} />
+        <CommentItem item={item} onReply={() => handleReply(item, item.username)} onLike={handleLikeComment} />
 
         {item.replies && item.replies.length > 0 && (
           <View style={styles.repliesContainer}>
@@ -116,7 +122,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
         )}
       </View>
     ),
-    [handleReply]
+    [handleReply, handleLikeComment]
   );
 
   const renderEmptySection = () => (
@@ -153,6 +159,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
                   Platform.OS === "web" ? { maxHeight: SCREEN_HEIGHT * 0.75 - 130, overflowY: "auto" } : { flex: 1 }
                 }
                 keyboardShouldPersistTaps="handled"
+                keyboardDismissMode="on-drag"
               />
             </View>
             {/* Eingabefeld (Sticky at bottom) */}
