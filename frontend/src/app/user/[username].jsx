@@ -1,215 +1,180 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { View, StyleSheet, Pressable, Image, FlatList, Dimensions } from "react-native";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import AppText from "@/components/ui/AppText";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Image } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import { useLocalSearchParams } from "expo-router";
+import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
+import { Icon } from "@/components/icons/Icon";
+import { Skeleton } from "moti/skeleton";
 
-const { width } = Dimensions.get("window");
-const COLUMN_COUNT = 3;
-const GRID_SIZE = width / COLUMN_COUNT;
+// Mock Data für ein fremdes Profil
+const mockPublicProfile = {
+  profileName: "Sarah Klein",
+  profileBio: "Achtsamkeit im Alltag. 🌿\n Sammle LifePoints durch kleine Gesten in der Nachbarschaft.",
+  profileLevel: 14,
+  profileClass: "Community Helper",
+  profileRank: "Gold",
+  pinnedTrophies: [
+    { id: 1, title: "Chaos-Bändiger", icon: "trash", unlocked: true },
+    { id: 2, title: "Frühaufsteher", icon: "sun", unlocked: true },
+    { id: 3, title: "Guter Zuhörer", icon: "ear", unlocked: true }
+  ]
+};
 
-// Mock-Daten für die Beiträge des Nutzers
-const USER_POSTS = Array.from({ length: 12 }).map((_, i) => ({
-  id: `post-${i}`,
-  image: `https://picsum.photos/400/500?random=${i}`
-}));
-
-export default function UserProfileScreen() {
+export default function PublicProfileScreen() {
   const { username } = useLocalSearchParams();
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const renderHeader = () => (
-    <View style={styles.profileHeader}>
-      {/* Top Info: Avatar & Stats */}
-      <View style={styles.topRow}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatarLarge}>
-            <AppText style={styles.avatarLetter}>{username?.charAt(0).toUpperCase()}</AppText>
-          </View>
-        </View>
+  useEffect(() => {
+    // Simuliere einen Fetch der User-Daten
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <AppText bold style={styles.statNumber}>
-              12
-            </AppText>
-            <AppText type="caption" style={styles.statLabel}>
-              Posts
-            </AppText>
-          </View>
-          <View style={styles.statItem}>
-            <AppText bold style={styles.statNumber}>
-              842
-            </AppText>
-            <AppText type="caption" style={styles.statLabel}>
-              Follower
-            </AppText>
-          </View>
-          <View style={styles.statItem}>
-            <AppText bold style={[styles.statNumber, { color: MyTheme.primaryAccent }]}>
-              4.2k
-            </AppText>
-            <AppText type="caption" style={styles.statLabel}>
-              LP
-            </AppText>
-          </View>
-        </View>
-      </View>
-
-      {/* Name & Bio */}
-      <View style={styles.bioSection}>
-        <AppText bold style={styles.fullName}>
-          {username}
-        </AppText>
-        <AppText style={styles.bioText}>
-          Life Enthusiast | Daily Tasks Master | Explorer of new possibilities 🚀
-        </AppText>
-      </View>
-
-      {/* Action Buttons */}
-      <View style={styles.actionRow}>
-        <View style={{ flex: 1 }}>
-          <AppButton title="Folgen" size="sm" bgColor={MyTheme.primaryAccent} />
-        </View>
-        <View style={{ flex: 1, marginLeft: Spacing.sm }}>
-          <AppButton title="Nachricht" size="sm" variant="outline" />
-        </View>
-      </View>
-
-      {/* Tab Indicator (Simuliert) */}
-      <View style={styles.tabBar}>
-        <View style={styles.activeTab}>
-          <Icon name="camera" size={20} color={MyTheme.text} />
-        </View>
-        <View style={styles.inactiveTab}>
-          <Icon name="bookmark" size={20} color={MyTheme.muted} />
-        </View>
-      </View>
-    </View>
-  );
-
-  const renderPost = ({ item }) => (
-    <Pressable style={styles.gridItem}>
-      <Image source={{ uri: item.image }} style={styles.gridImage} />
-    </Pressable>
-  );
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false}>
-      <FlatList
-        data={USER_POSTS}
-        renderItem={renderPost}
-        keyExtractor={(item) => item.id}
-        numColumns={COLUMN_COUNT}
-        ListHeaderComponent={renderHeader}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-      />
+    <ScreenWrapper scrollable>
+      {/* 1. Avatar & Info Section (Zentriert) */}
+      <View style={styles.profileHeader}>
+        {isLoading ? (
+          <View style={{ alignItems: "center" }}>
+            <Skeleton {...skeletonProps} radius="round" width={110} height={110} />
+            <View style={{ height: Spacing.md }} />
+            <Skeleton {...skeletonProps} width={180} height={28} />
+            <View style={{ height: Spacing.xs }} />
+            <Skeleton {...skeletonProps} width={220} height={16} />
+            <View style={{ height: 4 }} />
+            <Skeleton {...skeletonProps} width={180} height={16} />
+          </View>
+        ) : (
+          <>
+            <View style={styles.avatarContainer}>
+              <Image source={{ uri: "https://i.pravatar.cc/150?u=sarah" }} style={styles.avatar} />
+              <View style={styles.levelBadge}>
+                <AppText bold type="caption" style={{ color: MyTheme.text }}>
+                  LVL {mockPublicProfile.profileLevel}
+                </AppText>
+              </View>
+            </View>
+
+            <AppText type="h1" style={{ marginBottom: Spacing.xs }}>
+              {mockPublicProfile.profileName}
+            </AppText>
+
+            <AppText type="body" style={{ textAlign: "center" }}>
+              {mockPublicProfile.profileBio}
+            </AppText>
+
+            <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
+              {mockPublicProfile.profileClass} •{" "}
+              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+                {mockPublicProfile.profileRank}
+              </AppText>
+            </AppText>
+          </>
+        )}
+      </View>
+
+      {/* 2. Actionbar (50/50 Split) */}
+      <View style={styles.actionButtons}>
+        {isLoading ? (
+          <>
+            <View style={{ flex: 1 }}>
+              <Skeleton {...skeletonProps} width="100%" height={48} radius={Spacing.borderRadius.full} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Skeleton {...skeletonProps} width="100%" height={48} radius={Spacing.borderRadius.full} />
+            </View>
+          </>
+        ) : (
+          <>
+            <AppButton
+              title="Add Friend"
+              style={{ flex: 1 }}
+              textStyle={{ color: MyTheme.background }}
+              bgColor={MyTheme.primaryAccent}
+              onPress={() => console.log("Friend Request sent")}
+              icon={<Icon name="add" size={18} color={MyTheme.background} />}
+            />
+            <AppButton
+              variant="outline"
+              title="Message"
+              style={{ flex: 1 }}
+              onPress={() => console.log("Open Chat")}
+              icon={<Icon name="chat" size={18} color={MyTheme.primaryAccent} />}
+            />
+          </>
+        )}
+      </View>
+
+      <View style={styles.trophySection}>
+        <View style={styles.pinnedGrid}>
+          {isLoading
+            ? [1, 2, 3].map((i) => (
+                <View key={i}>
+                  <Skeleton {...skeletonProps} width="100%" height={100} radius={Spacing.borderRadius.lg} />
+                </View>
+              ))
+            : mockPublicProfile.pinnedTrophies.map((trophy) => (
+                <View key={trophy.id}>
+                  <TrophyCard title={trophy.title} icon={trophy.icon} unlocked />
+                </View>
+              ))}
+        </View>
+      </View>
     </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  navHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: Spacing.md,
-    height: 54,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.separator
-  },
-  navTitle: {
-    fontSize: 16
-  },
-  listContent: {
-    paddingBottom: Spacing.xl
-  },
   profileHeader: {
-    paddingTop: Spacing.lg
-  },
-  topRow: {
-    flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.md
+    paddingTop: Spacing.xl,
+    paddingHorizontal: Spacing.lg
   },
   avatarContainer: {
-    flex: 1
+    position: "relative",
+    marginBottom: Spacing.md
   },
-  avatarLarge: {
-    width: 86,
-    height: 86,
-    borderRadius: 43,
+  avatar: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    borderWidth: 2,
+    borderColor: MyTheme.secondary
+  },
+  levelBadge: {
+    position: "absolute",
+    bottom: -Spacing.sm,
+    alignSelf: "center",
     backgroundColor: MyTheme.primaryAccent,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  avatarLetter: {
-    fontSize: 32,
-    color: "#FFF",
-    fontWeight: "bold"
-  },
-  statsContainer: {
-    flex: 3,
-    flexDirection: "row",
-    justifyContent: "space-around"
-  },
-  statItem: {
-    alignItems: "center"
-  },
-  statNumber: {
-    fontSize: 18
-  },
-  statLabel: {
-    color: MyTheme.muted
-  },
-  bioSection: {
     paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.lg
+    paddingVertical: 2,
+    borderRadius: Spacing.borderRadius.full,
+    borderWidth: 2,
+    borderColor: MyTheme.background
   },
-  fullName: {
-    fontSize: 16,
-    marginBottom: 4
-  },
-  bioText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: MyTheme.text
-  },
-  actionRow: {
+  actionButtons: {
     flexDirection: "row",
-    paddingHorizontal: Spacing.md,
+    gap: Spacing.md,
+    marginTop: Spacing.xl,
+    paddingHorizontal: Spacing.lg
+  },
+  trophySection: {
+    marginTop: Spacing.xl,
+    paddingHorizontal: Spacing.lg,
     marginBottom: Spacing.xl
   },
-  tabBar: {
+  pinnedGrid: {
     flexDirection: "row",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: MyTheme.separator
-  },
-  activeTab: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: MyTheme.text
-  },
-  inactiveTab: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 12
-  },
-  gridItem: {
-    width: GRID_SIZE,
-    height: GRID_SIZE,
-    padding: 1 // Simuliert den "Gutter" zwischen den Bildern
-  },
-  gridImage: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: MyTheme.secondary
+    justifyContent: "space-between"
   }
 });
