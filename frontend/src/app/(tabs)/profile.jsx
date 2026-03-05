@@ -10,7 +10,7 @@ import { router, useFocusEffect } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
-import { mockProfile } from "@/constants/MockData";
+import { mockProfile, mockTrophies } from "@/constants/MockData";
 import { Skeleton } from "moti/skeleton";
 
 export default function ProfileScreen() {
@@ -220,18 +220,11 @@ export default function ProfileScreen() {
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
-          {isLoading ? (
-            [1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
-            ))
-          ) : (
-            <>
-              <TrophyCard title="Gym Rat" icon="dumbbell" />
-              <TrophyCard title="Early Riser" icon="sun" unlocked />
-              <TrophyCard title="Cyborg" icon="robot" />
-              <TrophyCard title="Reader" icon="book" unlocked />
-            </>
-          )}
+          {isLoading
+            ? [1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
+              ))
+            : mockTrophies.map((t, i) => <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} />)}
         </ScrollView>
       </View>
     </ScreenWrapper>

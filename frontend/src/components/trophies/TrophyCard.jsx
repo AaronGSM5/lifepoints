@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from "react";
-import { View, Animated, StyleSheet } from "react-native";
+import { View, Animated, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
+import { router } from "expo-router";
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -50,23 +51,29 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
     outputRange: [1, 0]
   });
 
+  const handlePress = () => {
+    router.push(`/trophy/${id}`);
+  };
+
   return (
-    <View style={styles.trophyItem}>
-      <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }], borderColor: borderColor }]}>
-        <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
+    <Pressable onPress={handlePress}>
+      <View style={styles.trophyItem}>
+        <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }], borderColor: borderColor }]}>
+          <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
-        <AnimatedIcon name={icon} size={24} color={iconColor} />
+          <AnimatedIcon name={icon} size={24} color={iconColor} />
 
-        {(!unlocked || justUnlocked) && (
-          <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-            <Icon name="lock" size={10} color="#FFFFFF" />
-          </Animated.View>
-        )}
-      </Animated.View>
-      <AppText animated bold type="caption" style={{ color: textColor, textAlign: "center", fontSize: 12 }}>
-        {title}
-      </AppText>
-    </View>
+          {(!unlocked || justUnlocked) && (
+            <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
+              <Icon name="lock" size={10} color="#FFFFFF" />
+            </Animated.View>
+          )}
+        </Animated.View>
+        <AppText animated bold type="caption" style={{ color: textColor, textAlign: "center", fontSize: 12 }}>
+          {title}
+        </AppText>
+      </View>
+    </Pressable>
   );
 };
 

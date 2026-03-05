@@ -18,9 +18,37 @@ const mockPublicProfile = {
   profileClass: "Community Helper",
   profileRank: "Gold",
   pinnedTrophies: [
-    { id: 1, title: "Chaos-Bändiger", icon: "trash", unlocked: true },
-    { id: 2, title: "Frühaufsteher", icon: "sun", unlocked: true },
-    { id: 3, title: "Guter Zuhörer", icon: "ear", unlocked: true }
+    {
+      id: 13,
+      title: "Gym Rat",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "dumbbell",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    },
+    {
+      id: 14,
+      title: "Early Riser",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "sun",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: true,
+      justUnlocked: true
+    },
+    {
+      id: 15,
+      title: "Cyborg",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "robot",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    }
   ]
 };
 
@@ -125,7 +153,7 @@ export default function PublicProfileScreen() {
               ))
             : mockPublicProfile.pinnedTrophies.map((trophy) => (
                 <View key={trophy.id}>
-                  <TrophyCard title={trophy.title} icon={trophy.icon} unlocked />
+                  <TrophyCard id={trophy.id} title={trophy.title} icon={trophy.icon} unlocked />
                 </View>
               ))}
         </View>
