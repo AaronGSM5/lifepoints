@@ -1,11 +1,10 @@
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Icon } from "@/components/icons/Icon";
 import { mockTrophies } from "@/constants/MockData";
 
 export default function TrophyScreen() {
@@ -18,7 +17,7 @@ export default function TrophyScreen() {
         <View style={styles.iconShowcase}>
           <View style={[styles.glowBackground]} />
           <View style={[styles.iconCircle]}>
-            <Icon name={trophy.icon} size={60} color={"#fff"} />
+            <Image source={trophy.icon} />
           </View>
         </View>
 

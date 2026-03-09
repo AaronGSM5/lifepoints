@@ -95,37 +95,22 @@ export const mockNotifications = [
   { title: "(Werde dafür lowkey bezahlt)" }
 ];
 
+export const trophyImages = {
+  "gym": require("@/../public/assets/trophies/gym.png"),
+  "gymTrans": require("@/../public/assets/trophies/gymTrans.png"),
+  "sleep": require("@/../public/assets/trophies/sleep.png"),
+  "sleepTrans": require("@/../public/assets/trophies/sleepTrans.png"),
+  "book": require("@/../public/assets/trophies/book.png"),
+  "bookTrans": require("@/../public/assets/trophies/bookTrans.png"),
+  "candy": require("@/../public/assets/trophies/candy.png"),
+  "candyTrans": require("@/../public/assets/trophies/candyTrans.png"),
+}
+
 export const mockTrophies = [
-  { id: 1, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "dumbbell", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 2, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "sun", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 3, title: "Cyborg", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "robot", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 4, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "book", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 5, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "candy", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 6, title: "Sleeper", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "bed", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 7, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "dumbbell", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 8, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "sun", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 9, title: "Cyborg", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "robot", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 10, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "book", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 11, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "candy", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 12, title: "Sleeper", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "bed", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 13, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "dumbbell", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 14, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "sun", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 15, title: "Cyborg", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "robot", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 16, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "book", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 17, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "candy", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 18, title: "Sleeper", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "bed", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 19, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "dumbbell", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 20, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "sun", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 21, title: "Cyborg", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "robot", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 22, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "book", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 23, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "candy", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 24, title: "Sleeper", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "bed", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 25, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "dumbbell", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 26, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "sun", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 27, title: "Cyborg", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "robot", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 28, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "book", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 29, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "candy", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 30, title: "Sleeper", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: "bed", requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
+  { id: 1, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['gymTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
+  { id: 2, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['sleepTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
+  { id: 4, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['bookTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
+  { id: 5, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['candyTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
 ];
 
 
