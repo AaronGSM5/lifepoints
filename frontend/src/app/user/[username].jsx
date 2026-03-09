@@ -10,17 +10,44 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
 
-// Mock Data für ein fremdes Profil
 const mockPublicProfile = {
   profileName: "Sarah Klein",
-  profileBio: "Achtsamkeit im Alltag. 🌿\n Sammle LifePoints durch kleine Gesten in der Nachbarschaft.",
+  profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
   profileLevel: 14,
   profileClass: "Community Helper",
-  profileRank: "Gold",
+  profileRank: "Elite",
   pinnedTrophies: [
-    { id: 1, title: "Chaos-Bändiger", icon: "trash", unlocked: true },
-    { id: 2, title: "Frühaufsteher", icon: "sun", unlocked: true },
-    { id: 3, title: "Guter Zuhörer", icon: "ear", unlocked: true }
+    {
+      id: 13,
+      title: "Gym Rat",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "dumbbell",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    },
+    {
+      id: 14,
+      title: "Early Riser",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "sun",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: true,
+      justUnlocked: true
+    },
+    {
+      id: 15,
+      title: "Cyborg",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: "robot",
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    }
   ]
 };
 
@@ -57,7 +84,7 @@ export default function PublicProfileScreen() {
         ) : (
           <>
             <View style={styles.avatarContainer}>
-              <Image source={{ uri: "https://i.pravatar.cc/150?u=sarah" }} style={styles.avatar} />
+              <Image source={{ uri: "https://i.pravatar.cc/150?u=aaron" }} style={styles.avatar} />
               <View style={styles.levelBadge}>
                 <AppText bold type="caption" style={{ color: MyTheme.text }}>
                   LVL {mockPublicProfile.profileLevel}
@@ -69,13 +96,11 @@ export default function PublicProfileScreen() {
               {mockPublicProfile.profileName}
             </AppText>
 
-            <AppText type="body" style={{ textAlign: "center" }}>
-              {mockPublicProfile.profileBio}
-            </AppText>
+            <AppText style={{ textAlign: "center" }}>{mockPublicProfile.profileBio}</AppText>
 
             <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
               {mockPublicProfile.profileClass} •{" "}
-              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+              <AppText bold type="caption" style={{ color: MyTheme.gold }}>
                 {mockPublicProfile.profileRank}
               </AppText>
             </AppText>
@@ -125,7 +150,7 @@ export default function PublicProfileScreen() {
               ))
             : mockPublicProfile.pinnedTrophies.map((trophy) => (
                 <View key={trophy.id}>
-                  <TrophyCard title={trophy.title} icon={trophy.icon} unlocked />
+                  <TrophyCard id={trophy.id} title={trophy.title} icon={trophy.icon} unlocked />
                 </View>
               ))}
         </View>
