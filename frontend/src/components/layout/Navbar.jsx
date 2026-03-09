@@ -1,8 +1,38 @@
 import { View, Pressable, StyleSheet, Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRef } from "react";
+import { BlurView } from "expo-blur";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
+import { Spacing } from "@/constants/Spacing";
+
+const TabBarItem = ({ route, isFocused, onPress }) => {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const animatePop = () => {
+    Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
+      Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start();
+    });
+  };
+
+  const handlePress = () => {
+    onPress();
+    animatePop();
+  };
+
+  return (
+    <Pressable onPress={handlePress} style={styles.tabButton}>
+      <Animated.View style={{ transform: [{ scale }] }}>
+        <Icon
+          name={route.name || "help"}
+          size={26}
+          color={isFocused ? MyTheme.primaryAccent : "white"}
+          outline={!isFocused}
+        />
+      </Animated.View>
+    </Pressable>
+  );
+};
 
 export default function Navbar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
@@ -12,64 +42,65 @@ export default function Navbar({ state, descriptors, navigation }) {
     const order = ["home", "tasks", "communities", "shop", "profile"];
     return order.indexOf(a.name) - order.indexOf(b.name);
   });
+
+  const navbarBottomSpace = insets.bottom > 0 ? insets.bottom + 10 : 25;
+
   return (
     <View
       style={[
-        styles.container,
+        styles.shadowContainer,
         {
-          height: 64 + insets.bottom,
-          paddingBottom: insets.bottom,
-          backgroundColor: MyTheme.primary,
-          borderTopWidth: 1,
-          borderTopColor: MyTheme.secondary
+          bottom: navbarBottomSpace
         }
       ]}
     >
-      {orderedRoutes.map((route, index) => {
-        const isFocused = state.routes[state.index].key === route.key;
-        // const iconName = iconMap[route.name] || "help-circle";
+      <BlurView intensity={80} tint="systemChromeMaterialDark" style={styles.blurBackground} />
 
-        // Animation Hook
-        const scale = useRef(new Animated.Value(1)).current;
+      {/* Button Wrapper */}
+      <View style={styles.buttonContainer}>
+        {orderedRoutes.map((route) => {
+          const isFocused = state.routes[state.index].key === route.key;
 
-        const animatePop = () => {
-          Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
-            Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start();
-          });
-        };
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true
+            });
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true
-          });
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-          animatePop();
-        };
-
-        return (
-          <Pressable key={route.key} onPress={onPress} style={styles.tabButton}>
-            <Animated.View style={{ transform: [{ scale }] }}>
-              <Icon
-                name={route.name || "help"}
-                size={26}
-                color={isFocused ? MyTheme.primaryAccent : "white"}
-                outline={!isFocused}
-              />
-            </Animated.View>
-          </Pressable>
-        );
-      })}
+          return <TabBarItem key={route.key} route={route} isFocused={isFocused} onPress={onPress} />;
+        })}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  shadowContainer: {
+    position: "absolute",
+    left: 20,
+    right: 20,
+    height: 65,
+    borderRadius: 35,
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 10
+  },
+  blurBackground: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: Spacing.borderRadius.full,
+    overflow: "hidden"
+  },
+  buttonContainer: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center"

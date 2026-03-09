@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image, Animated, FlatList } from "react-native";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -24,6 +24,7 @@ export default function HomeScreen() {
   const [shouldCrash, setShouldCrash] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const bottomPadding = useFloatingNavbarPadding();
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -117,7 +118,6 @@ export default function HomeScreen() {
       </View>
     </View>
   );
-
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false}>
       <FlatList
@@ -125,7 +125,7 @@ export default function HomeScreen() {
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         ListHeaderComponent={renderHeader}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
@@ -242,8 +242,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: Spacing.xs,
     marginRight: Spacing.md
-  },
-  listContent: {
-    paddingBottom: Spacing.md
   }
 });
