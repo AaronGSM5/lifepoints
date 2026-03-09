@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { useFocusEffect, useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import AppButton from "@/components/ui/AppButton";
@@ -19,7 +19,7 @@ export default function ShopScreen() {
   const [activeCat, setActiveCat] = useState("all");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const bottomPadding = useFloatingNavbarPadding();
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
@@ -205,7 +205,7 @@ export default function ShopScreen() {
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2} // 🔥 Die Magie! FlatList macht das Grid automatisch
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: Spacing.xl }}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
         // Das Styling ZWISCHEN den Spalten
         columnWrapperStyle={styles.rowGap}
         // Fügt unseren ganzen oberen Bereich ein

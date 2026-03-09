@@ -1,4 +1,4 @@
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import FYTaskItem from "@/components/tasks/FYTaskItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
@@ -22,7 +22,7 @@ const TasksScreen = () => {
   const [activeCat, setActiveCat] = useState("all");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const bottomPadding = useFloatingNavbarPadding();
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1200);
     return () => clearTimeout(timer);
@@ -120,7 +120,7 @@ const TasksScreen = () => {
         ListHeaderComponent={renderHeader()}
         ListFooterComponent={!isLoading ? renderFooter() : null}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}

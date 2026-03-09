@@ -4,6 +4,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
 
+export const useFloatingNavbarPadding = () => {
+  const insets = useSafeAreaInsets();
+  const navbarBottomSpace = insets.bottom > 0 ? insets.bottom + 10 : 25;
+  const navbarHeight = 65;
+  const extraClearance = Spacing.md || 16;
+  return navbarBottomSpace + navbarHeight + extraClearance;
+};
+
 export default function ScreenWrapper({
   children,
   scrollable = true,
@@ -14,12 +22,12 @@ export default function ScreenWrapper({
   style
 }) {
   const insets = useSafeAreaInsets();
-
+  const totalBottomPadding = useFloatingNavbarPadding();
   const contentStyles = [
     {
       paddingHorizontal: withPaddingSides ? Spacing.md : 0,
       paddingTop: withOffset ? insets.top + Spacing.md : Spacing.md,
-      paddingBottom: withPaddingBottom ? Math.max(insets.bottom, Spacing.md) : 0
+      paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
     },
     style
   ];
