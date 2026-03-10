@@ -8,10 +8,10 @@ export const mockProfile = {
 };
 
 export const mockFeedItems = [
-  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/sportSelfie2.jpg") },
-  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/sportSelfie1.jpeg") },
-  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/cooking.webp") },
-  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/helping.jpg") },
+  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
+  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },
+  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/posts/cooking.webp") },
+  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
 export const mockTasks = [
@@ -29,9 +29,9 @@ export const mockTasks = [
 ];
 
 export const recommendedTasks = [
-  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/barbellBanner.png") },
-  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/foodBanner.jpg") },
-  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/cleaningBanner.webp") },
+  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png") },
+  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [
@@ -95,39 +95,64 @@ export const mockNotifications = [
   { title: "(Werde dafür lowkey bezahlt)" }
 ];
 
+export const trophyImages = {
+  "gym": require("@/../public/assets/trophies/gym.png"),
+  "gymTrans": require("@/../public/assets/trophies/gymTrans.png"),
+  "sleep": require("@/../public/assets/trophies/sleep.png"),
+  "sleepTrans": require("@/../public/assets/trophies/sleepTrans.png"),
+  "book": require("@/../public/assets/trophies/book.png"),
+  "bookTrans": require("@/../public/assets/trophies/bookTrans.png"),
+  "candy": require("@/../public/assets/trophies/candy.png"),
+  "candyTrans": require("@/../public/assets/trophies/candyTrans.png"),
+}
+
 export const mockTrophies = [
-  { id: 1, title: "Gym Rat", icon: "dumbbell", unlocked: false },
-  { id: 2, title: "Early Riser", icon: "sun", unlocked: false },
-  { id: 3, title: "Cyborg", icon: "robot", unlocked: false },
-  { id: 4, title: "Reader", icon: "book", unlocked: true, justUnlocked: true },
-  { id: 5, title: "Sugar Free", icon: "candy", unlocked: false },
-  { id: 6, title: "Sleeper", icon: "bed", unlocked: false },
-  { id: 7, title: "Gym Rat", icon: "dumbbell", unlocked: true, justUnlocked: true },
-  { id: 8, title: "Early Riser", icon: "sun", unlocked: false },
-  { id: 9, title: "Cyborg", icon: "robot", unlocked: false },
-  { id: 10, title: "Reader", icon: "book", unlocked: false },
-  { id: 11, title: "Sugar Free", icon: "candy", unlocked: false },
-  { id: 12, title: "Sleeper", icon: "bed", unlocked: true, justUnlocked: true },
-  { id: 13, title: "Gym Rat", icon: "dumbbell", unlocked: false },
-  { id: 14, title: "Early Riser", icon: "sun", unlocked: true, justUnlocked: true },
-  { id: 15, title: "Cyborg", icon: "robot", unlocked: false },
-  { id: 16, title: "Reader", icon: "book", unlocked: false },
-  { id: 17, title: "Sugar Free", icon: "candy", unlocked: true, justUnlocked: true },
-  { id: 18, title: "Sleeper", icon: "bed", unlocked: false },
-  { id: 19, title: "Gym Rat", icon: "dumbbell", unlocked: true, justUnlocked: true },
-  { id: 20, title: "Early Riser", icon: "sun", unlocked: false },
-  { id: 21, title: "Cyborg", icon: "robot", unlocked: false },
-  { id: 22, title: "Reader", icon: "book", unlocked: false },
-  { id: 23, title: "Sugar Free", icon: "candy", unlocked: false },
-  { id: 24, title: "Sleeper", icon: "bed", unlocked: false },
-  { id: 25, title: "Gym Rat", icon: "dumbbell", unlocked: false },
-  { id: 26, title: "Early Riser", icon: "sun", unlocked: false },
-  { id: 27, title: "Cyborg", icon: "robot", unlocked: true, justUnlocked: true },
-  { id: 28, title: "Reader", icon: "book", unlocked: false },
-  { id: 29, title: "Sugar Free", icon: "candy", unlocked: false },
-  { id: 30, title: "Sleeper", icon: "bed", unlocked: false }
+  { id: 1, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['gymTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
+  { id: 2, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['sleepTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
+  { id: 3, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['bookTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
+  { id: 4, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['candyTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
 ];
 
+export const mockPublicProfile = {
+  profileName: "Sarah Klein",
+  profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
+  profileLevel: 14,
+  profileClass: "Community Helper",
+  profileRank: "Elite",
+  pinnedTrophies: [
+    {
+      id: 1,
+      title: "Gym Rat",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['gymTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    },
+    {
+      id: 2,
+      title: "Early Riser",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['sleepTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: true,
+      justUnlocked: true
+    },
+    {
+      id: 3,
+      title: "Cyborg",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['bookTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    }
+  ]
+};
 
 export const mockRecommendedCommunities = [
   {
@@ -201,3 +226,36 @@ export const mockSettings = [
     ],
   },
 ];
+
+export const mockComments = [
+  {
+    id: "1",
+    username: "Sarah_99",
+    avatar: "https://i.pravatar.cc/150?u=sarah",
+    text: "Wow, richtig starke Aktion von dir! 🔥",
+    time: "2h",
+    replies: [
+      {
+        id: "1-1",
+        username: "TomFitness",
+        avatar: "https://i.pravatar.cc/150?u=tom",
+        text: "Stimme dir absolut zu, Sarah!",
+        time: "1h",
+      }
+    ]
+  },
+  {
+    id: "2",
+    username: "TomFitness",
+    avatar: "https://i.pravatar.cc/150?u=tom",
+    text: "Muss ich auch unbedingt mal wieder machen. Respekt!",
+    time: "1h"
+  },
+  {
+    id: "3",
+    username: "Sarah_99",
+    avatar: "https://i.pravatar.cc/150?u=sarah",
+    text: "Wow, richtig starke Aktion von dir! 🔥",
+    time: "2h"
+  },
+]

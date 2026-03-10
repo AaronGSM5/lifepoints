@@ -1,11 +1,14 @@
 import React, { useRef, useEffect } from "react";
-import { View, Animated, StyleSheet } from "react-native";
+// WICHTIG: Image aus react-native importieren!
+import { View, Animated, StyleSheet, Pressable, Image } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
+import { router } from "expo-router";
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+// Wir machen das normale Image animierbar, damit wir es faden können
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const animValue = useRef(new Animated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
@@ -25,14 +28,10 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
     }
   }, [justUnlocked, animValue, id, onAnimationComplete]);
 
-  const iconColor = animValue.interpolate({
+  // Bild ist nur zu 30% sichtbar, wenn gelockt. 100% wenn unlocked.
+  const imageOpacity = animValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ["#838383", MyTheme.gold]
-  });
-
-  const borderColor = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [MyTheme.secondary, "rgba(255, 217, 0, 0.4)"]
+    outputRange: [0.3, 1]
   });
 
   const textColor = animValue.interpolate({
@@ -50,66 +49,71 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
     outputRange: [1, 0]
   });
 
+  const handlePress = () => {
+    router.push(`/trophy/${id}`);
+  };
+
   return (
-    <View style={styles.trophyItem}>
-      <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }], borderColor: borderColor }]}>
-        <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
+    <Pressable onPress={handlePress}>
+      <View style={styles.trophyItem}>
+        {/* Die äußere Box mit Scale-Animation bleibt! */}
+        <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
+          <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
-        <AnimatedIcon name={icon} size={24} color={iconColor} />
+          <AnimatedImage source={icon} style={[styles.trophyImage, { opacity: imageOpacity }]} resizeMode="contain" />
 
-        {(!unlocked || justUnlocked) && (
-          <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-            <Icon name="lock" size={10} color="#FFFFFF" />
-          </Animated.View>
-        )}
-      </Animated.View>
-      <AppText animated bold type="caption" style={{ color: textColor, textAlign: "center", fontSize: 12 }}>
-        {title}
-      </AppText>
-    </View>
+          {/* Das kleine Schloss bleibt als Icon erhalten */}
+          {(!unlocked || justUnlocked) && (
+            <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
+              <Icon name="lock" size={13} color="#FFFFFF" />
+            </Animated.View>
+          )}
+        </Animated.View>
+
+        <AppText
+          animated
+          bold
+          type="caption"
+          numberOfLines={2}
+          style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
+        >
+          {title}
+        </AppText>
+      </View>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   trophyItem: {
     alignItems: "center",
-    width: 80
+    width: "100%"
   },
   trophyIconBox: {
-    width: 64,
-    height: 64,
-    backgroundColor: MyTheme.primary,
+    width: "95%",
+    aspectRatio: 1,
     borderRadius: Spacing.borderRadius.md,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    marginBottom: Spacing.xs,
     position: "relative"
   },
-  glowLayer: {
-    borderRadius: Spacing.borderRadius.md,
-    backgroundColor: MyTheme.primary, // necessary
-    shadowColor: "#ffd900cc",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1, // (wird über opacity des Layers gesteuert)
-    shadowRadius: 12,
-    elevation: 15
+  trophyImage: {
+    width: "100%",
+    height: "100%"
   },
   lockOverlay: {
     position: "absolute",
-    bottom: -6,
-    right: -6,
+    bottom: 0,
+    right: 5,
+    width: 15,
+    height: 15,
     backgroundColor: "#1E1E1E",
-    width: 22,
-    height: 22,
     borderRadius: Spacing.borderRadius.full,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: MyTheme.primary
   }
 });
 
-// Tells react only re-render this card if their own props (example: unlocked-status) changed
-// Improves performance if we have many trophies
 export default React.memo(TrophyCard);

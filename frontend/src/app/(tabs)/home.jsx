@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image, Animated, FlatList } from "react-native";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -12,6 +12,7 @@ import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import LpChart from "@/components/home/LpChart";
 import RecommendedTasks from "@/components/RecommendedTasks";
 import { Skeleton } from "moti/skeleton";
+import CommentSheet from "@/components/home/CommentSheet";
 
 const SKELETON_FEED_ITEMS = Array.from({ length: 3 }).map((_, index) => ({
   id: `skeleton-${index}`,
@@ -22,6 +23,8 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [shouldCrash, setShouldCrash] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const bottomPadding = useFloatingNavbarPadding();
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -36,7 +39,7 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
           toValue: 0.9,
@@ -49,7 +52,9 @@ export default function HomeScreen() {
           useNativeDriver: true
         })
       ])
-    ).start();
+    );
+    animation.start();
+    return () => animation.stop();
   }, [pulseAnim]);
 
   const handleRefresh = useCallback(() => {
@@ -67,11 +72,11 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <>
+    <View style={{ paddingHorizontal: Spacing.md }}>
       <View style={styles.heroSection}>
         <Skeleton {...skeletonProps} width={"100%"} height={"100%"} radius={Spacing.borderRadius.lg}>
           <Image
-            source={require("../../../public/assets/sportevent.png")}
+            source={require("../../../public/assets/events/achtsamkeit2.png")}
             style={styles.heroImage}
             resizeMode="cover"
           />
@@ -115,35 +120,34 @@ export default function HomeScreen() {
       <View style={styles.sectionHeader}>
         <AppText type="title">Feed</AppText>
       </View>
-    </>
+    </View>
   );
-
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
+    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false}>
       <FlatList
         data={isLoading ? SKELETON_FEED_ITEMS : mockFeedItems}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         ListHeaderComponent={renderHeader}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
           if (item.isSkeleton) {
             return (
               <View
-                style={[
-                  styles.feedItemSkeleton,
-                  { paddingBottom: Spacing.md, backgroundColor: MyTheme.primary, borderRadius: Spacing.borderRadius.md }
-                ]}
+                style={{
+                  paddingBottom: Spacing.md,
+                  backgroundColor: MyTheme.primary,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  borderBottomColor: MyTheme.separator
+                }}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    paddingLeft: Spacing.sm,
-                    paddingRight: Spacing.md,
+                    paddingHorizontal: Spacing.md,
                     paddingVertical: Spacing.sm
                   }}
                 >
@@ -166,19 +170,30 @@ export default function HomeScreen() {
                     gap: Spacing.md
                   }}
                 >
+                  <View style={{ flexDirection: "row", gap: Spacing.lg }}>
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                    <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                  </View>
+                  {/* Text Platzhalter */}
                   <Skeleton {...skeletonProps} width={120} height={12} />
-                  <Skeleton {...skeletonProps} width={80} height={12} />
+                  <Skeleton {...skeletonProps} width="80%" height={12} />
                 </View>
               </View>
             );
           }
-          return <FeedItem {...item} />;
+          return <FeedItem {...item} onOpenComments={(id) => setSelectedPostId(id)} />;
         }}
       />
 
       {/* <RecommendedTasks /> */}
       {/* <LpChart /> */}
       {/* <SuggestTaskInput /> */}
+      <CommentSheet
+        isVisible={selectedPostId !== null}
+        onClose={() => setSelectedPostId(null)}
+        postId={selectedPostId}
+      />
     </ScreenWrapper>
   );
 }
@@ -231,8 +246,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: Spacing.xs,
     marginRight: Spacing.md
-  },
-  listContent: {
-    marginBottom: Spacing.md
   }
 });

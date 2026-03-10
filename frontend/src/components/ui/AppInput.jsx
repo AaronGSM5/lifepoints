@@ -60,12 +60,18 @@ const AppInput = forwardRef(
             placeholderTextColor={MyTheme.muted}
             selectionColor={MyTheme.primaryAccent}
             underlineColorAndroid="transparent"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            cursorColor={MyTheme.primaryAccent}
             // Web-Fix gegen den blauen Rahmen
             {...{ accessibilityRole: "text" }}
-            cursorColor={MyTheme.primaryAccent}
             {...props}
+            onFocus={() => {
+              setIsFocused(true);
+              if (props.onFocus) props.onFocus(e);
+            }}
+            onBlur={() => {
+              setIsFocused(false);
+              if (props.onBlur) props.onBlur(e);
+            }}
           />
 
           {/* Rechtes Icon (z.B. Clear-Button oder Auge bei Passwort) */}
