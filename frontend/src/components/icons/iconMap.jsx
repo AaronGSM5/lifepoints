@@ -37,7 +37,7 @@ export const IconMap = {
   statsChart: ({ outline, ...props }) => <Icon name={getName("bar-chart-2", outline)} {...props} />,
   trophy: ({ outline, ...props }) => <Icon name={getName("trophy", outline)} {...props} />,
   wallet: (props) => <Icon name="wallet-line" {...props} />,
-  lock: (props) => <Icon name="lock-password-line" {...props} />,
+  lock: (props) => <Icon name="lock-line" {...props} />,
   forwardShare: (props) => <Icon name="share-forward-line" {...props} />,
   chat: (props) => <Icon name="chat-3-line" {...props} />,
   heart: ({ outline, ...props }) => <Icon name={getName("heart-3", outline)} {...props} />,
