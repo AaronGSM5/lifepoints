@@ -79,5 +79,6 @@ export const IconMap = {
   bicycle: (props) => <Icon name="riding-line" {...props} />,
   camera: (props) => <Icon name="camera-4-fill" {...props} />,
   spotify: (props) => <Icon name="spotify-fill" color="#1DB954" {...props} />,
-  at: (props) => <Icon name="at-line" {...props} />
+  at: (props) => <Icon name="at-line" {...props} />,
+  journal: (props) => <Icon name="leaf-fill" {...props} color="#1DB954" />
 };

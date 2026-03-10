@@ -10,8 +10,9 @@ import { router, useFocusEffect } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
-import { mockProfile, mockTrophies } from "@/constants/MockData";
+import { mockActivities, mockProfile, mockTrophies } from "@/constants/MockData";
 import { Skeleton } from "moti/skeleton";
+import JournalPreview from "@/components/journal/JournalPreview";
 
 export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -230,6 +231,22 @@ export default function ProfileScreen() {
                 </View>
               ))}
         </ScrollView>
+      </View>
+      <View>
+        <View style={styles.sectionHeaderRow}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
+            <Icon name="journal" size={20} />
+            <AppText type="title">My Impact Journal</AppText>
+          </View>
+          <AppButton
+            variant="ghost"
+            title={"More"}
+            size="sm"
+            textStyle={{ color: MyTheme.primaryAccent }}
+            onPress={() => router.push("/journal")}
+          />
+        </View>
+        <JournalPreview activities={mockActivities} />
       </View>
     </ScreenWrapper>
   );
