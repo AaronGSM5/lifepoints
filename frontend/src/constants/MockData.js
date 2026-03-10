@@ -7,13 +7,11 @@ export const mockProfile = {
   profileXp: 9020
 };
 
-
-
 export const mockFeedItems = [
-  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/sportSelfie2.jpg") },
-  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/sportSelfie1.jpeg") },
-  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/cooking.webp") },
-  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/helping.jpg") },
+  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
+  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },
+  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/posts/cooking.webp") },
+  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
 export const mockTasks = [
@@ -31,9 +29,9 @@ export const mockTasks = [
 ];
 
 export const recommendedTasks = [
-  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/barbellBanner.png") },
-  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/foodBanner.jpg") },
-  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/cleaningBanner.webp") },
+  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png") },
+  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [

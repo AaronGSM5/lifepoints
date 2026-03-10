@@ -75,7 +75,11 @@ export default function HomeScreen() {
     <View style={{ paddingHorizontal: Spacing.md }}>
       <View style={styles.heroSection}>
         <Skeleton {...skeletonProps} width={"100%"} height={"100%"} radius={Spacing.borderRadius.lg}>
-          <Image source={require("../../../public/assets/genImg.png")} style={styles.heroImage} resizeMode="cover" />
+          <Image
+            source={require("../../../public/assets/events/achtsamkeit2.png")}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
         </Skeleton>
       </View>
       <View style={styles.section}>
