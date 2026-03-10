@@ -179,7 +179,7 @@ export default function ProfileScreen() {
       <View style={{ marginTop: Spacing.xl }}>
         <View style={styles.sectionHeader}>
           {/* Alternative design in primary accent */}
-          <Icon name="statsChart" size={18} color={MyTheme.primaryAccent} />
+          <Icon name="statsChart" size={20} color={MyTheme.primaryAccent} outline={false} />
           {/* <Icon name="statsChart" size={18} color={MyTheme.secondaryAccent} /> */}
           <AppText type="title">Your Stats</AppText>
         </View>
@@ -207,7 +207,7 @@ export default function ProfileScreen() {
       <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
         <View style={styles.sectionHeaderRow}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-            <Icon name="trophy" size={18} />
+            <Icon name="trophy" size={20} color={MyTheme.gold} outline={false} />
             <AppText type="title">Trophies</AppText>
           </View>
           <AppButton

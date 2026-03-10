@@ -93,7 +93,7 @@ export default function FeedItem({ username, description, image, initialLikes = 
             <Icon name="chat" />
           </Pressable>
           <Pressable style={styles.iconButton}>
-            <Icon name="plane" />
+            <Icon name="forwardShare" />
           </Pressable>
         </View>
         <Pressable hitSlop={10} onPress={handleSave} style={styles.iconButton}>

@@ -58,7 +58,7 @@ export default function LoginScreen() {
               placeholder="Password"
               secureTextEntry={passwordIsShown}
               bottomMargin={false}
-              rightIcon={passwordIsShown ? "visibility" : "visibility-off"}
+              rightIcon={passwordIsShown ? "eyeOpen" : "eyeClosed"}
               onRightIconPress={() => setPasswordIsShown(!passwordIsShown)}
             />
             <AppButton title={"Log in"} disabled={isLoginDisabled} bgColor={MyTheme.primaryAccent} />
