@@ -9,47 +9,7 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
-
-const mockPublicProfile = {
-  profileName: "Sarah Klein",
-  profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
-  profileLevel: 14,
-  profileClass: "Community Helper",
-  profileRank: "Elite",
-  pinnedTrophies: [
-    {
-      id: 13,
-      title: "Gym Rat",
-      description: "This is just a mock description of this wonderfull trophy you unlocked.",
-      icon: "dumbbell",
-      requirement: "Do 125 Tasks",
-      progress: 50,
-      goal: 125,
-      unlocked: false
-    },
-    {
-      id: 14,
-      title: "Early Riser",
-      description: "This is just a mock description of this wonderfull trophy you unlocked.",
-      icon: "sun",
-      requirement: "Do 125 Tasks",
-      progress: 50,
-      goal: 125,
-      unlocked: true,
-      justUnlocked: true
-    },
-    {
-      id: 15,
-      title: "Cyborg",
-      description: "This is just a mock description of this wonderfull trophy you unlocked.",
-      icon: "robot",
-      requirement: "Do 125 Tasks",
-      progress: 50,
-      goal: 125,
-      unlocked: false
-    }
-  ]
-};
+import { mockPublicProfile, mockTrophies } from "@/constants/MockData";
 
 export default function PublicProfileScreen() {
   const { username } = useLocalSearchParams();
@@ -145,11 +105,11 @@ export default function PublicProfileScreen() {
           {isLoading
             ? [1, 2, 3].map((i) => (
                 <View key={i}>
-                  <Skeleton {...skeletonProps} width="100%" height={100} radius={Spacing.borderRadius.lg} />
+                  <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
             : mockPublicProfile.pinnedTrophies.map((trophy) => (
-                <View key={trophy.id}>
+                <View key={trophy.id} style={{ width: 80 }}>
                   <TrophyCard id={trophy.id} title={trophy.title} icon={trophy.icon} unlocked />
                 </View>
               ))}

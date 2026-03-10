@@ -224,7 +224,11 @@ export default function ProfileScreen() {
             ? [1, 2, 3, 4].map((i) => (
                 <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
               ))
-            : mockTrophies.map((t, i) => <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} />)}
+            : mockTrophies.map((t, i) => (
+                <View key={i} style={{ width: 80 }}>
+                  <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} />
+                </View>
+              ))}
         </ScrollView>
       </View>
     </ScreenWrapper>

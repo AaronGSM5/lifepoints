@@ -15,7 +15,6 @@ export default function TrophyScreen() {
     <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconShowcase}>
-          <View style={[styles.glowBackground]} />
           <View style={[styles.iconCircle]}>
             <Image source={trophy.icon} />
           </View>
@@ -61,22 +60,11 @@ const styles = StyleSheet.create({
   },
   iconShowcase: {
     width: 180,
-    height: 180,
+    height: 360,
     justifyContent: "center",
     alignItems: "center",
     marginTop: Spacing.xl,
     marginBottom: Spacing.xl
-  },
-  glowBackground: {
-    position: "absolute",
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    shadowColor: "#10b981",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 30,
-    elevation: 10
   },
   iconCircle: {
     width: 100,

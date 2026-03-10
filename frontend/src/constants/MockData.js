@@ -7,6 +7,8 @@ export const mockProfile = {
   profileXp: 9020
 };
 
+
+
 export const mockFeedItems = [
   { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/sportSelfie2.jpg") },
   { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/sportSelfie1.jpeg") },
@@ -109,10 +111,50 @@ export const trophyImages = {
 export const mockTrophies = [
   { id: 1, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['gymTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
   { id: 2, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['sleepTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 4, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['bookTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 5, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['candyTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
+  { id: 3, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['bookTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
+  { id: 4, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['candyTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
 ];
 
+export const mockPublicProfile = {
+  profileName: "Sarah Klein",
+  profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
+  profileLevel: 14,
+  profileClass: "Community Helper",
+  profileRank: "Elite",
+  pinnedTrophies: [
+    {
+      id: 1,
+      title: "Gym Rat",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['gymTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    },
+    {
+      id: 2,
+      title: "Early Riser",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['sleepTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: true,
+      justUnlocked: true
+    },
+    {
+      id: 3,
+      title: "Cyborg",
+      description: "This is just a mock description of this wonderfull trophy you unlocked.",
+      icon: trophyImages['bookTrans'],
+      requirement: "Do 125 Tasks",
+      progress: 50,
+      goal: 125,
+      unlocked: false
+    }
+  ]
+};
 
 export const mockRecommendedCommunities = [
   {

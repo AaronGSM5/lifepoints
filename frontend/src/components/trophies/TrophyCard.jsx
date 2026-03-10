@@ -65,7 +65,7 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           {/* Das kleine Schloss bleibt als Icon erhalten */}
           {(!unlocked || justUnlocked) && (
             <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-              <Icon name="lock" size={16} color="#FFFFFF" />
+              <Icon name="lock" size={13} color="#FFFFFF" />
             </Animated.View>
           )}
         </Animated.View>
@@ -74,7 +74,8 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           animated
           bold
           type="caption"
-          style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4 }}
+          numberOfLines={2}
+          style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
         >
           {title}
         </AppText>
@@ -100,20 +101,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  // glowLayer: {
-  //   borderRadius: Spacing.borderRadius.md,
-  //   shadowColor: "#ffd900cc",
-  //   shadowOffset: { width: 0, height: 0 },
-  //   shadowOpacity: 1,
-  //   shadowRadius: 12,
-  //   elevation: 15
-  // },
   lockOverlay: {
     position: "absolute",
-    bottom: -10,
-    right: -10,
-    width: 30,
-    height: 30,
+    bottom: 0,
+    right: 5,
+    width: 15,
+    height: 15,
     backgroundColor: "#1E1E1E",
     borderRadius: Spacing.borderRadius.full,
     justifyContent: "center",
