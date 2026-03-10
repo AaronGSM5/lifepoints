@@ -1,51 +1,170 @@
-import { Image, StyleSheet, View } from "react-native";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import FYTaskItem from "@/components/tasks/FYTaskItem";
+import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
+import TaskItem from "@/components/tasks/TaskItem";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
+import { mockTasks, recommendedTasks } from "@/constants/MockData";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import { LinearGradient } from "expo-linear-gradient";
-import TaskList from "@/components/TaskList";
+import { useRouter } from "expo-router";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import { Skeleton } from "moti/skeleton";
 
-export default function TasksScreen() {
+const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
+const SKELETON_FY_TASKS = Array.from({ length: 2 }).map((_, i) => ({ id: `sfy-${i}`, isSkeleton: true }));
+
+const TasksScreen = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+  const [activeCat, setActiveCat] = useState("all");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const bottomPadding = useFloatingNavbarPadding();
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
+
+  const categories = useMemo(() => {
+    const unique = [...new Set(mockTasks.map((c) => c.category))];
+    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+  }, [mockTasks]);
+
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+
+    // Loading simulation
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const filteredTasks = mockTasks.filter(
+    (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
+  );
+
+  const renderHeader = () => (
+    <View style={styles.headerContainer}>
+      <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+        <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
+      </Skeleton>
+      <View style={styles.sectionHeader}>
+        <AppText type="title">For You</AppText>
+        {!isLoading && (
+          <AppButton variant="ghost" title={"See more"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
+        )}
+      </View>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
+        {isLoading
+          ? SKELETON_FY_TASKS.map((item) => (
+              <Skeleton key={item.id} {...skeletonProps} width={280} height={160} radius={Spacing.borderRadius.lg} />
+            ))
+          : recommendedTasks.map((task, index) => <FYTaskItem key={task.id || index} {...task} />)}
+      </ScrollView>
+
+      <AppText type="title" style={styles.sectionHeader}>
+        {activeCat.toLowerCase() === "all"
+          ? "All Tasks"
+          : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`}
+      </AppText>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabsContainer}
+        contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
+      >
+        {isLoading
+          ? Array(4)
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={Spacing.borderRadius.full} />
+              ))
+          : categories.map((cat, index) => (
+              <AppButton
+                key={index}
+                title={cat}
+                variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
+                size="md"
+                onPress={() => setActiveCat(cat.toLowerCase())}
+              />
+            ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderFooter = () => (
+    <View style={{ marginTop: Spacing.md }}>
+      <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
+        Can't find what you're searching for?
+      </AppText>
+      <SuggestTaskInput />
+    </View>
+  );
+
   return (
-    <ScreenWrapper scrollable={true}>
-      <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.background} />
-
-      <View style={styles.contentContainer}>
-
-      <View style={styles.heroSection}>
-        <Image source={require('../../../public/assets/sportevent.png')} style={styles.heroImage} resizeMode="cover"/>
-      </View>
-
-      <View style={styles.taskListContainer}>
-        <TaskList />
-      </View>
-
-      </View>
+    <ScreenWrapper scrollable={false}>
+      <FlatList
+        data={isLoading ? SKELETON_TASKS : filteredTasks}
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+        ListHeaderComponent={renderHeader()}
+        ListFooterComponent={!isLoading ? renderFooter() : null}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
+        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
+        onRefresh={handleRefresh}
+        refreshing={isRefreshing}
+        renderItem={({ item }) => {
+          if (isLoading) {
+            return (
+              <Skeleton {...skeletonProps} width="100%" height={80} radius={Spacing.borderRadius.lg}>
+                <View style={{ height: 80, width: "100%" }} />
+              </Skeleton>
+            );
+          }
+          return (
+            <TaskItem
+              title={item.title}
+              lp={item.lp}
+              progress={item.progress}
+              status={item.limit}
+              icon={item.icon}
+              onPress={() => router.push(`task/${item.id}`)}
+            />
+          );
+        }}
+      />
     </ScreenWrapper>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%"
+  headerContainer: {
+    paddingBottom: Spacing.md
   },
-  contentContainer: {
-    // flexDirection: 'column',
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Spacing.md
   },
-  heroSection: {
-    width: "100%",
-    minHeight: 200,
+  carouselContainer: {
+    gap: Spacing.md,
+    marginBottom: Spacing.md
   },
-  heroImage: {
-    width: "100%",
-    height: "100%",
-  },
-  taskListContainer: {
-    paddingBottom: Spacing.xl
+  tabsContainer: {
+    marginHorizontal: -Spacing.lg
   }
 });
+
+export default TasksScreen;

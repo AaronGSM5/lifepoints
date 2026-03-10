@@ -4,7 +4,7 @@ export const Spacing = {
   md: 16,   // Standard-Padding für Cards & Screen-Ränder
   lg: 24,   // Zwischen Sektionen (z.B. Header zu Liste)
   xl: 32,   // Große Abstände
-  
+
   borderRadius: {
     sm: 8,
     md: 12, // Standard für kleine Boxen
