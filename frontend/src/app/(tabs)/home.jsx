@@ -74,13 +74,16 @@ export default function HomeScreen() {
   const renderHeader = () => (
     <View style={{ paddingHorizontal: Spacing.md }}>
       <View style={styles.heroSection}>
-        <Skeleton {...skeletonProps} width={"100%"} height={"100%"} radius={Spacing.borderRadius.lg}>
-          <Image
-            source={require("../../../public/assets/events/achtsamkeit2.png")}
-            style={styles.heroImage}
-            resizeMode="cover"
-          />
-        </Skeleton>
+        <Image
+          source={require("../../../public/assets/events/achtsamkeit2.png")}
+          style={styles.heroImage}
+          resizeMode="cover"
+        />
+        {isLoading && (
+          <View style={StyleSheet.absoluteFillObject}>
+            <Skeleton {...skeletonProps} width="100%" height="100%" radius={Spacing.borderRadius.lg} />
+          </View>
+        )}
       </View>
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
@@ -202,7 +205,8 @@ const styles = StyleSheet.create({
   heroSection: {
     width: "100%",
     aspectRatio: 16 / 9,
-    marginBottom: Spacing.lg
+    marginBottom: Spacing.lg,
+    position: "relative"
   },
   heroImage: {
     width: "100%",
