@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     backgroundColor: MyTheme.primary,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
+    borderWidth: 1,
+    borderColor: MyTheme.secondary,
     borderRadius: Spacing.borderRadius.md
   },
   iconCircle: {
