@@ -6,8 +6,14 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "./layout/ScreenWrapper";
 import AppText from "./ui/AppText";
+import { router } from "expo-router";
 
 export const ErrorFallback = ({ error, resetError }) => {
+  const handleReload = () => {
+    resetError();
+
+    router.replace("/home");
+  };
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -29,7 +35,7 @@ export const ErrorFallback = ({ error, resetError }) => {
           </View>
         )}
 
-        <AppButton title="App neu laden" onPress={resetError} variant="primary" style={{ marginTop: Spacing.xl }} />
+        <AppButton title="App neu laden" onPress={handleReload} variant="primary" style={{ marginTop: Spacing.xl }} />
       </View>
     </ScreenWrapper>
   );
