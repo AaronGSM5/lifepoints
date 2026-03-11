@@ -68,7 +68,7 @@ export default function FeedItem({ username, description, image, initialLikes = 
         </Pressable>
       </View>
       <View style={styles.imageContainer}>
-        <Pressable onPress={handleDoubleTap}>
+        <Pressable style={{ flex: 1 }} onPress={handleDoubleTap}>
           <Image source={image} style={styles.feedImage} resizeMode="cover" />
           <Animated.View
             style={[
@@ -151,12 +151,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
+    aspectRatio: 4 / 5,
     backgroundColor: MyTheme.primary,
-    position: "relative"
+    position: "relative",
+    overflow: "hidden"
   },
   feedImage: {
     width: "100%",
-    aspectRatio: 4 / 5
+    height: "100%"
   },
   bigHeartOverlay: {
     ...StyleSheet.absoluteFillObject,
