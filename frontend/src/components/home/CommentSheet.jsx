@@ -159,9 +159,13 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={onClose}>
-      <View style={styles.modalContainer}>
-        <Pressable style={styles.backdrop} onPress={onClose} />
-        <KeyboardAvoidingView style={styles.sheetWrapper} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <Pressable style={styles.backdrop} onPress={onClose} />
+      <KeyboardAvoidingView
+        style={styles.modalContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        pointerEvents="box-none"
+      >
+        <View style={styles.sheetWrapper}>
           <View style={styles.sheet}>
             <View style={styles.header}>
               <View style={styles.dragPill} />
@@ -184,7 +188,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
                   Platform.OS === "web" ? { maxHeight: SCREEN_HEIGHT * 0.75 - 130, overflowY: "auto" } : { flex: 1 }
                 }
                 keyboardShouldPersistTaps="handled"
-                keyboardDismissMode="on-drag"
+                keyboardDismissMode="interactive"
               />
             </View>
             {/* Eingabefeld (Sticky at bottom) */}
@@ -227,8 +231,8 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
               </View>
             </View>
           </View>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
