@@ -4,6 +4,7 @@ import { router, usePathname } from "expo-router";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
+import AppText from "../ui/AppText";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -16,6 +17,8 @@ export default function Toolbar() {
   const screenWidth = Dimensions.get("window").width;
   const logoWidth = Math.min(screenWidth * 0.4, 180);
   const logoHeight = logoWidth / 3.75;
+
+  const LP = "1.250";
 
   return (
     <View
@@ -31,6 +34,15 @@ export default function Toolbar() {
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
+        {isMainTab && pathname !== "/shop" && (
+          <View style={styles.lpBadge}>
+            <Pressable hitSlop={15} onPress={() => router.push("/shop")}>
+              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent, fontSize: 15 }}>
+                {LP} LP
+              </AppText>
+            </Pressable>
+          </View>
+        )}
         {!isMainTab && (
           <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />
@@ -46,12 +58,6 @@ export default function Toolbar() {
           resizeMode="contain"
         />
       </View>
-      {/* Alternative Title (Lifepoints text) */}
-      {/* <Image
-      source={require('@/../public/assets/lifepointsLogo.png')}
-      style={{ width: logoWidth, height: logoHeight }}
-      resizeMode="contain"
-    /> */}
 
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
@@ -63,7 +69,7 @@ export default function Toolbar() {
             <Icon name="notifications" />
           </Pressable>
         ) : (
-          /* Placeholder damit Logo mittig bleibt */
+          /* Placeholder for centered Logo */
           <View style={{ width: 40 }} />
         )}
       </View>
@@ -80,12 +86,21 @@ const styles = StyleSheet.create({
     borderBottomColor: MyTheme.separator
   },
   sideSection: {
-    flex: 1, // Nimmt jeweils 1/3 ein
+    flex: 1,
     justifyContent: "center"
   },
   centerSection: {
-    flex: 2, // Logo bekommt mehr Platz
+    flex: 2,
     alignItems: "center",
     justifyContent: "center"
+  },
+  lpBadge: {
+    backgroundColor: "rgba(16, 185, 129, 0.15)",
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs + 2,
+    borderRadius: Spacing.borderRadius.full,
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center"
   }
 });
