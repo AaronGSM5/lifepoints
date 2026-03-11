@@ -47,7 +47,7 @@ export default function AppButton({
   const isGhost = variant === "ghost";
 
   return (
-    <Animated.View style={[{ transform: [{ scale: scaleAnim }], width: fullWidth ? "100%" : "auto" }, style]}>
+    <Animated.View style={[{ transform: [{ scale: scaleAnim }], width: fullWidth ? "100%" : undefined }, style]}>
       <Pressable
         onPress={onPress}
         onPressIn={handlePressIn}
@@ -61,6 +61,7 @@ export default function AppButton({
           isSecondary && styles.secondary,
           isOutline && styles.outline,
           isGhost && styles.ghost,
+          isPrimary && { backgroundColor: MyTheme.primary },
           bgColor && { backgroundColor: bgColor },
           borderStyle && borderStyle,
           (disabled || loading) && styles.disabled
