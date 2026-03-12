@@ -98,7 +98,6 @@ export default function AppButton({
             <AppText
               bold
               style={[
-                styles.text,
                 isSecondary && { color: MyTheme.text },
                 isOutline && { color: MyTheme.primaryAccent },
                 isGhost && { color: MyTheme.muted },
@@ -127,7 +126,9 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    zIndex: 1,
+    elevation: 1
   },
   // Größen-Definitionen
   sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
@@ -150,11 +151,6 @@ const styles = StyleSheet.create({
   disabled: {
     backgroundColor: "#2A2A2A",
     opacity: 0.5
-  },
-  text: {
-    color: "#fff",
-    fontSize: 14,
-    textAlign: "center"
   },
   iconWrapper: {
     marginRight: Spacing.sm
