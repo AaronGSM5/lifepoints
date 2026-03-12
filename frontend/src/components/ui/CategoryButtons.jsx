@@ -1,6 +1,6 @@
 import { Spacing } from "@/constants/Spacing";
 import AppButton from "./AppButton";
-import Skeleton from "./Skeleton";
+import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { ScrollView } from "react-native";
 
@@ -9,7 +9,7 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ marginHorizontal: -Spacing.lg }}
+      style={{ marginHorizontal: -Spacing.lg, marginBottom: Spacing.lg }}
       contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
     >
       {isLoading

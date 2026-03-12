@@ -54,7 +54,7 @@ const TasksScreen = () => {
   );
 
   const renderHeader = () => (
-    <View style={styles.headerContainer}>
+    <View>
       <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
         <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
       </Skeleton>
@@ -135,9 +135,6 @@ const TasksScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    paddingBottom: Spacing.md
-  },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, Animated, Easing, FlatList } from "react-native";
+import { StyleSheet, View, Animated, Easing, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -11,6 +11,7 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { mockRewards } from "@/constants/MockData";
 import { Skeleton } from "moti/skeleton";
+import CategoryButtons from "@/components/ui/CategoryButtons";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -102,24 +103,13 @@ export default function ShopScreen() {
 
         {/* Filter Tabs */}
         {isLoading && <View style={{ marginTop: Spacing.sm }} />}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.tabsContainer}
-          contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
-        >
-          {isLoading
-            ? [1, 2, 3, 4].map((i) => <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={20} />)
-            : categories.map((cat, index) => (
-                <AppButton
-                  key={index}
-                  title={cat}
-                  variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
-                  size="md"
-                  onPress={() => setActiveCat(cat.toLowerCase())}
-                />
-              ))}
-        </ScrollView>
+        <CategoryButtons
+          categories={categories}
+          activeCat={activeCat}
+          setActiveCat={setActiveCat}
+          skeletonProps={skeletonProps}
+          isLoading={isLoading}
+        />
 
         {/* Featured Reward */}
         <View style={{ marginBottom: Spacing.md }}>
