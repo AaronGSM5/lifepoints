@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Skeleton } from "moti/skeleton";
+import CategoryButtons from "@/components/ui/CategoryButtons";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = Array.from({ length: 2 }).map((_, i) => ({ id: `sfy-${i}`, isSkeleton: true }));
@@ -78,28 +79,13 @@ const TasksScreen = () => {
           : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`}
       </AppText>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.tabsContainer}
-        contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
-      >
-        {isLoading
-          ? Array(4)
-              .fill(0)
-              .map((_, i) => (
-                <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={Spacing.borderRadius.full} />
-              ))
-          : categories.map((cat, index) => (
-              <AppButton
-                key={index}
-                title={cat}
-                variant={cat.toLowerCase() === activeCat ? "primary" : "secondary"}
-                size="md"
-                onPress={() => setActiveCat(cat.toLowerCase())}
-              />
-            ))}
-      </ScrollView>
+      <CategoryButtons
+        categories={categories}
+        activeCat={activeCat}
+        setActiveCat={setActiveCat}
+        skeletonProps={skeletonProps}
+        isLoading={isLoading}
+      />
     </View>
   );
 
@@ -161,9 +147,6 @@ const styles = StyleSheet.create({
   carouselContainer: {
     gap: Spacing.md,
     marginBottom: Spacing.md
-  },
-  tabsContainer: {
-    marginHorizontal: -Spacing.lg
   }
 });
 
