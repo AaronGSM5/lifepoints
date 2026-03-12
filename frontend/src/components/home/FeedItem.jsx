@@ -29,7 +29,7 @@ export default function FeedItem({ username, description, image, initialLikes = 
   const handleShare = async () => {
     try {
       const result = await Share.share({
-        message: `Schau dir diesen Beitrag von ${username} an: "${description}" \n\nhttps://lifepoints.com/post/${id}`,
+        message: `Schau dir diesen Beitrag von ${username} an: "${description}" \n\nlifepoints://profile`,
         title: `Beitrag von ${username}`
       });
 

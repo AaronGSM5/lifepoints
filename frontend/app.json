@@ -3,6 +3,7 @@
     "name": "Lifepoints",
     "slug": "frontend",
     "version": "1.0.0",
+    "scheme": "lifepoints",
     "orientation": "portrait",
     "icon": "./public/assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -16,7 +17,7 @@
       "bundleIdentifier": "com.lifepoints.app",
       "supportsTablet": true,
       "infoPlist": {
-        "CFBundleDisplayName": "LP" 
+        "CFBundleDisplayName": "LP"
       }
     },
     "android": {
