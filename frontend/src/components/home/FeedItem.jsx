@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Pressable, Animated } from "react-native";
+import { View, StyleSheet, Image, Pressable, Animated, Share } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
@@ -24,6 +24,29 @@ export default function FeedItem({ username, description, image, initialLikes = 
 
   const handleSave = () => {
     setIsSaved(!isSaved);
+  };
+
+  const handleShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Schau dir diesen Beitrag von ${username} an: "${description}" \n\nlifepoints://profile`,
+        title: `Beitrag von ${username}`
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // Erfolgreich geteilt mit spezifischer App (nur iOS)
+          console.log("Geteilt mit:", result.activityType);
+        } else {
+          // Erfolgreich geteilt
+          console.log("Erfolgreich geteilt");
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log("Teilen abgebrochen");
+      }
+    } catch (error) {
+      console.error("Fehler beim Teilen:", error.message);
+    }
   };
 
   const handleDoubleTap = () => {
@@ -86,17 +109,17 @@ export default function FeedItem({ username, description, image, initialLikes = 
       </View>
       <View style={styles.actionBar}>
         <View style={styles.actionLeft}>
-          <Pressable hitSlop={10} onPress={handleLike} style={styles.iconButton}>
+          <Pressable hitSlop={10} onPress={handleLike}>
             <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : "white"} />
           </Pressable>
-          <Pressable style={styles.iconButton} hitSlop={10} onPress={() => onOpenComments(id)}>
+          <Pressable hitSlop={10} onPress={() => onOpenComments(id)}>
             <Icon name="chat" />
           </Pressable>
-          <Pressable style={styles.iconButton}>
+          <Pressable hitSlop={10} onPress={handleShare}>
             <Icon name="forwardShare" />
           </Pressable>
         </View>
-        <Pressable hitSlop={10} onPress={handleSave} style={styles.iconButton}>
+        <Pressable hitSlop={10} onPress={handleSave}>
           <Icon outline={!isSaved} name="bookmark" />
         </Pressable>
       </View>
