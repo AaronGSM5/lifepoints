@@ -23,7 +23,7 @@
     "android": {
       "package": "com.lifepoints.app",
       "adaptiveIcon": {
-        "foregroundImage": "./public/assets/adaptive-icon.png",
+        "foregroundImage": "./public/assets/adaptive-icon-evenSmaller.png",
         "backgroundImage": "./public/assets/adaptive-icon-background.png"
       },
       "edgeToEdgeEnabled": true,
