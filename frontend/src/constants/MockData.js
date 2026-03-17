@@ -409,6 +409,13 @@ export const onboardingSlides = [
   },
 ];
 
+export const mockTutorialSteps = [
+  { id: "1", title: "Profilbild hinzufügen", reward: 10, completed: false, icon: "camera", route: '/setting/edit-profile' },
+  { id: "2", title: "Ersten Freund adden", reward: 20, completed: false, icon: "profile", route: '/user/Velo_Mind' },
+  { id: "3", title: "Erste gute Tat loggen", reward: 50, completed: true, icon: "heart", route: '/tasks' },
+  { id: "4", title: "Beschreibung hinzufügen", reward: 15, completed: false, icon: "pencil", route: '/setting/edit-profile' },
+]
+
 export const mockSectionedActivities = [
   {
     title: "Heute",
