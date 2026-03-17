@@ -174,54 +174,91 @@ export default function ProfileScreen() {
           )}
         </View>
       </View>
+      {isLoading ? (
+        /* 1. DAS SKELETON (Nutzt deine globalen <Skeleton /> Tags) */
+        <View style={styles.guideContainer}>
+          {/* Header Skeleton */}
+          <View style={styles.guideHeader}>
+            <Skeleton width={140} height={28} borderRadius={6} />
+            <Skeleton width={80} height={16} borderRadius={4} />
+          </View>
 
-      {/* Guide Section */}
-      <View style={styles.guideContainer}>
-        <View style={styles.guideHeader}>
-          <AppText type="h2">Dein Leitfaden</AppText>
-          <AppText type="caption">
-            {completedCount} von {tutorialSteps.length} erledigt
-          </AppText>
-        </View>
+          {/* Progress Bar Skeleton */}
+          <View style={{ marginBottom: Spacing.lg }}>
+            <Skeleton width="100%" height={8} borderRadius={4} />
+          </View>
 
-        <View style={styles.progressBar}>
-          <View style={[styles.progressInner, { width: `${progress * 100}%` }]} />
-        </View>
+          {/* Quest Liste Skeleton */}
+          <View style={styles.questList}>
+            {[1, 2, 3].map((item) => (
+              <View key={item} style={styles.questItem}>
+                {/* Icon Skeleton (Rund) */}
+                <View style={styles.questIconContainer}>
+                  <Skeleton width={28} height={28} borderRadius={14} />
+                </View>
 
-        <View style={styles.questList}>
-          {tutorialSteps.map((quest) => (
-            <Pressable
-              key={quest.id}
-              style={[styles.questItem, quest.completed && styles.questItemCompleted]}
-              onPress={() => {
-                if (!quest.completed && quest.route) {
-                  router.push(quest.route);
-                } else {
-                  return;
-                }
-              }}
-            >
-              <View style={styles.questIconContainer}>
-                <Icon
-                  name={quest.completed ? "checkmark" : quest.icon}
-                  color={quest.completed ? MyTheme.primaryAccent : "gray"}
-                />
+                {/* Text Skeleton */}
+                <View style={styles.questTextContainer}>
+                  <View style={{ marginBottom: 6 }}>
+                    <Skeleton width="60%" height={18} borderRadius={4} />
+                  </View>
+                  <Skeleton width="30%" height={14} borderRadius={4} />
+                </View>
+
+                {/* Arrow Skeleton */}
+                <Skeleton width={16} height={16} borderRadius={4} />
               </View>
-
-              <View style={styles.questTextContainer}>
-                <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
-                  {quest.title}
-                </AppText>
-                <AppText type="caption" bold style={styles.rewardText}>
-                  +{quest.reward} LP
-                </AppText>
-              </View>
-
-              {!quest.completed && <Icon name="right" />}
-            </Pressable>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
+      ) : (
+        <View style={styles.guideContainer}>
+          <View style={styles.guideHeader}>
+            <AppText type="h2">Dein Leitfaden</AppText>
+            <AppText type="caption">
+              {completedCount} von {tutorialSteps.length} erledigt
+            </AppText>
+          </View>
+
+          <View style={styles.progressBar}>
+            <View style={[styles.progressInner, { width: `${progress * 100}%` }]} />
+          </View>
+
+          <View style={styles.questList}>
+            {tutorialSteps.map((quest) => (
+              <Pressable
+                key={quest.id}
+                style={[styles.questItem, quest.completed && styles.questItemCompleted]}
+                onPress={() => {
+                  if (!quest.completed && quest.route) {
+                    router.push(quest.route);
+                  } else {
+                    return;
+                  }
+                }}
+              >
+                <View style={styles.questIconContainer}>
+                  <Icon
+                    name={quest.completed ? "checkmark" : quest.icon}
+                    color={quest.completed ? MyTheme.primaryAccent : "gray"}
+                  />
+                </View>
+
+                <View style={styles.questTextContainer}>
+                  <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
+                    {quest.title}
+                  </AppText>
+                  <AppText type="caption" bold style={styles.rewardText}>
+                    +{quest.reward} LP
+                  </AppText>
+                </View>
+
+                {!quest.completed && <Icon name="right" />}
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
 
       {/* Stats Section */}
       <View style={{ marginTop: Spacing.xl }}>
