@@ -53,6 +53,8 @@ export default function RootLayout() {
             contentStyle: { backgroundColor: MyTheme.background }
           }}
         >
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+
           <Stack.Screen name="(tabs)" />
 
           <Stack.Screen name="auth" options={{ headerShown: false }} />
