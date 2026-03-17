@@ -16,7 +16,7 @@ const JournalPage = () => {
     return (
       <View style={styles.activityItem}>
         <View style={styles.iconCircle}>
-          <Icon name={item.icon} color="black" />
+          <AppText>✨</AppText>
         </View>
 
         <View style={styles.textContainer}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: Spacing.borderRadius.full,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: MyTheme.secondary,
     justifyContent: "center",
     alignItems: "center"
   },
