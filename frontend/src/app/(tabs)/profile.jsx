@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, View, Image, ScrollView, Animated, Easing } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Animated, Easing, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { MyTheme } from "@/constants/Colors";
@@ -10,12 +10,15 @@ import { router, useFocusEffect } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
-import { mockActivities, mockProfile, mockTrophies } from "@/constants/MockData";
+import { mockActivities, mockProfile, mockTrophies, mockTutorialSteps } from "@/constants/MockData";
 import { Skeleton } from "moti/skeleton";
 import JournalPreview from "@/components/journal/JournalPreview";
 
 export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
+  const [tutorialSteps, setTutorialSteps] = useState(mockTutorialSteps);
+  const completedCount = tutorialSteps.filter((q) => q.completed).length;
+  const progress = completedCount / tutorialSteps.length;
   // // 1. Der Startwert der Animation (0%)
   const animatedWidth = useRef(new Animated.Value(0)).current;
   // // 2. Berechnung des Zielwerts (Prozentsatz)
@@ -78,7 +81,7 @@ export default function ProfileScreen() {
 
   return (
     <ScreenWrapper scrollable>
-      {/* Avatar Section */}
+      {/* Header Section */}
       <View style={styles.profileHeader}>
         {isLoading ? (
           <View style={{ alignItems: "center" }}>
@@ -108,7 +111,6 @@ export default function ProfileScreen() {
           </>
         )}
 
-        {/* XP Bar */}
         <View style={styles.xpContainer}>
           <View style={styles.xpHeader}>
             <AppText bold type="caption">
@@ -130,9 +132,7 @@ export default function ProfileScreen() {
             ) : (
               <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
                 <LinearGradient
-                  // Alternate design in primary accent?
                   colors={[MyTheme.primaryAccent, "#335399"]}
-                  // colors={['#8A2387', '#E94057', '#F27121']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={StyleSheet.absoluteFill}
@@ -142,13 +142,12 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Action Buttons */}
         <View style={styles.actionButtons}>
           {isLoading ? (
             <>
-              {/* Skeleton für Edit Profile */}
+              {/* Skeleton Edit Profile */}
               <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-              {/* Skeleton für Share Stats */}
+              {/* Skeleton Share Stats */}
               <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
             </>
           ) : (
@@ -175,13 +174,96 @@ export default function ProfileScreen() {
           )}
         </View>
       </View>
+      {isLoading ? (
+        /* 1. DAS SKELETON (Nutzt deine globalen <Skeleton /> Tags) */
+        <View style={styles.guideContainer}>
+          {/* Header Skeleton */}
+          <View style={styles.guideHeader}>
+            <Skeleton width={140} height={28} borderRadius={6} />
+            <Skeleton width={80} height={16} borderRadius={4} />
+          </View>
+
+          {/* Progress Bar Skeleton */}
+          <View style={{ marginBottom: Spacing.lg }}>
+            <Skeleton width="100%" height={8} borderRadius={4} />
+          </View>
+
+          {/* Quest Liste Skeleton */}
+          <View style={styles.questList}>
+            {[1, 2, 3].map((item) => (
+              <View key={item} style={styles.questItem}>
+                {/* Icon Skeleton (Rund) */}
+                <View style={styles.questIconContainer}>
+                  <Skeleton width={28} height={28} borderRadius={14} />
+                </View>
+
+                {/* Text Skeleton */}
+                <View style={styles.questTextContainer}>
+                  <View style={{ marginBottom: 6 }}>
+                    <Skeleton width="60%" height={18} borderRadius={4} />
+                  </View>
+                  <Skeleton width="30%" height={14} borderRadius={4} />
+                </View>
+
+                {/* Arrow Skeleton */}
+                <Skeleton width={16} height={16} borderRadius={4} />
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : (
+        <View style={styles.guideContainer}>
+          <View style={styles.guideHeader}>
+            <AppText type="h2">Dein Leitfaden</AppText>
+            <AppText type="caption">
+              {completedCount} von {tutorialSteps.length} erledigt
+            </AppText>
+          </View>
+
+          <View style={styles.progressBar}>
+            <View style={[styles.progressInner, { width: `${progress * 100}%` }]} />
+          </View>
+
+          <View style={styles.questList}>
+            {tutorialSteps.map((quest) => (
+              <Pressable
+                key={quest.id}
+                style={[styles.questItem, quest.completed && styles.questItemCompleted]}
+                onPress={() => {
+                  if (!quest.completed && quest.route) {
+                    router.push(quest.route);
+                  } else {
+                    return;
+                  }
+                }}
+              >
+                <View style={styles.questIconContainer}>
+                  <Icon
+                    name={quest.completed ? "checkmark" : quest.icon}
+                    color={quest.completed ? MyTheme.primaryAccent : "gray"}
+                  />
+                </View>
+
+                <View style={styles.questTextContainer}>
+                  <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
+                    {quest.title}
+                  </AppText>
+                  <AppText type="caption" bold style={styles.rewardText}>
+                    +{quest.reward} LP
+                  </AppText>
+                </View>
+
+                {!quest.completed && <Icon name="right" />}
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
 
       {/* Stats Section */}
       <View style={{ marginTop: Spacing.xl }}>
         <View style={styles.sectionHeader}>
-          {/* Alternative design in primary accent */}
           <Icon name="statsChart" size={20} color={MyTheme.primaryAccent} outline={false} />
-          {/* <Icon name="statsChart" size={18} color={MyTheme.secondaryAccent} /> */}
           <AppText type="title">Your Stats</AppText>
         </View>
 
@@ -227,7 +309,7 @@ export default function ProfileScreen() {
               ))
             : mockTrophies.map((t, i) => (
                 <View key={i} style={{ width: 80 }}>
-                  <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} />
+                  <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} unlocked={t.unlocked} />
                 </View>
               ))}
         </ScrollView>
@@ -270,13 +352,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred }) => (
       <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
         <View style={styles.numberContainer}>
           <AppText type="h2">{value}</AppText>
-          {blurred && (
-            <BlurView
-              intensity={22} // (0-100)
-              tint="dark"
-              style={StyleSheet.absoluteFill}
-            />
-          )}
+          {blurred && <BlurView intensity={22} tint="dark" style={StyleSheet.absoluteFill} />}
         </View>
 
         {blurred && (
@@ -415,5 +491,60 @@ const styles = StyleSheet.create({
   getMoreText: {
     color: "gold",
     fontSize: 12
+  },
+  // Neww
+  guideContainer: {
+    marginTop: Spacing.xl,
+    backgroundColor: MyTheme.primary,
+    borderRadius: Spacing.borderRadius.lg,
+    padding: Spacing.md,
+    borderWidth: 1,
+    borderColor: MyTheme.secondary
+  },
+  guideHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginBottom: Spacing.lg
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: "#eee",
+    borderRadius: 4,
+    marginBottom: Spacing.lg,
+    overflow: "hidden"
+  },
+  progressInner: {
+    height: "100%",
+    backgroundColor: MyTheme.primaryAccent
+  },
+  questList: {
+    gap: Spacing.sm
+  },
+  questItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: Spacing.sm
+  },
+  questItemCompleted: {
+    opacity: 0.6
+  },
+  questIconContainer: {
+    width: 40,
+    alignItems: "center"
+  },
+  questTextContainer: {
+    flex: 1,
+    marginLeft: Spacing.sm
+  },
+  questTitle: {
+    fontSize: 16
+  },
+  textStrikeThrough: {
+    textDecorationLine: "line-through",
+    color: MyTheme.muted
+  },
+  rewardText: {
+    color: MyTheme.primaryAccent
   }
 });

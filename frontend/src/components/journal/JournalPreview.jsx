@@ -16,7 +16,7 @@ const JournalPreview = ({ activities }) => {
         return (
           <View key={item.id} style={styles.activityItem}>
             <View style={styles.iconCircle}>
-              <Icon name={item.icon} size={20} color="black" />
+              <AppText>✨</AppText>
             </View>
 
             <View style={styles.textContainer}>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: MyTheme.secondary,
     justifyContent: "center",
     alignItems: "center"
   },

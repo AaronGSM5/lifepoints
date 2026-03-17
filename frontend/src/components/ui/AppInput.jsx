@@ -85,7 +85,7 @@ const AppInput = forwardRef(
         </View>
 
         {/* Fehlermeldung */}
-        {error && <AppText style={styles.errorText}>{error}</AppText>}
+        {typeof error === "string" && <AppText style={styles.errorText}>{error}</AppText>}
       </View>
     );
   }
