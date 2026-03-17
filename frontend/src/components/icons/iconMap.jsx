@@ -80,5 +80,10 @@ export const IconMap = {
   camera: (props) => <Icon name="camera-4-fill" {...props} />,
   spotify: (props) => <Icon name="spotify-fill" color="#1DB954" {...props} />,
   at: (props) => <Icon name="at-line" {...props} />,
-  journal: (props) => <Icon name="leaf-fill" {...props} color="#1DB954" />
+  journal: (props) => <Icon name="leaf-fill" {...props} color="#1DB954" />,
+  water: (props) => <Icon name="drop-line" {...props} />,
+  wind: (props) => <Icon name="windy-line" {...props} />,
+  backCheck: (props) => <Icon name="body-scan-fill" {...props} />,
+  clothes: (props) => <Icon name="shirt-line" {...props} />,
+  happy: (props) => <Icon name="emotion-laugh-line" {...props} />
 };

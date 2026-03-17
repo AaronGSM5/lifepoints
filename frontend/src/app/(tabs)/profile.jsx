@@ -227,7 +227,7 @@ export default function ProfileScreen() {
               ))
             : mockTrophies.map((t, i) => (
                 <View key={i} style={{ width: 80 }}>
-                  <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} />
+                  <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} unlocked={t.unlocked} />
                 </View>
               ))}
         </ScrollView>

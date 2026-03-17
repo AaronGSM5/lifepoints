@@ -8,30 +8,36 @@ export const mockProfile = {
 };
 
 export const mockFeedItems = [
-  { id: 1, username: 'mockuser1', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
-  { id: 2, username: 'topuser2', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },
-  { id: 3, username: 'notuser3', description: 'Healthy Meal', image: require("@/../public/assets/posts/cooking.webp") },
-  { id: 4, username: 'duckuser4', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
+  { id: 1, username: 'Velo_Mind', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
+  { id: 2, username: 'PixelPionier', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },
+  { id: 3, username: 'Nox_Echo', description: 'Healthy Meal', image: require("@/../public/assets/posts/cooking.webp") },
+  { id: 4, username: 'Zest_Runner', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
 export const mockTasks = [
-  { id: 1, title: "Hallo Bruder ich grüße dich 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '20%', isLocked: false, icon: 'sun' },
-  { id: 2, title: "Hello 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'techCat' },
-  { id: 3, title: "Hola 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 4, title: "Mahlzeit 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'sun' },
-  { id: 5, title: "Ich grüße 👋", difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 6, title: "Hundegebell?", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 7, title: "Knowledge Test", difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '50%', isLocked: false, icon: 'sun' },
-  { id: 8, title: "NIEMALS FLUSSABWÄRTS", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: true, icon: 'sun' },
-  { id: 9, title: "okEE", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 10, title: "Sie dürfen", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'sun' },
-  { id: 11, title: "(Werde dafür lowkey bezahlt)", difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
+  { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed' },
+  { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil' },
+  { id: 3, title: "Pflanzen-Vati", description: 'Gieße eine Pflanze, die gerade etwas durstig aussieht.', difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun' },
+  { id: 4, title: "Lüftungs-Moment", description: 'Öffne das Fenster für 5 Minuten zum Stoßlüften.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'lock' },
+  { id: 5, title: "Wasser-Marsch", description: 'Trink jetzt sofort 1 Glas Wasser.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'water' },
+  { id: 6, title: "Tiefenatmung", description: 'Atme 5-mal tief ein und bewusst langsam aus.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: false, icon: 'wind' },
+  { id: 7, title: "Rücken-Check", description: 'Richte deine Wirbelsäule für 30 Sekunden kerzengerade auf.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '50%', isLocked: false, icon: 'backCheck' },
+  { id: 8, title: "Mini-Workout", description: 'Mache 5 Kniebeugen, 5 Liegestütze oder 5 Sit-ups', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: true, icon: 'lock' },
+  { id: 9, title: "Bildschirm-Pause", description: 'Schaue für 20 Sekunden auf einen Punkt, der weit entfernt ist.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'eyeClosed' },
+  { id: 10, title: "Vorbereitung", description: 'Lege dir ein Teil für morgen (Kleidung/Tasche) schon jetzt bereit.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'clothes' },
+  { id: 11, title: "Stretch-Moment", description: 'Strecke deine Arme einmal so weit wie möglich Richtung Decke.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
+  { id: 12, title: "Digitales Danke", description: 'Sende einer Person, die dir wichtig ist, eine kurze Nachricht in der du ihr zeigst wie dankbar du für sie bist.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
+  { id: 13, title: "Freude schenken", description: 'Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)', difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '0%', isLocked: false, icon: 'happy' },
+  { id: 14, title: "Unfollow-Ballast", description: 'Entfolge einem Account, der dir kein gutes Gefühl gibt.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
+  { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star' },
 ];
 
 export const recommendedTasks = [
-  { id: 1, title: 'This', description: 'Descr.', lp: '50 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png") },
-  { id: 2, title: 'Just', description: 'Descr..', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
-  { id: 3, title: 'Mock', description: 'Descr...', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
+  {
+    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: '500 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
+  },
+  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [
@@ -82,18 +88,87 @@ export const mockRewards = [
 ];
 
 export const mockNotifications = [
-  { title: "Hello" },
-  { title: "Hola" },
-  { title: "Mahlzeit" },
-  { title: "Ich grüße" },
-  { title: "Hallo Bruder ich grüße dich" },
-  { title: "Hundegebell?" },
-  { title: "Knowledge Test" },
-  { title: "NIEMALS FLUSSABWÄRTS" },
-  { title: "okEE" },
-  { title: "Sie dürfen" },
-  { title: "(Werde dafür lowkey bezahlt)" }
-];
+  {
+    "title": "Tat vollbracht!",
+    "message": "Dein Nachweis für „Nachbarschaftshilfe“ wurde bestätigt. +50 LP."
+  },
+  {
+    "title": "Karma-Check",
+    "message": "Du hast gerade die Welt ein Stück besser gemacht. Deine LP sind auf dem Weg!"
+  },
+  {
+    "title": "Starke Leistung!",
+    "message": "Deine gute Tat wurde in der Community hoch bewertet."
+  },
+  {
+    "title": "Impact-Update",
+    "message": "Mit deiner heutigen Tat hast du bereits 3 Menschen geholfen."
+  },
+  {
+    "title": "Punktlandung",
+    "message": "Deine 100 LP für den Freiwilligeneinsatz wurden gutgeschrieben."
+  },
+  {
+    "title": "Zeit für eine gute Tat?",
+    "message": "In deiner Nähe gibt es jemanden, der Hilfe gebrauchen könnte."
+  },
+  {
+    "title": "Wochenziel im Blick",
+    "message": "Nur noch eine gute Tat, um dein Wochenziel von 200 LP zu erreichen!"
+  },
+  {
+    "title": "Morgengruß",
+    "message": "Starte den Tag mit einer kleinen Geste. Was ist deine heutige Tat?"
+  },
+  {
+    "title": "Kleine Tat, große Wirkung",
+    "message": "Schon 5 Minuten Müll sammeln bringt dir 10 LP und der Natur viel Ruhe."
+  },
+  {
+    "title": "Lust auf Karma?",
+    "message": "Schau dir die neuen Herausforderungen in deiner Stadt an."
+  },
+  {
+    "title": "Level Up!",
+    "message": "Durch deine 500 LP bist du jetzt vom „Helfer“ zum „Lichtblick“ aufgestiegen."
+  },
+  {
+    "title": "Jahrestag",
+    "message": "Ein ganzes Jahr voller guter Taten! Wir schenken dir 100 Bonus-LP."
+  },
+  {
+    "title": "Lokal-Held",
+    "message": "Du stehst diese Woche auf Platz 3 der aktivsten Helfer in deiner Stadt."
+  },
+  {
+    "title": "Abzeichen verdient",
+    "message": "Du hast das Badge „Umwelt-Schützer“ freigeschaltet! 🌿"
+  },
+  {
+    "title": "Meilenstein",
+    "message": "Deine Taten haben insgesamt schon 1.000 LP generiert. Wahnsinn!"
+  },
+  {
+    "title": "Gemeinsam stark",
+    "message": "Die Community hat das Spendenziel von 1 Mio. LP erreicht!"
+  },
+  {
+    "title": "LP einlösen",
+    "message": "Du hast genug LP gesammelt, um jetzt einen Baum pflanzen zu lassen."
+  },
+  {
+    "title": "Dankeschön",
+    "message": "Jemand hat ein „Danke“ für deine letzte Tat hinterlassen. Schau mal rein!"
+  },
+  {
+    "title": "Team-Challenge",
+    "message": "Schließe dich mit Freunden zusammen und sammelt gemeinsam LP für ein Projekt."
+  },
+  {
+    "title": "Gute Nachrichten",
+    "message": "Dein Impact hat dazu beigetragen, dass das lokale Projekt finanziert wurde."
+  }
+]
 
 export const trophyImages = {
   "gym": require("@/../public/assets/trophies/gym.png"),
@@ -107,10 +182,10 @@ export const trophyImages = {
 }
 
 export const mockTrophies = [
-  { id: 1, title: "Gym Rat", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['gymTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 2, title: "Early Riser", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['sleepTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false },
-  { id: 3, title: "Reader", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['bookTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: true, justUnlocked: true },
-  { id: 4, title: "Sugar Free", description: 'This is just a mock description of this wonderfull trophy you unlocked.', icon: trophyImages['candyTrans'], requirement: 'Do 125 Tasks', progress: 50, goal: 125, unlocked: false }
+  { id: 1, title: "Gym Rat", description: "You've consistently hit the gym a Week. Keep grinding!", icon: trophyImages['gymTrans'], requirement: 'Hit gym for 7 Days', progress: 7, goal: 7, unlocked: true },
+  { id: 2, title: "Early Riser", description: 'Early bird gets the worm - and the LP!\nA perfect start to a productive life.', icon: trophyImages['sleepTrans'], requirement: 'Track 10 Tasks before 7:00 AM', progress: 3, goal: 10, unlocked: false },
+  { id: 3, title: "Reader", description: "Knowledge is power.\nBy completing your monthly reading goal and sharing your key insights, you've unlocked this scholarly honor.", icon: trophyImages['bookTrans'], requirement: 'Track reading 12 times', progress: 12, goal: 12, unlocked: true, justUnlocked: true },
+  { id: 4, title: "Sugar Free", description: "14 days without refined sugar!\nYou've mastered self-discipline and fueled your body with the good stuff. Your health is your wealth.", icon: trophyImages['candyTrans'], requirement: '14 Days without sugar', progress: 11, goal: 14, unlocked: false }
 ];
 
 export const mockPublicProfile = {
