@@ -14,7 +14,7 @@ import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-const SKELETON_FY_TASKS = [1, 2];
+const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const TasksScreen = () => {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
           {isLoading
-            ? SKELETON_FY_TASKS.map((item) => <FYTaskItem key={item.id} isLoading={isLoading} />)
+            ? SKELETON_FY_TASKS.map((item, index) => <FYTaskItem key={item.id || index} isLoading={isLoading} />)
             : recommendedTasks.map((task, index) => (
                 <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
               ))}
