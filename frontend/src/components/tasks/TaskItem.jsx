@@ -1,107 +1,107 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import AppText from "../ui/AppText";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import { Icon } from "../icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { Icon } from "@/components/icons/Icon";
+import BaseCard from "@/components/ui/BaseCard";
+import { Skeleton } from "moti/skeleton";
 
-const TaskItem = ({ title, lp, progress, status, icon, isActive, onPress }) => (
-  <Pressable onPress={onPress}>
-    <View style={styles.taskItem}>
-      <View style={styles.taskItemTop}>
-        <View style={styles.taskInfoMain}>
-          <View style={styles.taskIconBox}>
-            <Icon name={icon || "sun"} />
+const TaskItem = ({ title, lp, progress, status, icon, onPress, isLoading }) => {
+  if (isLoading) {
+    return (
+      <BaseCard style={styles.container}>
+        <View style={styles.iconContainer}>
+          <Skeleton
+            colorMode="dark"
+            width={32}
+            height={32}
+            radius="round"
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+        <View style={styles.textContainer}>
+          <View style={{ marginBottom: 8 }}>
+            <Skeleton colorMode="dark" width="70%" height={16} transition={{ type: "timing", duration: 1500 }} />
           </View>
-          <View>
-            <AppText bold>{title}</AppText>
-            <View style={styles.taskMetaRow}>
-              <AppText bold style={{ color: MyTheme.primaryAccent }}>
-                {lp} LP
-              </AppText>
-              {status && (
-                <>
-                  <AppText style={styles.dot}>•</AppText>
-                  <AppText style={styles.taskStatus}>{status}</AppText>
-                </>
-              )}
-            </View>
-          </View>
+          <Skeleton colorMode="dark" width="40%" height={12} transition={{ type: "timing", duration: 1500 }} />
+        </View>
+        <View style={styles.chevronContainer}>
+          <Skeleton
+            colorMode="dark"
+            width={16}
+            height={16}
+            radius={4}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+      </BaseCard>
+    );
+  }
+  return (
+    <BaseCard onPress={onPress} style={styles.container}>
+      <View style={styles.iconContainer}>
+        <Icon name={icon} size={24} color={MyTheme.text} />
+      </View>
+
+      <View style={styles.textContainer}>
+        <AppText type="body" bold style={styles.title} numberOfLines={1}>
+          {title}
+        </AppText>
+
+        <View style={styles.metaRow}>
+          <AppText type="caption" bold style={styles.lpText}>
+            +{lp} LP
+          </AppText>
+
+          {status && (
+            <>
+              <AppText type="caption"> • </AppText>
+              <AppText type="caption">{status}</AppText>
+            </>
+          )}
         </View>
       </View>
-      <View style={styles.progressBg}>
-        <View style={[styles.progressFill, { width: progress }]} />
+
+      <View style={styles.chevronContainer}>
+        <Icon name="right" size={20} color={MyTheme.muted} />
       </View>
-    </View>
-  </Pressable>
-);
+    </BaseCard>
+  );
+};
 
 const styles = StyleSheet.create({
-  taskItem: {
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  taskItemTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: Spacing.md
-  },
-  taskInfoMain: {
-    flexDirection: "row",
-    gap: Spacing.md
-  },
-  taskIconBox: {
-    width: 40,
-    height: 40,
-    backgroundColor: MyTheme.secondary,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  taskMetaRow: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: Spacing.xs
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md
   },
-  dot: {
-    color: MyTheme.muted,
-    marginHorizontal: Spacing.sm
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: Spacing.borderRadius.md,
+    backgroundColor: MyTheme.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md
   },
-  taskStatus: {
-    color: MyTheme.muted,
-    fontSize: 12
+  textContainer: {
+    flex: 1,
+    justifyContent: "center"
   },
-  toggle: {
-    width: 40,
-    height: 24,
-    backgroundColor: "#334155",
-    borderRadius: Spacing.borderRadius.full,
-    padding: 2
+  title: {
+    marginBottom: Spacing.xs
   },
-  toggleActive: {
-    backgroundColor: MyTheme.primaryAccent
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center"
   },
-  toggleCircle: {
-    width: 20,
-    height: 20,
-    backgroundColor: "white",
-    borderRadius: Spacing.borderRadius.full
+  lpText: {
+    color: MyTheme.primaryAccent
   },
-  toggleCircleActive: {
-    transform: [{ translateX: 16 }]
-  },
-  progressBg: {
-    height: 6,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.xs,
-    overflow: "hidden"
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: MyTheme.primaryAccent
+  chevronContainer: {
+    marginLeft: Spacing.sm
   }
 });
 

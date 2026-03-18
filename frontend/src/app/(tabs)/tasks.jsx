@@ -67,10 +67,10 @@ const TasksScreen = () => {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
         {isLoading
-          ? SKELETON_FY_TASKS.map((item) => (
-              <Skeleton key={item.id} {...skeletonProps} width={280} height={160} radius={Spacing.borderRadius.lg} />
-            ))
-          : recommendedTasks.map((task, index) => <FYTaskItem key={task.id || index} {...task} />)}
+          ? SKELETON_FY_TASKS.map((item) => <FYTaskItem key={item.id} isLoading={isLoading} />)
+          : recommendedTasks.map((task, index) => (
+              <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
+            ))}
       </ScrollView>
 
       <AppText type="title" style={styles.sectionHeader}>
@@ -111,15 +111,9 @@ const TasksScreen = () => {
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
-          if (isLoading) {
-            return (
-              <Skeleton {...skeletonProps} width="100%" height={80} radius={Spacing.borderRadius.lg}>
-                <View style={{ height: 80, width: "100%" }} />
-              </Skeleton>
-            );
-          }
           return (
             <TaskItem
+              isLoading={isLoading}
               title={item.title}
               lp={item.lp}
               progress={item.progress}

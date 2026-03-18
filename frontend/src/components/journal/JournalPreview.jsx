@@ -1,12 +1,41 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Icon } from "../icons/Icon";
 import { MyTheme } from "@/constants/Colors";
 import AppText from "../ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import BaseCard from "../ui/BaseCard";
+import { Skeleton } from "moti/skeleton";
 
-const JournalPreview = ({ activities }) => {
+const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const previewData = activities.slice(0, 3);
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        {[1, 2, 3].map((item) => (
+          // Wir nutzen die BaseCard und passen das Padding an
+          <BaseCard key={item} style={styles.activityItem} padding={Spacing.sm}>
+            {/* Icon Skeleton (unsichtbarer Container für das runde Skeleton) */}
+            <View style={[styles.iconCircle, { backgroundColor: "transparent" }]}>
+              <Skeleton {...skeletonProps} width={40} height={40} radius="round" />
+            </View>
+
+            {/* Text Skeleton */}
+            <View style={styles.textContainer}>
+              <View style={{ marginBottom: Spacing.xs }}>
+                <Skeleton {...skeletonProps} width="60%" height={16} radius={4} />
+              </View>
+              <Skeleton {...skeletonProps} width="35%" height={12} radius={4} />
+            </View>
+
+            {/* Points Skeleton */}
+            <Skeleton {...skeletonProps} width={40} height={16} radius={4} />
+          </BaseCard>
+        ))}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {previewData.map((item) => {
@@ -14,7 +43,7 @@ const JournalPreview = ({ activities }) => {
         const lpColor = isSpend ? MyTheme.warning : MyTheme.primaryAccent;
         const prefix = isSpend ? "-" : "+";
         return (
-          <View key={item.id} style={styles.activityItem}>
+          <BaseCard key={item.id} style={styles.activityItem}>
             <View style={styles.iconCircle}>
               <AppText>✨</AppText>
             </View>
@@ -32,7 +61,7 @@ const JournalPreview = ({ activities }) => {
               {prefix}
               {item.points} LP
             </AppText>
-          </View>
+          </BaseCard>
         );
       })}
     </View>
@@ -46,13 +75,7 @@ const styles = StyleSheet.create({
   activityItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.sm,
-    backgroundColor: MyTheme.primary,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    borderRadius: Spacing.borderRadius.md
+    marginBottom: Spacing.sm
   },
   iconCircle: {
     width: 40,

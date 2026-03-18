@@ -16,7 +16,7 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
         ? Array(4)
             .fill(0)
             .map((_, i) => (
-              <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={Spacing.borderRadius.full} />
+              <Skeleton key={i} {...skeletonProps} width={80} height={45} radius={Spacing.borderRadius.full} />
             ))
         : categories.map((cat, index) => {
             const isActive = cat.toLowerCase() === activeCat;

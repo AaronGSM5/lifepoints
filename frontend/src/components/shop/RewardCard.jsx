@@ -1,25 +1,43 @@
+import React from "react";
+import { StyleSheet, View, Image } from "react-native";
+import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
-import { StyleSheet, TouchableOpacity, View, Image, Pressable } from "react-native";
-import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
+import BaseCard from "../ui/BaseCard";
 
-const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress }) => {
+const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+  if (isLoading) {
+    return (
+      <BaseCard style={styles.gridCard} padding={0}>
+        <Skeleton {...skeletonProps} width="100%" height={100} radius={0} />
+        <View style={{ padding: Spacing.sm, gap: 6 }}>
+          <Skeleton {...skeletonProps} width="40%" height={12} />
+          <Skeleton {...skeletonProps} width="90%" height={16} />
+          <View style={[styles.cardFooter, { marginTop: Spacing.xs }]}>
+            <Skeleton {...skeletonProps} width="30%" height={14} />
+            <Skeleton {...skeletonProps} width={28} height={28} radius={14} />
+          </View>
+        </View>
+      </BaseCard>
+    );
+  }
+
   return (
-    <Pressable style={styles.gridCard} onPress={onPress}>
+    <BaseCard style={styles.gridCard} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Image source={{ uri: image }} style={styles.cardImage} />
-        {/* Icon Overlay */}
         <View style={styles.cardIconBadge}>
           <Icon name={icon} size={14} color={MyTheme.text} />
         </View>
       </View>
 
-      <View style={{ padding: Spacing.sm, gap: 2 }}>
+      <View style={styles.cardContent}>
         <AppText bold type="caption" style={styles.cardBrand}>
           {brand}
         </AppText>
-        <AppText bold type="body" numberOfLines={2}>
+        <AppText bold type="body" numberOfLines={2} style={styles.titleText}>
           {title}
         </AppText>
 
@@ -27,6 +45,7 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress }) =>
           <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
             {points} PTS
           </AppText>
+
           {isLocked ? (
             <View style={styles.lockedBadge}>
               <AppText bold type="caption" style={{ fontSize: 10 }}>
@@ -34,36 +53,21 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress }) =>
               </AppText>
             </View>
           ) : (
-            <TouchableOpacity style={styles.miniFab}>
+            <View style={styles.miniFab}>
               <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
-            </TouchableOpacity>
+            </View>
           )}
         </View>
       </View>
 
-      {/* Locked Overlay */}
       {isLocked && <View style={styles.lockedOverlay} />}
-    </Pressable>
+    </BaseCard>
   );
 };
 
-export default RewardCard;
-
 const styles = StyleSheet.create({
   gridCard: {
-    flex: 1,
-    maxWidth: "100%",
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.md,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  cardBrand: {
-    color: MyTheme.primaryAccent,
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.5
+    flex: 1
   },
   cardImageContainer: {
     height: 100,
@@ -84,11 +88,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  cardContent: {
+    padding: Spacing.sm,
+    gap: 2
+  },
+  cardBrand: {
+    color: MyTheme.primaryAccent,
+    fontSize: 10,
+    textTransform: "uppercase",
+    letterSpacing: 0.5
+  },
+  titleText: {
+    minHeight: 40
+  },
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: Spacing.sm
+    marginTop: Spacing.xs
   },
   miniFab: {
     width: 28,
@@ -111,3 +128,5 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(18, 18, 18, 0.6)"
   }
 });
+
+export default RewardCard;

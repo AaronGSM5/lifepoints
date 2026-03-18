@@ -34,10 +34,10 @@ export const mockTasks = [
 
 export const recommendedTasks = [
   {
-    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: '500 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
+    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: 500, badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
   },
-  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
-  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
+  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: 75, badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: 150, badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [
