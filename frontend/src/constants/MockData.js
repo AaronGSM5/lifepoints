@@ -14,6 +14,13 @@ export const mockFeedItems = [
   { id: 4, username: 'Zest_Runner', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
+export const mockMyCommunities = [
+  { title: "Early Risers", members: "1.2k Members", icon: "bolt", color: "#059669" },
+  { title: "Code Runners", members: "850 Members", icon: "terminal", color: "#3b82f6" },
+  { title: "Iron Will", members: "3.4k Members", icon: "fitness-center", color: "#ea580c" },
+  { title: "Focus Flow", members: "2.1k Members", icon: "psychology", color: "#9333ea" }
+];
+
 export const mockTasks = [
   { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed' },
   { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil' },
