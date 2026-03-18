@@ -30,7 +30,12 @@ export default function CommunitiesScreen() {
         <View style={{ height: Spacing.md }} />
         <CreateCommunityCard />
 
-        <SectionHeader title="My Communities" isLoading={isLoading} rightLabel="See all" onRightPress={() => {}} />
+        <SectionHeader
+          title="My Communities"
+          isLoading={isLoading}
+          rightLabel="See all"
+          onRightPress={() => console.log("mockClickReaction xD")}
+        />
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
           {isLoading

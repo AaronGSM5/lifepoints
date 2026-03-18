@@ -13,6 +13,7 @@ const SectionHeader = ({
   iconColor,
   iconOutline = false,
   rightLabel,
+  rightIcon,
   onRightPress,
   rightLabelColor = MyTheme.primaryAccent,
   style,
@@ -60,10 +61,11 @@ const SectionHeader = ({
         <AppText type="title">{title}</AppText>
       </View>
 
-      {rightLabel && onRightPress && (
+      {((rightLabel && onRightPress) || rightIcon) && (
         <AppButton
           variant="ghost"
           title={rightLabel}
+          icon={rightIcon || undefined}
           size="sm"
           textStyle={{ color: rightLabelColor }}
           onPress={onRightPress}
