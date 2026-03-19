@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -8,47 +8,24 @@ import { useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
-import { mockRewards } from "@/constants/MockData";
-import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import WalletCard from "@/components/shop/WalletCard";
 import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { useShop } from "@/hooks/useShop";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
   const router = useRouter();
-  const [activeCat, setActiveCat] = useState("all");
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const bottomPadding = useFloatingNavbarPadding();
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
 
   const skeletonProps = {
     colorMode: "dark",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };
-
-  const uniqueCategories = [...new Set(mockRewards.map((c) => c.category))];
-  const categories = ["All", ...uniqueCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
-
-  const handleRefresh = useCallback(() => {
-    setIsRefreshing(true);
-
-    // Loading simulation
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 2000);
-  }, []);
-
-  const filteredCoupons = mockRewards.filter(
-    (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
-  );
 
   const renderHeader = useMemo(
     () => (
@@ -64,7 +41,7 @@ export default function ShopScreen() {
           isLoading={isLoading}
         />
 
-        <SectionHeader title={"Featured Reward"} />
+        <SectionHeader title={"Featured Reward"} isLoading={isLoading} />
         <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
 
         <SectionHeader
@@ -73,10 +50,11 @@ export default function ShopScreen() {
               ? "For You"
               : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`
           }
+          isLoading={isLoading}
         />
       </View>
     ),
-    [activeCat, isLoading]
+    [activeCat, isLoading, categories]
   );
 
   const renderEmptyState = () => (
@@ -99,7 +77,7 @@ export default function ShopScreen() {
   return (
     <ScreenWrapper scrollable={false}>
       <FlatList
-        data={isLoading ? SKELETON_REWARDS : filteredCoupons}
+        data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2}
         showsVerticalScrollIndicator={false}
@@ -108,35 +86,23 @@ export default function ShopScreen() {
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={!isLoading ? renderEmptyState : null}
         refreshing={isRefreshing}
-        onRefresh={handleRefresh}
+        onRefresh={refreshShop}
         tintColor={MyTheme.primaryAccent}
         colors={[MyTheme.primaryAccent]}
-        renderItem={({ item }) => {
-          if (isLoading) {
-            return (
-              <View style={{ flex: 1 }}>
-                <Skeleton {...skeletonProps} width="100%" height={200} radius={Spacing.borderRadius.lg}>
-                  <View style={{ height: 200, width: "100%" }} />
-                </Skeleton>
-              </View>
-            );
-          }
-          return (
-            <View style={{ flex: 1 }}>
-              <RewardCard
-                image={item.image}
-                brand={item.brand}
-                title={item.title}
-                points={item.points}
-                icon={item.icon}
-                isLocked={item.isLocked}
-                onPress={() => router.push(`/reward/${item.id}`)}
-                skeletonProps={skeletonProps}
-                isLoading={isLoading}
-              />
-            </View>
-          );
-        }}
+        renderItem={({ item }) => (
+          <View style={{ flex: 1 }}>
+            <RewardCard
+              isLoading={isLoading}
+              image={item.image}
+              brand={item.brand}
+              title={item.title}
+              points={item.points}
+              icon={item.icon}
+              isLocked={item.isLocked}
+              onPress={() => router.push(`/reward/${item.id}`)}
+            />
+          </View>
+        )}
       />
     </ScreenWrapper>
   );

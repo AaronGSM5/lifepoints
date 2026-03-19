@@ -2,32 +2,35 @@ import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/Scr
 import FYTaskItem from "@/components/tasks/FYTaskItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
-import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
-import { mockTasks, recommendedTasks } from "@/constants/MockData";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
+import { useTasks } from "@/hooks/useTasks";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-const SKELETON_FY_TASKS = Array.from({ length: 2 }).map((_, i) => ({ id: `sfy-${i}`, isSkeleton: true }));
+const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const [activeCat, setActiveCat] = useState("all");
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const bottomPadding = useFloatingNavbarPadding();
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
+  const {
+    tasks,
+    recommendedTasks,
+    categories,
+    activeCat,
+    setActiveCat,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    isRefreshing,
+    refreshTasks
+  } = useTasks();
 
   const skeletonProps = {
     colorMode: "dark",
@@ -35,58 +38,42 @@ const TasksScreen = () => {
     show: isLoading
   };
 
-  const categories = useMemo(() => {
-    const unique = [...new Set(mockTasks.map((c) => c.category))];
-    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
-  }, [mockTasks]);
+  const renderHeader = useMemo(
+    () => (
+      <View>
+        <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+          <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
+        </Skeleton>
 
-  const handleRefresh = useCallback(() => {
-    setIsRefreshing(true);
+        <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
 
-    // Loading simulation
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 2000);
-  }, []);
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
+          {isLoading
+            ? SKELETON_FY_TASKS.map((item, index) => <FYTaskItem key={item.id || index} isLoading={isLoading} />)
+            : recommendedTasks.map((task, index) => (
+                <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
+              ))}
+        </ScrollView>
 
-  const filteredTasks = mockTasks.filter(
-    (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
-  );
+        <SectionHeader
+          title={
+            activeCat.toLowerCase() === "all"
+              ? "All Tasks"
+              : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
+          }
+          isLoading={isLoading}
+        />
 
-  const renderHeader = () => (
-    <View>
-      <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-        <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
-      </Skeleton>
-      <View style={styles.sectionHeader}>
-        <AppText type="title">For You</AppText>
-        {!isLoading && (
-          <AppButton variant="ghost" title={"See more"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
-        )}
+        <CategoryButtons
+          categories={categories}
+          activeCat={activeCat}
+          setActiveCat={setActiveCat}
+          skeletonProps={skeletonProps}
+          isLoading={isLoading}
+        />
       </View>
-
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
-        {isLoading
-          ? SKELETON_FY_TASKS.map((item) => <FYTaskItem key={item.id} isLoading={isLoading} />)
-          : recommendedTasks.map((task, index) => (
-              <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
-            ))}
-      </ScrollView>
-
-      <AppText type="title" style={styles.sectionHeader}>
-        {activeCat.toLowerCase() === "all"
-          ? "All Tasks"
-          : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`}
-      </AppText>
-
-      <CategoryButtons
-        categories={categories}
-        activeCat={activeCat}
-        setActiveCat={setActiveCat}
-        skeletonProps={skeletonProps}
-        isLoading={isLoading}
-      />
-    </View>
+    ),
+    [isLoading, activeCat, categories, recommendedTasks, searchQuery]
   );
 
   const renderFooter = () => (
@@ -101,14 +88,14 @@ const TasksScreen = () => {
   return (
     <ScreenWrapper scrollable={false}>
       <FlatList
-        data={isLoading ? SKELETON_TASKS : filteredTasks}
-        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-        ListHeaderComponent={renderHeader()}
+        data={isLoading ? SKELETON_TASKS : tasks}
+        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
+        ListHeaderComponent={renderHeader}
         ListFooterComponent={!isLoading ? renderFooter() : null}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
-        onRefresh={handleRefresh}
+        onRefresh={refreshTasks}
         refreshing={isRefreshing}
         renderItem={({ item }) => {
           return (
@@ -129,15 +116,9 @@ const TasksScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md
-  },
   carouselContainer: {
     gap: Spacing.md,
-    marginBottom: Spacing.md
+    marginBottom: Spacing.lg
   }
 });
 

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { router } from "expo-router";
-import { mockActivities, mockProfile, mockTrophies } from "@/constants/MockData";
 import { Skeleton } from "moti/skeleton";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import JournalPreview from "@/components/journal/JournalPreview";
@@ -12,14 +10,10 @@ import StatCard from "@/components/ui/StatCard";
 import OnboardingGuide from "@/components/profile/OnboardingGuide";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ProfileHeader from "@/components/profile/ProfileHeader";
+import { useProfile } from "@/hooks/useProfile";
 
 export default function ProfileScreen() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  const { profile, activities, trophies, isLoading } = useProfile();
 
   const skeletonProps = {
     colorMode: "dark",
@@ -29,7 +23,7 @@ export default function ProfileScreen() {
 
   return (
     <ScreenWrapper scrollable>
-      <ProfileHeader profile={mockProfile} skeletonProps={skeletonProps} isLoading={isLoading} />
+      <ProfileHeader profile={profile} skeletonProps={skeletonProps} isLoading={isLoading} />
 
       <OnboardingGuide skeletonProps={skeletonProps} isLoading={isLoading} />
 
@@ -70,7 +64,7 @@ export default function ProfileScreen() {
             ? [1, 2, 3, 4].map((i) => (
                 <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
               ))
-            : mockTrophies.map((t, i) => (
+            : trophies.map((t, i) => (
                 <View key={i} style={{ width: 80 }}>
                   <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} unlocked={t.unlocked} />
                 </View>
@@ -86,7 +80,7 @@ export default function ProfileScreen() {
           onRightPress={() => router.push("/journal")}
           isLoading={isLoading}
         />
-        <JournalPreview activities={mockActivities} skeletonProps={skeletonProps} isLoading={isLoading} />
+        <JournalPreview activities={activities} skeletonProps={skeletonProps} isLoading={isLoading} />
       </View>
     </ScreenWrapper>
   );
