@@ -7,22 +7,23 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import BaseCard from "../ui/BaseCard";
 
 const RecommendedCommunity = ({ item, isLoading }) => {
   if (isLoading) {
     return (
-      <View style={styles.recommendedItem}>
+      <BaseCard style={styles.recommendedItem}>
         <Skeleton colorMode="dark" width={48} height={48} radius={Spacing.borderRadius.md} />
         <View style={{ flex: 1, gap: 8 }}>
           <Skeleton colorMode="dark" width="60%" height={16} />
           <Skeleton colorMode="dark" width="90%" height={12} />
         </View>
-      </View>
+      </BaseCard>
     );
   }
 
   return (
-    <View style={styles.recommendedItem}>
+    <BaseCard style={styles.recommendedItem}>
       <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
         <MaterialIcons name={item.icon} size={28} color={item.iconColor} />
       </View>
@@ -38,7 +39,7 @@ const RecommendedCommunity = ({ item, isLoading }) => {
         iconPosition="center"
         bgColor={"rgba(47, 196, 146, 0.1)"}
       />
-    </View>
+    </BaseCard>
   );
 };
 
@@ -46,11 +47,6 @@ const styles = StyleSheet.create({
   recommendedItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: MyTheme.primary,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
     gap: Spacing.md,
     marginBottom: Spacing.md
   },

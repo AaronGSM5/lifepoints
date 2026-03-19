@@ -2,55 +2,61 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
+import BaseCard from "../ui/BaseCard";
 
 const MyCommunityCard = ({ item, isLoading }) => {
   if (isLoading) {
     return (
-      <View style={[styles.communityCard, { borderColor: "transparent" }]}>
+      <BaseCard style={styles.communityCard}>
         <Skeleton colorMode="dark" width={48} height={48} radius={Spacing.borderRadius.md} />
         <View style={{ height: Spacing.md }} />
         <Skeleton colorMode="dark" width={80} height={14} />
         <View style={{ height: Spacing.xs }} />
         <Skeleton colorMode="dark" width={60} height={10} />
-      </View>
+      </BaseCard>
     );
   }
 
   return (
-    <View style={styles.communityCard}>
-      <View style={[styles.cardIconBadge, { backgroundColor: item.color }]}>
-        <MaterialIcons name={item.icon} size={24} color="#fff" />
+    <BaseCard style={styles.communityCard}>
+      <View style={[styles.cardIconBadge, { backgroundColor: item.color, shadowColor: item.color }]}>
+        <MaterialIcons name={item.icon} size={28} color="#fff" />
       </View>
-      <AppText bold style={styles.cardTitle} numberOfLines={1}>
-        {item.title}
-      </AppText>
-      <AppText type="caption">{item.members}</AppText>
-    </View>
+      <View style={styles.textContainer}>
+        <AppText bold style={styles.cardTitle} numberOfLines={1}>
+          {item.title}
+        </AppText>
+        <AppText type="caption">{item.members}</AppText>
+      </View>
+    </BaseCard>
   );
 };
 
 const styles = StyleSheet.create({
   communityCard: {
-    width: 140,
-    backgroundColor: MyTheme.primary,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.md,
-    padding: Spacing.md,
+    width: 150,
     marginRight: Spacing.md
   },
   cardIconBadge: {
-    width: 48,
-    height: 48,
+    width: 60,
+    height: 60,
     borderRadius: Spacing.borderRadius.md,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: Spacing.md
+    marginBottom: Spacing.md,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5
   },
-  cardTitle: { marginBottom: Spacing.xs }
+  textContainer: {
+    gap: 2
+  },
+  cardTitle: {
+    fontSize: 15
+  }
 });
 
 export default MyCommunityCard;

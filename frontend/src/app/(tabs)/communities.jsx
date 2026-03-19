@@ -9,6 +9,7 @@ import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import CreateCommunityCard from "@/components/communities/CreateCommunityCard";
 import { mockMyCommunities } from "@/constants/MockData";
+import EventHero from "@/components/home/EventHero";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -25,10 +26,10 @@ export default function CommunitiesScreen() {
   const renderHeader = useMemo(
     () => (
       <View>
-        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
+        <EventHero imageSource={require("../../../public/assets/creativeBanner.png")} isLoading={isLoading} />
 
-        <View style={{ height: Spacing.md }} />
-        <CreateCommunityCard />
+        {/* <View style={{ height: Spacing.md }} /> */}
+        {/* <CreateCommunityCard /> */}
 
         <SectionHeader
           title="My Communities"
@@ -42,6 +43,8 @@ export default function CommunitiesScreen() {
             ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
             : mockMyCommunities.map((item, index) => <MyCommunityCard key={index} item={item} isLoading={isLoading} />)}
         </ScrollView>
+
+        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
 
         <SectionHeader title="Recommended for you" isLoading={isLoading} />
       </View>
@@ -67,6 +70,6 @@ const styles = StyleSheet.create({
   horizontalScroll: {
     marginHorizontal: -Spacing.lg,
     paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.md
+    marginBottom: Spacing.lg
   }
 });
