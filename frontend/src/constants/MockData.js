@@ -15,10 +15,10 @@ export const mockFeedItems = [
 ]
 
 export const mockMyCommunities = [
-  { title: "Early Risers", members: "1.2k Members", icon: "bolt", color: "#059669" },
-  { title: "Code Runners", members: "850 Members", icon: "terminal", color: "#3b82f6" },
-  { title: "Iron Will", members: "3.4k Members", icon: "fitness-center", color: "#ea580c" },
-  { title: "Focus Flow", members: "2.1k Members", icon: "psychology", color: "#9333ea" }
+  { title: "Early Risers", members: "1.2k Members", icon: "bolt", color: "#059669", isLive: false, hasUnread: true, onlineCount: 20 },
+  { title: "Code Runners", members: "850 Members", icon: "terminal", color: "#3b82f6", isLive: true, hasUnread: false, onlineCount: 45 },
+  { title: "Iron Will", members: "3.4k Members", icon: "fitness-center", color: "#ea580c", isLive: false, hasUnread: true, onlineCount: 0 },
+  { title: "Focus Flow", members: "2.1k Members", icon: "psychology", color: "#9333ea", isLive: false, hasUnread: false, onlineCount: 902 }
 ];
 
 export const mockTasks = [
