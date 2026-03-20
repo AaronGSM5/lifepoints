@@ -425,19 +425,19 @@ export const onboardingSlides = [
     id: "1",
     title: "Mach die Welt etwas besser",
     description: "Laaa",
-    iconName: "earth-outline"
+    icon: '🌍'
   },
   {
     id: "2",
     title: "Mit LifePoints",
     description: "Lalal...",
-    iconName: "earth-outline"
+    icon: '✨'
   },
   {
     id: "3",
     title: "Be good",
     description: "Lalalalalalalala...",
-    iconName: "earth-outline"
+    icon: '🌱'
   },
 ];
 

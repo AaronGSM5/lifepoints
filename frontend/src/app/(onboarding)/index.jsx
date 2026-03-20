@@ -1,12 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
-import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
 import { onboardingSlides } from "@/constants/MockData";
 import AppButton from "@/components/ui/AppButton";
+import OnboardingItem from "@/components/onboarding/OnboardingItem";
+import SlidePaginator from "@/components/onboarding/SlidePaginator";
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
@@ -41,24 +41,7 @@ export default function OnboardingScreen() {
     }
   };
 
-  const renderItem = ({ item }) => (
-    <View style={[styles.slide, { width }]}>
-      <View style={styles.imageContainer}>
-        <AppText type="h1" style={{ fontSize: 80 }}>
-          {item.id === "1" ? "🌍" : item.id === "2" ? "✨" : "🌱"}
-        </AppText>
-      </View>
-
-      <View style={styles.textContainer}>
-        <AppText type="h1" style={styles.title}>
-          {item.title}
-        </AppText>
-        <AppText type="body" style={styles.description}>
-          {item.description}
-        </AppText>
-      </View>
-    </View>
-  );
+  const renderItem = useCallback(({ item }) => <OnboardingItem item={item} />, []);
 
   return (
     <ScreenWrapper withPaddingSides={false}>
@@ -69,10 +52,6 @@ export default function OnboardingScreen() {
             renderItem={renderItem}
             horizontal
             showsHorizontalScrollIndicator={false}
-            // snapToInterval={width}
-            // snapToAlignment="start"
-            // decelerationRate="fast"
-            // disableIntervalMomentum={true}
             pagingEnabled={true}
             bounces={false}
             keyExtractor={(item) => item.id}
@@ -84,11 +63,7 @@ export default function OnboardingScreen() {
         </View>
 
         <View style={styles.footer}>
-          <View style={styles.dotContainer}>
-            {onboardingSlides.map((_, index) => (
-              <View key={index.toString()} style={[styles.dot, currentIndex === index ? styles.activeDot : null]} />
-            ))}
-          </View>
+          <SlidePaginator data={onboardingSlides} currentIndex={currentIndex} />
 
           <AppButton
             title={currentIndex === onboardingSlides.length - 1 ? "Los geht's" : "Weiter"}
@@ -108,49 +83,9 @@ const styles = StyleSheet.create({
   sliderContainer: {
     flex: 3
   },
-  slide: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: Spacing.xl,
-    marginTop: Spacing.xl
-  },
-  imageContainer: {
-    flex: 0.6,
-    justifyContent: "center"
-  },
-  textContainer: {
-    flex: 0.4,
-    alignItems: "center",
-    marginTop: Spacing.md
-  },
-  title: {
-    textAlign: "center",
-    marginBottom: Spacing.md
-  },
-  description: {
-    textAlign: "center",
-    color: "gray",
-    lineHeight: 24
-  },
   footer: {
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: Spacing.xl
-  },
-  dotContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: Spacing.xl
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: MyTheme.muted,
-    marginHorizontal: 4
-  },
-  activeDot: {
-    backgroundColor: MyTheme.primary,
-    width: 20
   }
 });
