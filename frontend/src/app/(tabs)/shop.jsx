@@ -2,17 +2,15 @@ import React, { useMemo } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import WalletCard from "@/components/shop/WalletCard";
 import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { useShop } from "@/hooks/useShop";
+import EmptyState from "@/components/shop/EmptyState";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -57,22 +55,7 @@ export default function ShopScreen() {
     [activeCat, isLoading, categories]
   );
 
-  const renderEmptyState = () => (
-    <View style={styles.emptyContainer}>
-      <View style={styles.emptyIconCircle}>
-        <Icon name="search" size={32} color={MyTheme.muted} />
-      </View>
-      <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
-        No Rewards Found
-      </AppText>
-      <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
-        We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
-      </AppText>
-      <View style={{ marginTop: Spacing.sm }}>
-        <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />
-      </View>
-    </View>
-  );
+  const renderEmptyState = () => <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />;
 
   return (
     <ScreenWrapper scrollable={false}>
@@ -134,21 +117,5 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     marginBottom: Spacing.md,
     justifyContent: "space-between"
-  },
-  emptyContainer: {
-    width: "100%",
-    paddingVertical: Spacing.lg,
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: 200
-  },
-  emptyIconCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.sm
   }
 });
