@@ -1,34 +1,54 @@
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Image, Dimensions } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Image, Dimensions, Alert } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router"; // Added useRouter for navigation
 import { useState } from "react";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import { Icon } from "@/components/icons/Icon";
+import { account } from "@/lib/appwrite";
+import { ID } from "react-native-appwrite";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const screenWidth = Dimensions.get("window").width;
+
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
   const [passwordIsShown, setPasswordIsShown] = useState(true);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const maxLogoWidth = 330; // max 330 px breit
+  const maxLogoWidth = 330;
   const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   const logoHeight = logoWidth / 3.75;
 
-  const isNameValid = (name) => {
-    // Some database check (maybe some rules)
-    return true;
+  const handleRegister = async () => {
+    setIsLoading(true);
+    try {
+      await account.create(ID.unique(), emailInput, passwordInput, nameInput);
+
+      await account.createEmailPasswordSession(emailInput, passwordInput);
+
+      router.replace("/home");
+    } catch (error) {
+      console.log("register error ", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const isNameValid = (name) => {
+    return name.length >= 3;
+  };
+
   const isEmailValid = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -39,37 +59,34 @@ export default function RegisterScreen() {
 
   const passwordsFilled = passwordInput && repeatPasswordInput;
   const passwordsMatch = passwordsFilled && passwordInput === repeatPasswordInput;
+
   const passwordRules = [
-    {
-      name: "lengthRule",
-      validate: (pwInput) => pwInput.length >= 8,
-      displayMessage: "min. length of 8 characters"
-    },
-    {
-      name: "uppercaseRule",
-      validate: (pwInput) => /[A-Z]/.test(pwInput),
-      displayMessage: "min. 1 uppercase letter"
-    },
-    {
-      name: "numberRule",
-      validate: (pwInput) => /[0-9]/.test(pwInput),
-      displayMessage: "min. 1 number"
-    },
+    { name: "lengthRule", validate: (pwInput) => pwInput.length >= 8, displayMessage: "min. length of 8 characters" },
+    { name: "uppercaseRule", validate: (pwInput) => /[A-Z]/.test(pwInput), displayMessage: "min. 1 uppercase letter" },
+    { name: "numberRule", validate: (pwInput) => /[0-9]/.test(pwInput), displayMessage: "min. 1 number" },
     {
       name: "specialCharRule",
       validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
       displayMessage: "min. 1 special character"
     }
   ];
+
   const [passwordRuleStatus, setPasswordRuleStatus] = useState({
     lengthRule: false,
     uppercaseRule: false,
     numberRule: false,
     specialCharRule: false
   });
+
   const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
   const isSubmitDisabled =
-    !nameInput || !emailInput || !passwordsMatch || !allRulesPassed || !isEmailValidFlag || !isNameValidFlag;
+    !nameInput ||
+    !emailInput ||
+    !passwordsMatch ||
+    !allRulesPassed ||
+    !isEmailValidFlag ||
+    !isNameValidFlag ||
+    isLoading;
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -102,7 +119,7 @@ export default function RegisterScreen() {
               placeholder="Username"
               bottomMargin={false}
               isValid={isNameValidFlag && nameInput.length > 0}
-              error={!isNameValidFlag && nameInput.length > 0 ? "Username is already taken.." : null}
+              error={!isNameValidFlag && nameInput.length > 0 ? "Username is too short" : null}
             />
             <AppInput
               value={emailInput}
@@ -112,7 +129,7 @@ export default function RegisterScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
               isValid={isEmailValidFlag && emailInput.length > 0}
-              error={!isEmailValidFlag && emailInput.length > 0}
+              error={!isEmailValidFlag && emailInput.length > 0 ? "Invalid email address" : null}
             />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <AppInput
@@ -165,7 +182,7 @@ export default function RegisterScreen() {
               secureTextEntry
               bottomMargin={false}
               isValid={passwordsMatch}
-              error={passwordsFilled && !passwordsMatch}
+              error={passwordsFilled && !passwordsMatch ? "Passwords do not match" : null}
             />
 
             {/* Overlay */}
@@ -177,7 +194,13 @@ export default function RegisterScreen() {
                 passwordRuleStatus={passwordRuleStatus}
               />
             )}
-            <AppButton title={"Register"} bgColor={MyTheme.primaryAccent} disabled={isSubmitDisabled} />
+
+            <AppButton
+              title={isLoading ? "Creating Account..." : "Register"}
+              bgColor={MyTheme.primaryAccent}
+              disabled={isSubmitDisabled}
+              onPress={handleRegister} // Hooked up function
+            />
           </View>
 
           {/* Footer */}

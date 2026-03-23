@@ -1,25 +1,49 @@
-import { View, StyleSheet, Pressable, KeyboardAvoidingView, Platform, Dimensions, Image } from "react-native";
+import { View, StyleSheet, Pressable, KeyboardAvoidingView, Platform, Dimensions, Image, Alert } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 
+// Import your Appwrite account instance
+import { account } from "@/lib/appwrite";
+
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const screenWidth = Dimensions.get("window").width;
+  const router = useRouter(); // For navigation after successful login
+
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordIsShown, setPasswordIsShown] = useState(true);
-  const isLoginDisabled = !emailInput || !passwordInput;
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
 
-  const maxLogoWidth = 330; // max 330 px breit
+  const isLoginDisabled = !emailInput || !passwordInput || isLoading;
+
+  const maxLogoWidth = 330;
   const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   const logoHeight = logoWidth / 3.75;
+
+  // Appwrite Login Logic
+  const handleLogin = async () => {
+    if (!emailInput || !passwordInput) return;
+
+    setIsLoading(true);
+    try {
+      await account.createEmailPasswordSession(emailInput, passwordInput);
+
+      router.replace("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      Alert.alert("Login Failed", error.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -61,7 +85,12 @@ export default function LoginScreen() {
               rightIcon={passwordIsShown ? "eyeOpen" : "eyeClosed"}
               onRightIconPress={() => setPasswordIsShown(!passwordIsShown)}
             />
-            <AppButton title={"Log in"} disabled={isLoginDisabled} bgColor={MyTheme.primaryAccent} />
+            <AppButton
+              title={isLoading ? "Logging in..." : "Log in"}
+              disabled={isLoginDisabled}
+              bgColor={MyTheme.primaryAccent}
+              onPress={handleLogin} // Attach the logic here
+            />
             <Pressable style={styles.forgotPassword}>
               <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
                 Forgot password?
