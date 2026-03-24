@@ -50,7 +50,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
           {/* Icon & Live Badge */}
           <View style={styles.headerRow}>
             <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
-              <MaterialIcons name={item.icon} size={24} color={item.iconColor || "#fff"} />
+              <MaterialIcons name={item.icon} size={24} color={"#fff"} />
             </View>
 
             {item.isLive && (

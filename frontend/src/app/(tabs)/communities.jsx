@@ -9,6 +9,7 @@ import RecommendedCommunity from "@/components/communities/RecommendedCommunity"
 // import CreateCommunityCard from "@/components/communities/CreateCommunityCard";
 import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
+import { router } from "expo-router";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -57,7 +58,14 @@ export default function CommunitiesScreen() {
             >
               {isLoading
                 ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
-                : myCommunities.map((item, index) => <MyCommunityCard key={index} item={item} isLoading={isLoading} />)}
+                : myCommunities.map((item, index) => (
+                    <MyCommunityCard
+                      key={index}
+                      item={item}
+                      isLoading={isLoading}
+                      onPress={() => router.push(`/community/${item.id}`)}
+                    />
+                  ))}
             </ScrollView>
           </View>
         )}
@@ -86,7 +94,7 @@ export default function CommunitiesScreen() {
                 <RecommendedCommunity
                   key={community.id || index}
                   item={community}
-                  onPress={() => console.log("Gehe zu:", community.title)}
+                  onPress={() => router.push(`/community/${community.id}`)}
                 />
               ))}
         </ScrollView>
