@@ -1,24 +1,26 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Pressable } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
 
-const EventHero = ({ imageSource, isLoading }) => {
+const EventHero = ({ imageSource, isLoading, onPress }) => {
   return (
-    <View style={styles.heroSection}>
-      <Image source={imageSource} style={styles.heroImage} resizeMode="cover" />
-      {isLoading && (
-        <View style={StyleSheet.absoluteFillObject}>
-          <Skeleton
-            colorMode="dark"
-            width="100%"
-            height="100%"
-            radius={Spacing.borderRadius.lg}
-            transition={{ type: "timing", duration: 1500 }}
-          />
-        </View>
-      )}
-    </View>
+    <Pressable onPress={onPress}>
+      <View style={styles.heroSection}>
+        <Image source={imageSource} style={styles.heroImage} resizeMode="cover" />
+        {isLoading && (
+          <View style={StyleSheet.absoluteFillObject}>
+            <Skeleton
+              colorMode="dark"
+              width="100%"
+              height="100%"
+              radius={Spacing.borderRadius.lg}
+              transition={{ type: "timing", duration: 1500 }}
+            />
+          </View>
+        )}
+      </View>
+    </Pressable>
   );
 };
 

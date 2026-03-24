@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
@@ -10,12 +10,19 @@ import RecommendedCommunity from "@/components/communities/RecommendedCommunity"
 import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
+import CreateCommunityForm from "@/components/communities/CreateCommunityForm";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
   const { myCommunities, recommended, searchQuery, setSearchQuery, isLoading } = useCommunities();
   const bottomPadding = useFloatingNavbarPadding();
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+
+  const handleCreateCommunity = (data) => {
+    console.log("Community wird erstellt:", data);
+    // Hier später dein API-Call
+  };
 
   const sections = useMemo(
     () => [
@@ -30,7 +37,11 @@ export default function CommunitiesScreen() {
     () => (
       <View style={styles.headerContainer}>
         <View style={styles.paddedContent}>
-          <EventHero imageSource={require("../../../public/assets/creativeBanner.png")} isLoading={isLoading} />
+          <EventHero
+            imageSource={require("../../../public/assets/creativeBanner.png")}
+            isLoading={isLoading}
+            onPress={() => setIsCreateModalVisible(true)}
+          />
         </View>
         <View style={[styles.paddedContent, styles.searchWrapper]}>
           <AppInput
@@ -111,6 +122,11 @@ export default function CommunitiesScreen() {
         renderItem={renderSection}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
+      />
+      <CreateCommunityForm
+        visible={isCreateModalVisible}
+        onClose={() => setIsCreateModalVisible(false)}
+        onCreate={handleCreateCommunity}
       />
     </ScreenWrapper>
   );
