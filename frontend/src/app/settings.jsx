@@ -1,11 +1,12 @@
-import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { mockSettings } from "@/constants/MockData";
-import { Icon } from "@/components/icons/Icon";
-import { MyTheme } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import BaseCard from "@/components/ui/BaseCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import SettingsRow from "@/components/settings/SettingsRow";
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -30,7 +31,9 @@ export default function SettingsScreen() {
           console.log("Open Theme Picker Modal");
         }
         break;
-
+      case "toggle":
+      case "info":
+        break;
       default:
         console.warn(`No handler defined for type: ${item.type}`);
     }
@@ -38,33 +41,31 @@ export default function SettingsScreen() {
 
   return (
     <ScreenWrapper scrollable>
-      <AppText type="h1" style={{ marginBottom: Spacing.md }}>
-        Settings
-      </AppText>
+      <ScreenTitle title={"Settings"} />
 
       {mockSettings.map((cat) => (
         <View key={cat.title} style={styles.section}>
-          <AppText style={styles.sectionHeader}>{cat.title.toUpperCase()}</AppText>
+          <AppText type="caption" style={styles.sectionHeader}>
+            {cat.title.toUpperCase()}
+          </AppText>
 
-          <View style={styles.group}>
+          <BaseCard padding={0}>
             {cat.data.map((setting, index) => (
-              <View key={setting.id}>
-                <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => handlePress(setting)}>
-                  <View style={styles.itemLeft}>
-                    <Icon name={setting.icon} color={setting.danger ? "red" : "white"} />
-                    <AppText type="title" style={setting.danger ? { color: "red" } : {}}>
-                      {setting.label}
-                    </AppText>
-                  </View>
-                  {setting.type === "link" && <Icon name={"right"} />}
-                </TouchableOpacity>
-
-                {index < cat.data.length - 1 && <View style={styles.separator} />}
-              </View>
+              <SettingsRow
+                key={setting.id}
+                setting={setting}
+                isLast={index === cat.data.length - 1}
+                onPress={handlePress}
+              />
             ))}
-          </View>
+          </BaseCard>
         </View>
       ))}
+      <View>
+        <AppText type="caption" style={{ textAlign: "center" }}>
+          Lifepoints App Version 1.0.0
+        </AppText>
+      </View>
     </ScreenWrapper>
   );
 }
@@ -74,33 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md
   },
   sectionHeader: {
-    fontSize: 13,
-    color: MyTheme.muted,
-    marginLeft: Spacing.lg,
+    marginLeft: Spacing.xs,
     marginBottom: Spacing.xs
-  },
-  group: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.md,
-    marginHorizontal: Spacing.md,
-    overflow: "hidden"
-  },
-  item: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: Spacing.sm + 4,
-    paddingHorizontal: Spacing.md,
-    minHeight: 44
-  },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12 // Abstand zwischen Icon und Text
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: MyTheme.muted,
-    marginLeft: Spacing.md
   }
 });

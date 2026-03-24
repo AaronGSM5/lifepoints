@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import BaseCard from "../ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
 import SectionHeader from "../ui/SectionHeader";
+import { router } from "expo-router";
 
 const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const previewData = activities.slice(0, 3);

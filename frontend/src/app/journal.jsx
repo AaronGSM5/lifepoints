@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet, SectionList } from "react-native";
-import { Icon } from "@/components/icons/Icon";
 import { mockSectionedActivities } from "@/constants/MockData";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 const JournalPage = () => {
   const renderItem = ({ item }) => {
@@ -51,6 +51,7 @@ const JournalPage = () => {
 
   return (
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>
+      <ScreenTitle title={"My Impact Journal"} />
       <SectionList
         sections={mockSectionedActivities}
         keyExtractor={(item) => item.id}
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   sectionHeader: {
-    paddingVertical: Spacing.md,
+    paddingBottom: Spacing.sm,
     backgroundColor: "transparent"
   },
   activityItem: {
