@@ -3,12 +3,11 @@ import {
   Modal,
   View,
   StyleSheet,
-  TextInput,
   Pressable,
   ScrollView,
   KeyboardAvoidingView,
-  Platform,
-  Image
+  Platform
+  // Image
 } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
@@ -38,6 +37,20 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setSelectedBadges((prev) => (prev.includes(badge) ? prev.filter((b) => b !== badge) : [...prev, badge]));
   };
 
+  const resetModal = () => {
+    setName("");
+    setDescription("");
+    setSelectedIcon("groups");
+    setBanner(null);
+    setSelectedBadges([]);
+    setSelectedSize(SIZE_OPTIONS[0]);
+  };
+
+  const handleClose = () => {
+    resetModal();
+    onClose();
+  };
+
   const handleCreate = () => {
     if (!formValid) return;
     onCreate({
@@ -48,6 +61,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
       badges: selectedBadges,
       size: selectedSize.slots
     });
+    resetModal();
     onClose();
   };
 
@@ -59,10 +73,10 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
       animationType="slide"
       transparent
       presentationStyle="overFullScreen"
-      onRequestClose={onClose}
+      onRequestClose={handleClose}
     >
       <View style={styles.modalOverlay}>
-        <Pressable style={styles.dismissArea} onPress={onClose} />
+        <Pressable style={styles.dismissArea} onPress={handleClose} />
 
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.sheetContainer}>
           <View style={styles.content}>
@@ -71,7 +85,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
               <AppText type="h2" bold>
                 Neue Community
               </AppText>
-              <Pressable onPress={onClose} hitSlop={10}>
+              <Pressable onPress={handleClose} hitSlop={10}>
                 <Icon name="close" color={MyTheme.muted} size={24} />
               </Pressable>
             </View>
