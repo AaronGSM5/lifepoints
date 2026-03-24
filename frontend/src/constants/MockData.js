@@ -263,46 +263,67 @@ export const mockPublicProfile = {
 
 export const mockRecommendedCommunities = [
   {
+    id: "1",
     title: "Zen Masters",
-    desc: "Daily meditation & focus",
-    icon: "spa",
-    iconColor: "#a855f7",
-    bgColor: "rgba(168, 85, 247, 0.2)",
-    borderColor: "rgba(168, 85, 247, 0.1)"
+    desc: "Daily meditation & focus. Join our morning breathing sessions to start your day right.",
+    icon: "self-improvement",
+    bgColor: "rgba(139, 92, 246, 0.15)",
+    borderColor: "rgba(139, 92, 246, 0.3)",
+    iconColor: "#a78bfa",
+    isLive: false,
+    members: "1.2k",
+    avatars: [
+      { id: "a1", url: "https://i.pravatar.cc/150?u=a042581f4e29026024d", isFriend: true },
+      { id: "a2", url: "https://i.pravatar.cc/150?u=a04258a2462d826712d", isFriend: false },
+      { id: "a3", url: "https://i.pravatar.cc/150?u=a042581f4e29026704d", isFriend: false },
+    ]
   },
   {
-    title: "Page Turners",
-    desc: "Read 15 mins every day",
-    icon: "menu-book",
-    iconColor: "#3b82f6",
-    bgColor: "rgba(59, 130, 246, 0.2)",
-    borderColor: "rgba(59, 130, 246, 0.1)"
+    id: "2",
+    title: "Urban Gardeners",
+    desc: "Share your balcony harvest, plant care tips, and connect with nature lovers.",
+    icon: "local-florist",
+    bgColor: "rgba(16, 185, 129, 0.15)",
+    borderColor: "rgba(16, 185, 129, 0.3)",
+    iconColor: "#34d399",
+    isLive: true,
+    members: "850",
+    avatars: [
+      { id: "b1", url: "https://i.pravatar.cc/150?u=a04258114e29026702d", isFriend: true },
+      { id: "b2", url: "https://i.pravatar.cc/150?u=a048581f4e29026701d", isFriend: true },
+      { id: "b3", url: "https://i.pravatar.cc/150?u=a042581f4e29026703d", isFriend: false },
+    ]
   },
   {
-    title: "Marathon Elites",
-    desc: "Competitive long distance running",
-    icon: "directions-run",
-    iconColor: "#10b981",
-    bgColor: "rgba(16, 185, 129, 0.2)",
-    borderColor: "rgba(16, 185, 129, 0.1)"
+    id: "3",
+    title: "Indie Dev Space",
+    desc: "Showcase your side projects, get code reviews, and build together.",
+    icon: "code",
+    bgColor: "rgba(56, 189, 248, 0.15)",
+    borderColor: "rgba(56, 189, 248, 0.3)",
+    iconColor: "#7dd3fc",
+    isLive: false,
+    members: "5.4k",
+    avatars: [
+      { id: "c1", url: "https://i.pravatar.cc/150?u=a042581f4e29026703d", isFriend: false },
+      { id: "c2", url: "https://i.pravatar.cc/150?u=a042581f4e29026708d", isFriend: false },
+      { id: "c3", url: "https://i.pravatar.cc/150?u=a042581f4e29026709d", isFriend: false },
+      { id: "c4", url: "https://i.pravatar.cc/150?u=a042581f4e29026710d", isFriend: false }, // not visible because of slice 3
+    ]
   },
   {
-    title: "Healthy Bites",
-    desc: "Clean eating and meal prep tips",
-    icon: "restaurant",
-    iconColor: "#f97316",
-    bgColor: "rgba(249, 115, 22, 0.2)",
-    borderColor: "rgba(249, 115, 22, 0.1)"
-  },
-  {
-    title: "Hydration Heroes",
-    desc: "Track and meet water goals",
-    icon: "water-drop",
-    iconColor: "#0ea5e9",
-    bgColor: "rgba(14, 165, 233, 0.2)",
-    borderColor: "rgba(14, 165, 233, 0.1)"
+    id: "4",
+    title: "Late Night Beats",
+    desc: "Lofi hip hop radio - beats to relax/study to. 24/7 vibes.",
+    icon: "headphones",
+    bgColor: "rgba(244, 63, 94, 0.15)",
+    borderColor: "rgba(244, 63, 94, 0.3)",
+    iconColor: "#fb7185",
+    isLive: true,
+    members: "12.8k",
+    avatars: [] // Edge Case: No friends/avatars --> "renders 12.8k members"
   }
-];
+]
 
 export const mockSettings = [
   {

@@ -1,65 +1,200 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image, Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
 import BaseCard from "../ui/BaseCard";
+import { Icon } from "../icons/Icon";
 
-const RecommendedCommunity = ({ item, isLoading }) => {
+const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   if (isLoading) {
     return (
-      <BaseCard style={styles.recommendedItem}>
-        <Skeleton colorMode="dark" width={48} height={48} radius={Spacing.borderRadius.md} />
-        <View style={{ flex: 1, gap: 8 }}>
-          <Skeleton colorMode="dark" width="60%" height={16} />
-          <Skeleton colorMode="dark" width="90%" height={12} />
+      <BaseCard style={styles.cardContainer}>
+        <View style={styles.headerRow}>
+          <Skeleton colorMode="dark" width={40} height={40} radius={Spacing.borderRadius.md} />
+          <Skeleton colorMode="dark" width={60} height={24} radius={8} />
+        </View>
+
+        <View style={styles.contentArea}>
+          <Skeleton colorMode="dark" width="70%" height={20} />
+          <View style={{ height: Spacing.xs }} />
+          <Skeleton colorMode="dark" width="100%" height={14} />
+          <View style={{ height: 4 }} />
+          <Skeleton colorMode="dark" width="80%" height={14} />
+        </View>
+
+        <View style={styles.footerRow}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <View style={{ flexDirection: "row" }}>
+              <Skeleton colorMode="dark" width={24} height={24} radius={12} />
+              <View style={{ marginLeft: -10 }}>
+                <Skeleton colorMode="dark" width={24} height={24} radius={12} />
+              </View>
+            </View>
+            <Skeleton colorMode="dark" width={60} height={12} />
+          </View>
+          <Skeleton colorMode="dark" width={20} height={20} radius={10} />
         </View>
       </BaseCard>
     );
   }
 
+  const displayAvatars = item?.avatars?.slice(0, 3) || [];
+
   return (
-    <BaseCard style={styles.recommendedItem}>
-      <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
-        <MaterialIcons name={item.icon} size={28} color={item.iconColor} />
-      </View>
-      <View style={styles.recommendedTextContainer}>
-        <AppText bold style={styles.recommendedTitle}>
-          {item.title}
-        </AppText>
-        <AppText type="caption">{item.desc}</AppText>
-      </View>
-      <AppButton
-        size="sm"
-        icon={<Icon name="add" size={20} color={MyTheme.primaryAccent} />}
-        iconPosition="center"
-        bgColor={"rgba(47, 196, 146, 0.1)"}
-      />
-    </BaseCard>
+    <Pressable onPress={onPress}>
+      {({ pressed }) => (
+        <BaseCard style={[styles.cardContainer, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}>
+          {/* Icon & Live Badge */}
+          <View style={styles.headerRow}>
+            <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
+              <MaterialIcons name={item.icon} size={24} color={item.iconColor || "#fff"} />
+            </View>
+
+            {item.isLive && (
+              <View style={styles.liveBadge}>
+                <View style={styles.liveDot} />
+                <AppText bold style={styles.liveText}>
+                  LIVE
+                </AppText>
+              </View>
+            )}
+          </View>
+
+          {/* Pitch (Name & Descr) */}
+          <View style={styles.contentArea}>
+            <AppText bold style={styles.cardTitle} numberOfLines={1}>
+              {item.title}
+            </AppText>
+            <AppText type="caption" style={styles.description} numberOfLines={2}>
+              {item.desc}
+            </AppText>
+          </View>
+
+          {/* Social Proof & CTA */}
+          <View style={styles.footerRow}>
+            <View style={styles.socialProof}>
+              {/* Facepile */}
+              {displayAvatars.length > 0 && (
+                <View style={styles.facepile}>
+                  {displayAvatars.map((avatar, index) => (
+                    <Image
+                      key={avatar.id || index}
+                      source={{ uri: avatar.url }}
+                      style={[
+                        styles.avatar,
+                        { zIndex: index === 1 ? 3 : index === 0 ? 2 : 1 },
+                        index > 0 && { marginLeft: -10 },
+                        avatar.isFriend && { borderColor: MyTheme.primaryAccent }
+                      ]}
+                    />
+                  ))}
+                </View>
+              )}
+
+              <AppText type="caption" style={styles.memberText}>
+                {item.members} Members
+              </AppText>
+            </View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Icon name="right" color={MyTheme.muted} />
+            </View>
+          </View>
+        </BaseCard>
+      )}
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  recommendedItem: {
+  cardContainer: {
+    width: 260,
+    height: 196,
+    marginRight: Spacing.md,
+    padding: Spacing.md,
+    paddingBottom: Spacing.md - 4,
+    justifyContent: "space-between"
+  },
+  headerRow: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-    marginBottom: Spacing.md
+    justifyContent: "space-between",
+    alignItems: "flex-start"
   },
   iconBox: {
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
     borderRadius: Spacing.borderRadius.md,
     alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1
+    justifyContent: "center"
   },
-  recommendedTextContainer: { flex: 1 },
-  recommendedTitle: { marginBottom: Spacing.xs }
+  liveBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(239, 68, 68, 0.10)",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "rgba(239, 68, 68, 0.2)"
+  },
+  liveDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: MyTheme.warning,
+    shadowColor: "#ef4444",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 2
+  },
+  liveText: {
+    fontSize: 10,
+    color: "#ef4444",
+    letterSpacing: 0.9
+  },
+  contentArea: {
+    flex: 1,
+    justifyContent: "center",
+    marginTop: Spacing.sm + 2
+  },
+  cardTitle: {
+    fontSize: 18,
+    marginBottom: 4
+  },
+  description: {
+    lineHeight: 20
+  },
+  footerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: Spacing.sm,
+    paddingTop: Spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: "rgba(255, 255, 255, 0.1)"
+  },
+  socialProof: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  facepile: {
+    flexDirection: "row",
+    marginRight: Spacing.sm + 2
+  },
+  avatar: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: MyTheme.primary
+  },
+  memberText: {
+    opacity: 0.8
+  }
 });
 
 export default RecommendedCommunity;

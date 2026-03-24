@@ -6,7 +6,7 @@ import AppInput from "@/components/ui/AppInput";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-import CreateCommunityCard from "@/components/communities/CreateCommunityCard";
+// import CreateCommunityCard from "@/components/communities/CreateCommunityCard";
 import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
 
@@ -16,42 +16,91 @@ export default function CommunitiesScreen() {
   const { myCommunities, recommended, searchQuery, setSearchQuery, isLoading } = useCommunities();
   const bottomPadding = useFloatingNavbarPadding();
 
-  const renderHeader = useMemo(
-    () => (
-      <View>
-        <EventHero imageSource={require("../../../public/assets/creativeBanner.png")} isLoading={isLoading} />
-
-        {/* <View style={{ height: Spacing.md }} /> */}
-        {/* <CreateCommunityCard /> */}
-
-        <SectionHeader
-          title="My Communities"
-          isLoading={isLoading}
-          rightLabel="See all"
-          onRightPress={() => console.log("mockClickReaction xD")}
-        />
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-          {isLoading
-            ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
-            : myCommunities.map((item, index) => <MyCommunityCard key={index} item={item} isLoading={isLoading} />)}
-        </ScrollView>
-
-        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
-
-        <SectionHeader title="Recommended for you" isLoading={isLoading} />
-      </View>
-    ),
-    [isLoading, searchQuery]
+  const sections = useMemo(
+    () => [
+      { id: "recommended", title: "Recommended for you", data: recommended },
+      { id: "lifestyle", title: "Lifestyle & Food", data: recommended },
+      { id: "trending", title: "Trending Right Now", data: recommended }
+    ],
+    [recommended]
   );
 
+  const renderHeader = useMemo(
+    () => (
+      <View style={styles.headerContainer}>
+        <View style={styles.paddedContent}>
+          <EventHero imageSource={require("../../../public/assets/creativeBanner.png")} isLoading={isLoading} />
+        </View>
+        <View style={[styles.paddedContent, styles.searchWrapper]}>
+          <AppInput
+            icon="search"
+            placeholder="Search communities..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+
+        {(myCommunities?.length > 0 || isLoading) && (
+          <View style={styles.myCommunitiesSection}>
+            <View style={styles.paddedContent}>
+              <SectionHeader
+                title="My Communities"
+                isLoading={isLoading}
+                rightLabel="See all"
+                onRightPress={() => console.log("mockClickReaction xD")}
+              />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContentContainer}
+            >
+              {isLoading
+                ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
+                : myCommunities.map((item, index) => <MyCommunityCard key={index} item={item} isLoading={isLoading} />)}
+            </ScrollView>
+          </View>
+        )}
+      </View>
+    ),
+    [isLoading, searchQuery, myCommunities]
+  );
+
+  const renderSection = ({ item: section }) => {
+    return (
+      <View style={styles.sectionContainer}>
+        <View style={styles.paddedContent}>
+          <SectionHeader title={section.title} isLoading={isLoading} />
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContentContainer}
+          snapToInterval={260 + Spacing.md}
+          decelerationRate="fast"
+        >
+          {isLoading
+            ? SKELETON_DATA.map((i) => <RecommendedCommunity key={i} isLoading={true} />)
+            : section.data.map((community, index) => (
+                <RecommendedCommunity
+                  key={community.id || index}
+                  item={community}
+                  onPress={() => console.log("Gehe zu:", community.title)}
+                />
+              ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false}>
       <FlatList
-        data={isLoading ? SKELETON_DATA : recommended}
-        keyExtractor={(item, index) => (isLoading ? index.toString() : item.id?.toString() || index.toString())}
+        data={isLoading ? [{ id: "skeleton1" }, { id: "skeleton2" }] : sections}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={renderHeader}
-        renderItem={({ item }) => <RecommendedCommunity item={item} isLoading={isLoading} />}
+        renderItem={renderSection}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
       />
@@ -60,9 +109,19 @@ export default function CommunitiesScreen() {
 }
 
 const styles = StyleSheet.create({
-  horizontalScroll: {
-    marginHorizontal: -Spacing.lg,
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.lg
+  headerContainer: {
+    paddingBottom: Spacing.md
+  },
+  myCommunitiesSection: {
+    marginBottom: Spacing.md
+  },
+  sectionContainer: {
+    marginBottom: Spacing.lg + 8
+  },
+  paddedContent: {
+    paddingHorizontal: Spacing.md
+  },
+  scrollContentContainer: {
+    paddingHorizontal: Spacing.md
   }
 });
