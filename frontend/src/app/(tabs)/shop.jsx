@@ -28,9 +28,10 @@ export default function ShopScreen() {
   const renderHeader = useMemo(
     () => (
       <View>
-        <WalletCard points={100} targetPoints={1000} skeletonProps={skeletonProps} isLoading={isLoading} />
-
-        {isLoading && <View style={{ marginTop: Spacing.md }} />}
+        <View style={styles.paddedContent}>
+          <WalletCard points={100} targetPoints={1000} skeletonProps={skeletonProps} isLoading={isLoading} />
+          {isLoading && <View style={{ marginTop: Spacing.md }} />}
+        </View>
         <CategoryButtons
           categories={categories}
           activeCat={activeCat}
@@ -39,33 +40,39 @@ export default function ShopScreen() {
           isLoading={isLoading}
         />
 
-        <SectionHeader title={"Featured Reward"} isLoading={isLoading} />
-        <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
+        <View style={styles.paddedContent}>
+          <SectionHeader title={"Featured Reward"} isLoading={isLoading} />
+          <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
 
-        <SectionHeader
-          title={
-            activeCat.toLowerCase() === "all"
-              ? "For You"
-              : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`
-          }
-          isLoading={isLoading}
-        />
+          <SectionHeader
+            title={
+              activeCat.toLowerCase() === "all"
+                ? "For You"
+                : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`
+            }
+            isLoading={isLoading}
+          />
+        </View>
       </View>
     ),
     [activeCat, isLoading, categories]
   );
 
-  const renderEmptyState = () => <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />;
+  const renderEmptyState = () => (
+    <View style={styles.paddedContent}>
+      <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />
+    </View>
+  );
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false}>
       <FlatList
         data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
-        columnWrapperStyle={styles.rowGap}
+        columnWrapperStyle={[styles.rowGap, styles.paddedContent]}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={!isLoading ? renderEmptyState : null}
         refreshing={isRefreshing}
@@ -92,30 +99,12 @@ export default function ShopScreen() {
 }
 
 const styles = StyleSheet.create({
-  // Tabs
-  tabsContainer: {
-    marginBottom: Spacing.lg,
-    marginHorizontal: -Spacing.lg
-  },
-  activeTabGradient: {
-    paddingVertical: Spacing.sm + 2,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  inactiveTab: {
-    paddingVertical: Spacing.sm + 2,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.08)",
-    backgroundColor: "rgba(255, 255, 255, 0.06)"
-  },
-  // Grid
   rowGap: {
     gap: Spacing.md,
     marginBottom: Spacing.md,
     justifyContent: "space-between"
+  },
+  paddedContent: {
+    paddingHorizontal: Spacing.md
   }
 });

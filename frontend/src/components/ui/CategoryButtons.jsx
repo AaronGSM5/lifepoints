@@ -9,8 +9,8 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ marginHorizontal: -Spacing.lg, marginBottom: Spacing.lg }}
-      contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
+      style={{ marginBottom: Spacing.lg }}
+      contentContainerStyle={{ paddingHorizontal: Spacing.md, gap: Spacing.sm }}
     >
       {isLoading
         ? Array(4)

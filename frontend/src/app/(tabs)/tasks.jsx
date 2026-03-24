@@ -41,11 +41,13 @@ const TasksScreen = () => {
   const renderHeader = useMemo(
     () => (
       <View>
-        <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-          <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
-        </Skeleton>
+        <View style={styles.paddedContent}>
+          <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+            <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
+          </Skeleton>
 
-        <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
+          <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
+        </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
           {isLoading
@@ -55,14 +57,16 @@ const TasksScreen = () => {
               ))}
         </ScrollView>
 
-        <SectionHeader
-          title={
-            activeCat.toLowerCase() === "all"
-              ? "All Tasks"
-              : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
-          }
-          isLoading={isLoading}
-        />
+        <View style={styles.paddedContent}>
+          <SectionHeader
+            title={
+              activeCat.toLowerCase() === "all"
+                ? "All Tasks"
+                : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
+            }
+            isLoading={isLoading}
+          />
+        </View>
 
         <CategoryButtons
           categories={categories}
@@ -77,7 +81,7 @@ const TasksScreen = () => {
   );
 
   const renderFooter = () => (
-    <View style={{ marginTop: Spacing.md }}>
+    <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
       <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
         Can't find what you're searching for?
       </AppText>
@@ -86,7 +90,7 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false}>
       <FlatList
         data={isLoading ? SKELETON_TASKS : tasks}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
@@ -99,15 +103,17 @@ const TasksScreen = () => {
         refreshing={isRefreshing}
         renderItem={({ item }) => {
           return (
-            <TaskItem
-              isLoading={isLoading}
-              title={item.title}
-              lp={item.lp}
-              progress={item.progress}
-              status={item.limit}
-              icon={item.icon}
-              onPress={() => router.push(`task/${item.id}`)}
-            />
+            <View style={styles.paddedContent}>
+              <TaskItem
+                isLoading={isLoading}
+                title={item.title}
+                lp={item.lp}
+                progress={item.progress}
+                status={item.limit}
+                icon={item.icon}
+                onPress={() => router.push(`task/${item.id}`)}
+              />
+            </View>
           );
         }}
       />
@@ -117,8 +123,12 @@ const TasksScreen = () => {
 
 const styles = StyleSheet.create({
   carouselContainer: {
+    paddingHorizontal: Spacing.md,
     gap: Spacing.md,
     marginBottom: Spacing.lg
+  },
+  paddedContent: {
+    paddingHorizontal: Spacing.md
   }
 });
 
