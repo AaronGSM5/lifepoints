@@ -96,7 +96,12 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                 <AppText type="caption" style={styles.label}>
                   COMMUNITY-NAME (PERMANENT)
                 </AppText>
-                <AppInput placeholder="Wie soll deine Community heißen?" value={name} onChangeText={setName} />
+                <AppInput
+                  placeholder="Wie soll deine Community heißen?"
+                  value={name}
+                  onChangeText={setName}
+                  bottomMargin={false}
+                />
                 <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
               </View>
 
@@ -110,6 +115,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                   placeholder="Worum geht es in deiner Community?"
                   value={description}
                   onChangeText={setDescription}
+                  bottomMargin={false}
                 />
               </View>
 
