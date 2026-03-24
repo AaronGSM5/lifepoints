@@ -289,6 +289,7 @@ export const mockRecommendedCommunities = [
     color: "#a78bfa",
     isLive: false,
     liveTitle: "Morning Breathing Session",
+    onlineCount: 25,
     members: "1.2k",
     banner: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop",
     avatars: [
@@ -307,6 +308,7 @@ export const mockRecommendedCommunities = [
     color: "#34d399",
     isLive: true,
     liveTitle: "Tomato Harvest Tips & Q&A",
+    onlineCount: 55,
     members: "850",
     banner: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1000&auto=format&fit=crop",
     avatars: [
@@ -325,6 +327,7 @@ export const mockRecommendedCommunities = [
     color: "#7dd3fc",
     isLive: false,
     liveTitle: "Live Code Review: UI Refactoring",
+    onlineCount: 215,
     members: "5.4k",
     banner: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop",
     avatars: [
@@ -344,6 +347,7 @@ export const mockRecommendedCommunities = [
     color: "#fb7185",
     isLive: true,
     liveTitle: "24/7 Lofi Hip Hop Radio",
+    onlineCount: 2,
     members: "12.8k",
     banner: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop",
     avatars: []

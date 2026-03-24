@@ -8,6 +8,7 @@ import AppButton from "@/components/ui/AppButton";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -28,7 +29,7 @@ export default function CommunityDetailScreen() {
               {community?.title}
             </AppText>
             <AppText type="caption" style={styles.statsText}>
-              {community?.members} Mitglieder • 42 Online
+              {community?.members} Mitglieder • {community?.onlineCount} Online
             </AppText>
           </View>
 
@@ -47,17 +48,13 @@ export default function CommunityDetailScreen() {
 
           {/* About Section */}
           <View style={styles.section}>
-            <AppText bold style={styles.sectionTitle}>
-              About
-            </AppText>
+            <SectionHeader title={"About"} />
             <AppText style={styles.description}>{community?.desc}</AppText>
           </View>
 
           {/* Sneak Peek / Preview Bereich */}
           <View style={styles.section}>
-            <AppText bold style={styles.sectionTitle}>
-              Community Tasks
-            </AppText>
+            <SectionHeader title={"Community Tasks"} />
             <AppText type="caption">Preview of what's waiting for you.</AppText>
           </View>
         </View>
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg
   },
   statsText: {
-    marginTop: 4,
+    marginTop: Spacing.xs,
     opacity: 0.7
   },
   joinButton: {
