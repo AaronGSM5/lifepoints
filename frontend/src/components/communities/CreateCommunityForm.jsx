@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Modal,
   View,
@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
-  Switch
+  Animated
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Spacing } from "@/constants/Spacing";
@@ -21,31 +21,101 @@ import AppInput from "../ui/AppInput";
 
 const AVAILABLE_BADGES = [
   "freundlich",
+  "chillig",
+  "hilfsbereit",
+  "respektvoll",
+  "safe space",
+  "diskussionsfreudig",
+  "humorvoll",
+  "anfänger",
+  "fortgeschritten",
+  "expert",
+  "pro",
+  "mentor",
   "creator",
   "nischen-pro",
-  "anfänger",
-  "expert",
-  "fitness",
   "tech",
+  "gaming",
+  "fitness",
   "lifestyle",
-  "gaming"
+  "kunst",
+  "musik",
+  "kochen",
+  "outdoor",
+  "finanzen",
+  "memes",
+  "coding",
+  "design",
+  "fotografie",
+  "mindfulness",
+  "startup",
+  "networking",
+  "feedback",
+  "support",
+  "lokal",
+  "global",
+  "study-group",
+  "hobby",
+  "täglich aktiv",
+  "wochenend-vibes",
+  "voice-chat",
+  "text-only",
+  "real-life meetups",
+  "events"
 ];
+
 const SIZE_OPTIONS = [
   { slots: 50, price: "Gratis" },
   { slots: 250, price: "4.99€" },
   { slots: 1000, price: "14.99€" }
 ];
+
 const ICONS = [
   "groups",
+  "forum",
+  "public",
+  "diversity-3",
+  "emoji-emotions",
+  "favorite",
   "fitness-center",
-  "code",
-  "palette",
+  "directions-run",
+  "pool",
   "self-improvement",
-  "restaurant",
-  "music-note",
+  "spa",
+  "directions-bike",
   "sports-esports",
+  "computer",
+  "code",
+  "smart-toy",
+  "headphones",
+  "videocam",
+  "palette",
+  "camera-alt",
+  "music-note",
+  "color-lens",
+  "theater-comedy",
+  "brush",
+  "restaurant",
+  "local-cafe",
+  "local-pizza",
+  "local-bar",
+  "bakery-dining",
   "flight",
-  "camera-alt"
+  "landscape",
+  "local-florist",
+  "pets",
+  "explore",
+  "park",
+  "school",
+  "menu-book",
+  "lightbulb",
+  "work",
+  "trending-up",
+  "attach-money",
+  "local-fire-department",
+  "celebration",
+  "science",
+  "star"
 ];
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
@@ -62,8 +132,29 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const [showAllIcons, setShowAllIcons] = useState(false);
   const [showAllBadges, setShowAllBadges] = useState(false);
 
-  const MAX_ICONS_COLLAPSED = 5;
-  const MAX_BADGES_COLLAPSED = 4;
+  const [iconFullHeight, setIconFullHeight] = useState(0); // is dynamic
+  const [badgeFullHeight, setBadgeFullHeight] = useState(0); // is dynamic
+
+  const iconHeightAnim = useRef(new Animated.Value(62)).current;
+  const badgeHeightAnim = useRef(new Animated.Value(40)).current;
+
+  const expandIcons = () => {
+    setShowAllIcons(true);
+    Animated.timing(iconHeightAnim, {
+      toValue: iconFullHeight > 62 ? iconFullHeight : 200,
+      duration: 300,
+      useNativeDriver: false
+    }).start();
+  };
+
+  const expandBadges = () => {
+    setShowAllBadges(true);
+    Animated.timing(badgeHeightAnim, {
+      toValue: badgeFullHeight > 40 ? badgeFullHeight : 150,
+      duration: 300,
+      useNativeDriver: false
+    }).start();
+  };
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -102,6 +193,8 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setSelectedSize(SIZE_OPTIONS[0]);
     setShowAllBadges(false);
     setShowAllIcons(false);
+    iconHeightAnim.setValue(62);
+    badgeHeightAnim.setValue(40);
   };
 
   const handleClose = () => {
@@ -125,9 +218,6 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   };
 
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
-
-  const visibleIcons = showAllIcons ? ICONS : ICONS.slice(0, MAX_ICONS_COLLAPSED);
-  const visibleBadges = showAllBadges ? AVAILABLE_BADGES : AVAILABLE_BADGES.slice(0, MAX_BADGES_COLLAPSED);
 
   return (
     <Modal
@@ -186,26 +276,42 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                 <AppText type="caption" style={styles.label}>
                   COMMUNITY-ICON
                 </AppText>
-                <View style={styles.iconGrid}>
-                  {visibleIcons.map((icon) => (
-                    <Pressable
-                      key={icon}
-                      onPress={() => setSelectedIcon(icon)}
-                      style={[styles.iconItem, selectedIcon === icon && styles.selectedIconItem]}
-                    >
-                      <MaterialIcons
-                        name={icon}
-                        size={28}
-                        color={selectedIcon === icon ? MyTheme.primaryAccent : "#fff"}
-                      />
-                    </Pressable>
+
+                <View
+                  style={[styles.iconGrid, styles.measureView]}
+                  onLayout={(event) => setIconFullHeight(event.nativeEvent.layout.height)}
+                >
+                  {ICONS.map((icon, index) => (
+                    <View key={`measure-${icon}-${index}`} style={styles.iconItem} />
                   ))}
                 </View>
-                {!showAllIcons && ICONS.length > MAX_ICONS_COLLAPSED && (
-                  <Pressable onPress={() => setShowAllIcons(true)} style={styles.moreButton}>
-                    <AppText type="caption">more</AppText>
-                    <Icon name="down" size={14} color={MyTheme.muted} />
-                  </Pressable>
+
+                <Animated.View style={[styles.animatedWrapper, { height: iconHeightAnim }]}>
+                  <View style={styles.iconGrid}>
+                    {ICONS.map((icon, index) => (
+                      <Pressable
+                        key={`${icon}-${index}`}
+                        onPress={() => setSelectedIcon(icon)}
+                        style={[styles.iconItem, selectedIcon === icon && styles.selectedIconItem]}
+                      >
+                        <MaterialIcons
+                          name={icon}
+                          size={28}
+                          color={selectedIcon === icon ? MyTheme.primaryAccent : "#fff"}
+                        />
+                      </Pressable>
+                    ))}
+                  </View>
+                </Animated.View>
+
+                {!showAllIcons && iconFullHeight > 62 && (
+                  <View style={styles.expandContainer}>
+                    <Pressable onPress={expandIcons} style={styles.moreButton}>
+                      <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
+                        see more
+                      </AppText>
+                    </Pressable>
+                  </View>
                 )}
               </View>
 
@@ -214,24 +320,42 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                 <AppText type="caption" style={styles.label}>
                   COMMUNITY-BADGES
                 </AppText>
-                <View style={styles.badgeWrapper}>
-                  {visibleBadges.map((badge) => (
-                    <Pressable
-                      key={badge}
-                      onPress={() => toggleBadge(badge)}
-                      style={[styles.badgeChip, selectedBadges.includes(badge) && styles.selectedBadgeChip]}
-                    >
-                      <AppText style={[styles.badgeText, selectedBadges.includes(badge) && { color: "#000" }]}>
-                        {badge}
-                      </AppText>
-                    </Pressable>
+
+                <View
+                  style={[styles.badgeWrapper, styles.measureView]}
+                  onLayout={(event) => setBadgeFullHeight(event.nativeEvent.layout.height)}
+                >
+                  {AVAILABLE_BADGES.map((badge, index) => (
+                    <View key={`measure-badge-${index}`} style={styles.badgeChip}>
+                      <AppText style={{ fontSize: 14 }}>{badge}</AppText>
+                    </View>
                   ))}
                 </View>
-                {!showAllBadges && AVAILABLE_BADGES.length > MAX_BADGES_COLLAPSED && (
-                  <Pressable onPress={() => setShowAllBadges(true)} style={styles.moreButton}>
-                    <AppText type="caption">more</AppText>
-                    <Icon name="down" size={14} color={MyTheme.muted} />
-                  </Pressable>
+
+                <Animated.View style={[styles.animatedWrapper, { height: badgeHeightAnim }]}>
+                  <View style={styles.badgeWrapper}>
+                    {AVAILABLE_BADGES.map((badge, index) => (
+                      <Pressable
+                        key={`${badge}-${index}`}
+                        onPress={() => toggleBadge(badge)}
+                        style={[styles.badgeChip, selectedBadges.includes(badge) && styles.selectedBadgeChip]}
+                      >
+                        <AppText style={[{ fontSize: 14 }, selectedBadges.includes(badge) && { color: "#000" }]}>
+                          {badge}
+                        </AppText>
+                      </Pressable>
+                    ))}
+                  </View>
+                </Animated.View>
+
+                {!showAllBadges && badgeFullHeight > 40 && (
+                  <View style={styles.expandContainer}>
+                    <Pressable onPress={expandBadges} style={styles.moreButton}>
+                      <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
+                        see more
+                      </AppText>
+                    </Pressable>
+                  </View>
                 )}
               </View>
 
@@ -338,27 +462,15 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     letterSpacing: 1
   },
-  input: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 16,
-    padding: Spacing.md,
-    color: "#fff",
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)"
-  },
   infoText: {
     fontSize: 11,
     color: MyTheme.muted,
     marginTop: 6,
     marginLeft: 4
   },
-  textArea: {
-    height: 80,
-    textAlignVertical: "top"
-  },
   iconGrid: {
     flexDirection: "row",
+    justifyContent: "center",
     flexWrap: "wrap",
     gap: 12
   },
@@ -408,6 +520,7 @@ const styles = StyleSheet.create({
   },
   badgeWrapper: {
     flexDirection: "row",
+    justifyContent: "center",
     flexWrap: "wrap",
     gap: 8
   },
@@ -422,10 +535,6 @@ const styles = StyleSheet.create({
   selectedBadgeChip: {
     backgroundColor: MyTheme.primaryAccent,
     borderColor: MyTheme.primaryAccent
-  },
-  badgeText: {
-    fontSize: 13,
-    color: "#fff"
   },
   sizeGrid: {
     flexDirection: "row",
@@ -455,9 +564,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: Spacing.sm,
+    marginTop: 2,
     gap: 4,
     paddingVertical: 4
+  },
+  animatedWrapper: {
+    overflow: "hidden",
+    width: "100%"
+  },
+  expandContainer: {
+    alignItems: "center",
+    marginTop: Spacing.sm
+  },
+  measureView: {
+    position: "absolute",
+    opacity: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: -1
   }
 });
 
