@@ -1,5 +1,6 @@
 import React, { useState, forwardRef } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { BlurView } from "expo-blur";
 
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -20,71 +21,80 @@ const AppInput = forwardRef(
       onRightIconPress,
       rightContent,
       bottomMargin = true,
+      blur = false,
+      blurIntensity = 65,
+      blurTint = "dark",
       ...props
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
 
+    const renderInputContent = () => (
+      <>
+        {icon && (
+          <Icon
+            name={icon}
+            size={20}
+            color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
+            style={styles.leftIcon}
+          />
+        )}
+
+        <TextInput
+          ref={ref}
+          style={[styles.input, style]}
+          placeholderTextColor={MyTheme.muted}
+          selectionColor={MyTheme.primaryAccent}
+          underlineColorAndroid="transparent"
+          cursorColor={MyTheme.primaryAccent}
+          {...{ accessibilityRole: "text" }}
+          {...props}
+          onFocus={(e) => {
+            setIsFocused(true);
+            if (props.onFocus) props.onFocus(e);
+          }}
+          onBlur={(e) => {
+            setIsFocused(false);
+            if (props.onBlur) props.onBlur(e);
+          }}
+        />
+
+        {rightContent ? (
+          rightContent
+        ) : rightIcon ? (
+          <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
+            <Icon name={rightIcon} size={20} color="white" />
+          </TouchableOpacity>
+        ) : null}
+      </>
+    );
+
+    const containerStyles = [
+      styles.container,
+      isFocused && styles.containerFocused,
+      error && styles.containerError,
+      isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
+      blur && { backgroundColor: "transparent" },
+      inputStyle
+    ];
+
     return (
       <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
-        {/* Optionales Label über dem Input */}
         {label && (
           <AppText style={styles.label} bold>
             {label}
           </AppText>
         )}
 
-        <View
-          style={[
-            styles.container,
-            isFocused && styles.containerFocused,
-            error && styles.containerError,
-            isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
-            inputStyle
-          ]}
-        >
-          {/* Linkes Icon (z.B. Search) */}
-          {icon && (
-            <Icon
-              name={icon}
-              size={20}
-              color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
-              style={styles.leftIcon}
-            />
-          )}
+        {blur ? (
+          <BlurView intensity={blurIntensity} tint={blurTint} style={[{ overflow: "hidden" }, ...containerStyles]}>
+            {renderInputContent()}
+          </BlurView>
+        ) : (
+          <View style={containerStyles}>{renderInputContent()}</View>
+        )}
 
-          <TextInput
-            ref={ref}
-            style={[styles.input, style]}
-            placeholderTextColor={MyTheme.muted}
-            selectionColor={MyTheme.primaryAccent}
-            underlineColorAndroid="transparent"
-            cursorColor={MyTheme.primaryAccent}
-            // Web-Fix gegen den blauen Rahmen
-            {...{ accessibilityRole: "text" }}
-            {...props}
-            onFocus={() => {
-              setIsFocused(true);
-              if (props.onFocus) props.onFocus(e);
-            }}
-            onBlur={() => {
-              setIsFocused(false);
-              if (props.onBlur) props.onBlur(e);
-            }}
-          />
-
-          {/* Rechtes Icon (z.B. Clear-Button oder Auge bei Passwort) */}
-          {rightContent ? (
-            rightContent
-          ) : rightIcon ? (
-            <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
-              <Icon name={rightIcon} size={20} color="white" />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-
-        {/* Fehlermeldung */}
         {typeof error === "string" && <AppText style={styles.errorText}>{error}</AppText>}
       </View>
     );
@@ -123,14 +133,12 @@ const styles = StyleSheet.create({
     color: MyTheme.text,
     fontSize: 16,
     height: "100%",
-    // WICHTIG: Entfernt blauen Rahmen im Web
     ...{ outlineStyle: "none" }
   },
   leftIcon: {
     marginRight: Spacing.sm
   },
   rightIcon: {
-    // backgroundColor: MyTheme.primaryAccent,
     width: 40,
     height: 40,
     borderRadius: Spacing.borderRadius.full,
