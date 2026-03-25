@@ -1,5 +1,6 @@
 import React, { useState, forwardRef } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { BlurView } from "expo-blur";
 
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -20,74 +21,89 @@ const AppInput = forwardRef(
       onRightIconPress,
       rightContent,
       bottomMargin = true,
+      blur = false,
+      blurIntensity = 65,
+      blurTint = "dark",
       ...props
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
 
+    // Multiline-Status aus den Props auslesen
     const isMultiline = props.multiline;
+
+    // Ausgelagerter Inhalt, damit er sowohl im View als auch im BlurView genutzt werden kann
+    const renderInputContent = () => (
+      <>
+        {icon && (
+          <Icon
+            name={icon}
+            size={20}
+            color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
+            style={styles.leftIcon}
+          />
+        )}
+
+        <TextInput
+          ref={ref}
+          // Hier verheiraten wir den Basis-Style, den Multiline-Style und Custom-Styles
+          style={[styles.input, isMultiline && styles.inputMultiline, style]}
+          placeholderTextColor={MyTheme.muted}
+          selectionColor={MyTheme.primaryAccent}
+          underlineColorAndroid="transparent"
+          cursorColor={MyTheme.primaryAccent}
+          // Wichtig für Android Multiline
+          textAlignVertical={isMultiline ? "top" : "center"}
+          {...{ accessibilityRole: "text" }}
+          {...props}
+          onFocus={(e) => {
+            setIsFocused(true);
+            if (props.onFocus) props.onFocus(e);
+          }}
+          onBlur={(e) => {
+            setIsFocused(false);
+            if (props.onBlur) props.onBlur(e);
+          }}
+        />
+
+        {rightContent ? (
+          rightContent
+        ) : rightIcon ? (
+          <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
+            <Icon name={rightIcon} size={20} color="white" />
+          </TouchableOpacity>
+        ) : null}
+      </>
+    );
+
+    // Dynamische Styles für den Container (egal ob View oder BlurView)
+    const containerStyles = [
+      styles.container,
+      isFocused && styles.containerFocused,
+      error && styles.containerError,
+      isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
+      isMultiline && styles.containerMultiline, // Hier kommt unser Multiline-Support rein
+      blur && { backgroundColor: "transparent" },
+      inputStyle
+    ];
 
     return (
       <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
-        {/* Optionales Label */}
         {label && (
           <AppText style={styles.label} bold>
             {label}
           </AppText>
         )}
 
-        <View
-          style={[
-            styles.container,
-            isFocused && styles.containerFocused,
-            error && styles.containerError,
-            isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
-            isMultiline && styles.containerMultiline,
-            inputStyle
-          ]}
-        >
-          {/* Linkes Icon */}
-          {icon && (
-            <Icon
-              name={icon}
-              size={20}
-              color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
-              style={styles.leftIcon}
-            />
-          )}
+        {blur ? (
+          <BlurView intensity={blurIntensity} tint={blurTint} style={[{ overflow: "hidden" }, ...containerStyles]}>
+            {renderInputContent()}
+          </BlurView>
+        ) : (
+          <View style={containerStyles}>{renderInputContent()}</View>
+        )}
 
-          <TextInput
-            ref={ref}
-            style={[styles.input, isMultiline && styles.inputMultiline, style]}
-            placeholderTextColor={MyTheme.muted}
-            selectionColor={MyTheme.primaryAccent}
-            underlineColorAndroid="transparent"
-            cursorColor={MyTheme.primaryAccent}
-            textAlignVertical={isMultiline ? "top" : "center"}
-            {...{ accessibilityRole: "text" }}
-            {...props}
-            onFocus={(e) => {
-              setIsFocused(true);
-              if (props.onFocus) props.onFocus(e);
-            }}
-            onBlur={(e) => {
-              setIsFocused(false);
-              if (props.onBlur) props.onBlur(e);
-            }}
-          />
-
-          {/* Rechtes Icon */}
-          {rightContent ? (
-            rightContent
-          ) : rightIcon ? (
-            <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
-              <Icon name={rightIcon} size={20} color="white" />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-
-        {/* Fehlermeldung */}
         {typeof error === "string" && <AppText style={styles.errorText}>{error}</AppText>}
       </View>
     );
@@ -116,7 +132,7 @@ const styles = StyleSheet.create({
   containerMultiline: {
     height: "auto",
     minHeight: 100,
-    alignItems: "flex-start",
+    alignItems: "flex-start", // Sorgt dafür, dass Icon und Text oben anfangen
     paddingVertical: Spacing.xs
   },
   containerFocused: {
