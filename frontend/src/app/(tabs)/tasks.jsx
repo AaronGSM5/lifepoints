@@ -38,47 +38,100 @@ const TasksScreen = () => {
     show: isLoading
   };
 
-  const renderHeader = useMemo(
-    () => (
-      <View>
-        <View style={styles.paddedContent}>
-          <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-            <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
-          </Skeleton>
+  const listData = useMemo(() => {
+    const topElements = [
+      { id: "search", type: "search" },
+      { id: "for_you", type: "for_you" },
+      { id: "categories", type: "categories" }
+    ];
 
-          <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
-        </View>
+    if (isLoading) {
+      return [...topElements, ...SKELETON_TASKS.map((skel) => ({ ...skel, type: "task" }))];
+    }
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
-          {isLoading
-            ? SKELETON_FY_TASKS.map((item, index) => <FYTaskItem key={item.id || index} isLoading={isLoading} />)
-            : recommendedTasks.map((task, index) => (
-                <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
-              ))}
-        </ScrollView>
+    return [...topElements, ...tasks.map((task) => ({ ...task, type: "task" }))];
+  }, [isLoading, tasks]);
 
-        <View style={styles.paddedContent}>
-          <SectionHeader
-            title={
-              activeCat.toLowerCase() === "all"
-                ? "All Tasks"
-                : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
-            }
-            isLoading={isLoading}
-          />
-        </View>
+  const renderItem = ({ item }) => {
+    switch (item.type) {
+      case "search":
+        return (
+          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+            <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+              <AppInput
+                icon="search"
+                placeholder="Search tasks..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                blur={true}
+                bottomMargin={false}
+              />
+            </Skeleton>
+          </View>
+        );
 
-        <CategoryButtons
-          categories={categories}
-          activeCat={activeCat}
-          setActiveCat={setActiveCat}
-          skeletonProps={skeletonProps}
-          isLoading={isLoading}
-        />
-      </View>
-    ),
-    [isLoading, activeCat, categories, recommendedTasks, searchQuery]
-  );
+      case "for_you":
+        return (
+          <View style={styles.sectionMargin}>
+            <View style={styles.paddedContent}>
+              <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.carouselContainer}
+            >
+              {isLoading
+                ? SKELETON_FY_TASKS.map((i) => <FYTaskItem key={i} isLoading={isLoading} />)
+                : recommendedTasks.map((task, index) => (
+                    <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
+                  ))}
+            </ScrollView>
+          </View>
+        );
+
+      case "categories":
+        return (
+          <View style={styles.sectionMargin}>
+            <View style={styles.paddedContent}>
+              <SectionHeader
+                title={
+                  activeCat.toLowerCase() === "all"
+                    ? "All Tasks"
+                    : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
+                }
+                isLoading={isLoading}
+              />
+            </View>
+            <CategoryButtons
+              categories={categories}
+              activeCat={activeCat}
+              setActiveCat={setActiveCat}
+              skeletonProps={skeletonProps}
+              isLoading={isLoading}
+            />
+          </View>
+        );
+
+      case "task":
+        return (
+          <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
+            <TaskItem
+              isLoading={isLoading}
+              title={item.title}
+              lp={item.lp}
+              progress={item.progress}
+              status={item.limit}
+              icon={item.icon}
+              onPress={() => router.push(`task/${item.id}`)}
+            />
+          </View>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   const renderFooter = () => (
     <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
@@ -90,38 +143,30 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
-        data={isLoading ? SKELETON_TASKS : tasks}
-        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
-        ListHeaderComponent={renderHeader}
+        data={listData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        stickyHeaderIndices={[0]}
         ListFooterComponent={!isLoading ? renderFooter() : null}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
-        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.paddedContent}>
-              <TaskItem
-                isLoading={isLoading}
-                title={item.title}
-                lp={item.lp}
-                progress={item.progress}
-                status={item.limit}
-                icon={item.icon}
-                onPress={() => router.push(`task/${item.id}`)}
-              />
-            </View>
-          );
-        }}
       />
     </ScreenWrapper>
   );
 };
 
 const styles = StyleSheet.create({
+  stickySearchWrapper: {
+    zIndex: 10,
+    paddingTop: Spacing.sm
+  },
+  sectionMargin: {
+    marginTop: Spacing.md
+  },
   carouselContainer: {
     paddingHorizontal: Spacing.md,
     gap: Spacing.md,

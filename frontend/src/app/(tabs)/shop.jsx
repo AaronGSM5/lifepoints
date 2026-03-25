@@ -65,7 +65,7 @@ export default function ShopScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}

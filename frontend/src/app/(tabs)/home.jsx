@@ -52,7 +52,7 @@ export default function HomeScreen() {
     </View>
   );
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false}>
+    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={isLoading ? SKELETON_ITEMS : feedItems}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}

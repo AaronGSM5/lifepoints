@@ -28,7 +28,7 @@ export default function PublicProfileScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       {/* 1. Avatar & Info Section (Zentriert) */}
       <View style={styles.profileHeader}>
         {isLoading ? (

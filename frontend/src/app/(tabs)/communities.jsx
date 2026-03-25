@@ -21,7 +21,6 @@ export default function CommunitiesScreen() {
 
   const handleCreateCommunity = (data) => {
     console.log("Community wird erstellt:", data);
-    // Hier später dein API-Call
   };
 
   const sections = useMemo(
@@ -33,26 +32,50 @@ export default function CommunitiesScreen() {
     [recommended]
   );
 
-  const renderHeader = useMemo(
-    () => (
-      <View style={styles.headerContainer}>
-        <View style={styles.paddedContent}>
-          <EventHero
-            imageSource={require("../../../public/assets/creativeBanner.png")}
-            isLoading={isLoading}
-            onPress={() => setIsCreateModalVisible(true)}
-          />
-        </View>
-        <View style={[styles.paddedContent, styles.searchWrapper]}>
-          <AppInput
-            icon="search"
-            placeholder="Search communities..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+  const listData = useMemo(() => {
+    const topElements = [
+      { id: "hero", type: "hero" },
+      { id: "search", type: "search" },
+      { id: "my_communities", type: "my_communities" }
+    ];
 
-        {(myCommunities?.length > 0 || isLoading) && (
+    if (isLoading) {
+      return [...topElements, { id: "skeleton1", type: "skeleton" }, { id: "skeleton2", type: "skeleton" }];
+    }
+
+    return [...topElements, ...sections.map((section) => ({ ...section, type: "section" }))];
+  }, [sections, isLoading]);
+
+  const renderItem = ({ item }) => {
+    switch (item.type) {
+      case "hero":
+        return (
+          <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
+            <EventHero
+              imageSource={require("../../../public/assets/creativeBanner.png")}
+              isLoading={isLoading}
+              onPress={() => setIsCreateModalVisible(true)}
+            />
+          </View>
+        );
+
+      case "search":
+        return (
+          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+            <AppInput
+              icon="search"
+              placeholder="Search communities..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              blur
+              bottomMargin={false}
+            />
+          </View>
+        );
+
+      case "my_communities":
+        if (!myCommunities?.length && !isLoading) return null;
+        return (
           <View style={styles.myCommunitiesSection}>
             <View style={styles.paddedContent}>
               <SectionHeader
@@ -69,57 +92,69 @@ export default function CommunitiesScreen() {
             >
               {isLoading
                 ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
-                : myCommunities.map((item, index) => (
+                : myCommunities.map((c, index) => (
                     <MyCommunityCard
                       key={index}
-                      item={item}
+                      item={c}
                       isLoading={isLoading}
-                      onPress={() => router.push(`/community/${item.id}`)}
+                      onPress={() => router.push(`/community/${c.id}`)}
                     />
                   ))}
             </ScrollView>
           </View>
-        )}
-      </View>
-    ),
-    [isLoading, searchQuery, myCommunities]
-  );
+        );
 
-  const renderSection = ({ item: section }) => {
-    return (
-      <View style={styles.sectionContainer}>
-        <View style={styles.paddedContent}>
-          <SectionHeader title={section.title} isLoading={isLoading} />
-        </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContentContainer}
-          snapToInterval={260 + Spacing.md}
-          decelerationRate="fast"
-        >
-          {isLoading
-            ? SKELETON_DATA.map((i) => <RecommendedCommunity key={i} isLoading={true} />)
-            : section.data.map((community, index) => (
+      case "section":
+        return (
+          <View style={styles.sectionContainer}>
+            <View style={styles.paddedContent}>
+              <SectionHeader title={item.title} isLoading={isLoading} />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContentContainer}
+              snapToInterval={260 + Spacing.md}
+              decelerationRate="fast"
+            >
+              {item.data.map((community, index) => (
                 <RecommendedCommunity
                   key={community.id || index}
                   item={community}
                   onPress={() => router.push(`/community/${community.id}`)}
                 />
               ))}
-        </ScrollView>
-      </View>
-    );
+            </ScrollView>
+          </View>
+        );
+
+      case "skeleton":
+        return (
+          <View style={styles.sectionContainer}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContentContainer}
+            >
+              {SKELETON_DATA.map((i) => (
+                <RecommendedCommunity key={i} isLoading={true} />
+              ))}
+            </ScrollView>
+          </View>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
-        data={isLoading ? [{ id: "skeleton1" }, { id: "skeleton2" }] : sections}
+        data={listData}
         keyExtractor={(item) => item.id}
-        ListHeaderComponent={renderHeader}
-        renderItem={renderSection}
+        renderItem={renderItem}
+        stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
       />
@@ -133,14 +168,19 @@ export default function CommunitiesScreen() {
 }
 
 const styles = StyleSheet.create({
+  stickySearchWrapper: {
+    paddingTop: Spacing.sm,
+    zIndex: 10
+  },
   headerContainer: {
     paddingBottom: Spacing.md
   },
   myCommunitiesSection: {
+    marginTop: Spacing.md,
     marginBottom: Spacing.md
   },
   sectionContainer: {
-    marginBottom: Spacing.lg + 8
+    marginBottom: Spacing.lg
   },
   paddedContent: {
     paddingHorizontal: Spacing.md

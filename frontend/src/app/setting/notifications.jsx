@@ -15,7 +15,7 @@ export default function NotificationsScreen() {
   const toggleSwitch = (key) => setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper withPaddingTop={false}>
       <View style={styles.row}>
         <AppText>Push Notifications</AppText>
         <Switch

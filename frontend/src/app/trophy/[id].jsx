@@ -12,7 +12,7 @@ export default function TrophyScreen() {
   const trophy = mockTrophies.find((t) => String(t.id) === String(id));
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper withPaddingTop={false}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconShowcase}>
           <View style={[styles.iconCircle]}>

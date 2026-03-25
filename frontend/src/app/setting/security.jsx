@@ -30,7 +30,7 @@ export default function SecurityScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
           Passwort ändern

@@ -37,7 +37,7 @@ export default function SupportScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1">Wie können wir helfen?</AppText>
         <AppText style={styles.subtitle}>Suche in unseren FAQs oder kontaktiere uns direkt.</AppText>

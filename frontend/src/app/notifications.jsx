@@ -7,7 +7,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function NotificationsScreen() {
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingTop={false}>
       <ScreenTitle title={"Mitteilungen"} />
 
       <FlatList
