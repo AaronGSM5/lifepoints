@@ -6,9 +6,11 @@ import {
   Pressable,
   ScrollView,
   KeyboardAvoidingView,
-  Platform
-  // Image
+  Platform,
+  Image,
+  Switch
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 import AppText from "@/components/ui/AppText";
@@ -24,14 +26,41 @@ const SIZE_OPTIONS = [
   { slots: 1000, price: "14.99€" }
 ];
 const ICONS = ["groups", "fitness-center", "code", "palette", "self-improvement", "restaurant"];
+const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");
-  const [banner, setBanner] = useState(null);
+
+  const [bannerUri, setBannerUri] = useState(null);
+
   const [selectedBadges, setSelectedBadges] = useState([]);
   const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0]);
+
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      alert("Wir brauchen Zugriff auf deine Fotos, um ein Banner hochzuladen.");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1
+    });
+
+    if (!result.canceled) {
+      setBannerUri(result.assets[0].uri);
+    }
+  };
+
+  const clearImage = () => {
+    setBannerUri(null);
+  };
 
   const toggleBadge = (badge) => {
     setSelectedBadges((prev) => (prev.includes(badge) ? prev.filter((b) => b !== badge) : [...prev, badge]));
@@ -41,7 +70,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setName("");
     setDescription("");
     setSelectedIcon("groups");
-    setBanner(null);
+    setBannerUri(null);
     setSelectedBadges([]);
     setSelectedSize(SIZE_OPTIONS[0]);
   };
@@ -53,16 +82,17 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
 
   const handleCreate = () => {
     if (!formValid) return;
+
     onCreate({
       name,
       description,
       icon: selectedIcon,
-      banner: banner || "default_banner_url",
+      banner: bannerUri || DEFAULT_BANNER_URI,
       badges: selectedBadges,
       size: selectedSize.slots
     });
-    resetModal();
     onClose();
+    resetModal();
   };
 
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
@@ -166,10 +196,22 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                 <AppText type="caption" style={styles.label}>
                   COMMUNITY-BANNER (OPTIONAL)
                 </AppText>
-                <Pressable style={styles.bannerPlaceholder}>
-                  <Icon name="camera" color={MyTheme.muted} />
-                  <AppText type="caption">Banner hochladen oder Standard nutzen</AppText>
-                </Pressable>
+
+                {bannerUri ? (
+                  <View style={styles.bannerImageWrapper}>
+                    <Image source={{ uri: bannerUri }} style={styles.bannerImage} />
+                    <Pressable onPress={clearImage} style={styles.clearImageIcon}>
+                      <Icon name="close" color="#fff" size={16} />
+                    </Pressable>
+                  </View>
+                ) : (
+                  <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
+                    <Icon name="camera" color={MyTheme.muted} />
+                    <AppText type="caption" style={{ textAlign: "center", marginTop: 4 }}>
+                      Tippen zum Auswählen (16:9 empfohlen)
+                    </AppText>
+                  </Pressable>
+                )}
               </View>
 
               {/* Size / Price */}
@@ -300,6 +342,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8
+  },
+  bannerImageWrapper: {
+    height: 100,
+    borderRadius: 16,
+    overflow: "hidden",
+    position: "relative"
+  },
+  bannerImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover"
+  },
+  clearImageIcon: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    padding: 6,
+    borderRadius: 16
   },
   badgeWrapper: {
     flexDirection: "row",

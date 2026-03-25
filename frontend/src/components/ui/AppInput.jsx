@@ -26,9 +26,11 @@ const AppInput = forwardRef(
   ) => {
     const [isFocused, setIsFocused] = useState(false);
 
+    const isMultiline = props.multiline;
+
     return (
       <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
-        {/* Optionales Label über dem Input */}
+        {/* Optionales Label */}
         {label && (
           <AppText style={styles.label} bold>
             {label}
@@ -41,10 +43,11 @@ const AppInput = forwardRef(
             isFocused && styles.containerFocused,
             error && styles.containerError,
             isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
+            isMultiline && styles.containerMultiline,
             inputStyle
           ]}
         >
-          {/* Linkes Icon (z.B. Search) */}
+          {/* Linkes Icon */}
           {icon && (
             <Icon
               name={icon}
@@ -56,25 +59,25 @@ const AppInput = forwardRef(
 
           <TextInput
             ref={ref}
-            style={[styles.input, style]}
+            style={[styles.input, isMultiline && styles.inputMultiline, style]}
             placeholderTextColor={MyTheme.muted}
             selectionColor={MyTheme.primaryAccent}
             underlineColorAndroid="transparent"
             cursorColor={MyTheme.primaryAccent}
-            // Web-Fix gegen den blauen Rahmen
+            textAlignVertical={isMultiline ? "top" : "center"}
             {...{ accessibilityRole: "text" }}
             {...props}
-            onFocus={() => {
+            onFocus={(e) => {
               setIsFocused(true);
               if (props.onFocus) props.onFocus(e);
             }}
-            onBlur={() => {
+            onBlur={(e) => {
               setIsFocused(false);
               if (props.onBlur) props.onBlur(e);
             }}
           />
 
-          {/* Rechtes Icon (z.B. Clear-Button oder Auge bei Passwort) */}
+          {/* Rechtes Icon */}
           {rightContent ? (
             rightContent
           ) : rightIcon ? (
@@ -110,6 +113,12 @@ const styles = StyleSheet.create({
     height: 54,
     paddingHorizontal: Spacing.md
   },
+  containerMultiline: {
+    height: "auto",
+    minHeight: 100,
+    alignItems: "flex-start",
+    paddingVertical: Spacing.xs
+  },
   containerFocused: {
     borderColor: MyTheme.primaryAccent,
     backgroundColor: "rgba(47, 196, 146, 0.08)"
@@ -123,14 +132,18 @@ const styles = StyleSheet.create({
     color: MyTheme.text,
     fontSize: 16,
     height: "100%",
-    // WICHTIG: Entfernt blauen Rahmen im Web
     ...{ outlineStyle: "none" }
+  },
+  inputMultiline: {
+    height: "auto",
+    minHeight: 80,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.sm
   },
   leftIcon: {
     marginRight: Spacing.sm
   },
   rightIcon: {
-    // backgroundColor: MyTheme.primaryAccent,
     width: 40,
     height: 40,
     borderRadius: Spacing.borderRadius.full,
