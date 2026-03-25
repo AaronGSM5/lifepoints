@@ -162,11 +162,10 @@ const TasksScreen = () => {
 const styles = StyleSheet.create({
   stickySearchWrapper: {
     zIndex: 10,
-    paddingTop: Spacing.sm,
-    paddingBottom: Spacing.md
+    paddingTop: Spacing.sm
   },
   sectionMargin: {
-    marginBottom: Spacing.md
+    marginTop: Spacing.md
   },
   carouselContainer: {
     paddingHorizontal: Spacing.md,

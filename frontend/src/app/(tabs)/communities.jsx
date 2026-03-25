@@ -68,6 +68,7 @@ export default function CommunitiesScreen() {
               value={searchQuery}
               onChangeText={setSearchQuery}
               blur
+              bottomMargin={false}
             />
           </View>
         );
@@ -168,17 +169,18 @@ export default function CommunitiesScreen() {
 
 const styles = StyleSheet.create({
   stickySearchWrapper: {
-    paddingVertical: Spacing.sm,
+    paddingTop: Spacing.sm,
     zIndex: 10
   },
   headerContainer: {
     paddingBottom: Spacing.md
   },
   myCommunitiesSection: {
+    marginTop: Spacing.md,
     marginBottom: Spacing.md
   },
   sectionContainer: {
-    marginBottom: Spacing.lg + 8
+    marginBottom: Spacing.lg
   },
   paddedContent: {
     paddingHorizontal: Spacing.md
