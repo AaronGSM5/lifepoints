@@ -19,13 +19,34 @@ import { Icon } from "@/components/icons/Icon";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppInput from "../ui/AppInput";
 
-const AVAILABLE_BADGES = ["freundlich", "creator", "nischen-pro", "anfänger", "expert"];
+const AVAILABLE_BADGES = [
+  "freundlich",
+  "creator",
+  "nischen-pro",
+  "anfänger",
+  "expert",
+  "fitness",
+  "tech",
+  "lifestyle",
+  "gaming"
+];
 const SIZE_OPTIONS = [
   { slots: 50, price: "Gratis" },
   { slots: 250, price: "4.99€" },
   { slots: 1000, price: "14.99€" }
 ];
-const ICONS = ["groups", "fitness-center", "code", "palette", "self-improvement", "restaurant"];
+const ICONS = [
+  "groups",
+  "fitness-center",
+  "code",
+  "palette",
+  "self-improvement",
+  "restaurant",
+  "music-note",
+  "sports-esports",
+  "flight",
+  "camera-alt"
+];
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
@@ -37,6 +58,12 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
 
   const [selectedBadges, setSelectedBadges] = useState([]);
   const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0]);
+
+  const [showAllIcons, setShowAllIcons] = useState(false);
+  const [showAllBadges, setShowAllBadges] = useState(false);
+
+  const MAX_ICONS_COLLAPSED = 5;
+  const MAX_BADGES_COLLAPSED = 4;
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -73,11 +100,13 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setBannerUri(null);
     setSelectedBadges([]);
     setSelectedSize(SIZE_OPTIONS[0]);
+    setShowAllBadges(false);
+    setShowAllIcons(false);
   };
 
   const handleClose = () => {
-    resetModal();
     onClose();
+    setTimeout(resetModal, 300);
   };
 
   const handleCreate = () => {
@@ -92,10 +121,13 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
       size: selectedSize.slots
     });
     onClose();
-    resetModal();
+    setTimeout(resetModal, 300);
   };
 
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
+
+  const visibleIcons = showAllIcons ? ICONS : ICONS.slice(0, MAX_ICONS_COLLAPSED);
+  const visibleBadges = showAllBadges ? AVAILABLE_BADGES : AVAILABLE_BADGES.slice(0, MAX_BADGES_COLLAPSED);
 
   return (
     <Modal
@@ -155,7 +187,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                   COMMUNITY-ICON
                 </AppText>
                 <View style={styles.iconGrid}>
-                  {ICONS.map((icon) => (
+                  {visibleIcons.map((icon) => (
                     <Pressable
                       key={icon}
                       onPress={() => setSelectedIcon(icon)}
@@ -169,6 +201,12 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                     </Pressable>
                   ))}
                 </View>
+                {!showAllIcons && ICONS.length > MAX_ICONS_COLLAPSED && (
+                  <Pressable onPress={() => setShowAllIcons(true)} style={styles.moreButton}>
+                    <AppText type="caption">more</AppText>
+                    <Icon name="down" size={14} color={MyTheme.muted} />
+                  </Pressable>
+                )}
               </View>
 
               {/* Badges */}
@@ -177,7 +215,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                   COMMUNITY-BADGES
                 </AppText>
                 <View style={styles.badgeWrapper}>
-                  {AVAILABLE_BADGES.map((badge) => (
+                  {visibleBadges.map((badge) => (
                     <Pressable
                       key={badge}
                       onPress={() => toggleBadge(badge)}
@@ -189,6 +227,12 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                     </Pressable>
                   ))}
                 </View>
+                {!showAllBadges && AVAILABLE_BADGES.length > MAX_BADGES_COLLAPSED && (
+                  <Pressable onPress={() => setShowAllBadges(true)} style={styles.moreButton}>
+                    <AppText type="caption">more</AppText>
+                    <Icon name="down" size={14} color={MyTheme.muted} />
+                  </Pressable>
+                )}
               </View>
 
               {/* Banner Upload */}
@@ -406,6 +450,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "rgba(255,255,255,0.05)",
     backgroundColor: MyTheme.background
+  },
+  moreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: Spacing.sm,
+    gap: 4,
+    paddingVertical: 4
   }
 });
 
