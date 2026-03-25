@@ -19,6 +19,7 @@ export default function ScreenWrapper({
   withPaddingBottom = true,
   withPaddingSides = true,
   useGradient = true,
+  withPaddingTop = true,
   style
 }) {
   const insets = useSafeAreaInsets();
@@ -26,7 +27,7 @@ export default function ScreenWrapper({
   const contentStyles = [
     {
       paddingHorizontal: withPaddingSides ? Spacing.md : 0,
-      paddingTop: withOffset ? insets.top + Spacing.md : Spacing.md,
+      paddingTop: withOffset ? insets.top + Spacing.md : withPaddingTop ? Spacing.md : insets.top,
       paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
     },
     style

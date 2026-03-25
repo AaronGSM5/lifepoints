@@ -19,7 +19,7 @@ export default function CommunityDetailScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ScreenWrapper scrollable withPaddingSides={false} style={{ paddingTop: insets.top }}>
+      <ScreenWrapper scrollable withPaddingSides={false} withPaddingTop={false}>
         <CommunityHeader community={community} />
 
         <View style={styles.contentContainer}>

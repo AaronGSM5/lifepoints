@@ -67,7 +67,7 @@ export default function LinkedServicesScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1">Verknüpfte Dienste</AppText>
         <AppText style={styles.subtitle}>

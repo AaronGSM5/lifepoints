@@ -149,7 +149,7 @@ export default function CommunitiesScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={listData}
         keyExtractor={(item) => item.id}

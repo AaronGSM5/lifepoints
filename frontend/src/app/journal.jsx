@@ -50,7 +50,7 @@ const JournalPage = () => {
   );
 
   return (
-    <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>
+    <ScreenWrapper style={styles.wrapper} withPaddingBottom={false} withPaddingTop={false}>
       <ScreenTitle title={"My Impact Journal"} />
       <SectionList
         sections={mockSectionedActivities}

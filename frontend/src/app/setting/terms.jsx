@@ -38,7 +38,7 @@ export default function TermsScreen() {
   ];
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1">Rechtliches</AppText>
         <AppText type="caption" style={styles.subtitle}>

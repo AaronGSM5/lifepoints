@@ -40,7 +40,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <ScreenTitle title={"Settings"} />
 
       {mockSettings.map((cat) => (
