@@ -10,7 +10,7 @@ import RecommendedCommunity from "@/components/communities/RecommendedCommunity"
 import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
-import CreateCommunityForm from "@/components/communities/CreateCommunityForm";
+import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 
 const SKELETON_DATA = [1, 2, 3];
 
