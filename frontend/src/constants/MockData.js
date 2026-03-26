@@ -498,6 +498,12 @@ export const mockTutorialSteps = [
   { id: "4", title: "Beschreibung hinzufügen", reward: 15, completed: false, icon: "pencil", route: '/setting/edit-profile' },
 ]
 
+export const mockTaskTrackingHistory = [
+  { id: "1", date: "Heute, 14:30 Uhr", points: 10 },
+  { id: "2", date: "Gestern, 09:15 Uhr", points: 10 },
+  { id: "3", date: "12. Okt 2023, 18:00 Uhr", points: 10 },
+];
+
 export const mockSectionedActivities = [
   {
     title: "Heute",

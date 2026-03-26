@@ -10,6 +10,7 @@ import { Icon } from "@/components/icons/Icon";
 import { mockTasks } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { mockTaskTrackingHistory } from "@/constants/MockData";
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -31,7 +32,7 @@ export default function TaskDetailScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
           {/* Hero-Image */}
           <View style={styles.imageContainer}>
             <Image
@@ -80,6 +81,38 @@ export default function TaskDetailScreen() {
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
               {task.description}
             </AppText>
+
+            <View style={styles.historySection}>
+              <AppText type="title" style={{ marginBottom: Spacing.md }}>
+                Verlauf
+              </AppText>
+
+              {mockTaskTrackingHistory.length > 0 ? (
+                mockTaskTrackingHistory.map((item) => (
+                  <View key={item.id} style={styles.historyItem}>
+                    <View style={styles.historyIconContainer}>
+                      {/* Hier kannst du dein Checkmark-Icon verwenden, falls vorhanden. Alternativ ein Punkt/Stern */}
+                      <Icon name="check" size={16} color={MyTheme.primaryAccent} />
+                    </View>
+                    <View style={styles.historyTextContainer}>
+                      <AppText type="body" bold>
+                        Getrackt
+                      </AppText>
+                      <AppText type="caption" style={{ color: MyTheme.muted }}>
+                        {item.date}
+                      </AppText>
+                    </View>
+                    <AppText type="body" bold style={{ color: MyTheme.primaryAccent }}>
+                      +{item.points} PTS
+                    </AppText>
+                  </View>
+                ))
+              ) : (
+                <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
+                  Noch keine Einträge vorhanden.
+                </AppText>
+              )}
+            </View>
           </View>
         </ScrollView>
 
@@ -180,5 +213,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 20
+  },
+  historySection: {
+    marginTop: Spacing.xl // Abstand zur Beschreibung
+  },
+  historyItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.03)",
+    padding: Spacing.md,
+    borderRadius: Spacing.md,
+    marginBottom: Spacing.sm,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.05)"
+  },
+  historyIconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md
+  },
+  historyTextContainer: {
+    flex: 1
   }
 });
