@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   repliesContainer: {
     marginLeft: 44,
     borderLeftWidth: 1,
-    borderLeftColor: "rgba(255,255,255,0.05)",
+    borderLeftColor: MyTheme.glas,
     paddingLeft: 12,
     marginTop: -Spacing.sm,
     marginBottom: Spacing.sm
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     borderRadius: Spacing.borderRadius.lg,
     paddingHorizontal: Spacing.md,
     minHeight: 36,

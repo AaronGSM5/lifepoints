@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
   bannerPlaceholder: {
     height: 100,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     borderStyle: "dashed",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.2)",
@@ -544,7 +544,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     alignItems: "center",
     borderWidth: 1,
     borderColor: "transparent"
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingTop: Spacing.md,
     borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.05)",
+    borderTopColor: MyTheme.glas,
     backgroundColor: MyTheme.background
   },
   moreButton: {

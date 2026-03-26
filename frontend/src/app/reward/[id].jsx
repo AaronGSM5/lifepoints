@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   brandBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     paddingHorizontal: Spacing.sm,
     paddingVertical: 4,
     borderRadius: Spacing.borderRadius.full,

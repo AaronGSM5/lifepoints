@@ -18,10 +18,7 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
             onPress(setting);
           }
         }}
-        style={({ pressed }) => [
-          styles.item,
-          pressed && setting.type !== "info" && { backgroundColor: "rgba(255,255,255,0.05)" }
-        ]}
+        style={({ pressed }) => [styles.item, pressed && setting.type !== "info" && { backgroundColor: MyTheme.glas }]}
       >
         {/* Icon & Text */}
         <View style={styles.itemLeft}>

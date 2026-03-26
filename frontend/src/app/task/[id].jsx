@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   brandBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     paddingHorizontal: Spacing.sm,
     paddingVertical: 4,
     borderRadius: Spacing.borderRadius.full,
@@ -220,18 +220,18 @@ const styles = StyleSheet.create({
   historyItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.03)",
+    backgroundColor: MyTheme.glas,
     padding: Spacing.md,
     borderRadius: Spacing.md,
     marginBottom: Spacing.sm,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)"
+    borderColor: MyTheme.glas
   },
   historyIconContainer: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: MyTheme.glas,
     justifyContent: "center",
     alignItems: "center",
     marginRight: Spacing.md
