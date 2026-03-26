@@ -127,10 +127,10 @@ export default function FeedItem({
               styles.bigHeartOverlay,
               {
                 opacity: heartOpacity,
-                transform: [{ scale: heartScale }]
+                transform: [{ scale: heartScale }],
+                pointerEvents: "none"
               }
             ]}
-            pointerEvents="none"
           >
             <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
           </Animated.View>

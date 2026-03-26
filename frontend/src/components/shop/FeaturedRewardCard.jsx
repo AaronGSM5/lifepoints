@@ -58,10 +58,7 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
 const styles = StyleSheet.create({
   featuredWrapper: {
     borderRadius: Spacing.borderRadius.lg,
-    shadowColor: "#E94057",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.7,
-    shadowRadius: 25,
+    boxShadow: `0px 4px 25px rgba(233, 64, 87, 0.7)`,
     elevation: 10
   },
   featuredCard: {

@@ -145,10 +145,7 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 3,
     backgroundColor: MyTheme.warning,
-    shadowColor: "#ef4444",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
+    boxShadow: `0px 0px 4px rgba(239, 68, 68, 0.8)`,
     elevation: 2
   },
   liveText: {

@@ -340,18 +340,12 @@ const styles = StyleSheet.create({
   },
   highlightCard: {
     borderWidth: 0,
-    shadowColor: MyTheme.primaryAccent,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 15,
+    boxShadow: "0px 5px 15px rgba(47, 196, 146, 0.5)",
     elevation: 10
   },
   premiumCard: {
     borderWidth: 0,
-    shadowColor: MyTheme.gold,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 15,
+    boxShadow: "0px 5px 15px rgba(255, 215, 0, 0.5)",
     elevation: 10
   },
   badgeContainer: {
