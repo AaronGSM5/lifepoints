@@ -11,6 +11,7 @@ import { mockTasks } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { mockTaskTrackingHistory } from "@/constants/MockData";
+import HistoryCard from "@/components/ui/HistoryCard";
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -33,26 +34,22 @@ export default function TaskDetailScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-          {/* Hero-Image */}
           <View style={styles.imageContainer}>
             <Image
               source={task.image ? { uri: task.image } : require("@/../public/assets/icon.png")}
               style={styles.image}
             />
 
-            {/* Der Zurück-Button schwebt ÜBER dem Bild */}
             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
               <Icon name="back" />
             </TouchableOpacity>
 
-            {/* Der Gradient sorgt dafür, dass das Bild sanft in den dunklen Hintergrund übergeht */}
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}
               style={styles.gradientOverlay}
             />
           </View>
 
-          {/* 2. Der Content-Bereich */}
           <View style={styles.content}>
             <View style={styles.headerRow}>
               <View style={styles.brandBadge}>
@@ -89,23 +86,26 @@ export default function TaskDetailScreen() {
 
               {mockTaskTrackingHistory.length > 0 ? (
                 mockTaskTrackingHistory.map((item) => (
-                  <View key={item.id} style={styles.historyItem}>
-                    <View style={styles.historyIconContainer}>
-                      {/* Hier kannst du dein Checkmark-Icon verwenden, falls vorhanden. Alternativ ein Punkt/Stern */}
-                      <Icon name="check" size={16} color={MyTheme.primaryAccent} />
-                    </View>
-                    <View style={styles.historyTextContainer}>
-                      <AppText type="body" bold>
-                        Getrackt
-                      </AppText>
-                      <AppText type="caption" style={{ color: MyTheme.muted }}>
-                        {item.date}
-                      </AppText>
-                    </View>
-                    <AppText type="body" bold style={{ color: MyTheme.primaryAccent }}>
-                      +{item.points} PTS
-                    </AppText>
-                  </View>
+                  <HistoryCard
+                    key={item.id}
+                    title="Getrackt"
+                    subtitle={item.date}
+                    points={item.points}
+                    type="earn"
+                    pointsSuffix="PTS"
+                    iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
+                    containerStyle={{
+                      backgroundColor: MyTheme.glas,
+                      borderColor: MyTheme.glas,
+                      borderWidth: 1
+                    }}
+                    iconContainerStyle={{
+                      backgroundColor: MyTheme.glas,
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16
+                    }}
+                  />
                 ))
               ) : (
                 <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 50, // Abstand für die Notch/Statusleiste auf dem Handy
+    top: 50,
     left: Spacing.md,
     width: 40,
     height: 40,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: Spacing.lg,
-    marginTop: -20 // Zieht den Text leicht in den Gradienten hinein
+    marginTop: -20
   },
   headerRow: {
     flexDirection: "row",
@@ -189,11 +189,6 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius.full,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.1)"
-  },
-  brandText: {
-    color: MyTheme.primaryAccent,
-    marginLeft: Spacing.xs,
-    letterSpacing: 1
   },
   lockedBadge: {
     backgroundColor: "#2A2A2A",
@@ -215,28 +210,6 @@ const styles = StyleSheet.create({
     elevation: 20
   },
   historySection: {
-    marginTop: Spacing.xl // Abstand zur Beschreibung
-  },
-  historyItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: MyTheme.glas,
-    padding: Spacing.md,
-    borderRadius: Spacing.md,
-    marginBottom: Spacing.sm,
-    borderWidth: 1,
-    borderColor: MyTheme.glas
-  },
-  historyIconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: MyTheme.glas,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  historyTextContainer: {
-    flex: 1
+    marginTop: Spacing.xl
   }
 });

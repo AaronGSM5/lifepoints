@@ -7,6 +7,7 @@ import BaseCard from "../ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
 import SectionHeader from "../ui/SectionHeader";
 import { router } from "expo-router";
+import HistoryCard from "../ui/HistoryCard";
 
 const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const previewData = activities.slice(0, 3);
@@ -44,32 +45,17 @@ const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
         isLoading={isLoading}
       />
       <View style={styles.container}>
-        {previewData.map((item) => {
-          const isSpend = item.type === "spend";
-          const lpColor = isSpend ? MyTheme.warning : MyTheme.primaryAccent;
-          const prefix = isSpend ? "-" : "+";
-          return (
-            <BaseCard key={item.id} style={styles.activityItem}>
-              <View style={styles.iconCircle}>
-                <AppText>✨</AppText>
-              </View>
-
-              <View style={styles.textContainer}>
-                <AppText type="body" bold>
-                  {item.title}
-                </AppText>
-                <AppText type="caption" style={{ fontSize: 12, marginTop: Spacing.xs }}>
-                  {item.time}
-                </AppText>
-              </View>
-
-              <AppText type="body" bold style={{ color: lpColor }}>
-                {prefix}
-                {item.points} LP
-              </AppText>
-            </BaseCard>
-          );
-        })}
+        {previewData.map((item) => (
+          <HistoryCard
+            key={item.id}
+            title={item.title}
+            subtitle={item.time}
+            points={item.points}
+            type={item.type}
+            pointsSuffix="LP"
+            iconNode={<AppText>✨</AppText>}
+          />
+        ))}
       </View>
     </View>
   );
@@ -95,12 +81,6 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginLeft: Spacing.md - 4
-  },
-  moreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.xs
   }
 });
 
