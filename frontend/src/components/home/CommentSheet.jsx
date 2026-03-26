@@ -1,16 +1,5 @@
 import React, { useState, useRef, memo, useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  Modal,
-  Pressable,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  FlatList,
-  Image,
-  Dimensions
-} from "react-native";
+import { View, StyleSheet, Pressable, TextInput, Platform, FlatList, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
@@ -25,16 +14,26 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
-      <Pressable onPress={() => onNavigate(item.username)}>
-        <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
-      </Pressable>
+      <View style={styles.avatarColumn}>
+        <Pressable onPress={() => onNavigate(item.username)}>
+          <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
+        </Pressable>
+      </View>
+
       <View style={styles.commentContent}>
-        <AppText style={styles.commentText}>
-          <AppText bold onPress={() => onNavigate(item.username)}>
-            {item.username}{" "}
-          </AppText>
-          {item.text}
+        <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+          {item.username}
         </AppText>
+
+        <View style={styles.textAndLikeRow}>
+          <AppText style={styles.commentText}>{item.text}</AppText>
+
+          {!isReply && (
+            <Pressable hitSlop={10} style={styles.likeButton} onPress={() => onLike(item.id)}>
+              <Icon name={"heart"} outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
+            </Pressable>
+          )}
+        </View>
 
         <View style={styles.commentFooter}>
           <AppText style={styles.commentTime}>{item.time}</AppText>
@@ -43,12 +42,6 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
           </Pressable>
         </View>
       </View>
-
-      {!isReply && (
-        <Pressable hitSlop={10} style={{ paddingLeft: 10 }} onPress={() => onLike(item.id)}>
-          <Icon name="heart" outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
-        </Pressable>
-      )}
     </View>
   );
 });
@@ -60,7 +53,6 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const [replyingTo, setReplyingTo] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Ref to focus textInput onReply
   const inputRef = useRef(null);
 
   const handleNavigate = useCallback(
@@ -160,7 +152,6 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   return (
     <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={"Kommentare"}>
-      {/* Kommentar-Liste */}
       <View style={{ flex: 1 }}>
         <FlatList
           data={comments}
@@ -175,7 +166,6 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
         />
-        {/* Eingabefeld (Sticky at bottom) */}
         {replyingTo && (
           <View style={styles.replyBar}>
             <AppText style={styles.replyBarText}>
@@ -228,23 +218,22 @@ const styles = StyleSheet.create({
   },
   commentRow: {
     flexDirection: "row",
-    paddingVertical: Spacing.sm
+    paddingVertical: Spacing.sm,
+    width: "100%"
   },
   replyRow: {
-    marginBottom: Spacing.md
+    marginBottom: Spacing.sm
   },
   commentAvatar: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    marginRight: 12,
     backgroundColor: "#F0F0F0"
   },
   replyAvatar: {
     width: 28,
     height: 28,
-    borderRadius: 14,
-    marginRight: 10
+    borderRadius: 14
   },
   repliesContainer: {
     marginLeft: 44,
@@ -275,6 +264,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   commentText: {
+    flex: 1,
     fontSize: 14,
     lineHeight: 20,
     color: MyTheme.text
@@ -286,7 +276,7 @@ const styles = StyleSheet.create({
   commentFooter: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 4,
+    marginTop: 6,
     gap: Spacing.md
   },
   replyButton: {
@@ -334,5 +324,26 @@ const styles = StyleSheet.create({
   postButton: {
     height: 36,
     justifyContent: "center"
+  },
+  avatarColumn: {
+    marginRight: 12
+  },
+  likeColumn: {
+    paddingLeft: 10,
+    alignItems: "flex-end",
+    justifyContent: "flex-start",
+    paddingTop: 2
+  },
+  usernameText: {
+    marginBottom: 2
+  },
+  textAndLikeRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start"
+  },
+  likeButton: {
+    paddingLeft: 12,
+    paddingTop: 2
   }
 });

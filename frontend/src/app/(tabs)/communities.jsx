@@ -6,7 +6,6 @@ import AppInput from "@/components/ui/AppInput";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-// import CreateCommunityCard from "@/components/communities/CreateCommunityCard";
 import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
@@ -39,12 +38,8 @@ export default function CommunitiesScreen() {
       { id: "my_communities", type: "my_communities" }
     ];
 
-    if (isLoading) {
-      return [...topElements, { id: "skeleton1", type: "skeleton" }, { id: "skeleton2", type: "skeleton" }];
-    }
-
     return [...topElements, ...sections.map((section) => ({ ...section, type: "section" }))];
-  }, [sections, isLoading]);
+  }, [sections]);
 
   const renderItem = ({ item }) => {
     switch (item.type) {
@@ -80,7 +75,6 @@ export default function CommunitiesScreen() {
             <View style={styles.paddedContent}>
               <SectionHeader
                 title="My Communities"
-                isLoading={isLoading}
                 rightLabel="See all"
                 onRightPress={() => console.log("mockClickReaction xD")}
               />
@@ -91,14 +85,9 @@ export default function CommunitiesScreen() {
               contentContainerStyle={styles.scrollContentContainer}
             >
               {isLoading
-                ? SKELETON_DATA.map((i) => <MyCommunityCard key={i} isLoading={isLoading} />)
+                ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
                 : myCommunities.map((c, index) => (
-                    <MyCommunityCard
-                      key={index}
-                      item={c}
-                      isLoading={isLoading}
-                      onPress={() => router.push(`/community/${c.id}`)}
-                    />
+                    <MyCommunityCard key={c.id || index} item={c} onPress={() => router.push(`/community/${c.id}`)} />
                   ))}
             </ScrollView>
           </View>
@@ -108,7 +97,7 @@ export default function CommunitiesScreen() {
         return (
           <View style={styles.sectionContainer}>
             <View style={styles.paddedContent}>
-              <SectionHeader title={item.title} isLoading={isLoading} />
+              <SectionHeader title={item.title} />
             </View>
             <ScrollView
               horizontal
@@ -117,28 +106,15 @@ export default function CommunitiesScreen() {
               snapToInterval={260 + Spacing.md}
               decelerationRate="fast"
             >
-              {item.data.map((community, index) => (
-                <RecommendedCommunity
-                  key={community.id || index}
-                  item={community}
-                  onPress={() => router.push(`/community/${community.id}`)}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        );
-
-      case "skeleton":
-        return (
-          <View style={styles.sectionContainer}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContentContainer}
-            >
-              {SKELETON_DATA.map((i) => (
-                <RecommendedCommunity key={i} isLoading={true} />
-              ))}
+              {isLoading
+                ? SKELETON_DATA.map((i) => <RecommendedCommunity key={`skeleton-rec-${i}`} isLoading={true} />)
+                : item.data?.map((community, index) => (
+                    <RecommendedCommunity
+                      key={community.id || index}
+                      item={community}
+                      onPress={() => router.push(`/community/${community.id}`)}
+                    />
+                  ))}
             </ScrollView>
           </View>
         );

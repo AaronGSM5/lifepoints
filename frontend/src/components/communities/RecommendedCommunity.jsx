@@ -15,7 +15,6 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
       <BaseCard style={styles.cardContainer}>
         <View style={styles.headerRow}>
           <Skeleton colorMode="dark" width={40} height={40} radius={Spacing.borderRadius.md} />
-          <Skeleton colorMode="dark" width={60} height={24} radius={8} />
         </View>
 
         <View style={styles.contentArea}>
@@ -27,16 +26,25 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
         </View>
 
         <View style={styles.footerRow}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <View style={{ flexDirection: "row" }}>
-              <Skeleton colorMode="dark" width={24} height={24} radius={12} />
-              <View style={{ marginLeft: -10 }}>
-                <Skeleton colorMode="dark" width={24} height={24} radius={12} />
-              </View>
+          <View style={styles.socialProof}>
+            <View style={styles.facepile}>
+              {[0, 1, 2].map((index) => (
+                <View
+                  key={`skeleton-avatar-${index}`}
+                  style={[
+                    styles.avatar,
+                    { backgroundColor: "transparent" },
+                    { zIndex: index === 1 ? 3 : index === 0 ? 2 : 1 },
+                    index > 0 && { marginLeft: -10 }
+                  ]}
+                >
+                  <Skeleton colorMode="dark" width={20} height={20} radius={10} />
+                </View>
+              ))}
             </View>
-            <Skeleton colorMode="dark" width={60} height={12} />
+
+            <Skeleton colorMode="dark" width={80} height={12} />
           </View>
-          <Skeleton colorMode="dark" width={20} height={20} radius={10} />
         </View>
       </BaseCard>
     );

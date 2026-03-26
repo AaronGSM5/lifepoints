@@ -13,26 +13,25 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
     return (
       <BaseCard style={styles.card} padding={0}>
         {/* Image */}
-        <Skeleton
-          colorMode="dark"
-          width="100%"
-          height={120}
-          radius={0}
-          transition={{ type: "timing", duration: 1500 }}
-        />
+        <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
+          <Skeleton
+            colorMode="dark"
+            width="100%"
+            height={"100%"}
+            radius={0}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
 
         <View style={styles.cardContent}>
           <View style={styles.cardInfoRow}>
             <View style={{ flex: 1, paddingRight: Spacing.sm }}>
-              <View style={{ marginBottom: 8 }}>
+              <View style={{ marginBottom: 4 }}>
                 <Skeleton colorMode="dark" width="80%" height={20} transition={{ type: "timing", duration: 1500 }} />
               </View>
-              <View style={{ marginBottom: 4 }}>
-                <Skeleton colorMode="dark" width="100%" height={14} transition={{ type: "timing", duration: 1500 }} />
-              </View>
-              <Skeleton colorMode="dark" width="60%" height={14} transition={{ type: "timing", duration: 1500 }} />
+              <Skeleton colorMode="dark" width="80%" height={14} transition={{ type: "timing", duration: 1500 }} />
             </View>
-            <Skeleton colorMode="dark" width={40} height={20} transition={{ type: "timing", duration: 1500 }} />
+            <Skeleton colorMode="dark" width={60} height={22} transition={{ type: "timing", duration: 1500 }} />
           </View>
           {/* Button */}
           <Skeleton

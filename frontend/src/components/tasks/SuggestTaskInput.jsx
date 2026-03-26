@@ -10,6 +10,7 @@ const SuggestTaskInput = () => {
   const [suggestionInput, setSuggestionInput] = useState("");
   const handleSendSuggestion = () => {
     console.log("Mock Send");
+    setSuggestionInput("");
   };
   return (
     <View style={styles.suggestionBox}>

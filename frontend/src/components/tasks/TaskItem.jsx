@@ -14,9 +14,9 @@ const TaskItem = ({ title, lp, progress, status, icon, onPress, isLoading }) => 
         <View style={styles.iconContainer}>
           <Skeleton
             colorMode="dark"
-            width={32}
-            height={32}
-            radius="round"
+            width="100%"
+            height="100%"
+            radius={Spacing.borderRadius.md}
             transition={{ type: "timing", duration: 1500 }}
           />
         </View>
@@ -25,15 +25,6 @@ const TaskItem = ({ title, lp, progress, status, icon, onPress, isLoading }) => 
             <Skeleton colorMode="dark" width="70%" height={16} transition={{ type: "timing", duration: 1500 }} />
           </View>
           <Skeleton colorMode="dark" width="40%" height={12} transition={{ type: "timing", duration: 1500 }} />
-        </View>
-        <View style={styles.chevronContainer}>
-          <Skeleton
-            colorMode="dark"
-            width={16}
-            height={16}
-            radius={4}
-            transition={{ type: "timing", duration: 1500 }}
-          />
         </View>
       </BaseCard>
     );

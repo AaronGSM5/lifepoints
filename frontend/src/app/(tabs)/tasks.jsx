@@ -74,7 +74,7 @@ const TasksScreen = () => {
         return (
           <View style={styles.sectionMargin}>
             <View style={styles.paddedContent}>
-              <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
+              <SectionHeader title={"For You"} />
             </View>
             <ScrollView
               horizontal
@@ -82,9 +82,9 @@ const TasksScreen = () => {
               contentContainerStyle={styles.carouselContainer}
             >
               {isLoading
-                ? SKELETON_FY_TASKS.map((i) => <FYTaskItem key={i} isLoading={isLoading} />)
+                ? SKELETON_FY_TASKS.map((i) => <FYTaskItem key={i} isLoading={true} />)
                 : recommendedTasks.map((task, index) => (
-                    <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
+                    <FYTaskItem key={task.id || index} {...task} isLoading={false} />
                   ))}
             </ScrollView>
           </View>
@@ -100,7 +100,6 @@ const TasksScreen = () => {
                     ? "All Tasks"
                     : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
                 }
-                isLoading={isLoading}
               />
             </View>
             <CategoryButtons
