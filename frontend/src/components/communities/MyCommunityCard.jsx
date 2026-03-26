@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
 import { MyTheme } from "@/constants/Colors";
+import AppBadge from "../ui/AppBadge";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   if (isLoading) {
@@ -34,9 +35,11 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
           </View>
 
           {item.isLive && (
-            <View style={styles.liveBadge}>
-              <AppText>⏱</AppText>
-            </View>
+            <AppBadge
+              label={"⏱"}
+              style={{ backgroundColor: "rgba(50, 211, 150, 0.05)", borderWidth: 0 }}
+              textStyle={{ fontSize: 16 }}
+            />
           )}
         </View>
 
@@ -97,12 +100,6 @@ const styles = StyleSheet.create({
     backgroundColor: MyTheme.warning,
     borderWidth: 2,
     borderColor: MyTheme.primary
-  },
-  liveBadge: {
-    backgroundColor: "rgba(50, 211, 150, 0.1)",
-    paddingHorizontal: Spacing.sm - 2,
-    paddingVertical: Spacing.xs - 2,
-    borderRadius: Spacing.borderRadius.full
   },
   bottomContent: {
     gap: 4

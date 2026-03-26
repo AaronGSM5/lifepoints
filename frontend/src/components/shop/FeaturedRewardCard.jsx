@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import AppBadge from "../ui/AppBadge";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
   if (isLoading) {
@@ -29,11 +30,7 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         </View>
 
         <View style={styles.featuredContent}>
-          <View style={styles.bestValueBadge}>
-            <AppText bold type="caption" style={{ color: "#00FF7F" }}>
-              BEST VALUE
-            </AppText>
-          </View>
+          <AppBadge label={"BEST VALUE"} variant="secondary" />
 
           <AppText type="h2">Free Month Premium</AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
@@ -79,16 +76,6 @@ const styles = StyleSheet.create({
   featuredContent: {
     marginTop: Spacing.md,
     gap: Spacing.xs
-  },
-  bestValueBadge: {
-    backgroundColor: "rgba(0, 255, 127, 0.2)",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-    borderRadius: Spacing.borderRadius.sm,
-    alignSelf: "flex-start",
-    marginBottom: Spacing.xs,
-    borderWidth: 1,
-    borderColor: "rgba(0, 255, 127, 0.8)"
   },
   featuredSubtitle: {
     color: "rgba(255,255,255,0.7)",

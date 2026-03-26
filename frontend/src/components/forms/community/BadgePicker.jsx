@@ -3,11 +3,12 @@ import { View, StyleSheet, Pressable, Animated } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
-  const heightAnim = useRef(new Animated.Value(40)).current;
+  const heightAnim = useRef(new Animated.Value(30)).current;
 
   const expand = () => {
     setShowAll(true);
@@ -29,23 +30,23 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
         onLayout={(event) => setFullHeight(event.nativeEvent.layout.height)}
       >
         {badges.map((badge, index) => (
-          <View key={`measure-badge-${index}`} style={styles.badgeChip}>
-            <AppText style={{ fontSize: 14 }}>{badge}</AppText>
-          </View>
+          <AppBadge key={`measure-badge-${index}`} label={badge} variant="outline" />
         ))}
       </View>
 
       <Animated.View style={[styles.animatedWrapper, { height: heightAnim }]}>
         <View style={styles.badgeWrapper}>
-          {badges.map((badge, index) => (
-            <Pressable
-              key={`${badge}-${index}`}
-              onPress={() => onToggleBadge(badge)}
-              style={[styles.badgeChip, selectedBadges.includes(badge) && styles.selectedBadgeChip]}
-            >
-              <AppText style={[{ fontSize: 14 }, selectedBadges.includes(badge) && { color: "#000" }]}>{badge}</AppText>
-            </Pressable>
-          ))}
+          {badges.map((badge, index) => {
+            const isSelected = selectedBadges.includes(badge);
+            return (
+              <AppBadge
+                key={`${badge}-${index}`}
+                label={badge}
+                variant={isSelected ? "primary" : "outline"}
+                onPress={() => onToggleBadge(badge)}
+              />
+            );
+          })}
         </View>
       </Animated.View>
 
@@ -74,18 +75,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 8
   },
-  badgeChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)"
-  },
-  selectedBadgeChip: {
-    backgroundColor: MyTheme.primaryAccent,
-    borderColor: MyTheme.primaryAccent
-  },
   animatedWrapper: {
     overflow: "hidden",
     width: "100%"
@@ -99,7 +88,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 2,
-    gap: 4,
     paddingVertical: 4
   },
   measureView: {

@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { mockTaskTrackingHistory } from "@/constants/MockData";
 import HistoryCard from "@/components/ui/HistoryCard";
 import BackButton from "@/components/ui/BackButton";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -51,16 +52,14 @@ export default function TaskDetailScreen() {
 
           <View style={styles.content}>
             <View style={styles.headerRow}>
-              <View style={styles.brandBadge}>
-                <Icon name={task.icon} size={14} color={MyTheme.primaryAccent} />
-              </View>
+              <AppBadge iconNode={<Icon name={task.icon} size={20} color={MyTheme.primaryAccent} />} />
 
               {task.isLocked && (
-                <View style={styles.lockedBadge}>
-                  <AppText bold type="caption" style={{ fontSize: 10 }}>
-                    LOCKED
-                  </AppText>
-                </View>
+                <AppBadge
+                  label={"LOCKED"}
+                  textStyle={{ fontSize: 10, color: MyTheme.muted }}
+                  style={{ backgroundColor: "#2A2A2A" }}
+                />
               )}
             </View>
 
@@ -178,22 +177,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: Spacing.md
-  },
-  brandBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: MyTheme.glas,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)"
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 4
   },
   stickyFooter: {
     position: "absolute",

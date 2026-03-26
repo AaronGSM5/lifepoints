@@ -8,6 +8,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import AppBadge from "../ui/AppBadge";
 
 const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
   // --- ANIMATIONS LOGIK ---
@@ -63,11 +64,19 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
         <>
           <View style={styles.avatarContainer}>
             <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
-            <View style={styles.levelBadge}>
-              <AppText bold type="caption" style={{ color: MyTheme.text }}>
-                LVL {profile.profileLevel}
-              </AppText>
-            </View>
+            <AppBadge
+              label={`LVL ${profile.profileLevel}`}
+              style={{
+                position: "absolute",
+                bottom: -Spacing.sm,
+                alignSelf: "center",
+                backgroundColor: MyTheme.primaryAccent,
+                paddingVertical: 2,
+                borderWidth: 2,
+                borderColor: MyTheme.background
+              }}
+              textStyle={{ color: MyTheme.text }}
+            />
           </View>
           <AppText type="h1">{profile.profileName}</AppText>
           <AppText type="caption" style={{ marginTop: Spacing.xs }}>
@@ -155,16 +164,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 2,
     borderColor: MyTheme.secondary
-  },
-  levelBadge: {
-    position: "absolute",
-    bottom: -Spacing.sm,
-    alignSelf: "center",
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.sm,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 2,
-    borderColor: MyTheme.background
   },
   xpContainer: {
     width: "100%",

@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
 import { Icon } from "../icons/Icon";
+import AppBadge from "../ui/AppBadge";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   if (isLoading) {
@@ -54,12 +55,15 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
             </View>
 
             {item.isLive && (
-              <View style={styles.liveBadge}>
-                <View style={styles.liveDot} />
-                <AppText bold style={styles.liveText}>
-                  LIVE
-                </AppText>
-              </View>
+              <AppBadge
+                label={"LIVE"}
+                textStyle={{ color: "#ef4444" }}
+                style={{
+                  backgroundColor: "rgba(239, 68, 68, 0.1)",
+                  borderRadius: Spacing.borderRadius.sm,
+                  borderColor: "rgba(239, 68, 68, 0.2)"
+                }}
+              />
             )}
           </View>
 
@@ -128,30 +132,6 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius.md,
     alignItems: "center",
     justifyContent: "center"
-  },
-  liveBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: "rgba(239, 68, 68, 0.10)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "rgba(239, 68, 68, 0.2)"
-  },
-  liveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: MyTheme.warning,
-    boxShadow: `0px 0px 4px rgba(239, 68, 68, 0.8)`,
-    elevation: 2
-  },
-  liveText: {
-    fontSize: 10,
-    color: "#ef4444",
-    letterSpacing: 0.9
   },
   contentArea: {
     flex: 1,

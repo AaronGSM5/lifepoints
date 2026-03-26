@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
 import BaseCard from "../ui/BaseCard";
+import AppBadge from "../ui/AppBadge";
 
 const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   if (isLoading) {
@@ -28,9 +29,15 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
     <BaseCard style={styles.gridCard} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Image source={{ uri: image }} style={styles.cardImage} />
-        <View style={styles.cardIconBadge}>
-          <Icon name={icon} size={14} color={MyTheme.text} />
-        </View>
+        <AppBadge
+          iconNode={<Icon name={icon} size={14} color={MyTheme.text} />}
+          style={{
+            position: "absolute",
+            bottom: Spacing.sm,
+            right: Spacing.sm,
+            backgroundColor: "rgba(0,0,0,0.5)"
+          }}
+        />
       </View>
 
       <View style={styles.cardContent}>
@@ -47,15 +54,19 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
           </AppText>
 
           {isLocked ? (
-            <View style={styles.lockedBadge}>
-              <AppText bold type="caption" style={{ fontSize: 10 }}>
-                Locked
-              </AppText>
-            </View>
+            <AppBadge
+              label={"Locked"}
+              textStyle={{ fontSize: 10, color: MyTheme.muted }}
+              style={{ backgroundColor: "#2A2A2A" }}
+            />
           ) : (
-            <View style={styles.miniFab}>
-              <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
-            </View>
+            <AppBadge
+              iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
+              style={{
+                backgroundColor: MyTheme.background,
+                borderColor: MyTheme.secondary
+              }}
+            />
           )}
         </View>
       </View>
@@ -77,17 +88,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  cardIconBadge: {
-    position: "absolute",
-    bottom: Spacing.sm,
-    right: Spacing.sm,
-    width: 28,
-    height: 28,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center"
-  },
   cardContent: {
     padding: Spacing.sm,
     gap: 2
@@ -106,22 +106,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: Spacing.xs
-  },
-  miniFab: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: MyTheme.background,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-    borderRadius: 4
   },
   lockedOverlay: {
     ...StyleSheet.absoluteFillObject,

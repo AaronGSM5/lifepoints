@@ -9,7 +9,8 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
-import { mockPublicProfile, mockTrophies } from "@/constants/MockData";
+import { mockPublicProfile } from "@/constants/MockData";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function PublicProfileScreen() {
   const { username } = useLocalSearchParams();
@@ -45,11 +46,19 @@ export default function PublicProfileScreen() {
           <>
             <View style={styles.avatarContainer}>
               <Image source={{ uri: "https://i.pravatar.cc/150?u=aaron" }} style={styles.avatar} />
-              <View style={styles.levelBadge}>
-                <AppText bold type="caption" style={{ color: MyTheme.text }}>
-                  LVL {mockPublicProfile.profileLevel}
-                </AppText>
-              </View>
+              <AppBadge
+                label={`LVL ${mockPublicProfile.profileLevel}`}
+                style={{
+                  position: "absolute",
+                  bottom: -Spacing.sm,
+                  alignSelf: "center",
+                  backgroundColor: MyTheme.primaryAccent,
+                  paddingVertical: 2,
+                  borderWidth: 2,
+                  borderColor: MyTheme.background
+                }}
+                textStyle={{ color: MyTheme.text }}
+              />
             </View>
 
             <AppText type="h1" style={{ marginBottom: Spacing.xs }}>
@@ -135,17 +144,6 @@ const styles = StyleSheet.create({
     borderRadius: 55,
     borderWidth: 2,
     borderColor: MyTheme.secondary
-  },
-  levelBadge: {
-    position: "absolute",
-    bottom: -Spacing.sm,
-    alignSelf: "center",
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 2,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 2,
-    borderColor: MyTheme.background
   },
   actionButtons: {
     flexDirection: "row",

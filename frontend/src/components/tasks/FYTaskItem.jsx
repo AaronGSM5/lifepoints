@@ -6,6 +6,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "@/components/ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
+import AppBadge from "../ui/AppBadge";
 
 const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   if (isLoading) {
@@ -49,11 +50,12 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   const renderBadge = () => {
     if (!badge) return null;
     return (
-      <View style={styles.badgeHot}>
-        <AppText bold type="caption" style={{ color: MyTheme.text }}>
-          {badge}
-        </AppText>
-      </View>
+      <AppBadge
+        variant={"primary"}
+        label={badge}
+        textStyle={{ color: MyTheme.text }}
+        style={{ position: "absolute", right: Spacing.sm, top: Spacing.sm }}
+      />
     );
   };
 
@@ -100,12 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-end",
     padding: Spacing.sm
-  },
-  badgeHot: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.md
   },
   cardContent: {
     flex: 1,
