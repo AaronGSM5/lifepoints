@@ -8,6 +8,7 @@ import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppBadge from "./AppBadge";
+import { router } from "expo-router";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   if (isLoading) {
@@ -36,6 +37,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
             <AppBadge
               variant="outline"
               label={"GET +"}
+              onPress={() => router.push("/setting/subscription")}
               textStyle={{ color: MyTheme.gold }}
               style={{
                 borderColor: MyTheme.gold,
