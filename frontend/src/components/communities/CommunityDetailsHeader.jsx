@@ -1,11 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image, Pressable } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
-import { Icon } from "../icons/Icon";
+import BackButton from "../ui/BackButton";
 
 const CommunityHeader = ({ community }) => {
   const router = useRouter();
@@ -23,12 +23,7 @@ const CommunityHeader = ({ community }) => {
 
       <View style={styles.bannerOverlay} />
 
-      <Pressable
-        onPress={() => router.back()}
-        style={({ pressed }) => [styles.backButton, { top: insets.top + Spacing.sm }, pressed && { opacity: 0.7 }]}
-      >
-        <Icon name="back" />
-      </Pressable>
+      <BackButton />
 
       <View style={styles.avatarWrapper}>
         <View style={[styles.iconBox, { backgroundColor: bgColor }]}>

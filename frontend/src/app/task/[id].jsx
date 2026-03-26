@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AppText from "@/components/ui/AppText";
@@ -12,6 +12,7 @@ import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { mockTaskTrackingHistory } from "@/constants/MockData";
 import HistoryCard from "@/components/ui/HistoryCard";
+import BackButton from "@/components/ui/BackButton";
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -40,9 +41,7 @@ export default function TaskDetailScreen() {
               style={styles.image}
             />
 
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-              <Icon name="back" />
-            </TouchableOpacity>
+            <BackButton />
 
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}

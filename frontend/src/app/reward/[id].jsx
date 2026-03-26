@@ -10,6 +10,7 @@ import { Icon } from "@/components/icons/Icon";
 import { mockRewards } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BackButton from "@/components/ui/BackButton";
 
 export default function RewardDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -36,10 +37,7 @@ export default function RewardDetailScreen() {
           <View style={styles.imageContainer}>
             <Image source={{ uri: reward.image }} style={styles.image} />
 
-            {/* Der Zurück-Button schwebt ÜBER dem Bild */}
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-              <Icon name="back" />
-            </TouchableOpacity>
+            <BackButton />
 
             {/* Der Gradient sorgt dafür, dass das Bild sanft in den dunklen Hintergrund übergeht */}
             <LinearGradient
