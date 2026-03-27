@@ -1,55 +1,99 @@
+import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
-import AppText from "../ui/AppText";
-import AppButton from "../ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import AppButton from "@/components/ui/AppButton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import BaseCard from "@/components/ui/BaseCard";
+import { Skeleton } from "moti/skeleton";
+import AppBadge from "../ui/AppBadge";
 
-const FYTaskItem = ({ title, description, lp, badge, image }) => {
+const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
+  if (isLoading) {
+    return (
+      <BaseCard style={styles.card} padding={0}>
+        {/* Image */}
+        <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
+          <Skeleton
+            colorMode="dark"
+            width="100%"
+            height={"100%"}
+            radius={0}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+
+        <View style={styles.cardContent}>
+          <View style={styles.cardInfoRow}>
+            <View style={{ flex: 1, paddingRight: Spacing.sm }}>
+              <View style={{ marginBottom: 4 }}>
+                <Skeleton colorMode="dark" width="80%" height={20} transition={{ type: "timing", duration: 1500 }} />
+              </View>
+              <Skeleton colorMode="dark" width="80%" height={14} transition={{ type: "timing", duration: 1500 }} />
+            </View>
+            <Skeleton colorMode="dark" width={60} height={22} transition={{ type: "timing", duration: 1500 }} />
+          </View>
+          {/* Button */}
+          <Skeleton
+            colorMode="dark"
+            width="100%"
+            height={44}
+            radius={Spacing.borderRadius.lg}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+      </BaseCard>
+    );
+  }
+
+  const renderBadge = () => {
+    if (!badge) return null;
+    return (
+      <AppBadge
+        variant={"primary"}
+        label={badge}
+        textStyle={{ color: MyTheme.text }}
+        style={{ position: "absolute", right: Spacing.sm, top: Spacing.sm }}
+      />
+    );
+  };
+
   return (
-    <View style={styles.card}>
+    <BaseCard style={styles.card} padding={0}>
       {image ? (
         <ImageBackground source={image} style={styles.cardImage} resizeMode="cover">
-          <View style={styles.badgeHot}>
-            <AppText bold type="caption" style={{ color: MyTheme.text }}>
-              {badge}
-            </AppText>
-          </View>
+          {renderBadge()}
         </ImageBackground>
       ) : (
-        <View style={[styles.cardImage, { backgroundColor: MyTheme.background }]}>
-          <View style={styles.badgeHot}>
-            <AppText bold type="caption" style={{ color: MyTheme.text }}>
-              {badge}
-            </AppText>
-          </View>
-        </View>
+        <View style={[styles.cardImage, { backgroundColor: MyTheme.background }]}>{renderBadge()}</View>
       )}
+
       <View style={styles.cardContent}>
         <View style={styles.cardInfoRow}>
-          <View>
-            <AppText bold type="title">
+          <View style={{ flex: 1, paddingRight: Spacing.sm }}>
+            <AppText bold type="title" numberOfLines={1}>
               {title}
             </AppText>
-            <AppText type="caption">{description}</AppText>
+            <AppText type="caption" numberOfLines={1}>
+              {description}
+            </AppText>
           </View>
+
           <AppText bold style={styles.lpText}>
-            {lp}
+            {lp} LP
           </AppText>
         </View>
+
         <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} />
       </View>
-    </View>
+    </BaseCard>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     width: 280,
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.md,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
+    height: 280
   },
   cardImage: {
     height: 120,
@@ -58,25 +102,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     padding: Spacing.sm
   },
-  badgeHot: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.md
-  },
-  badgeNew: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.md
-  },
   cardContent: {
-    padding: Spacing.md
+    flex: 1,
+    padding: Spacing.md,
+    justifyContent: "space-between"
   },
   cardInfoRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: Spacing.lg
+    justifyContent: "space-between"
   },
   lpText: {
     color: MyTheme.primaryAccent

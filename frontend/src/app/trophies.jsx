@@ -1,10 +1,10 @@
 import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import { useState } from "react";
 import { mockTrophies } from "@/constants/MockData";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function TrophiesScreen() {
   const [trophies, setTrophies] = useState(mockTrophies);
@@ -28,7 +28,7 @@ export default function TrophiesScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingTop={false}>
       <View style={styles.container}>
         <FlatList
           data={trophies}
@@ -37,11 +37,7 @@ export default function TrophiesScreen() {
           contentContainerStyle={[styles.flatListContent, { paddingBottom: bottomPadding }]}
           columnWrapperStyle={{ gap: 16, marginBottom: Spacing.lg }}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <View style={styles.header}>
-              <AppText type="h1">Trophies</AppText>
-            </View>
-          }
+          ListHeaderComponent={<ScreenTitle title={"Trophies"} />}
           renderItem={({ item }) => (
             <View style={{ width: exactCardWidth }}>
               <TrophyCard
@@ -69,9 +65,5 @@ const styles = StyleSheet.create({
   flatListContent: {
     width: "100%",
     maxWidth: 480
-  },
-  header: {
-    marginTop: Spacing.md,
-    marginBottom: Spacing.lg
   }
 });

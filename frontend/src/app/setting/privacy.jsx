@@ -5,7 +5,7 @@ import AppText from "@/components/ui/AppText";
 
 export default function PrivacyScreen() {
   return (
-    <ScreenWrapper>
+    <ScreenWrapper withPaddingTop={false}>
       <View style={{ alignItems: "center", justifyContent: "center", gap: 10 }}>
         <Text style={styles.emoji}>🚧</Text>
         <AppText type="title">Privacy Work in Progress</AppText>

@@ -2,32 +2,35 @@ import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/Scr
 import FYTaskItem from "@/components/tasks/FYTaskItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
-import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
-import { mockTasks, recommendedTasks } from "@/constants/MockData";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
+import { useTasks } from "@/hooks/useTasks";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-const SKELETON_FY_TASKS = Array.from({ length: 2 }).map((_, i) => ({ id: `sfy-${i}`, isSkeleton: true }));
+const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const [activeCat, setActiveCat] = useState("all");
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const bottomPadding = useFloatingNavbarPadding();
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
+  const {
+    tasks,
+    recommendedTasks,
+    categories,
+    activeCat,
+    setActiveCat,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    isRefreshing,
+    refreshTasks
+  } = useTasks();
 
   const skeletonProps = {
     colorMode: "dark",
@@ -35,62 +38,106 @@ const TasksScreen = () => {
     show: isLoading
   };
 
-  const categories = useMemo(() => {
-    const unique = [...new Set(mockTasks.map((c) => c.category))];
-    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
-  }, [mockTasks]);
+  const listData = useMemo(() => {
+    const topElements = [
+      { id: "search", type: "search" },
+      { id: "for_you", type: "for_you" },
+      { id: "categories", type: "categories" }
+    ];
 
-  const handleRefresh = useCallback(() => {
-    setIsRefreshing(true);
+    if (isLoading) {
+      return [...topElements, ...SKELETON_TASKS.map((skel) => ({ ...skel, type: "task" }))];
+    }
 
-    // Loading simulation
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 2000);
-  }, []);
+    return [...topElements, ...tasks.map((task) => ({ ...task, type: "task" }))];
+  }, [isLoading, tasks]);
 
-  const filteredTasks = mockTasks.filter(
-    (c) => activeCat.toLowerCase() === "all" || c.category === activeCat.toLowerCase()
-  );
+  const renderItem = ({ item }) => {
+    switch (item.type) {
+      case "search":
+        return (
+          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+            <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
+              <AppInput
+                icon="search"
+                placeholder="Search tasks..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                blur={true}
+                bottomMargin={false}
+              />
+            </Skeleton>
+          </View>
+        );
 
-  const renderHeader = () => (
-    <View>
-      <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-        <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
-      </Skeleton>
-      <View style={styles.sectionHeader}>
-        <AppText type="title">For You</AppText>
-        {!isLoading && (
-          <AppButton variant="ghost" title={"See more"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
-        )}
-      </View>
+      case "for_you":
+        return (
+          <View style={styles.sectionMargin}>
+            <View style={styles.paddedContent}>
+              <SectionHeader title={"For You"} />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.carouselContainer}
+            >
+              {isLoading
+                ? SKELETON_FY_TASKS.map((i) => <FYTaskItem key={i} isLoading={true} />)
+                : recommendedTasks.map((task, index) => (
+                    <FYTaskItem key={task.id || index} {...task} isLoading={false} />
+                  ))}
+            </ScrollView>
+          </View>
+        );
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
-        {isLoading
-          ? SKELETON_FY_TASKS.map((item) => (
-              <Skeleton key={item.id} {...skeletonProps} width={280} height={160} radius={Spacing.borderRadius.lg} />
-            ))
-          : recommendedTasks.map((task, index) => <FYTaskItem key={task.id || index} {...task} />)}
-      </ScrollView>
+      case "categories":
+        return (
+          <View style={styles.sectionMargin}>
+            <View style={styles.paddedContent}>
+              <SectionHeader
+                title={
+                  activeCat.toLowerCase() === "all"
+                    ? "All Tasks"
+                    : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
+                }
+              />
+            </View>
+            <CategoryButtons
+              categories={categories}
+              activeCat={activeCat}
+              setActiveCat={setActiveCat}
+              skeletonProps={skeletonProps}
+              isLoading={isLoading}
+            />
+          </View>
+        );
 
-      <AppText type="title" style={styles.sectionHeader}>
-        {activeCat.toLowerCase() === "all"
-          ? "All Tasks"
-          : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`}
-      </AppText>
+      case "task":
+        return (
+          <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
+            <TaskItem
+              isLoading={isLoading}
+              title={item.title}
+              lp={item.lp}
+              progress={item.progress}
+              status={item.limit}
+              icon={item.icon}
+              requiresInput={item.requiresInput}
+              onTrack={(inputValue) => {
+                console.log(`Tracke ${item.title} mit Wert: ${inputValue}`);
+              }}
+              onNavigate={() => router.push(`task/${item.id}`)}
+            />
+          </View>
+        );
 
-      <CategoryButtons
-        categories={categories}
-        activeCat={activeCat}
-        setActiveCat={setActiveCat}
-        skeletonProps={skeletonProps}
-        isLoading={isLoading}
-      />
-    </View>
-  );
+      default:
+        return null;
+    }
+  };
 
   const renderFooter = () => (
-    <View style={{ marginTop: Spacing.md }}>
+    <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
       <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
         Can't find what you're searching for?
       </AppText>
@@ -99,51 +146,37 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
-        data={isLoading ? SKELETON_TASKS : filteredTasks}
-        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-        ListHeaderComponent={renderHeader()}
+        data={listData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        stickyHeaderIndices={[0]}
         ListFooterComponent={!isLoading ? renderFooter() : null}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
-        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
-        onRefresh={handleRefresh}
+        onRefresh={refreshTasks}
         refreshing={isRefreshing}
-        renderItem={({ item }) => {
-          if (isLoading) {
-            return (
-              <Skeleton {...skeletonProps} width="100%" height={80} radius={Spacing.borderRadius.lg}>
-                <View style={{ height: 80, width: "100%" }} />
-              </Skeleton>
-            );
-          }
-          return (
-            <TaskItem
-              title={item.title}
-              lp={item.lp}
-              progress={item.progress}
-              status={item.limit}
-              icon={item.icon}
-              onPress={() => router.push(`task/${item.id}`)}
-            />
-          );
-        }}
       />
     </ScreenWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md
+  stickySearchWrapper: {
+    zIndex: 10,
+    paddingTop: Spacing.sm
+  },
+  sectionMargin: {
+    marginTop: Spacing.md
   },
   carouselContainer: {
+    paddingHorizontal: Spacing.md,
     gap: Spacing.md,
-    marginBottom: Spacing.md
+    marginBottom: Spacing.lg
+  },
+  paddedContent: {
+    paddingHorizontal: Spacing.md
   }
 });
 

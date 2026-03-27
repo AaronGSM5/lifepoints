@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AppText from "@/components/ui/AppText";
@@ -10,6 +10,10 @@ import { Icon } from "@/components/icons/Icon";
 import { mockTasks } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { mockTaskTrackingHistory } from "@/constants/MockData";
+import HistoryCard from "@/components/ui/HistoryCard";
+import BackButton from "@/components/ui/BackButton";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -31,39 +35,31 @@ export default function TaskDetailScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-          {/* Hero-Image */}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
           <View style={styles.imageContainer}>
             <Image
               source={task.image ? { uri: task.image } : require("@/../public/assets/icon.png")}
               style={styles.image}
             />
 
-            {/* Der Zurück-Button schwebt ÜBER dem Bild */}
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-              <Icon name="back" />
-            </TouchableOpacity>
+            <BackButton />
 
-            {/* Der Gradient sorgt dafür, dass das Bild sanft in den dunklen Hintergrund übergeht */}
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}
               style={styles.gradientOverlay}
             />
           </View>
 
-          {/* 2. Der Content-Bereich */}
           <View style={styles.content}>
             <View style={styles.headerRow}>
-              <View style={styles.brandBadge}>
-                <Icon name={task.icon} size={14} color={MyTheme.primaryAccent} />
-              </View>
+              <AppBadge iconNode={<Icon name={task.icon} size={20} color={MyTheme.primaryAccent} />} />
 
               {task.isLocked && (
-                <View style={styles.lockedBadge}>
-                  <AppText bold type="caption" style={{ fontSize: 10 }}>
-                    LOCKED
-                  </AppText>
-                </View>
+                <AppBadge
+                  label={"LOCKED"}
+                  textStyle={{ fontSize: 10, color: MyTheme.muted }}
+                  style={{ backgroundColor: "#2A2A2A" }}
+                />
               )}
             </View>
 
@@ -80,6 +76,41 @@ export default function TaskDetailScreen() {
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
               {task.description}
             </AppText>
+
+            <View style={styles.historySection}>
+              <AppText type="title" style={{ marginBottom: Spacing.md }}>
+                Verlauf
+              </AppText>
+
+              {mockTaskTrackingHistory.length > 0 ? (
+                mockTaskTrackingHistory.map((item) => (
+                  <HistoryCard
+                    key={item.id}
+                    title="Getrackt"
+                    subtitle={item.date}
+                    points={item.points}
+                    type="earn"
+                    pointsSuffix="PTS"
+                    iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
+                    containerStyle={{
+                      backgroundColor: MyTheme.glas,
+                      borderColor: MyTheme.glas,
+                      borderWidth: 1
+                    }}
+                    iconContainerStyle={{
+                      backgroundColor: MyTheme.glas,
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16
+                    }}
+                  />
+                ))
+              ) : (
+                <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
+                  Noch keine Einträge vorhanden.
+                </AppText>
+              )}
+            </View>
           </View>
         </ScrollView>
 
@@ -128,7 +159,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 50, // Abstand für die Notch/Statusleiste auf dem Handy
+    top: 50,
     left: Spacing.md,
     width: 40,
     height: 40,
@@ -139,34 +170,13 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: Spacing.lg,
-    marginTop: -20 // Zieht den Text leicht in den Gradienten hinein
+    marginTop: -20
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: Spacing.md
-  },
-  brandBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)"
-  },
-  brandText: {
-    color: MyTheme.primaryAccent,
-    marginLeft: Spacing.xs,
-    letterSpacing: 1
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 4
   },
   stickyFooter: {
     position: "absolute",
@@ -175,10 +185,11 @@ const styles = StyleSheet.create({
     right: 0,
     padding: Spacing.lg,
     backgroundColor: MyTheme.background,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
+    boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
+
     elevation: 20
+  },
+  historySection: {
+    marginTop: Spacing.xl
   }
 });

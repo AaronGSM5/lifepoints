@@ -64,7 +64,7 @@ export default function EditProfileScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
+    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingTop={false}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}

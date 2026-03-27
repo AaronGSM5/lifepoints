@@ -9,14 +9,14 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ marginHorizontal: -Spacing.lg, marginBottom: Spacing.lg }}
-      contentContainerStyle={{ paddingHorizontal: Spacing.lg, gap: Spacing.sm }}
+      style={{ marginBottom: Spacing.lg }}
+      contentContainerStyle={{ paddingHorizontal: Spacing.md, gap: Spacing.sm }}
     >
       {isLoading
         ? Array(4)
             .fill(0)
             .map((_, i) => (
-              <Skeleton key={i} {...skeletonProps} width={80} height={40} radius={Spacing.borderRadius.full} />
+              <Skeleton key={i} {...skeletonProps} width={80} height={45} radius={Spacing.borderRadius.full} />
             ))
         : categories.map((cat, index) => {
             const isActive = cat.toLowerCase() === activeCat;

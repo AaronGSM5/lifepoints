@@ -5,6 +5,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "../ui/AppText";
+import AppBadge from "../ui/AppBadge";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -34,15 +35,7 @@ export default function Toolbar() {
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
-        {isMainTab && pathname !== "/shop" && (
-          <View style={styles.lpBadge}>
-            <Pressable hitSlop={15} onPress={() => router.push("/shop")}>
-              <AppText bold type="caption" style={{ color: MyTheme.primaryAccent, fontSize: 15 }}>
-                {LP} LP
-              </AppText>
-            </Pressable>
-          </View>
-        )}
+        {isMainTab && pathname !== "/shop" && <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} />}
         {!isMainTab && (
           <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />
@@ -93,14 +86,5 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: "center",
     justifyContent: "center"
-  },
-  lpBadge: {
-    backgroundColor: "rgba(16, 185, 129, 0.15)",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs + 2,
-    borderRadius: Spacing.borderRadius.full,
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    alignItems: "center"
   }
 });

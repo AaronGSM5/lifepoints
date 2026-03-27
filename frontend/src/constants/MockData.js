@@ -7,6 +7,31 @@ export const mockProfile = {
   profileXp: 9020
 };
 
+export const mockSurveyOptions = [
+  {
+    id: "goals",
+    title: "Was ist dein Ziel?",
+    options: [
+      { label: "Umwelt", icon: "🌱", value: "eco" },
+      { label: "Soziales", icon: "🤝", value: "social" },
+      { label: "Tierschutz", icon: "🐾", value: "animals" },
+      { label: "Nachbarschaft", icon: "🏠", value: "community" }
+    ],
+    multiple: true
+  },
+  {
+    id: "interests",
+    title: "Was liegt dir am Herzen?",
+    options: [
+      { label: "Umwelt", icon: "🌱", value: "eco" },
+      { label: "Soziales", icon: "🤝", value: "social" },
+      { label: "Tierschutz", icon: "🐾", value: "animals" },
+      { label: "Nachbarschaft", icon: "🏠", value: "community" }
+    ],
+    multiple: true
+  }
+]
+
 export const mockFeedItems = [
   { id: 1, username: 'Velo_Mind', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
   { id: 2, username: 'PixelPionier', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },
@@ -14,30 +39,54 @@ export const mockFeedItems = [
   { id: 4, username: 'Zest_Runner', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
+export const mockMyCommunities = [
+  {
+    id: "5", title: "Early Risers", desc: "Die Community für Frühaufsteher. Wir motivieren uns gegenseitig, jeden Morgen vor der Arbeit die Laufschuhe zu schnüren. Egal ob 3km oder 15km – jeder Schritt zählt!", desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.", members: "1.2k Members", icon: "bolt", color: "#059669", bgColor: "#10b981", borderColor: "rgba(16, 185, 129, 0.3)", banner: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1000&auto=format&fit=crop", isLive: false, hasUnread: true, onlineCount: 20, avatars: [
+      { url: "https://i.pravatar.cc/150?u=10", isFriend: true },
+      { url: "https://i.pravatar.cc/150?u=11", isFriend: true },
+      { url: "https://i.pravatar.cc/150?u=12", isFriend: false },
+    ]
+  },
+  {
+    id: "6", title: "Code Runners", desc: "Vom Hobbykoch zum Profi. Hier teilen wir Rezepte, misslungene Versuche und die besten Geheimtipps für die perfekte Pasta. Jeden Sonntag gibt es eine neue Cooking-Challenge.", members: "850 Members", icon: "terminal", color: "#3b82f6", bgColor: "#ec4899", borderColor: "rgba(236, 72, 153, 0.3)", banner: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop", isLive: true, liveTitle: "Portfolio Review LIVE", hasUnread: false, onlineCount: 45, avatars: [
+      { url: "https://i.pravatar.cc/150?u=13", isFriend: true },
+      { url: "https://i.pravatar.cc/150?u=14", isFriend: false },
+      { url: "https://i.pravatar.cc/150?u=15", isFriend: false },
+    ]
+  },
+  {
+    id: "7", title: "Iron Will", desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.", members: "3.4k Members", icon: "fitness-center", color: "#ea580c", bgColor: "#f59e0b", borderColor: "rgba(245, 158, 11, 0.3)", banner: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop", isLive: false, hasUnread: true, onlineCount: 0, avatars: [
+      { url: "https://i.pravatar.cc/150?u=16", isFriend: true },
+      { url: "https://i.pravatar.cc/150?u=17", isFriend: true },
+      { url: "https://i.pravatar.cc/150?u=18", isFriend: true },
+    ]
+  },
+];
+
 export const mockTasks = [
-  { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed' },
-  { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil' },
-  { id: 3, title: "Pflanzen-Vati", description: 'Gieße eine Pflanze, die gerade etwas durstig aussieht.', difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 4, title: "Lüftungs-Moment", description: 'Öffne das Fenster für 5 Minuten zum Stoßlüften.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'lock' },
-  { id: 5, title: "Wasser-Marsch", description: 'Trink jetzt sofort 1 Glas Wasser.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'water' },
-  { id: 6, title: "Tiefenatmung", description: 'Atme 5-mal tief ein und bewusst langsam aus.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: false, icon: 'wind' },
-  { id: 7, title: "Rücken-Check", description: 'Richte deine Wirbelsäule für 30 Sekunden kerzengerade auf.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '50%', isLocked: false, icon: 'backCheck' },
-  { id: 8, title: "Mini-Workout", description: 'Mache 5 Kniebeugen, 5 Liegestütze oder 5 Sit-ups', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: true, icon: 'lock' },
-  { id: 9, title: "Bildschirm-Pause", description: 'Schaue für 20 Sekunden auf einen Punkt, der weit entfernt ist.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'eyeClosed' },
-  { id: 10, title: "Vorbereitung", description: 'Lege dir ein Teil für morgen (Kleidung/Tasche) schon jetzt bereit.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'clothes' },
-  { id: 11, title: "Stretch-Moment", description: 'Strecke deine Arme einmal so weit wie möglich Richtung Decke.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 12, title: "Digitales Danke", description: 'Sende einer Person, die dir wichtig ist, eine kurze Nachricht in der du ihr zeigst wie dankbar du für sie bist.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
-  { id: 13, title: "Freude schenken", description: 'Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)', difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '0%', isLocked: false, icon: 'happy' },
-  { id: 14, title: "Unfollow-Ballast", description: 'Entfolge einem Account, der dir kein gutes Gefühl gibt.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
-  { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star' },
+  { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed', requiresInput: null },
+  { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil', requiresInput: null },
+  { id: 3, title: "Pflanzen-Vati", description: 'Gieße eine Pflanze, die gerade etwas durstig aussieht.', difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun', requiresInput: null },
+  { id: 4, title: "Lüftungs-Moment", description: 'Öffne das Fenster für 5 Minuten zum Stoßlüften.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'lock', requiresInput: 'Minuten' },
+  { id: 5, title: "Wasser-Marsch", description: 'Trink jetzt sofort 1 Glas Wasser.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'water', requiresInput: 'Gläser' },
+  { id: 6, title: "Tiefenatmung", description: 'Atme 5-mal tief ein und bewusst langsam aus.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: false, icon: 'wind', requiresInput: 'Atemzüge' },
+  { id: 7, title: "Rücken-Check", description: 'Richte deine Wirbelsäule für 30 Sekunden kerzengerade auf.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '50%', isLocked: false, icon: 'backCheck', requiresInput: 'Sekunden' },
+  { id: 8, title: "Mini-Workout", description: 'Mache 5 Kniebeugen, 5 Liegestütze oder 5 Sit-ups', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: true, icon: 'lock', requiresInput: 'Wiederholungen' },
+  { id: 9, title: "Bildschirm-Pause", description: 'Schaue für 20 Sekunden auf einen Punkt, der weit entfernt ist.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'eyeClosed', requiresInput: 'Sekunden' },
+  { id: 10, title: "Vorbereitung", description: 'Lege dir ein Teil für morgen (Kleidung/Tasche) schon jetzt bereit.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'clothes', requiresInput: null },
+  { id: 11, title: "Stretch-Moment", description: 'Strecke deine Arme einmal so weit wie möglich Richtung Decke.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun', requiresInput: null },
+  { id: 12, title: "Digitales Danke", description: 'Sende einer Person, die dir wichtig ist, eine kurze Nachricht in der du ihr zeigst wie dankbar du für sie bist.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat', requiresInput: null },
+  { id: 13, title: "Freude schenken", description: 'Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)', difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '0%', isLocked: false, icon: 'happy', requiresInput: null },
+  { id: 14, title: "Unfollow-Ballast", description: 'Entfolge einem Account, der dir kein gutes Gefühl gibt.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat', requiresInput: 'Accounts' },
+  { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star', requiresInput: 'Apps' },
 ];
 
 export const recommendedTasks = [
   {
-    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: '500 LP', badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
+    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: 500, badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
   },
-  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: '75 LP', badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
-  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: '150 LP', badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
+  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: 75, badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: 150, badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [
@@ -231,44 +280,77 @@ export const mockPublicProfile = {
 
 export const mockRecommendedCommunities = [
   {
+    id: "1",
     title: "Zen Masters",
-    desc: "Daily meditation & focus",
-    icon: "spa",
-    iconColor: "#a855f7",
-    bgColor: "rgba(168, 85, 247, 0.2)",
-    borderColor: "rgba(168, 85, 247, 0.1)"
+    desc: "Daily meditation & focus. Join our morning breathing sessions to start your day right.",
+    icon: "self-improvement",
+    bgColor: "rgba(139, 92, 246, 0.15)",
+    borderColor: "rgba(139, 92, 246, 0.3)",
+    color: "#a78bfa",
+    isLive: false,
+    liveTitle: "Morning Breathing Session",
+    onlineCount: 25,
+    members: "1.2k",
+    banner: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop",
+    avatars: [
+      { id: "a1", url: "https://i.pravatar.cc/150?u=a042581f4e29026024d", isFriend: true },
+      { id: "a2", url: "https://i.pravatar.cc/150?u=a04258a2462d826712d", isFriend: false },
+      { id: "a3", url: "https://i.pravatar.cc/150?u=a042581f4e29026704d", isFriend: false },
+    ]
   },
   {
-    title: "Page Turners",
-    desc: "Read 15 mins every day",
-    icon: "menu-book",
-    iconColor: "#3b82f6",
-    bgColor: "rgba(59, 130, 246, 0.2)",
-    borderColor: "rgba(59, 130, 246, 0.1)"
+    id: "2",
+    title: "Urban Gardeners",
+    desc: "Share your balcony harvest, plant care tips, and connect with nature lovers.",
+    icon: "local-florist",
+    bgColor: "rgba(16, 185, 129, 0.15)",
+    borderColor: "rgba(16, 185, 129, 0.3)",
+    color: "#34d399",
+    isLive: true,
+    liveTitle: "Tomato Harvest Tips & Q&A",
+    onlineCount: 55,
+    members: "850",
+    banner: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1000&auto=format&fit=crop",
+    avatars: [
+      { id: "b1", url: "https://i.pravatar.cc/150?u=a04258114e29026702d", isFriend: true },
+      { id: "b2", url: "https://i.pravatar.cc/150?u=a048581f4e29026701d", isFriend: true },
+      { id: "b3", url: "https://i.pravatar.cc/150?u=a042581f4e29026703d", isFriend: false },
+    ]
   },
   {
-    title: "Marathon Elites",
-    desc: "Competitive long distance running",
-    icon: "directions-run",
-    iconColor: "#10b981",
-    bgColor: "rgba(16, 185, 129, 0.2)",
-    borderColor: "rgba(16, 185, 129, 0.1)"
+    id: "3",
+    title: "Indie Dev Space",
+    desc: "Showcase your side projects, get code reviews, and build together.",
+    icon: "code",
+    bgColor: "rgba(56, 189, 248, 0.15)",
+    borderColor: "rgba(56, 189, 248, 0.3)",
+    color: "#7dd3fc",
+    isLive: false,
+    liveTitle: "Live Code Review: UI Refactoring",
+    onlineCount: 215,
+    members: "5.4k",
+    banner: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop",
+    avatars: [
+      { id: "c1", url: "https://i.pravatar.cc/150?u=a042581f4e29026703d", isFriend: false },
+      { id: "c2", url: "https://i.pravatar.cc/150?u=a042581f4e29026708d", isFriend: false },
+      { id: "c3", url: "https://i.pravatar.cc/150?u=a042581f4e29026709d", isFriend: false },
+      { id: "c4", url: "https://i.pravatar.cc/150?u=a042581f4e29026710d", isFriend: false },
+    ]
   },
   {
-    title: "Healthy Bites",
-    desc: "Clean eating and meal prep tips",
-    icon: "restaurant",
-    iconColor: "#f97316",
-    bgColor: "rgba(249, 115, 22, 0.2)",
-    borderColor: "rgba(249, 115, 22, 0.1)"
-  },
-  {
-    title: "Hydration Heroes",
-    desc: "Track and meet water goals",
-    icon: "water-drop",
-    iconColor: "#0ea5e9",
-    bgColor: "rgba(14, 165, 233, 0.2)",
-    borderColor: "rgba(14, 165, 233, 0.1)"
+    id: "4",
+    title: "Late Night Beats",
+    desc: "Lofi hip hop radio - beats to relax/study to. 24/7 vibes.",
+    icon: "headphones",
+    bgColor: "rgba(244, 63, 94, 0.15)",
+    borderColor: "rgba(244, 63, 94, 0.3)",
+    color: "#fb7185",
+    isLive: true,
+    liveTitle: "24/7 Lofi Hip Hop Radio",
+    onlineCount: 2,
+    members: "12.8k",
+    banner: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop",
+    avatars: []
   }
 ];
 
@@ -393,19 +475,19 @@ export const onboardingSlides = [
     id: "1",
     title: "Mach die Welt etwas besser",
     description: "Laaa",
-    iconName: "earth-outline"
+    icon: '🌍'
   },
   {
     id: "2",
     title: "Mit LifePoints",
     description: "Lalal...",
-    iconName: "earth-outline"
+    icon: '✨'
   },
   {
     id: "3",
     title: "Be good",
     description: "Lalalalalalalala...",
-    iconName: "earth-outline"
+    icon: '🌱'
   },
 ];
 
@@ -415,6 +497,111 @@ export const mockTutorialSteps = [
   { id: "3", title: "Erste gute Tat loggen", reward: 50, completed: true, icon: "heart", route: '/tasks' },
   { id: "4", title: "Beschreibung hinzufügen", reward: 15, completed: false, icon: "pencil", route: '/setting/edit-profile' },
 ]
+
+export const mockTaskTrackingHistory = [
+  { id: "1", date: "Heute, 14:30 Uhr", points: 10 },
+  { id: "2", date: "Gestern, 09:15 Uhr", points: 10 },
+  { id: "3", date: "12. Okt 2023, 18:00 Uhr", points: 10 },
+];
+
+export const mockCommunityIcons = [
+  "groups",
+  "forum",
+  "public",
+  "diversity-3",
+  "emoji-emotions",
+  "favorite",
+  "fitness-center",
+  "directions-run",
+  "pool",
+  "self-improvement",
+  "spa",
+  "directions-bike",
+  "sports-esports",
+  "computer",
+  "code",
+  "smart-toy",
+  "headphones",
+  "videocam",
+  "palette",
+  "camera-alt",
+  "music-note",
+  "color-lens",
+  "theater-comedy",
+  "brush",
+  "restaurant",
+  "local-cafe",
+  "local-pizza",
+  "local-bar",
+  "bakery-dining",
+  "flight",
+  "landscape",
+  "local-florist",
+  "pets",
+  "explore",
+  "park",
+  "school",
+  "menu-book",
+  "lightbulb",
+  "work",
+  "trending-up",
+  "attach-money",
+  "local-fire-department",
+  "celebration",
+  "science",
+  "star"
+];
+
+export const mockCommunityBadges = [
+  "freundlich",
+  "chillig",
+  "hilfsbereit",
+  "respektvoll",
+  "safe space",
+  "diskussionsfreudig",
+  "humorvoll",
+  "anfänger",
+  "fortgeschritten",
+  "expert",
+  "pro",
+  "mentor",
+  "creator",
+  "nischen-pro",
+  "tech",
+  "gaming",
+  "fitness",
+  "lifestyle",
+  "kunst",
+  "musik",
+  "kochen",
+  "outdoor",
+  "finanzen",
+  "memes",
+  "coding",
+  "design",
+  "fotografie",
+  "mindfulness",
+  "startup",
+  "networking",
+  "feedback",
+  "support",
+  "lokal",
+  "global",
+  "study-group",
+  "hobby",
+  "täglich aktiv",
+  "wochenend-vibes",
+  "voice-chat",
+  "text-only",
+  "real-life meetups",
+  "events"
+];
+
+export const mockCommunitySizes = [
+  { slots: 50, price: "Gratis" },
+  { slots: 250, price: "4.99€" },
+  { slots: 1000, price: "14.99€" }
+];
 
 export const mockSectionedActivities = [
   {

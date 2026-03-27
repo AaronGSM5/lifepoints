@@ -1,219 +1,167 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MyTheme } from "@/constants/Colors";
+import React, { useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
-import { mockRecommendedCommunities } from "@/constants/MockData";
-import { Skeleton } from "moti/skeleton"; // WICHTIG: Der richtige Import
+import SectionHeader from "@/components/ui/SectionHeader";
+import MyCommunityCard from "@/components/communities/MyCommunityCard";
+import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
+import { useCommunities } from "@/hooks/useCommunities";
+import EventHero from "@/components/home/EventHero";
+import { router } from "expo-router";
+import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
+
+const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const { myCommunities, recommended, searchQuery, setSearchQuery, isLoading } = useCommunities();
+  const bottomPadding = useFloatingNavbarPadding();
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1700);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const skeletonProps = {
-    colorMode: "dark",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
+  const handleCreateCommunity = (data) => {
+    console.log("Community wird erstellt:", data);
   };
+
+  const sections = useMemo(
+    () => [
+      { id: "recommended", title: "Recommended for you", data: recommended },
+      { id: "lifestyle", title: "Lifestyle & Food", data: recommended },
+      { id: "trending", title: "Trending Right Now", data: recommended }
+    ],
+    [recommended]
+  );
+
+  const listData = useMemo(() => {
+    const topElements = [
+      { id: "hero", type: "hero" },
+      { id: "search", type: "search" },
+      { id: "my_communities", type: "my_communities" }
+    ];
+
+    return [...topElements, ...sections.map((section) => ({ ...section, type: "section" }))];
+  }, [sections]);
+
+  const renderItem = ({ item }) => {
+    switch (item.type) {
+      case "hero":
+        return (
+          <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
+            <EventHero
+              imageSource={require("../../../public/assets/creativeBanner.png")}
+              isLoading={isLoading}
+              onPress={() => setIsCreateModalVisible(true)}
+            />
+          </View>
+        );
+
+      case "search":
+        return (
+          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+            <AppInput
+              icon="search"
+              placeholder="Search communities..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              blur
+              bottomMargin={false}
+            />
+          </View>
+        );
+
+      case "my_communities":
+        if (!myCommunities?.length && !isLoading) return null;
+        return (
+          <View style={styles.myCommunitiesSection}>
+            <View style={styles.paddedContent}>
+              <SectionHeader
+                title="My Communities"
+                rightLabel="See all"
+                onRightPress={() => console.log("mockClickReaction xD")}
+              />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContentContainer}
+            >
+              {isLoading
+                ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
+                : myCommunities.map((c, index) => (
+                    <MyCommunityCard key={c.id || index} item={c} onPress={() => router.push(`/community/${c.id}`)} />
+                  ))}
+            </ScrollView>
+          </View>
+        );
+
+      case "section":
+        return (
+          <View style={styles.sectionContainer}>
+            <View style={styles.paddedContent}>
+              <SectionHeader title={item.title} />
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContentContainer}
+              snapToInterval={260 + Spacing.md}
+              decelerationRate="fast"
+            >
+              {isLoading
+                ? SKELETON_DATA.map((i) => <RecommendedCommunity key={`skeleton-rec-${i}`} isLoading={true} />)
+                : item.data?.map((community, index) => (
+                    <RecommendedCommunity
+                      key={community.id || index}
+                      item={community}
+                      onPress={() => router.push(`/community/${community.id}`)}
+                    />
+                  ))}
+            </ScrollView>
+          </View>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
-    <ScreenWrapper scrollable>
-      {/* Search Bar */}
-      <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.md}>
-        <AppInput icon="search" placeholder="Search communities..." value={searchQuery} onChangeText={setSearchQuery} />
-      </Skeleton>
-      <View style={{ height: Spacing.md }} />
-      {/* Create Community Section */}
-      <View style={styles.createCard}>
-        <View style={styles.createCardLeft}>
-          <View style={[styles.iconBox, { backgroundColor: "rgba(47, 196, 146, 0.1)" }]}>
-            {/* Nutzt MyTheme.primaryAccent für das LifePoints-Grün */}
-            <Icon name="newFolder" color={MyTheme.primaryAccent} />
-          </View>
-          <View>
-            <AppText bold style={styles.createCardTitle}>
-              Create Community
-            </AppText>
-            <AppText style={styles.createCardSubtitle}>Start your own hub</AppText>
-          </View>
-        </View>
-        <AppButton
-          icon={<Icon name="add" color={MyTheme.background} />}
-          iconPosition="center"
-          size="sm"
-          bgColor={MyTheme.primaryAccent}
-        />
-      </View>
-
-      {/* My Communities Section */}
-      <View style={styles.sectionHeader}>
-        <AppText type="title">My Communities</AppText>
-        {!isLoading && (
-          <AppButton variant="ghost" title={"See all"} size="sm" textStyle={{ color: MyTheme.primaryAccent }} />
-        )}
-      </View>
-
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {isLoading
-          ? [1, 2, 3].map((i) => (
-              <View key={i} style={[styles.communityCard, { borderStyle: "none" }]}>
-                <Skeleton {...skeletonProps} width={48} height={48} radius={Spacing.borderRadius.md} />
-                <View style={{ height: Spacing.md }} />
-                <Skeleton {...skeletonProps} width={80} height={14} />
-                <View style={{ height: Spacing.xs }} />
-                <Skeleton {...skeletonProps} width={60} height={10} />
-              </View>
-            ))
-          : myCommunities.map((item, index) => (
-              <View key={index} style={styles.communityCard}>
-                <View style={[styles.cardIconBadge, { backgroundColor: item.color }]}>
-                  <MaterialIcons name={item.icon} size={24} color="#fff" />
-                </View>
-                <AppText bold style={styles.cardTitle} numberOfLines={1}>
-                  {item.title}
-                </AppText>
-                <AppText type="caption">{item.members}</AppText>
-              </View>
-            ))}
-      </ScrollView>
-
-      {/* Recommended Section */}
-      <View style={[styles.sectionHeader, { marginTop: Spacing.md }]}>
-        <AppText type="title">Recommended for you</AppText>
-      </View>
-
-      <View style={styles.recommendedList}>
-        {isLoading
-          ? [1, 2, 3].map((i) => (
-              <View key={i} style={styles.recommendedItem}>
-                <Skeleton {...skeletonProps} width={48} height={48} radius={Spacing.borderRadius.md} />
-                <View style={{ flex: 1, gap: 8 }}>
-                  <Skeleton {...skeletonProps} width="60%" height={16} />
-                  <Skeleton {...skeletonProps} width="90%" height={12} />
-                </View>
-              </View>
-            ))
-          : mockRecommendedCommunities.map((item, index) => (
-              <View key={index} style={styles.recommendedItem}>
-                <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
-                  <MaterialIcons name={item.icon} size={28} color={item.iconColor} />
-                </View>
-                <View style={styles.recommendedTextContainer}>
-                  <AppText bold style={styles.recommendedTitle}>
-                    {item.title}
-                  </AppText>
-                  <AppText type="caption">{item.desc}</AppText>
-                </View>
-                <AppButton
-                  size="sm"
-                  icon={<Icon name="add" size={20} color={MyTheme.primaryAccent} />}
-                  iconPosition="center"
-                  bgColor={"rgba(47, 196, 146, 0.1)"}
-                  borderStyle={{ borderWidth: 1, borderColor: "rgba(47, 196, 146, 0.2)" }}
-                />
-              </View>
-            ))}
-      </View>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+      <FlatList
+        data={listData}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        stickyHeaderIndices={[1]}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
+      />
+      <CreateCommunityForm
+        visible={isCreateModalVisible}
+        onClose={() => setIsCreateModalVisible(false)}
+        onCreate={handleCreateCommunity}
+      />
     </ScreenWrapper>
   );
 }
 
-const myCommunities = [
-  { title: "Early Risers", members: "1.2k Members", icon: "bolt", color: "#059669" },
-  { title: "Code Runners", members: "850 Members", icon: "terminal", color: "#3b82f6" },
-  { title: "Iron Will", members: "3.4k Members", icon: "fitness-center", color: "#ea580c" },
-  { title: "Focus Flow", members: "2.1k Members", icon: "psychology", color: "#9333ea" }
-];
-
 const styles = StyleSheet.create({
-  createCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "rgba(47, 196, 146, 0.1)",
-    borderWidth: 1,
-    borderColor: "rgba(47, 196, 146, 0.25)",
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
+  stickySearchWrapper: {
+    paddingTop: Spacing.sm,
+    zIndex: 10
+  },
+  headerContainer: {
+    paddingBottom: Spacing.md
+  },
+  myCommunitiesSection: {
+    marginTop: Spacing.md,
+    marginBottom: Spacing.md
+  },
+  sectionContainer: {
     marginBottom: Spacing.lg
   },
-  createCardLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md
+  paddedContent: {
+    paddingHorizontal: Spacing.md
   },
-  iconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: Spacing.borderRadius.md,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1
-  },
-  createCardTitle: {
-    marginBottom: Spacing.xs
-  },
-  createCardSubtitle: {
-    fontSize: 12,
-    color: MyTheme.muted
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: Spacing.md
-  },
-  horizontalScroll: {
-    paddingBottom: Spacing.sm,
-    marginHorizontal: -Spacing.lg,
-    paddingHorizontal: Spacing.lg
-  },
-  communityCard: {
-    width: 140,
-    backgroundColor: MyTheme.primary,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.md,
-    padding: Spacing.md,
-    marginRight: Spacing.md
-  },
-  cardIconBadge: {
-    width: 48,
-    height: 48,
-    borderRadius: Spacing.borderRadius.md,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: Spacing.md
-  },
-  cardTitle: {
-    marginBottom: Spacing.xs
-  },
-  recommendedList: {
-    gap: Spacing.md
-  },
-  recommendedItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: MyTheme.primary,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    gap: Spacing.md
-  },
-  recommendedTextContainer: {
-    flex: 1
-  },
-  recommendedTitle: {
-    marginBottom: Spacing.xs
+  scrollContentContainer: {
+    paddingHorizontal: Spacing.md
   }
 });

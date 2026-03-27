@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Skeleton } from "moti/skeleton";
 import { Icon } from "@/components/icons/Icon";
@@ -8,6 +8,7 @@ import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function SubscriptionScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,11 +56,18 @@ export default function SubscriptionScreen() {
       end={{ x: 1, y: 1 }}
       style={[styles.card, styles.highlightCard]}
     >
-      <View style={styles.badgeContainer}>
-        <AppText bold style={styles.badgeText}>
-          AM BELIEBTESTEN
-        </AppText>
-      </View>
+      <AppBadge
+        label={"AM BELIEBTESTEN"}
+        textStyle={{ color: MyTheme.text, letterSpacing: 1 }}
+        style={{
+          position: "absolute",
+          top: -12,
+          alignSelf: "center",
+          backgroundColor: MyTheme.primary,
+          paddingHorizontal: Spacing.md,
+          zIndex: 10
+        }}
+      />
 
       <View style={styles.cardHeader}>
         <AppText type="h2" style={{ color: "#fff" }}>
@@ -152,7 +160,7 @@ export default function SubscriptionScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1" style={{ textAlign: "center" }}>
           Erreiche dein nächstes Level
@@ -182,11 +190,15 @@ export default function SubscriptionScreen() {
               <AppText bold style={{ color: billingCycle === "yearly" ? MyTheme.background : MyTheme.text }}>
                 Jährlich
               </AppText>
-              <View style={styles.discountBadge}>
-                <AppText bold style={{ fontSize: 10, color: MyTheme.text }}>
-                  -20%
-                </AppText>
-              </View>
+              <AppBadge
+                variant="primary"
+                label={"-20%"}
+                textStyle={{ fontSize: 10, color: MyTheme.text }}
+                style={{
+                  paddingHorizontal: 6,
+                  paddingVertical: 2 // borderRadius: 8
+                }}
+              />
             </TouchableOpacity>
           </View>
         )}
@@ -214,9 +226,20 @@ export default function SubscriptionScreen() {
 
             {/* Skeleton: Plus Card */}
             <View style={[styles.card, styles.highlightCard, { backgroundColor: MyTheme.primary, shadowOpacity: 0 }]}>
-              <View style={styles.badgeContainer}>
-                <Skeleton {...skBase} width={120} height={24} radius={12} />
+              <View
+                style={{
+                  position: "absolute",
+                  top: -12,
+                  alignSelf: "center",
+                  zIndex: 10,
+                  backgroundColor: MyTheme.primary,
+                  borderRadius: Spacing.borderRadius?.full || 99,
+                  overflow: "hidden"
+                }}
+              >
+                <Skeleton {...skBase} width={130} height={24} />
               </View>
+
               <View style={styles.cardHeader}>
                 <Skeleton {...skBase} width={140} height={24} radius={4} />
                 <View style={[styles.priceRow, { marginTop: 4 }]}>
@@ -228,13 +251,15 @@ export default function SubscriptionScreen() {
                   </View>
                 )}
               </View>
+
               <View style={styles.featureList}>
                 {[1, 2, 3, 4].map((i) => (
                   <SkeletonFeatureItem key={i} />
                 ))}
               </View>
+
               <View style={{ marginTop: Spacing.md }}>
-                <Skeleton {...skBase} width="100%" height={48} radius={Spacing.borderRadius.full} />
+                <Skeleton {...skBase} width="100%" height={48} radius={Spacing.borderRadius?.full || 99} />
               </View>
             </View>
 
@@ -320,12 +345,6 @@ const styles = StyleSheet.create({
   toggleActive: {
     backgroundColor: "#efeff4"
   },
-  discountBadge: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8
-  },
   cardsContainer: {
     paddingBottom: Spacing.xl,
     gap: Spacing.xl
@@ -340,34 +359,13 @@ const styles = StyleSheet.create({
   },
   highlightCard: {
     borderWidth: 0,
-    shadowColor: MyTheme.primaryAccent,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 15,
+    boxShadow: "0px 5px 15px rgba(47, 196, 146, 0.5)",
     elevation: 10
   },
   premiumCard: {
     borderWidth: 0,
-    shadowColor: MyTheme.gold,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 15,
+    boxShadow: "0px 5px 15px rgba(255, 215, 0, 0.5)",
     elevation: 10
-  },
-  badgeContainer: {
-    position: "absolute",
-    top: -12,
-    alignSelf: "center",
-    backgroundColor: MyTheme.primary,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 4,
-    borderRadius: 12,
-    zIndex: 10
-  },
-  badgeText: {
-    color: MyTheme.text,
-    fontSize: 12,
-    letterSpacing: 1
   },
   cardHeader: {
     marginBottom: Spacing.md

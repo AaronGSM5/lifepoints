@@ -1,40 +1,62 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Icon } from "../icons/Icon";
 import { MyTheme } from "@/constants/Colors";
 import AppText from "../ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import BaseCard from "../ui/BaseCard";
+import { Skeleton } from "moti/skeleton";
+import SectionHeader from "../ui/SectionHeader";
+import { router } from "expo-router";
+import HistoryCard from "../ui/HistoryCard";
 
-const JournalPreview = ({ activities }) => {
+const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const previewData = activities.slice(0, 3);
-  return (
-    <View style={styles.container}>
-      {previewData.map((item) => {
-        const isSpend = item.type === "spend";
-        const lpColor = isSpend ? MyTheme.warning : MyTheme.primaryAccent;
-        const prefix = isSpend ? "-" : "+";
-        return (
-          <View key={item.id} style={styles.activityItem}>
-            <View style={styles.iconCircle}>
-              <AppText>✨</AppText>
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        {[1, 2, 3].map((item) => (
+          <BaseCard key={item} style={styles.activityItem} padding={Spacing.sm}>
+            <View style={[styles.iconCircle, { backgroundColor: "transparent" }]}>
+              <Skeleton {...skeletonProps} width={40} height={40} radius="round" />
             </View>
 
             <View style={styles.textContainer}>
-              <AppText type="body" bold>
-                {item.title}
-              </AppText>
-              <AppText type="caption" style={{ fontSize: 12, marginTop: Spacing.xs }}>
-                {item.time}
-              </AppText>
+              <View style={{ marginBottom: Spacing.xs }}>
+                <Skeleton {...skeletonProps} width="60%" height={16} radius={4} />
+              </View>
+              <Skeleton {...skeletonProps} width="35%" height={12} radius={4} />
             </View>
 
-            <AppText type="body" bold style={{ color: lpColor }}>
-              {prefix}
-              {item.points} LP
-            </AppText>
-          </View>
-        );
-      })}
+            <Skeleton {...skeletonProps} width={40} height={16} radius={4} />
+          </BaseCard>
+        ))}
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      <SectionHeader
+        title={"My Impact Journal"}
+        icon={"journal"}
+        rightLabel={"More"}
+        onRightPress={() => router.push("/journal")}
+        isLoading={isLoading}
+      />
+      <View style={styles.container}>
+        {previewData.map((item) => (
+          <HistoryCard
+            key={item.id}
+            title={item.title}
+            subtitle={item.time}
+            points={item.points}
+            type={item.type}
+            pointsSuffix="LP"
+            iconNode={<AppText>✨</AppText>}
+          />
+        ))}
+      </View>
     </View>
   );
 };
@@ -46,13 +68,7 @@ const styles = StyleSheet.create({
   activityItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.sm,
-    backgroundColor: MyTheme.primary,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    borderRadius: Spacing.borderRadius.md
+    marginBottom: Spacing.sm
   },
   iconCircle: {
     width: 40,
@@ -65,12 +81,6 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginLeft: Spacing.md - 4
-  },
-  moreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.xs
   }
 });
 

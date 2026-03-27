@@ -10,6 +10,8 @@ import { Icon } from "@/components/icons/Icon";
 import { mockRewards } from "@/constants/MockData";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BackButton from "@/components/ui/BackButton";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function RewardDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -36,12 +38,8 @@ export default function RewardDetailScreen() {
           <View style={styles.imageContainer}>
             <Image source={{ uri: reward.image }} style={styles.image} />
 
-            {/* Der Zurück-Button schwebt ÜBER dem Bild */}
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-              <Icon name="back" />
-            </TouchableOpacity>
+            <BackButton />
 
-            {/* Der Gradient sorgt dafür, dass das Bild sanft in den dunklen Hintergrund übergeht */}
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}
               style={styles.gradientOverlay}
@@ -51,19 +49,17 @@ export default function RewardDetailScreen() {
           {/* 2. Der Content-Bereich */}
           <View style={styles.content}>
             <View style={styles.headerRow}>
-              <View style={styles.brandBadge}>
-                <Icon name={reward.icon} size={14} color={MyTheme.primaryAccent} />
-                <AppText bold type="caption" style={styles.brandText}>
-                  {reward.brand}
-                </AppText>
-              </View>
+              <AppBadge
+                label={reward.brand}
+                iconNode={<Icon name={reward.icon} size={14} color={MyTheme.primaryAccent} />}
+              />
 
               {reward.isLocked && (
-                <View style={styles.lockedBadge}>
-                  <AppText bold type="caption" style={{ fontSize: 10 }}>
-                    LOCKED
-                  </AppText>
-                </View>
+                <AppBadge
+                  label={"LOCKED"}
+                  textStyle={{ fontSize: 10, color: MyTheme.muted }}
+                  style={{ backgroundColor: "#2A2A2A" }}
+                />
               )}
             </View>
 
@@ -126,47 +122,15 @@ const styles = StyleSheet.create({
     right: 0,
     height: 130
   },
-  backButton: {
-    position: "absolute",
-    top: 50, // Abstand für die Notch/Statusleiste auf dem Handy
-    left: Spacing.md,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center"
-  },
   content: {
     padding: Spacing.lg,
-    marginTop: -20 // Zieht den Text leicht in den Gradienten hinein
+    marginTop: -20
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: Spacing.md
-  },
-  brandBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)"
-  },
-  brandText: {
-    color: MyTheme.primaryAccent,
-    marginLeft: Spacing.xs,
-    letterSpacing: 1
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: 4
   },
   stickyFooter: {
     position: "absolute",
@@ -175,10 +139,7 @@ const styles = StyleSheet.create({
     right: 0,
     padding: Spacing.lg,
     backgroundColor: MyTheme.background,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
+    boxShadow: "0px -10px 20px rgba(0, 0, 0, 0.3)",
     elevation: 20
   }
 });

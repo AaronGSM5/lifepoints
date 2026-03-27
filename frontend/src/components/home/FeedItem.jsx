@@ -5,8 +5,18 @@ import { MyTheme } from "@/constants/Colors";
 import { Icon } from "@/components/icons/Icon";
 import { useRef, useState } from "react";
 import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
 
-export default function FeedItem({ username, description, image, initialLikes = 120, id, onOpenComments }) {
+export default function FeedItem({
+  username,
+  description,
+  image,
+  initialLikes = 120,
+  id,
+  onOpenComments,
+  skeletonProps,
+  isLoading
+}) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
@@ -73,6 +83,25 @@ export default function FeedItem({ username, description, image, initialLikes = 
     }
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonHeader}>
+          <Skeleton {...skeletonProps} radius="round" width={32} height={32} />
+          <Skeleton {...skeletonProps} width={120} height={12} />
+        </View>
+        <Skeleton {...skeletonProps} width="100%" height={350} />
+        <View style={styles.skeletonFooter}>
+          <View style={{ flexDirection: "row", gap: Spacing.lg }}>
+            <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+            <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+          </View>
+          <Skeleton {...skeletonProps} width="80%" height={12} />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -98,10 +127,10 @@ export default function FeedItem({ username, description, image, initialLikes = 
               styles.bigHeartOverlay,
               {
                 opacity: heartOpacity,
-                transform: [{ scale: heartScale }]
+                transform: [{ scale: heartScale }],
+                pointerEvents: "none"
               }
             ]}
-            pointerEvents="none"
           >
             <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
           </Animated.View>
@@ -216,5 +245,21 @@ const styles = StyleSheet.create({
   timeAgo: {
     fontSize: 12,
     marginTop: Spacing.xs
+  },
+  skeletonContainer: {
+    backgroundColor: MyTheme.primary,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: MyTheme.separator,
+    paddingBottom: Spacing.md
+  },
+  skeletonHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: Spacing.md,
+    gap: Spacing.sm
+  },
+  skeletonFooter: {
+    padding: Spacing.md,
+    gap: Spacing.md
   }
 });

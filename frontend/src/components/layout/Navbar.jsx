@@ -87,11 +87,7 @@ const styles = StyleSheet.create({
     right: 20,
     height: 65,
     borderRadius: 35,
-
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
+    boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
     elevation: 10
   },
   blurBackground: {

@@ -6,6 +6,7 @@ import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function LinkedServicesScreen() {
   const [connections, setConnections] = useState({
@@ -45,11 +46,15 @@ export default function LinkedServicesScreen() {
           <View style={styles.titleRow}>
             <AppText type="title">{name}</AppText>
             {isConnected && (
-              <View style={styles.activeBadge}>
-                <AppText bold style={styles.activeText}>
-                  AKTIV
-                </AppText>
-              </View>
+              <AppBadge
+                variant="outline"
+                label={"AKTIV"}
+                textStyle={{ color: MyTheme.primaryAccent, fontSize: 10 }}
+                style={{
+                  paddingVertical: Spacing.xs - 2,
+                  borderColor: MyTheme.primaryAccent
+                }}
+              />
             )}
           </View>
           <AppText type="caption">{description}</AppText>
@@ -67,7 +72,7 @@ export default function LinkedServicesScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1">Verknüpfte Dienste</AppText>
         <AppText style={styles.subtitle}>
@@ -162,18 +167,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.sm,
     marginBottom: 2
-  },
-  activeBadge: {
-    backgroundColor: MyTheme.primary,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs - 2,
-    borderRadius: Spacing.borderRadius.sm,
-    borderWidth: 1,
-    borderColor: MyTheme.primaryAccent
-  },
-  activeText: {
-    color: MyTheme.primaryAccent,
-    fontSize: 10
   },
   privacyNote: {
     flexDirection: "row",

@@ -1,107 +1,167 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import AppText from "../ui/AppText";
+import React, { useState } from "react";
+import { StyleSheet, View, LayoutAnimation, Platform, UIManager, TouchableOpacity } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import { Icon } from "../icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { Icon } from "@/components/icons/Icon";
+import BaseCard from "@/components/ui/BaseCard";
+import AppInput from "@/components/ui/AppInput";
+import { Skeleton } from "moti/skeleton";
 
-const TaskItem = ({ title, lp, progress, status, icon, isActive, onPress }) => (
-  <Pressable onPress={onPress}>
-    <View style={styles.taskItem}>
-      <View style={styles.taskItemTop}>
-        <View style={styles.taskInfoMain}>
-          <View style={styles.taskIconBox}>
-            <Icon name={icon || "sun"} />
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLoading, requiresInput }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const toggleExpand = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsExpanded(!isExpanded);
+  };
+
+  if (isLoading) {
+    return (
+      <BaseCard style={styles.container}>
+        <View style={styles.mainRow}>
+          <View style={styles.iconContainer}>
+            <Skeleton
+              colorMode="dark"
+              width="100%"
+              height="100%"
+              radius={Spacing.borderRadius.md}
+              transition={{ type: "timing", duration: 1500 }}
+            />
           </View>
-          <View>
-            <AppText bold>{title}</AppText>
-            <View style={styles.taskMetaRow}>
-              <AppText bold style={{ color: MyTheme.primaryAccent }}>
-                {lp} LP
-              </AppText>
-              {status && (
-                <>
-                  <AppText style={styles.dot}>•</AppText>
-                  <AppText style={styles.taskStatus}>{status}</AppText>
-                </>
-              )}
+          <View style={styles.textContainer}>
+            <View style={{ marginBottom: 8 }}>
+              <Skeleton colorMode="dark" width="70%" height={16} transition={{ type: "timing", duration: 1500 }} />
             </View>
+            <Skeleton colorMode="dark" width="40%" height={12} transition={{ type: "timing", duration: 1500 }} />
           </View>
         </View>
-      </View>
-      <View style={styles.progressBg}>
-        <View style={[styles.progressFill, { width: progress }]} />
-      </View>
-    </View>
-  </Pressable>
-);
+      </BaseCard>
+    );
+  }
+
+  return (
+    <BaseCard style={styles.container}>
+      <TouchableOpacity activeOpacity={0.7} onPress={toggleExpand} style={styles.mainRow}>
+        <View style={styles.iconContainer}>
+          <Icon name={icon} size={24} color={MyTheme.text} />
+        </View>
+
+        <View style={styles.textContainer}>
+          <AppText type="body" bold style={styles.title} numberOfLines={1}>
+            {title}
+          </AppText>
+
+          <View style={styles.metaRow}>
+            <AppText type="caption" bold style={styles.lpText}>
+              +{lp} LP
+            </AppText>
+
+            {status && (
+              <>
+                <AppText type="caption"> • </AppText>
+                <AppText type="caption">{status}</AppText>
+              </>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.chevronContainer}>
+          <Icon name={isExpanded ? "down" : "right"} size={20} color={MyTheme.muted} />
+        </View>
+      </TouchableOpacity>
+
+      {isExpanded && (
+        <View style={styles.expandedContainer}>
+          {requiresInput && (
+            <AppInput
+              placeholder={`Anzahl ${requiresInput} eingeben...`}
+              value={inputValue}
+              onChangeText={setInputValue}
+              keyboardType="numeric"
+            />
+          )}
+
+          <View style={styles.actionRow}>
+            <TouchableOpacity onPress={onNavigate} style={styles.detailBtn}>
+              <AppText type="caption" style={{ color: MyTheme.muted }}>
+                Details ansehen
+              </AppText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.trackBtn} onPress={() => onTrack(inputValue)}>
+              <AppText type="body" bold>
+                Tracken
+              </AppText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </BaseCard>
+  );
+};
 
 const styles = StyleSheet.create({
-  taskItem: {
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  taskItemTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: Spacing.md
-  },
-  taskInfoMain: {
-    flexDirection: "row",
-    gap: Spacing.md
-  },
-  taskIconBox: {
-    width: 40,
-    height: 40,
-    backgroundColor: MyTheme.secondary,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  taskMetaRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: Spacing.xs
-  },
-  dot: {
-    color: MyTheme.muted,
-    marginHorizontal: Spacing.sm
-  },
-  taskStatus: {
-    color: MyTheme.muted,
-    fontSize: 12
-  },
-  toggle: {
-    width: 40,
-    height: 24,
-    backgroundColor: "#334155",
-    borderRadius: Spacing.borderRadius.full,
-    padding: 2
-  },
-  toggleActive: {
-    backgroundColor: MyTheme.primaryAccent
-  },
-  toggleCircle: {
-    width: 20,
-    height: 20,
-    backgroundColor: "white",
-    borderRadius: Spacing.borderRadius.full
-  },
-  toggleCircleActive: {
-    transform: [{ translateX: 16 }]
-  },
-  progressBg: {
-    height: 6,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: Spacing.xs,
+  container: {
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
     overflow: "hidden"
   },
-  progressFill: {
-    height: "100%",
-    backgroundColor: MyTheme.primaryAccent
+  mainRow: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: Spacing.borderRadius.md,
+    backgroundColor: MyTheme.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  title: {
+    marginBottom: Spacing.xs
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  lpText: {
+    color: MyTheme.primaryAccent
+  },
+  chevronContainer: {
+    marginLeft: Spacing.sm
+  },
+  expandedContainer: {
+    marginTop: Spacing.md,
+    paddingTop: Spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: MyTheme.secondary
+  },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: Spacing.sm
+  },
+  detailBtn: {
+    paddingVertical: Spacing.sm
+  },
+  trackBtn: {
+    backgroundColor: MyTheme.primaryAccent,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Spacing.borderRadius.sm
   }
 });
 

@@ -1,26 +1,19 @@
 import { StyleSheet, View } from "react-native";
 import AppText from "../ui/AppText";
-import AppButton from "../ui/AppButton";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
+import SectionHeader from "../ui/SectionHeader";
 
 const LpChart = () => {
+  const lp = 2450;
   return (
-    <View style={styles.section}>
-      <View style={styles.titleRow}>
-        <View>
-          <AppText type="title">
-            You earned{" "}
-            <AppText type="title" style={{ color: MyTheme.primaryAccent }}>
-              2,450 LP
-            </AppText>{" "}
-            this week!
-          </AppText>
-        </View>
-        <AppButton variant="ghost" size="sm" icon={<Icon name={"share"} />} iconPosition="center" />
-      </View>
-
+    <View>
+      <SectionHeader
+        title={`You earned ${lp} LP this week!`}
+        rightIcon={<Icon name={"share"} />}
+        onRightPress={() => console.log("shared")}
+      />
       <View style={styles.chartCard}>
         <View style={styles.chartContainer}>
           {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
@@ -38,15 +31,6 @@ const LpChart = () => {
 };
 
 const styles = StyleSheet.create({
-  section: {
-    marginBottom: Spacing.lg
-  },
-  titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.sm
-  },
   chartCard: {
     backgroundColor: MyTheme.primary,
     borderRadius: Spacing.borderRadius.lg,
