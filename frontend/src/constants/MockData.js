@@ -64,21 +64,21 @@ export const mockMyCommunities = [
 ];
 
 export const mockTasks = [
-  { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed' },
-  { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil' },
-  { id: 3, title: "Pflanzen-Vati", description: 'Gieße eine Pflanze, die gerade etwas durstig aussieht.', difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 4, title: "Lüftungs-Moment", description: 'Öffne das Fenster für 5 Minuten zum Stoßlüften.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'lock' },
-  { id: 5, title: "Wasser-Marsch", description: 'Trink jetzt sofort 1 Glas Wasser.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'water' },
-  { id: 6, title: "Tiefenatmung", description: 'Atme 5-mal tief ein und bewusst langsam aus.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: false, icon: 'wind' },
-  { id: 7, title: "Rücken-Check", description: 'Richte deine Wirbelsäule für 30 Sekunden kerzengerade auf.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '50%', isLocked: false, icon: 'backCheck' },
-  { id: 8, title: "Mini-Workout", description: 'Mache 5 Kniebeugen, 5 Liegestütze oder 5 Sit-ups', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: true, icon: 'lock' },
-  { id: 9, title: "Bildschirm-Pause", description: 'Schaue für 20 Sekunden auf einen Punkt, der weit entfernt ist.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'eyeClosed' },
-  { id: 10, title: "Vorbereitung", description: 'Lege dir ein Teil für morgen (Kleidung/Tasche) schon jetzt bereit.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'clothes' },
-  { id: 11, title: "Stretch-Moment", description: 'Strecke deine Arme einmal so weit wie möglich Richtung Decke.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun' },
-  { id: 12, title: "Digitales Danke", description: 'Sende einer Person, die dir wichtig ist, eine kurze Nachricht in der du ihr zeigst wie dankbar du für sie bist.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
-  { id: 13, title: "Freude schenken", description: 'Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)', difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '0%', isLocked: false, icon: 'happy' },
-  { id: 14, title: "Unfollow-Ballast", description: 'Entfolge einem Account, der dir kein gutes Gefühl gibt.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat' },
-  { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star' },
+  { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed', requiresInput: null },
+  { id: 2, title: "1-Teil-Ordnung", description: 'Räume genau einen Gegenstand an seinen richtigen Platz.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '70%', isLocked: false, icon: 'pencil', requiresInput: null },
+  { id: 3, title: "Pflanzen-Vati", description: 'Gieße eine Pflanze, die gerade etwas durstig aussieht.', difficulty: "easy", xp: 500, lp: 1000, category: 'social', progress: '0%', isLocked: false, icon: 'sun', requiresInput: null },
+  { id: 4, title: "Lüftungs-Moment", description: 'Öffne das Fenster für 5 Minuten zum Stoßlüften.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: true, icon: 'lock', requiresInput: 'Minuten' },
+  { id: 5, title: "Wasser-Marsch", description: 'Trink jetzt sofort 1 Glas Wasser.', difficulty: "easy", xp: 500, lp: 1000, category: 'health', progress: '0%', isLocked: false, icon: 'water', requiresInput: 'Gläser' },
+  { id: 6, title: "Tiefenatmung", description: 'Atme 5-mal tief ein und bewusst langsam aus.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: false, icon: 'wind', requiresInput: 'Atemzüge' },
+  { id: 7, title: "Rücken-Check", description: 'Richte deine Wirbelsäule für 30 Sekunden kerzengerade auf.', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '50%', isLocked: false, icon: 'backCheck', requiresInput: 'Sekunden' },
+  { id: 8, title: "Mini-Workout", description: 'Mache 5 Kniebeugen, 5 Liegestütze oder 5 Sit-ups', difficulty: "medium", xp: 700, lp: 1500, category: 'health', progress: '0%', isLocked: true, icon: 'lock', requiresInput: 'Wiederholungen' },
+  { id: 9, title: "Bildschirm-Pause", description: 'Schaue für 20 Sekunden auf einen Punkt, der weit entfernt ist.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'eyeClosed', requiresInput: 'Sekunden' },
+  { id: 10, title: "Vorbereitung", description: 'Lege dir ein Teil für morgen (Kleidung/Tasche) schon jetzt bereit.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '25%', isLocked: false, icon: 'clothes', requiresInput: null },
+  { id: 11, title: "Stretch-Moment", description: 'Strecke deine Arme einmal so weit wie möglich Richtung Decke.', difficulty: "medium", xp: 700, lp: 1500, category: 'selfcare', progress: '0%', isLocked: false, icon: 'sun', requiresInput: null },
+  { id: 12, title: "Digitales Danke", description: 'Sende einer Person, die dir wichtig ist, eine kurze Nachricht in der du ihr zeigst wie dankbar du für sie bist.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat', requiresInput: null },
+  { id: 13, title: "Freude schenken", description: 'Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)', difficulty: "medium", xp: 700, lp: 1500, category: 'social', progress: '0%', isLocked: false, icon: 'happy', requiresInput: null },
+  { id: 14, title: "Unfollow-Ballast", description: 'Entfolge einem Account, der dir kein gutes Gefühl gibt.', difficulty: "medium", xp: 700, lp: 1500, category: 'digital', progress: '0%', isLocked: false, icon: 'techCat', requiresInput: 'Accounts' },
+  { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star', requiresInput: 'Apps' },
 ];
 
 export const recommendedTasks = [

@@ -122,7 +122,11 @@ const TasksScreen = () => {
               progress={item.progress}
               status={item.limit}
               icon={item.icon}
-              onPress={() => router.push(`task/${item.id}`)}
+              requiresInput={item.requiresInput}
+              onTrack={(inputValue) => {
+                console.log(`Tracke ${item.title} mit Wert: ${inputValue}`);
+              }}
+              onNavigate={() => router.push(`task/${item.id}`)}
             />
           </View>
         );
