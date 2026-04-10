@@ -11,7 +11,7 @@ const SurveyOptionCard = ({ option, isSelected, handleSelect }) => {
       style={[styles.optionCard, isSelected && styles.selectedCard]}
       onPress={() => handleSelect(option.value)}
     >
-      <AppText style={{ fontSize: 32 }}>{option.icon}</AppText>
+      <AppText style={{ fontSize: 32, lineHeight: 40 }}>{option.icon}</AppText>
       <AppText type="body" bold style={{ marginTop: Spacing.sm }}>
         {option.label}
       </AppText>
