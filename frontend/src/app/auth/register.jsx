@@ -1,28 +1,25 @@
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Image, Dimensions } from "react-native";
+import { View, KeyboardAvoidingView, Platform } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Link } from "expo-router";
 import { useState } from "react";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import PasswordInput from "@/components/auth/PasswordInput";
+import AuthHeader from "@/components/auth/AuthHeader";
+import AuthFooter from "@/components/auth/AuthFooter";
+import BaseCard from "@/components/ui/BaseCard";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
-  const screenWidth = Dimensions.get("window").width;
+
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isRepeatValid, setIsRepeatValid] = useState(false);
-
-  const maxLogoWidth = 330;
-  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  const logoHeight = logoWidth / 3.75;
 
   const isNameValid = (name) => {
     // Some database check (maybe some rules)
@@ -43,27 +40,17 @@ export default function RegisterScreen() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
         <ScreenWrapper scrollable>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.appIcon}>
-              <Image
-                source={require("@/../public/assets/adaptive-icon.png")}
-                style={{ width: logoWidth, height: logoHeight }}
-                resizeMode="contain"
-              />
-            </View>
-            <Image
-              source={require("@/../public/assets/lifepointsLogo.png")}
-              style={{ width: 200 }}
-              resizeMode="contain"
-            />
-            <AppText type="caption" style={styles.subtitle}>
-              Register to continue
-            </AppText>
-          </View>
+          <AuthHeader showImageLogo={true} subtitle={"Register to continue"} />
 
-          {/* Main */}
-          <View style={styles.card}>
+          <BaseCard
+            style={{
+              backgroundColor: MyTheme.glas,
+              borderWidth: 0,
+              marginHorizontal: Spacing.lg,
+              paddingVertical: Spacing.xl,
+              gap: Spacing.md
+            }}
+          >
             <AppInput
               value={nameInput}
               onChangeText={setNameInput}
@@ -99,48 +86,11 @@ export default function RegisterScreen() {
               bottomMargin={false}
             />
             <AppButton title={"Register"} bgColor={MyTheme.primaryAccent} disabled={isSubmitDisabled} />
-          </View>
+          </BaseCard>
 
-          {/* Footer */}
-          <View style={styles.footer}>
-            <AppText type="caption">
-              Already have an account?{" "}
-              <Link href="/auth/login">
-                <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
-                  Log in
-                </AppText>
-              </Link>
-            </AppText>
-          </View>
+          <AuthFooter text="Already have an account?" linkText="Log in" href="/auth/login" />
         </ScreenWrapper>
       </View>
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    marginVertical: Spacing.xl,
-    alignItems: "center"
-  },
-  subtitle: {
-    marginTop: Spacing.sm,
-    opacity: 0.7
-  },
-  appIcon: {
-    marginTop: Spacing.lg
-  },
-  card: {
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    paddingVertical: Spacing.xl,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.lg,
-    marginHorizontal: Spacing.lg,
-    gap: Spacing.md
-  },
-  footer: {
-    marginTop: "auto",
-    alignItems: "center",
-    marginBottom: Spacing.lg
-  }
-});
