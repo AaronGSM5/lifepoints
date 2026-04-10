@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: Spacing.borderRadius.lg,
     borderTopRightRadius: Spacing.borderRadius.lg,
     overflow: "hidden",
-    maxHeight: "75%"
+    height: "80%",
+    width: "100%"
   },
   dragHandleContainer: {
     alignItems: "center",
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   content: {
-    flexShrink: 1
+    flex: 1
   }
 });
 

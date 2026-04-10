@@ -165,17 +165,18 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.7)"
   },
   dismissArea: {
-    flex: 1
+    ...StyleSheet.absoluteFillObject
   },
   sheetContainer: {
     backgroundColor: MyTheme.background,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    maxHeight: "90%"
+    maxHeight: "90%",
+    flexShrink: 1
   },
   content: {
-    flex: 1,
-    paddingTop: Spacing.sm
+    paddingTop: Spacing.sm,
+    flexShrink: 1
   },
   scrollContent: {
     paddingHorizontal: Spacing.md,

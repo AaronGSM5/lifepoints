@@ -1,5 +1,5 @@
 import React, { useState, forwardRef } from "react";
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity, Platform } from "react-native";
 import { BlurView } from "expo-blur";
 
 import { MyTheme } from "@/constants/Colors";
@@ -97,7 +97,12 @@ const AppInput = forwardRef(
         )}
 
         {blur ? (
-          <BlurView intensity={blurIntensity} tint={blurTint} style={[{ overflow: "hidden" }, ...containerStyles]}>
+          <BlurView
+            intensity={Platform.OS === "android" ? 100 : blurIntensity}
+            tint={blurTint}
+            experimentalBlurMethod="dimezisBlurView"
+            style={[{ overflow: "hidden" }, ...containerStyles]}
+          >
             {renderInputContent()}
           </BlurView>
         ) : (
