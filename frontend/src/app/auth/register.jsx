@@ -6,10 +6,9 @@ import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import { useState } from "react";
-import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
-import { Icon } from "@/components/icons/Icon";
+import PasswordInput from "@/components/auth/PasswordInput";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
@@ -18,10 +17,10 @@ export default function RegisterScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
-  const [passwordIsShown, setPasswordIsShown] = useState(true);
-  const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isRepeatValid, setIsRepeatValid] = useState(false);
 
-  const maxLogoWidth = 330; // max 330 px breit
+  const maxLogoWidth = 330;
   const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   const logoHeight = logoWidth / 3.75;
 
@@ -37,39 +36,8 @@ export default function RegisterScreen() {
   const isNameValidFlag = isNameValid(nameInput);
   const isEmailValidFlag = isEmailValid(emailInput);
 
-  const passwordsFilled = passwordInput && repeatPasswordInput;
-  const passwordsMatch = passwordsFilled && passwordInput === repeatPasswordInput;
-  const passwordRules = [
-    {
-      name: "lengthRule",
-      validate: (pwInput) => pwInput.length >= 8,
-      displayMessage: "min. length of 8 characters"
-    },
-    {
-      name: "uppercaseRule",
-      validate: (pwInput) => /[A-Z]/.test(pwInput),
-      displayMessage: "min. 1 uppercase letter"
-    },
-    {
-      name: "numberRule",
-      validate: (pwInput) => /[0-9]/.test(pwInput),
-      displayMessage: "min. 1 number"
-    },
-    {
-      name: "specialCharRule",
-      validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
-      displayMessage: "min. 1 special character"
-    }
-  ];
-  const [passwordRuleStatus, setPasswordRuleStatus] = useState({
-    lengthRule: false,
-    uppercaseRule: false,
-    numberRule: false,
-    specialCharRule: false
-  });
-  const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
   const isSubmitDisabled =
-    !nameInput || !emailInput || !passwordsMatch || !allRulesPassed || !isEmailValidFlag || !isNameValidFlag;
+    !nameInput || !emailInput || !isPasswordValid || !isRepeatValid || !isEmailValidFlag || !isNameValidFlag;
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -114,69 +82,22 @@ export default function RegisterScreen() {
               isValid={isEmailValidFlag && emailInput.length > 0}
               error={!isEmailValidFlag && emailInput.length > 0}
             />
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <AppInput
-                value={passwordInput}
-                onChangeText={(text) => {
-                  setPasswordInput(text);
-                  const newStatus = {};
-                  passwordRules.forEach((rule) => {
-                    newStatus[rule.name] = rule.validate(text);
-                  });
-                  setPasswordRuleStatus(newStatus);
-                }}
-                placeholder="Password"
-                bottomMargin={false}
-                secureTextEntry={passwordIsShown}
-                isValid={allRulesPassed && passwordInput.length > 0}
-                error={!allRulesPassed && passwordInput.length > 0}
-                rightContent={
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <AppButton
-                      onPress={() => setPasswordIsShown(!passwordIsShown)}
-                      size="sm"
-                      variant="ghost"
-                      icon={<Icon name={passwordIsShown ? "eyeOpen" : "eyeClosed"} size={22} color="white" />}
-                      iconPosition="center"
-                    />
-                    {passwordInput.length > 0 && (
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        icon={
-                          <Icon
-                            name={allRulesPassed ? "checkmarkCircle" : "infoCircle"}
-                            size={22}
-                            color={allRulesPassed ? MyTheme.primaryAccent : "red"}
-                          />
-                        }
-                        iconPosition="center"
-                        onPress={() => setIsRuleOverlayVisible(true)}
-                      />
-                    )}
-                  </View>
-                }
-              />
-            </View>
-            <AppInput
-              value={repeatPasswordInput}
-              onChangeText={setRepeatPasswordInput}
-              placeholder="Repeat Password"
-              secureTextEntry
+            <PasswordInput
+              variant="new"
+              value={passwordInput}
+              onChangeText={setPasswordInput}
+              onValidationChange={setIsPasswordValid}
               bottomMargin={false}
-              isValid={passwordsMatch}
-              error={passwordsFilled && !passwordsMatch}
             />
 
-            {/* Overlay */}
-            {isRuleOverlayVisible && (
-              <PasswordRulesModal
-                visible={isRuleOverlayVisible}
-                onClose={() => setIsRuleOverlayVisible(false)}
-                passwordRules={passwordRules}
-                passwordRuleStatus={passwordRuleStatus}
-              />
-            )}
+            <PasswordInput
+              variant="repeat"
+              value={repeatPasswordInput}
+              onChangeText={setRepeatPasswordInput}
+              compareTo={passwordInput}
+              onValidationChange={setIsRepeatValid}
+              bottomMargin={false}
+            />
             <AppButton title={"Register"} bgColor={MyTheme.primaryAccent} disabled={isSubmitDisabled} />
           </View>
 

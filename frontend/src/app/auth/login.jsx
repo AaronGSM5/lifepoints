@@ -8,16 +8,16 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
+import PasswordInput from "@/components/auth/PasswordInput";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const screenWidth = Dimensions.get("window").width;
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const [passwordIsShown, setPasswordIsShown] = useState(true);
   const isLoginDisabled = !emailInput || !passwordInput;
 
-  const maxLogoWidth = 330; // max 330 px breit
+  const maxLogoWidth = 330;
   const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   const logoHeight = logoWidth / 3.75;
 
@@ -52,15 +52,7 @@ export default function LoginScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
             />
-            <AppInput
-              value={passwordInput}
-              onChangeText={setPasswordInput}
-              placeholder="Password"
-              secureTextEntry={passwordIsShown}
-              bottomMargin={false}
-              rightIcon={passwordIsShown ? "eyeOpen" : "eyeClosed"}
-              onRightIconPress={() => setPasswordIsShown(!passwordIsShown)}
-            />
+            <PasswordInput variant="login" value={passwordInput} onChangeText={setPasswordInput} bottomMargin={false} />
             <AppButton title={"Log in"} disabled={isLoginDisabled} bgColor={MyTheme.primaryAccent} />
             <Pressable style={styles.forgotPassword}>
               <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
