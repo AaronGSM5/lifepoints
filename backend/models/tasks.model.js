@@ -5,6 +5,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: true
+  },
   lifepoints: {
     type: Number,
     default: 0
@@ -16,6 +20,18 @@ const taskSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true
+  },
+  image: {
+    type: String,
+    default: ""
+  },
+  icon: {
+    type: String,
+    default: ""
+  },
+  custom: {
+    type: Object,
+    default: {}
   }
 });
 

@@ -6,4 +6,10 @@ const getAllTasks = async (req, res) => {
   res.status(200).json(data)
 }
 
-export default { getAllTasks }
+const getUserTasks = async (req, res) => {
+  const data = await TaskServices.getUserTasks()
+
+  res.status(200).json(data)
+}
+
+export default { getAllTasks, getUserTasks }
