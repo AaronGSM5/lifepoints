@@ -1,0 +1,90 @@
+import React from "react";
+import Icon from "react-native-remix-icon";
+
+const getName = (baseName, outline) => {
+  const exceptions = ["spotify", "google", "apple", "facebook", "twitter"];
+  if (exceptions.includes(baseName)) return `${baseName}-fill`;
+
+  return outline ? `${baseName}-line` : `${baseName}-fill`;
+};
+
+export const IconMap = {
+  // Navigation Tabs
+  home: ({ outline, ...props }) => <Icon name={getName("home", outline)} {...props} />,
+  communities: ({ outline, ...props }) => <Icon name={getName("user-community", outline)} {...props} />,
+  tasks: ({ outline, ...props }) => <Icon name={getName("heart-add-2", outline)} {...props} />,
+  shop: ({ outline, ...props }) => <Icon name={getName("shopping-bag-4", outline)} {...props} />,
+  profile: ({ outline, ...props }) => <Icon name={getName("user", outline)} {...props} />,
+  help: ({ outline, ...props }) => <Icon name={getName("question", outline)} {...props} />,
+  // Toolbar
+  back: ({ outline, ...props }) => <Icon name={getName("arrow-left-s", outline)} {...props} />,
+  notifications: ({ outline, ...props }) => <Icon name={getName("notification", outline)} {...props} />,
+  settings: ({ outline, ...props }) => <Icon name={getName("settings-3", outline)} {...props} />,
+  // UI
+  add: ({ outline, ...props }) => <Icon name={getName("add", outline)} {...props} />,
+  filter: ({ outline, ...props }) => <Icon name={getName("equalizer", outline)} {...props} />,
+  checkmark: ({ outline, ...props }) => <Icon name={getName("check", outline)} {...props} />,
+  close: ({ outline, ...props }) => <Icon name={getName("close", outline)} {...props} />,
+  eyeOpen: ({ outline, ...props }) => <Icon name={getName("eye", outline)} {...props} />,
+  eyeClosed: ({ outline, ...props }) => <Icon name={getName("eye-close", outline)} {...props} />,
+  checkmarkCircle: ({ outline, ...props }) => <Icon name={getName("checkbox-circle", outline)} {...props} />,
+  infoCircle: ({ outline, ...props }) => <Icon name={getName("information", outline)} {...props} />,
+  bulb: ({ outline, ...props }) => <Icon name={getName("lightbulb", outline)} {...props} />,
+  search: ({ outline, ...props }) => <Icon name={getName("search", outline)} {...props} />,
+  send: ({ outline, ...props }) => <Icon name={getName("send-plane-2", outline)} {...props} />,
+  pencil: ({ outline, ...props }) => <Icon name={getName("edit-2", outline)} {...props} />,
+  share: ({ outline, ...props }) => <Icon name={getName("share", outline)} {...props} />,
+  statsChart: ({ outline, ...props }) => <Icon name={getName("bar-chart-2", outline)} {...props} />,
+  trophy: ({ outline, ...props }) => <Icon name={getName("trophy", outline)} {...props} />,
+  wallet: ({ outline, ...props }) => <Icon name={getName("wallet", outline)} {...props} />,
+  lock: ({ outline, ...props }) => <Icon name={getName("lock", outline)} {...props} />,
+  forwardShare: ({ outline, ...props }) => <Icon name={getName("share-forward", outline)} {...props} />,
+  chat: ({ outline, ...props }) => <Icon name={getName("chat-3", outline)} {...props} />,
+  heart: ({ outline, ...props }) => <Icon name={getName("heart-3", outline)} {...props} />,
+  bookmark: ({ outline, ...props }) => <Icon name={getName("bookmark", outline)} {...props} />,
+  dots: ({ outline, ...props }) => <Icon name={getName("more-2", outline)} {...props} />,
+  right: ({ outline, ...props }) => <Icon name={getName("arrow-right-s", outline)} {...props} />,
+  down: ({ outline, ...props }) => <Icon name={getName("arrow-down-s", outline)} {...props} />,
+  trash: ({ outline, ...props }) => <Icon name={getName("delete-bin-6", outline)} {...props} />,
+  // Placeholders
+  newFolder: ({ outline, ...props }) => <Icon name={getName("folder-add", outline)} {...props} />,
+  timer: ({ outline, ...props }) => <Icon name={getName("timer", outline)} {...props} />,
+  fire: ({ outline, ...props }) => <Icon name={getName("fire", outline)} {...props} />,
+  gem: ({ outline, ...props }) => <Icon name={getName("vip-diamond", outline)} {...props} />,
+  ban: ({ outline, ...props }) => <Icon name={getName("forbid", outline)} {...props} />,
+  calendar: ({ outline, ...props }) => <Icon name={getName("calendar-2", outline)} {...props} />,
+  music: ({ outline, ...props }) => <Icon name={getName("music-ai", outline)} {...props} />,
+  shopping: ({ outline, ...props }) => <Icon name={getName("shopping-bag-2", outline)} {...props} />,
+  shoppingCat: ({ outline, ...props }) => <Icon name={getName("shopping-cart", outline)} {...props} />,
+  mail: ({ outline, ...props }) => <Icon name={getName("mail-send", outline)} {...props} />,
+  coffeeCat: ({ outline, ...props }) => <Icon name={getName("cup", outline)} {...props} />,
+  techCat: ({ outline, ...props }) => <Icon name={getName("smartphone", outline)} {...props} />,
+  giftCat: ({ outline, ...props }) => <Icon name={getName("gift-2", outline)} {...props} />,
+  dumbbell: ({ outline, ...props }) => <Icon name={getName("pulse", outline)} {...props} />,
+  sun: ({ outline, ...props }) => <Icon name={getName("sun", outline)} {...props} />,
+  robot: ({ outline, ...props }) => <Icon name={getName("robot-2", outline)} {...props} />,
+  book: ({ outline, ...props }) => <Icon name={getName("book-open", outline)} {...props} />,
+  candy: ({ outline, ...props }) => <Icon name={getName("cookie", outline)} {...props} />,
+  bed: ({ outline, ...props }) => <Icon name={getName("zzz", outline)} {...props} />,
+  user: ({ outline, ...props }) => <Icon name={getName("id-card", outline)} {...props} />,
+  shield: ({ outline, ...props }) => <Icon name={getName("shield-keyhole", outline)} {...props} />,
+  link: ({ outline, ...props }) => <Icon name={getName("links", outline)} {...props} />,
+  bell: ({ outline, ...props }) => <Icon name={getName("notification", outline)} {...props} />,
+  star: ({ outline, ...props }) => <Icon name={getName("star", outline)} {...props} />,
+  moon: ({ outline, ...props }) => <Icon name={getName("moon", outline)} {...props} />,
+  globe: ({ outline, ...props }) => <Icon name={getName("earth", outline)} {...props} />,
+  hardDrive: ({ outline, ...props }) => <Icon name={getName("hard-drive-3", outline)} {...props} />,
+  shieldOff: ({ outline, ...props }) => <Icon name={getName("shield-flash", outline)} {...props} />,
+  fileText: ({ outline, ...props }) => <Icon name={getName("file-text", outline)} {...props} />,
+  userX: ({ outline, ...props }) => <Icon name={getName("user-unfollow", outline)} {...props} />,
+  bicycle: ({ outline, ...props }) => <Icon name={getName("riding", outline)} {...props} />,
+  camera: ({ outline, ...props }) => <Icon name={getName("camera-4", outline)} {...props} />,
+  spotify: ({ outline, ...props }) => <Icon name={getName("spotify", outline)} {...props} color="#1DB954" />,
+  at: ({ outline, ...props }) => <Icon name={getName("at", outline)} {...props} />,
+  journal: ({ outline, ...props }) => <Icon name={getName("leaf", outline)} {...props} color="#1DB954" />,
+  water: ({ outline, ...props }) => <Icon name={getName("drop", outline)} {...props} />,
+  wind: ({ outline, ...props }) => <Icon name={getName("windy", outline)} {...props} />,
+  backCheck: ({ outline, ...props }) => <Icon name={getName("body-scan", outline)} {...props} />,
+  clothes: ({ outline, ...props }) => <Icon name={getName("shirt", outline)} {...props} />,
+  happy: ({ outline, ...props }) => <Icon name={getName("emotion-laugh", outline)} {...props} />
+};

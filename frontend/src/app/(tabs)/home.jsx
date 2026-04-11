@@ -1,46 +1,81 @@
-import { StyleSheet, View } from "react-native";
-import TaskList from "@/components/TaskList";
-import FloatingFilterButton from "@/components/FloatingFilterButton";
-import { MyTheme } from "@/constants/Colors";
+import { View, FlatList } from "react-native";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/AppText";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import { LinearGradient } from "expo-linear-gradient";
+import { useMemo, useState } from "react";
+import FeedItem from "@/components/home/FeedItem";
+import LpChart from "@/components/home/LpChart";
+import CommentSheet from "@/components/home/CommentSheet";
+import SectionHeader from "@/components/ui/SectionHeader";
+import EventHero from "@/components/home/EventHero";
+import ActiveTaskCard from "@/components/home/ActiveTaskCard";
+import { useHome } from "@/hooks/useHome";
+
+const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
+  const { feedItems, isLoading, isRefreshing, refreshHomeData } = useHome();
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [shouldCrash, setShouldCrash] = useState(false);
+  const bottomPadding = useFloatingNavbarPadding();
+
+  if (shouldCrash) {
+    throw new Error("Das ist ein provozierter Render-Crash!");
+  }
+
+  const skeletonProps = {
+    colorMode: "dark",
+    transition: { type: "timing", duration: 1500 },
+    show: isLoading
+  };
+
+  const renderHeader = useMemo(
+    () => (
+      <View style={{ paddingHorizontal: Spacing.md }}>
+        <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
+        <SectionHeader title={"Active Tasks"} />
+        <ActiveTaskCard
+          title={"Morning Vitality"}
+          points={"500"}
+          isLoading={isLoading}
+          onAction={() => setShouldCrash(true)}
+        />
+        <View style={{ marginBottom: Spacing.lg }} />
+        <SectionHeader title={"Feed"} />
+      </View>
+    ),
+    [isLoading]
+  );
+
+  const renderFooter = () => (
+    <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
+      <LpChart />
+    </View>
+  );
   return (
-    <ScreenWrapper scrollable={true}>
-      <LinearGradient colors={[ MyTheme.background, '#121212']} style={styles.background} />
-      <FloatingFilterButton />
-      <View style={styles.heroSection}>
-        <AppText type="body">Das ist jetzt die Section?</AppText>
-      </View>
-      <View style={styles.taskListContainer}>
-        <TaskList />
-      </View>
+    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
+      <FlatList
+        data={isLoading ? SKELETON_ITEMS : feedItems}
+        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: bottomPadding }}
+        onRefresh={refreshHomeData}
+        refreshing={isRefreshing}
+        renderItem={({ item }) => (
+          <FeedItem
+            {...item}
+            isLoading={isLoading}
+            skeletonProps={skeletonProps}
+            onOpenComments={(id) => setSelectedPostId(id)}
+          />
+        )}
+      />
+      <CommentSheet
+        isVisible={selectedPostId !== null}
+        onClose={() => setSelectedPostId(null)}
+        postId={selectedPostId}
+      />
     </ScreenWrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
-  heroSection: {
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderWidth: 1,
-  minHeight: 200,
-  borderColor: MyTheme.secondary,
-  marginTop: Spacing.md,
-  marginBottom: Spacing.xl,
-  backgroundColor: MyTheme.primary
-  },
-  taskListContainer: {
-    paddingBottom: Spacing.xl
-  }
-})
