@@ -120,10 +120,18 @@ export default function TaskDetailScreen() {
             title={task.isLocked ? "Level auf zum Freischalten" : "Jetzt tracken"}
             size="lg"
             disabled={task.isLocked}
-            style={task.isLocked ? { opacity: 0.8 } : {}}
+            style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}
             onPress={() => alert("Task getrackt!")}
             bgColor={MyTheme.primaryAccent}
           />
+          {task.isLocked === false && (
+            <AppButton
+              variant="ghost"
+              icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
+              iconPosition="center"
+              style={{ flex: 2 }}
+            />
+          )}
         </View>
       </View>
     </>
@@ -186,7 +194,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     backgroundColor: MyTheme.background,
     boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
-
+    flexDirection: "row",
     elevation: 20
   },
   historySection: {

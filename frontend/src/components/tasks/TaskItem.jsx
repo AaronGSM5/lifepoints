@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppInput from "@/components/ui/AppInput";
 import { Skeleton } from "moti/skeleton";
+import AppButton from "../ui/AppButton";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -88,17 +89,16 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
           )}
 
           <View style={styles.actionRow}>
-            <TouchableOpacity onPress={onNavigate} style={styles.detailBtn}>
-              <AppText type="caption" style={{ color: MyTheme.muted }}>
-                Details ansehen
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.trackBtn} onPress={() => onTrack(inputValue)}>
-              <AppText type="body" bold>
-                Tracken
-              </AppText>
-            </TouchableOpacity>
+            <AppButton title={"Details ansehen"} variant="ghost" onPress={onNavigate} size="sm" />
+            <View style={styles.trackingRow}>
+              <AppButton
+                variant="ghost"
+                icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
+                iconPosition="center"
+                size="sm"
+              />
+              <AppButton title={"Tracken"} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
+            </View>
           </View>
         </View>
       )}
@@ -154,14 +154,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: Spacing.sm
   },
-  detailBtn: {
-    paddingVertical: Spacing.sm
-  },
-  trackBtn: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.sm
+  trackingRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: Spacing.sm
   }
 });
 
