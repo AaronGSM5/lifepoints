@@ -87,7 +87,7 @@ export default function CommunitiesScreen() {
               {isLoading
                 ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
                 : myCommunities.map((c, index) => (
-                    <MyCommunityCard key={c.id || index} item={c} onPress={() => router.push(`/community/${c.id}`)} />
+                    <MyCommunityCard key={c.id || index} item={c} onPress={() => router.push(`/mycommunity/${c.id}`)} />
                   ))}
             </ScrollView>
           </View>

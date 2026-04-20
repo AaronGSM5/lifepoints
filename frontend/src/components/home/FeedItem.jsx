@@ -157,9 +157,10 @@ export default function FeedItem({
         <AppText bold style={styles.likesText}>
           {likesCount} {likesCount === 1 ? "Like" : "Likes"}
         </AppText>
-
         <AppText style={styles.descriptionText}>
-          <AppText bold>{username} </AppText>
+          <Pressable onPress={navigateToProfile}>
+            <AppText bold>{username} </AppText>
+          </Pressable>
           {description}
         </AppText>
 
