@@ -14,7 +14,6 @@ export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const { recommended, myCommunities } = useCommunities();
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
-  console.log(community);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
