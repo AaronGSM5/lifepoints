@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.sm,
+    paddingBottom: Spacing.lg,
     borderTopWidth: 1,
     borderTopColor: MyTheme.glas,
     backgroundColor: MyTheme.background
