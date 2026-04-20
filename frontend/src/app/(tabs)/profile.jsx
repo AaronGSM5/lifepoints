@@ -5,6 +5,7 @@ import ProfileHeader from "@/components/profile/ProfileHeader";
 import { useProfile } from "@/hooks/useProfile";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
+import InviteFriendCard from "@/components/profile/InviteFriendCard";
 
 export default function ProfileScreen() {
   const { profile, activities, trophies, isLoading } = useProfile();
@@ -26,6 +27,8 @@ export default function ProfileScreen() {
       <ProfileTrophies isLoading={isLoading} trophies={trophies} skeletonProps={skeletonProps} />
 
       <JournalPreview activities={activities} skeletonProps={skeletonProps} isLoading={isLoading} />
+
+      <InviteFriendCard />
     </ScreenWrapper>
   );
 }
