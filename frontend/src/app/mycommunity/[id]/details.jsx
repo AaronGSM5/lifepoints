@@ -8,12 +8,13 @@ import AppButton from "@/components/ui/AppButton";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
 import SectionHeader from "@/components/ui/SectionHeader";
+import AppBadge from "@/components/ui/AppBadge";
 
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const { recommended, myCommunities } = useCommunities();
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
-
+  console.log(community);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -22,14 +23,16 @@ export default function MyCommunityDetailScreen() {
 
         <View style={styles.contentContainer}>
           <View style={styles.titleSection}>
-            <AppText type="h1" bold>
-              {community?.title}
-            </AppText>
+            <AppText type="h1">{community?.title}</AppText>
             <AppText type="caption" style={styles.statsText}>
               {community?.members} Mitglieder • {community?.onlineCount} Online
             </AppText>
           </View>
-
+          <View style={styles.badgeContainer}>
+            {community?.badges?.map((badge, i) => {
+              return <AppBadge key={i} variant="glas" label={badge} />;
+            })}
+          </View>
           <AppButton title="Join Community" onPress={() => console.log("Joined!")} style={styles.joinButton} />
 
           {community?.isLive && (
@@ -88,6 +91,13 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.borderRadius?.md || 8,
     borderWidth: 1,
     borderColor: "rgba(239, 68, 68, 0.2)",
+    marginBottom: Spacing.lg
+  },
+  badgeContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    columnGap: Spacing.xs,
+    rowGap: Spacing.sm,
     marginBottom: Spacing.lg
   }
 });

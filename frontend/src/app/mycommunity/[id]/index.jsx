@@ -22,8 +22,8 @@ export default function MyCommunityChatScreen() {
         <View style={styles.chatContainer}>
           <AppText style={styles.placeholderText}>
             Hier kommt später der{" "}
-            <Pressable onPress={openDetails} style={{ color: MyTheme.primaryAccent, textDecoration: "underline" }}>
-              Gruppenchat
+            <Pressable onPress={openDetails}>
+              <AppText style={{ color: MyTheme.primaryAccent, textDecoration: "underline" }}>Gruppenchat</AppText>
             </Pressable>{" "}
             hin...
           </AppText>
