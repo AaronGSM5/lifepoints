@@ -1,19 +1,40 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState, useMemo } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
 import SectionHeader from "@/components/ui/SectionHeader";
 import AppBadge from "@/components/ui/AppBadge";
+import { MyTheme } from "@/constants/Colors";
+import { Icon } from "@/components/icons/Icon";
+import BaseCard from "@/components/ui/BaseCard";
+
+const MOCK_MEMBERS = [
+  { id: "1", name: "Sarah", lp: 2450 },
+  { id: "2", name: "Lukas", lp: 1820 },
+  { id: "3", name: "Julia", lp: 2100 },
+  { id: "4", name: "Marc", lp: 950 },
+  { id: "5", name: "Elena", lp: 1600 },
+  { id: "6", name: "Tim", lp: 1200 },
+  { id: "7", name: "Svenja", lp: 800 }
+];
 
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const { recommended, myCommunities } = useCommunities();
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
+
+  const sortedMembers = useMemo(() => {
+    return [...MOCK_MEMBERS].sort((a, b) => b.lp - a.lp);
+  }, []);
+
+  const displayedMembers = isExpanded ? sortedMembers : sortedMembers.slice(0, 5);
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -21,18 +42,18 @@ export default function MyCommunityDetailScreen() {
         <CommunityHeader community={community} />
 
         <View style={styles.contentContainer}>
-          <View style={styles.titleSection}>
+          <View style={{ marginBottom: Spacing.lg }}>
             <AppText type="h1">{community?.title}</AppText>
             <AppText type="caption" style={styles.statsText}>
               {community?.members} Mitglieder • {community?.onlineCount} Online
             </AppText>
           </View>
+
           <View style={styles.badgeContainer}>
-            {community?.badges?.map((badge, i) => {
-              return <AppBadge key={i} variant="glas" label={badge} />;
-            })}
+            {community?.badges?.map((badge, i) => (
+              <AppBadge key={i} variant="glas" label={badge} />
+            ))}
           </View>
-          <AppButton title="Join Community" onPress={() => console.log("Joined!")} style={styles.joinButton} />
 
           {community?.isLive && (
             <View style={styles.liveContainer}>
@@ -52,6 +73,56 @@ export default function MyCommunityDetailScreen() {
             <SectionHeader title={"Community Tasks"} />
             <AppText type="caption">Preview of what's waiting for you.</AppText>
           </View>
+
+          <View style={styles.section}>
+            <SectionHeader
+              title={"Leaderboard"}
+              rightLabel={!isExpanded ? "Show all" : "Show less"}
+              onRightPress={() => setIsExpanded(!isExpanded)}
+            />
+
+            <BaseCard>
+              {displayedMembers.map((member, index) => (
+                <View key={member.id} style={styles.memberRow}>
+                  <View style={{ width: 30 }}>
+                    <AppText
+                      bold
+                      style={[
+                        { color: MyTheme.muted },
+                        index === 0 && { color: "#FFD700" },
+                        index === 1 && { color: "#C0C0C0" },
+                        index === 2 && { color: "#CD7F32" }
+                      ]}
+                    >
+                      {index + 1}
+                    </AppText>
+                  </View>
+
+                  <AppText bold style={{ flex: 1 }}>
+                    {member.name}
+                  </AppText>
+
+                  <View style={styles.lpContainer}>
+                    <AppText bold style={{ color: MyTheme.primaryAccent }}>
+                      {member.lp}
+                    </AppText>
+                    <AppText bold type="caption" style={{ marginLeft: 4, color: MyTheme.primaryAccent }}>
+                      LP
+                    </AppText>
+                  </View>
+                </View>
+              ))}
+            </BaseCard>
+
+            {!isExpanded && sortedMembers.length > 5 && (
+              <TouchableOpacity style={styles.expandButton} onPress={() => setIsExpanded(true)}>
+                <AppText bold style={styles.expandButtonText}>
+                  Show all {sortedMembers.length} members
+                </AppText>
+                <Icon name="down" size={16} color={MyTheme.primaryAccent} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </ScreenWrapper>
     </>
@@ -61,24 +132,15 @@ export default function MyCommunityDetailScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: Spacing.lg,
-    marginTop: Spacing.md
-  },
-  titleSection: {
-    marginBottom: Spacing.lg
+    marginTop: Spacing.md,
+    paddingBottom: 40
   },
   statsText: {
     marginTop: Spacing.xs,
     opacity: 0.7
   },
-  joinButton: {
-    marginBottom: Spacing.xl
-  },
   section: {
     marginTop: Spacing.xl
-  },
-  sectionTitle: {
-    fontSize: 18,
-    marginBottom: Spacing.sm
   },
   description: {
     lineHeight: 22,
@@ -96,7 +158,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     columnGap: Spacing.xs,
-    rowGap: Spacing.sm,
-    marginBottom: Spacing.lg
+    rowGap: Spacing.sm
+  },
+  memberRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: Spacing.md - 4,
+    paddingHorizontal: Spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255, 255, 255, 0.05)"
+  },
+  lpContainer: {
+    flexDirection: "row",
+    alignItems: "baseline"
+  },
+  expandButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: Spacing.md,
+    gap: 4
+  },
+  expandButtonText: {
+    color: MyTheme.primaryAccent,
+    fontSize: 14
   }
 });
