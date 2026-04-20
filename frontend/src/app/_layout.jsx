@@ -8,8 +8,8 @@ import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@e
 import Toolbar from "@/components/layout/Toolbar";
 import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
+import * as NavigationBar from "expo-navigation-bar";
 
-// Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist
 SplashScreen.preventAutoHideAsync();
 
 export function ErrorBoundary({ error, retry }) {
@@ -22,7 +22,6 @@ const initialMetrics = {
 };
 
 export default function RootLayout() {
-  // Schriften laden
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
     "Inter-SemiBold": Inter_600SemiBold,
@@ -31,12 +30,21 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded || error) {
-      // Sobald geladen, Splash-Screen ausblenden
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
 
-  // Wichtig: Solange die Fonts laden, geben wir null zurück (App bleibt beim Splash-Screen)
+  useEffect(() => {
+    const hideNavigationBar = async () => {
+      if (Platform.OS === "android") {
+        await NavigationBar.setVisibilityAsync("hidden");
+        await NavigationBar.setBehaviorAsync("overlay-swipe");
+      }
+    };
+
+    hideNavigationBar();
+  }, []);
+
   if (!loaded && !error) {
     return null;
   }
