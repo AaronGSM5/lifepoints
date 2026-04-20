@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList, TouchableOpacity, Pressable } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
@@ -57,14 +57,11 @@ export default function CommunitiesScreen() {
       case "search":
         return (
           <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
-            <AppInput
-              icon="search"
-              placeholder="Search communities..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              blur
-              bottomMargin={false}
-            />
+            <Pressable onPress={() => router.push("/search")}>
+              <View pointerEvents="none">
+                <AppInput icon="search" placeholder="Search..." bottomMargin={false} editable={false} blur />
+              </View>
+            </Pressable>
           </View>
         );
 

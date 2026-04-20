@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
 import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList, TouchableOpacity, Pressable } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
@@ -58,14 +58,11 @@ const TasksScreen = () => {
         return (
           <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
             <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-              <AppInput
-                icon="search"
-                placeholder="Search tasks..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                blur={true}
-                bottomMargin={false}
-              />
+              <Pressable onPress={() => router.push("/search")}>
+                <View pointerEvents="none">
+                  <AppInput icon="search" placeholder="Search..." bottomMargin={false} editable={false} blur />
+                </View>
+              </Pressable>
             </Skeleton>
           </View>
         );

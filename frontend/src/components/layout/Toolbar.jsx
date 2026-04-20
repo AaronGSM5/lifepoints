@@ -58,9 +58,14 @@ export default function Toolbar() {
             <Icon name="settings" />
           </Pressable>
         ) : isMainTab && pathname !== "/profile" ? (
-          <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
-            <Icon name="notifications" />
-          </Pressable>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg + 4 }}>
+            <Pressable hitSlop={15} onPress={() => router.push("/search")}>
+              <Icon name="search" />
+            </Pressable>
+            <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
+              <Icon name="notifications" />
+            </Pressable>
+          </View>
         ) : (
           /* Placeholder for centered Logo */
           <View style={{ width: 40 }} />
