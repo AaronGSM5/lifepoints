@@ -46,6 +46,7 @@ export const IconMap = {
   right: ({ outline, ...props }) => <Icon name={getName("arrow-right-s", outline)} {...props} />,
   down: ({ outline, ...props }) => <Icon name={getName("arrow-down-s", outline)} {...props} />,
   trash: ({ outline, ...props }) => <Icon name={getName("delete-bin-6", outline)} {...props} />,
+  survey: ({ outline, ...props }) => <Icon name={getName("survey", outline)} {...props} />,
   // Placeholders
   newFolder: ({ outline, ...props }) => <Icon name={getName("folder-add", outline)} {...props} />,
   timer: ({ outline, ...props }) => <Icon name={getName("timer", outline)} {...props} />,

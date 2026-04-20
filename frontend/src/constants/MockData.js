@@ -504,6 +504,33 @@ export const mockTaskTrackingHistory = [
   { id: "3", date: "12. Okt 2023, 18:00 Uhr", points: 10 },
 ];
 
+export const mockQuests = {
+  today: [
+    {
+      id: "1", title: "Logge 2 Impact Journal Einträge", points: 50, currentProgress: 1,
+      target: 2, completed: false, collected: false
+    },
+    {
+      id: "2", title: "Lade einen Freund ein", points: 200, currentProgress: 1,
+      target: 1, completed: true, collected: false
+    }
+  ],
+  week: [
+    {
+      id: "3", title: "Erreiche einen 5-Tage Streak", points: 500, currentProgress: 1,
+      target: 5, completed: false, collected: false
+    },
+    {
+      id: "4", title: "Sammle insgesamt 1000 Lifepoints", points: 1000, currentProgress: 250,
+      target: 1000, completed: false, collected: false
+    },
+    {
+      id: "5", title: "Schließe 3 Active Tasks ab", points: 300, currentProgress: 3,
+      target: 3, completed: true, collected: true
+    }
+  ]
+};
+
 export const mockCommunityIcons = [
   "groups",
   "forum",

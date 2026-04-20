@@ -9,13 +9,16 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import EventHero from "@/components/home/EventHero";
 import ActiveTaskCard from "@/components/home/ActiveTaskCard";
 import { useHome } from "@/hooks/useHome";
+import { Icon } from "@/components/icons/Icon";
+import QuestModal from "@/components/home/QuestModal";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
-  const { feedItems, isLoading, isRefreshing, refreshHomeData } = useHome();
+  const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [shouldCrash, setShouldCrash] = useState(false);
+  const [questmodalVisible, setQuestModalVisible] = useState(false);
   const bottomPadding = useFloatingNavbarPadding();
 
   if (shouldCrash) {
@@ -32,7 +35,11 @@ export default function HomeScreen() {
     () => (
       <View style={{ paddingHorizontal: Spacing.md }}>
         <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
-        <SectionHeader title={"Active Tasks"} />
+        <SectionHeader
+          title={"Active Tasks"}
+          rightIcon={<Icon name={"survey"} />}
+          onRightPress={() => setQuestModalVisible(true)}
+        />
         <ActiveTaskCard
           title={"Morning Vitality"}
           points={"500"}
@@ -76,6 +83,7 @@ export default function HomeScreen() {
         onClose={() => setSelectedPostId(null)}
         postId={selectedPostId}
       />
+      <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
     </ScreenWrapper>
   );
 }
