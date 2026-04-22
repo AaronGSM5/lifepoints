@@ -47,7 +47,7 @@ export default function CommunitiesScreen() {
         return (
           <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
             <EventHero
-              imageSource={require("../../../public/assets/creativeBanner.png")}
+              imageSource={require("../../../public/assets/createCommunityBanner.png")}
               isLoading={isLoading}
               onPress={() => setIsCreateModalVisible(true)}
             />
