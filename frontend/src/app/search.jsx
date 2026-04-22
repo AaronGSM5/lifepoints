@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, FlatList, ScrollView } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
@@ -10,7 +10,23 @@ import AppBadge from "@/components/ui/AppBadge";
 
 export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchHistory = ["Gaming", "Meditation", "Fitness Anfänger", "Rewe"];
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      console.log("Suche jetzt nach:", debouncedQuery);
+    }
+  }, [debouncedQuery]);
 
   return (
     <ScreenWrapper scrollable={false} withPaddingTop={false}>
