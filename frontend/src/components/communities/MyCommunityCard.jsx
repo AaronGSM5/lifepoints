@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   communityCard: {
     width: 160,
     height: 140,
-    marginRight: Spacing.md,
     padding: Spacing.md,
     justifyContent: "space-between"
   },

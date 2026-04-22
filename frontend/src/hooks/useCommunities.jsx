@@ -1,26 +1,88 @@
 import { useState, useEffect, useCallback } from "react";
 import { mockRecommendedCommunities, mockMyCommunities } from "@/constants/MockData";
 
+const HORIZONTAL_PAGE_SIZE = 5;
+const VERTICAL_PAGE_SIZE = 2;
+
+const simulateFetch = (dataArray, page, pageSize) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const startIndex = (page - 1) * pageSize;
+      const paginatedData = dataArray.slice(startIndex, startIndex + pageSize);
+      console.log(`Mock API: Geladen Seite ${page} (Größe ${pageSize}), ${paginatedData.length} Elemente`);
+      resolve(paginatedData);
+    }, 1500);
+  });
+};
+
 export const useCommunities = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [myCommunities, setMyCommunities] = useState(mockMyCommunities);
-  const [recommended, setRecommended] = useState(mockRecommendedCommunities);
 
-  const fetchCommunities = useCallback(async () => {
+  const [recommendedData, setRecommendedData] = useState([]);
+
+  const fetchInitialData = useCallback(async () => {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1700);
+    setMyCommunities(mockMyCommunities);
+
+    const firstPageRecommended = await simulateFetch(mockRecommendedCommunities, 1, HORIZONTAL_PAGE_SIZE * 2);
+    setRecommendedData(firstPageRecommended);
+
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchCommunities();
-  }, [fetchCommunities]);
+    fetchInitialData();
+  }, [fetchInitialData]);
+
+  const fetchCommunitiesForCategory = useCallback(async (categoryKey, page) => {
+    console.log(`Hook: Lade Seite ${page} für horizontale Kategorie: ${categoryKey}`);
+
+    let dataToPaginate = [];
+    if (categoryKey === "recommended_you") {
+      dataToPaginate = mockRecommendedCommunities;
+    } else {
+      dataToPaginate = [...mockRecommendedCommunities].sort(() => 0.5 - Math.random());
+    }
+
+    const newData = await simulateFetch(dataToPaginate, page, HORIZONTAL_PAGE_SIZE);
+    return newData;
+  }, []);
+
+  const fetchMoreSections = useCallback(async (page) => {
+    console.log(`Hook: Lade neue vertikale Sektionen, Seite ${page}`);
+
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const newSectionsWithData = [];
+
+        for (let i = 0; i < VERTICAL_PAGE_SIZE; i++) {
+          const sectionIndex = (page - 1) * VERTICAL_PAGE_SIZE + i;
+          const sectionId = `dyn-sec-${sectionIndex}`;
+          const categoryKey = `topic_${sectionIndex}`;
+
+          const firstPageData = await simulateFetch(mockRecommendedCommunities, 1, HORIZONTAL_PAGE_SIZE);
+
+          newSectionsWithData.push({
+            id: sectionId,
+            title: `Discover: Topic ${sectionIndex + 1}`,
+            categoryKey: categoryKey,
+            data: firstPageData
+          });
+        }
+        resolve(newSectionsWithData);
+      }, 2000);
+    });
+  }, []);
 
   return {
     myCommunities,
-    recommended,
+    recommended: recommendedData,
     searchQuery,
     setSearchQuery,
-    isLoading
+    isLoading,
+    fetchCommunitiesForCategory,
+    fetchMoreSections
   };
 };
