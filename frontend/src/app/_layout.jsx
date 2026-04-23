@@ -9,6 +9,7 @@ import Toolbar from "@/components/layout/Toolbar";
 import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import * as NavigationBar from "expo-navigation-bar";
+import useStore from "@/store/useStore";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +23,7 @@ const initialMetrics = {
 };
 
 export default function RootLayout() {
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
     "Inter-SemiBold": Inter_600SemiBold,
@@ -50,9 +52,9 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: MyTheme.background }}>
+    <View key={isDarkMode ? "dark" : "light"} style={{ flex: 1, backgroundColor: MyTheme.background }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
+        <StatusBar style={isDarkMode ? "light" : "dark"} translucent backgroundColor="transparent" />
 
         <Stack
           screenOptions={{

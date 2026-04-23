@@ -368,7 +368,7 @@ export const mockSettings = [
   {
     title: 'App Experience',
     data: [
-      { id: '6', label: 'Appearance', icon: 'moon', type: 'bottom-sheet', actionName: 'openThemePicker' },
+      { id: '6', label: 'Appearance', icon: 'moon', type: 'link', route: '/setting/appearance' },
       { id: '7', label: 'Language & Region', icon: 'globe', type: 'link', route: '/setting/language' },
       { id: '8', label: 'Storage & Cache', icon: 'hardDrive', type: 'action', actionName: 'clearCache' },
     ],

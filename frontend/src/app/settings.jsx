@@ -26,11 +26,6 @@ export default function SettingsScreen() {
           ]);
         }
         break;
-      case "bottom-sheet":
-        if (item.actionName === "openThemePicker") {
-          console.log("Open Theme Picker Modal");
-        }
-        break;
       case "toggle":
       case "info":
         break;
