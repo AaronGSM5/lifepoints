@@ -10,7 +10,7 @@ import useStore from "@/store/useStore";
 
 export default function ProfileScreen() {
   const { profile, activities, trophies, isLoading } = useProfile();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },

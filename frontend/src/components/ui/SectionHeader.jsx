@@ -21,7 +21,7 @@ const SectionHeader = ({
   isLoading
 }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <View style={[styles.container, style]}>

@@ -21,7 +21,7 @@ const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673b
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");

@@ -38,7 +38,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
 
 export default function Navbar({ state, descriptors, navigation }) {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const insets = useSafeAreaInsets();
 
   // Reihenfolge der Tabs in der Navbar

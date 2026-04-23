@@ -11,7 +11,7 @@ import useStore from "@/store/useStore";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>

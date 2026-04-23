@@ -21,7 +21,7 @@ export default function HomeScreen() {
   const [shouldCrash, setShouldCrash] = useState(false);
   const [questmodalVisible, setQuestModalVisible] = useState(false);
   const bottomPadding = useFloatingNavbarPadding();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");

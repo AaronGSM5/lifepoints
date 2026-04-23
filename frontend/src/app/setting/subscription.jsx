@@ -13,7 +13,7 @@ import useStore from "@/store/useStore";
 
 export default function SubscriptionScreen() {
   const styles = getStyles();
-  const { isDarkMode } = useStore()
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
 

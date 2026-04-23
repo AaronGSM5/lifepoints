@@ -26,7 +26,7 @@ export default function EditProfileScreen() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
 
   // Originaldaten (kommen später aus dem Backend/Store)
   const initialData = {

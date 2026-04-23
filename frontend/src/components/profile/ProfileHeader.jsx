@@ -11,9 +11,10 @@ import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 
-const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
+const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const profile = useStore((state) => state.profile);
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
   const maxXP = 500 + profile.profileLevel * 300;

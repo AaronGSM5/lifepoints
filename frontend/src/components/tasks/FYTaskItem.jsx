@@ -11,7 +11,7 @@ import useStore from "@/store/useStore";
 
 const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>

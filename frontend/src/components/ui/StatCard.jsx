@@ -13,7 +13,7 @@ import useStore from "@/store/useStore";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.statCard}>

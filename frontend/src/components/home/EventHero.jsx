@@ -5,7 +5,7 @@ import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 
 const EventHero = ({ imageSource, isLoading, onPress }) => {
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   return (
     <Pressable onPress={onPress}>
       <View style={styles.heroSection}>

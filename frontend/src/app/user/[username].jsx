@@ -16,7 +16,7 @@ import Animated from "react-native-reanimated";
 
 export default function PublicProfileScreen() {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const { username } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState(true);
 

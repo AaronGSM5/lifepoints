@@ -20,7 +20,7 @@ export default function ShopScreen() {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
   const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
 
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",

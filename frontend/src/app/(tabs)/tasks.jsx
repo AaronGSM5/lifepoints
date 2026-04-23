@@ -20,7 +20,8 @@ const SKELETON_FY_TASKS = [1, 2, 3];
 const TasksScreen = () => {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
-  const { isDarkMode } = useStore();
+    const isDarkMode = useStore((state) => state.isDarkMode);
+
   const {
     tasks,
     recommendedTasks,

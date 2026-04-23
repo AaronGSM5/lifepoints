@@ -31,7 +31,7 @@ const AppInput = forwardRef(
     ref
   ) => {
     const styles = getStyles();
-    const { isDarkMode } = useStore();
+    const isDarkMode = useStore((state) => state.isDarkMode);
     const [isFocused, setIsFocused] = useState(false);
 
     // Multiline-Status aus den Props auslesen

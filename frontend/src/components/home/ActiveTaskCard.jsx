@@ -11,7 +11,7 @@ import useStore from "@/store/useStore";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const styles = getStyles();
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="100%" height={70} radius={Spacing.borderRadius.lg} />
