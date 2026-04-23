@@ -8,6 +8,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import AppInput from "@/components/ui/AppInput";
 import { Skeleton } from "moti/skeleton";
 import AppButton from "../ui/AppButton";
+import useStore from "@/store/useStore";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -15,6 +16,7 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 
 const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLoading, requiresInput }) => {
   const styles = getStyles();
+  const { isDarkMode } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -29,7 +31,7 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
         <View style={styles.mainRow}>
           <View style={styles.iconContainer}>
             <Skeleton
-              colorMode="dark"
+              colorMode={isDarkMode ? "dark" : "light"}
               width="100%"
               height="100%"
               radius={Spacing.borderRadius.md}
@@ -38,9 +40,19 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
           </View>
           <View style={styles.textContainer}>
             <View style={{ marginBottom: 8 }}>
-              <Skeleton colorMode="dark" width="70%" height={16} transition={{ type: "timing", duration: 1500 }} />
+              <Skeleton
+                colorMode={isDarkMode ? "dark" : "light"}
+                width="70%"
+                height={16}
+                transition={{ type: "timing", duration: 1500 }}
+              />
             </View>
-            <Skeleton colorMode="dark" width="40%" height={12} transition={{ type: "timing", duration: 1500 }} />
+            <Skeleton
+              colorMode={isDarkMode ? "dark" : "light"}
+              width="40%"
+              height={12}
+              transition={{ type: "timing", duration: 1500 }}
+            />
           </View>
         </View>
       </BaseCard>

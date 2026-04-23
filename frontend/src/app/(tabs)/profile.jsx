@@ -6,12 +6,13 @@ import { useProfile } from "@/hooks/useProfile";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
 import InviteFriendCard from "@/components/profile/InviteFriendCard";
+import useStore from "@/store/useStore";
 
 export default function ProfileScreen() {
   const { profile, activities, trophies, isLoading } = useProfile();
-
+  const { isDarkMode } = useStore();
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };

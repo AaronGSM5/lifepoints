@@ -11,6 +11,7 @@ import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { useShop } from "@/hooks/useShop";
 import EmptyState from "@/components/shop/EmptyState";
+import useStore from "@/store/useStore";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -19,9 +20,10 @@ export default function ShopScreen() {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
   const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
+  const { isDarkMode } = useStore();
 
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };
@@ -91,6 +93,7 @@ export default function ShopScreen() {
               icon={item.icon}
               isLocked={item.isLocked}
               onPress={() => router.push(`/reward/${item.id}`)}
+              skeletonProps={skeletonProps}
             />
           </View>
         )}

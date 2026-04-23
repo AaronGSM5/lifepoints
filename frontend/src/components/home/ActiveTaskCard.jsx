@@ -7,12 +7,15 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
+import useStore from "@/store/useStore";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const styles = getStyles();
-
+  const { isDarkMode } = useStore();
   if (isLoading) {
-    return <Skeleton colorMode="dark" width="100%" height={70} radius={Spacing.borderRadius.lg} />;
+    return (
+      <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="100%" height={70} radius={Spacing.borderRadius.lg} />
+    );
   }
 
   return (

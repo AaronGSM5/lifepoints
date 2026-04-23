@@ -7,17 +7,18 @@ import { Spacing } from "@/constants/Spacing";
 import BaseCard from "@/components/ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   const styles = getStyles();
-
+  const { isDarkMode } = useStore();
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>
         {/* Image */}
         <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
           <Skeleton
-            colorMode="dark"
+            colorMode={isDarkMode ? "dark" : "light"}
             width="100%"
             height={"100%"}
             radius={0}
@@ -29,15 +30,30 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
           <View style={styles.cardInfoRow}>
             <View style={{ flex: 1, paddingRight: Spacing.sm }}>
               <View style={{ marginBottom: 4 }}>
-                <Skeleton colorMode="dark" width="80%" height={20} transition={{ type: "timing", duration: 1500 }} />
+                <Skeleton
+                  colorMode={isDarkMode ? "dark" : "light"}
+                  width="80%"
+                  height={20}
+                  transition={{ type: "timing", duration: 1500 }}
+                />
               </View>
-              <Skeleton colorMode="dark" width="80%" height={14} transition={{ type: "timing", duration: 1500 }} />
+              <Skeleton
+                colorMode={isDarkMode ? "dark" : "light"}
+                width="80%"
+                height={14}
+                transition={{ type: "timing", duration: 1500 }}
+              />
             </View>
-            <Skeleton colorMode="dark" width={60} height={22} transition={{ type: "timing", duration: 1500 }} />
+            <Skeleton
+              colorMode={isDarkMode ? "dark" : "light"}
+              width={60}
+              height={22}
+              transition={{ type: "timing", duration: 1500 }}
+            />
           </View>
           {/* Button */}
           <Skeleton
-            colorMode="dark"
+            colorMode={isDarkMode ? "dark" : "light"}
             width="100%"
             height={44}
             radius={Spacing.borderRadius.lg}

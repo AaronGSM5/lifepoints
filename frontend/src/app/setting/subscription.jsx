@@ -9,9 +9,11 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
+import useStore from "@/store/useStore";
 
 export default function SubscriptionScreen() {
   const styles = getStyles();
+  const { isDarkMode } = useStore()
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
 
@@ -21,7 +23,7 @@ export default function SubscriptionScreen() {
   }, []);
 
   const skBase = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 

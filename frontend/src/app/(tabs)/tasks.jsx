@@ -12,6 +12,7 @@ import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
+import useStore from "@/store/useStore";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
@@ -19,6 +20,7 @@ const SKELETON_FY_TASKS = [1, 2, 3];
 const TasksScreen = () => {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
+  const { isDarkMode } = useStore();
   const {
     tasks,
     recommendedTasks,
@@ -33,7 +35,7 @@ const TasksScreen = () => {
   } = useTasks();
   const styles = getStyles();
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };

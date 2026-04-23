@@ -11,9 +11,11 @@ import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
 import { mockPublicProfile } from "@/constants/MockData";
 import AppBadge from "@/components/ui/AppBadge";
+import useStore from "@/store/useStore";
 
 export default function PublicProfileScreen() {
   const styles = getStyles();
+  const { isDarkMode } = useStore();
   const { username } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,7 +26,7 @@ export default function PublicProfileScreen() {
   }, []);
 
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };

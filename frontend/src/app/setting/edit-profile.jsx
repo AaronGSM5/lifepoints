@@ -19,12 +19,14 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { mockProfile } from "@/constants/MockData";
+import useStore from "@/store/useStore";
 
 export default function EditProfileScreen() {
   const styles = getStyles();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const { isDarkMode } = useStore();
 
   // Originaldaten (kommen später aus dem Backend/Store)
   const initialData = {
@@ -60,7 +62,7 @@ export default function EditProfileScreen() {
   };
 
   const skBase = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 

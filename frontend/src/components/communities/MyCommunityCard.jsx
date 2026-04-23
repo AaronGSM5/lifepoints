@@ -7,18 +7,19 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
 import { MyTheme } from "@/constants/Colors";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const styles = getStyles();
-
+  const { isDarkMode } = useStore();
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>
-        <Skeleton colorMode="dark" width={44} height={44} radius={Spacing.borderRadius.md} />
+        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={44} height={44} radius={Spacing.borderRadius.md} />
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Skeleton colorMode="dark" width={100} height={16} />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={100} height={16} />
           <View style={{ height: Spacing.xs }} />
-          <Skeleton colorMode="dark" width={60} height={12} />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={60} height={12} />
         </View>
       </BaseCard>
     );

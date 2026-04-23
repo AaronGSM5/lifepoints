@@ -9,18 +9,25 @@ import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppBadge from "./AppBadge";
 import { router } from "expo-router";
+import useStore from "@/store/useStore";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   const styles = getStyles();
+  const { isDarkMode } = useStore();
   if (isLoading) {
     return (
       <BaseCard style={styles.statCard}>
         <View style={styles.statTop}>
-          <Skeleton colorMode="dark" width={50} height={20} transition={{ type: "timing", duration: 1500 }} />
-          <Skeleton colorMode="dark" width={16} height={16} radius={4} />
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={50}
+            height={20}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={16} height={16} radius={4} />
         </View>
         <View style={{ height: Spacing.sm }} />
-        <Skeleton colorMode="dark" width={80} height={10} />
+        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={80} height={10} />
       </BaseCard>
     );
   }
