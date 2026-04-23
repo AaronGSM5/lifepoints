@@ -6,6 +6,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
+import useStore from "@/store/useStore";
 
 const AppInput = forwardRef(
   (
@@ -23,12 +24,13 @@ const AppInput = forwardRef(
       bottomMargin = true,
       blur = false,
       blurIntensity = 65,
-      blurTint = "dark",
+      blurTint,
       ...props
     },
     ref
   ) => {
     const styles = getStyles();
+    const { isDarkMode } = useStore();
     const [isFocused, setIsFocused] = useState(false);
 
     // Multiline-Status aus den Props auslesen
@@ -72,7 +74,7 @@ const AppInput = forwardRef(
           rightContent
         ) : rightIcon ? (
           <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
-            <Icon name={rightIcon} size={20} color="white" />
+            <Icon name={rightIcon} size={20} />
           </TouchableOpacity>
         ) : null}
       </>
@@ -100,7 +102,7 @@ const AppInput = forwardRef(
         {blur ? (
           <BlurView
             intensity={Platform.OS === "android" ? 100 : blurIntensity}
-            tint={blurTint}
+            tint={isDarkMode ? "dark" : "light"}
             experimentalBlurMethod="dimezisBlurView"
             style={[{ overflow: "hidden" }, ...containerStyles]}
           >

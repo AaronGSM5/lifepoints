@@ -5,6 +5,7 @@ import { BlurView } from "expo-blur";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
   const styles = getStyles();
@@ -27,7 +28,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
         <Icon
           name={route.name || "help"}
           size={26}
-          color={isFocused ? MyTheme.primaryAccent : "white"}
+          color={isFocused ? MyTheme.primaryAccent : MyTheme.text}
           outline={!isFocused}
         />
       </Animated.View>
@@ -37,6 +38,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
 
 export default function Navbar({ state, descriptors, navigation }) {
   const styles = getStyles();
+  const { isDarkMode } = useStore();
   const insets = useSafeAreaInsets();
 
   // Reihenfolge der Tabs in der Navbar
@@ -56,7 +58,7 @@ export default function Navbar({ state, descriptors, navigation }) {
         }
       ]}
     >
-      <BlurView intensity={80} tint="systemChromeMaterialDark" style={styles.blurBackground} />
+      <BlurView intensity={80} tint={isDarkMode ? "systemChromeMaterialDark" : "light"} style={styles.blurBackground} />
 
       {/* Button Wrapper */}
       <View style={styles.buttonContainer}>

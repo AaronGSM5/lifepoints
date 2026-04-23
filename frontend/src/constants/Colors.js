@@ -1,6 +1,7 @@
 export const DarkTheme = {
   text: 'rgb(248, 250, 252)',
   background: 'rgb(15, 23, 41)',
+  backgroundBottom: '"rgb(18, 18, 18)"',
   primary: 'rgb(26, 34, 53)',
   secondary: 'rgb(36, 53, 82)',
   primaryAccent: 'rgb(47, 196, 146)',
@@ -16,8 +17,9 @@ export const DarkTheme = {
 export const LightTheme = {
   text: 'rgb(15, 23, 41)',
   background: 'rgb(248, 250, 252)',
+  backgroundBottom: '"rgb(138, 153, 156)"',
   primary: 'rgb(255, 255, 255)',
-  secondary: 'rgb(226, 232, 240)',
+  secondary: 'rgb(173, 186, 202)',
   primaryAccent: 'rgb(47, 196, 146)',
   secondaryAccent: 'rgb(255, 0, 255)',
   gold: '#FFD700',

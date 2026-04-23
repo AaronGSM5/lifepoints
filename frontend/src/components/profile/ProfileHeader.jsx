@@ -9,12 +9,13 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
-  // Berechnung des Zielwerts (Prozentsatz)
   const maxXP = 500 + profile.profileLevel * 300;
   const targetPercentage = (profile.profileXp / maxXP) * 100;
 
@@ -51,7 +52,6 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
 
   return (
     <View style={styles.profileHeader}>
-      {/* 1. Avatar & Name Section */}
       {isLoading ? (
         <View style={{ alignItems: "center" }}>
           <Skeleton {...skeletonProps} radius="round" width={100} height={100} />
@@ -79,7 +79,7 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
             />
           </View>
           <AppText type="h1">{profile.profileName}</AppText>
-          <AppText type="caption" style={{ marginTop: Spacing.xs }}>
+          <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {profile.profileClass} •{" "}
             <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
               {profile.profileRank}
@@ -88,10 +88,9 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
         </>
       )}
 
-      {/* 2. XP Progress Section */}
       <View style={styles.xpContainer}>
         <View style={styles.xpHeader}>
-          <AppText bold type="caption">
+          <AppText bold type="caption" style={!isDarkMode && { color: MyTheme.text }}>
             XP PROGRESS
           </AppText>
           {isLoading ? (
@@ -103,7 +102,12 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
           )}
         </View>
 
-        <View style={styles.progressBarBg}>
+        <View
+          style={[
+            styles.progressBarBg,
+            { backgroundColor: !isDarkMode ? MyTheme.background : "#333", borderWidth: !isDarkMode ? 0 : 1 }
+          ]}
+        >
           {isLoading ? (
             <Skeleton {...skeletonProps} width="100%" height={8} />
           ) : (
@@ -119,7 +123,6 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
         </View>
       </View>
 
-      {/* 3. Action Buttons */}
       <View style={styles.actionButtons}>
         {isLoading ? (
           <>
@@ -139,8 +142,9 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
             <AppButton
               variant="primary"
               title={"Share Stats"}
-              icon={<Icon name="share" size={16} color={MyTheme.text} />}
-              bgColor={"#2A2A2A"}
+              icon={<Icon name="share" size={16} color={!isDarkMode ? MyTheme.background : MyTheme.text} />}
+              bgColor={"#2a2a2acb"}
+              textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}
             />
           </>
         )}
@@ -177,10 +181,8 @@ const getStyles = () =>
     },
     progressBarBg: {
       height: 8,
-      backgroundColor: "#333",
       borderRadius: Spacing.borderRadius.full,
       overflow: "hidden",
-      borderWidth: 1,
       borderColor: "#333"
     },
     progressBarFillContainer: {

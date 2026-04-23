@@ -6,6 +6,7 @@ import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "../ui/AppText";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -21,6 +22,8 @@ export default function Toolbar() {
   const logoHeight = logoWidth / 3.75;
 
   const LP = "1.250";
+
+  const toggleDarkMode = useStore((state) => state.toggleDarkMode);
 
   return (
     <View
@@ -65,6 +68,9 @@ export default function Toolbar() {
             </Pressable>
             <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
               <Icon name="notifications" />
+            </Pressable>
+            <Pressable hitSlop={15} onPress={toggleDarkMode}>
+              <Icon name="moon" />
             </Pressable>
           </View>
         ) : (

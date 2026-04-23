@@ -140,7 +140,7 @@ export default function FeedItem({
       <View style={styles.actionBar}>
         <View style={styles.actionLeft}>
           <Pressable hitSlop={10} onPress={handleLike}>
-            <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : "white"} />
+            <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : undefined} />
           </Pressable>
           <Pressable hitSlop={10} onPress={() => onOpenComments(id)}>
             <Icon name="chat" />

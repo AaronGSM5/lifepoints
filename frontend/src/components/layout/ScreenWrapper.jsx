@@ -36,7 +36,9 @@ export default function ScreenWrapper({
 
   return (
     <View style={styles.wrapper}>
-      {useGradient && <LinearGradient colors={[MyTheme.background, "#121212"]} style={StyleSheet.absoluteFillObject} />}
+      {useGradient && (
+        <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={StyleSheet.absoluteFillObject} />
+      )}
       {scrollable ? (
         <ScrollView
           style={{ flex: 1 }}

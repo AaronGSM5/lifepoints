@@ -53,7 +53,7 @@ export default function MyCommunityChatScreen() {
     if (isSystem) {
       return (
         <View style={styles.systemMessageContainer}>
-          <AppText type="caption" style={styles.systemMessageText}>
+          <AppText type="caption" bold style={styles.systemMessageText}>
             {item.text}
           </AppText>
         </View>
@@ -180,7 +180,7 @@ const getStyles = () =>
       marginVertical: Spacing.md
     },
     systemMessageText: {
-      backgroundColor: "rgba(255,255,255,0.05)",
+      backgroundColor: MyTheme.glas,
       paddingHorizontal: Spacing.md,
       paddingVertical: 4,
       borderRadius: Spacing.borderRadius.md
@@ -215,11 +215,11 @@ const getStyles = () =>
       borderRadius: Spacing.borderRadius.lg
     },
     messageBubbleMe: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: MyTheme.primaryAccent,
       borderBottomRightRadius: Spacing.borderRadius.sm - 4
     },
     messageBubbleOther: {
-      backgroundColor: "rgba(255,255,255,0.08)",
+      backgroundColor: MyTheme.primary,
       borderBottomLeftRadius: Spacing.borderRadius.sm - 4
     },
     senderName: {

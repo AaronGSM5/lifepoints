@@ -12,6 +12,7 @@ import BaseBottomSheet from "../ui/BaseBottomSheet";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
+  const styles = getStyles();
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>

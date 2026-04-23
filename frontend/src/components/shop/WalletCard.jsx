@@ -39,9 +39,9 @@ const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
   }
 
   return (
-    <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
+    <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={styles.walletCard}>
       <View style={styles.walletHeader}>
-        <AppText bold type="caption" style={{ opacity: 0.9 }}>
+        <AppText bold type="caption">
           YOUR POINTS
         </AppText>
         <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
@@ -60,7 +60,9 @@ const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
             style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
           />
         </View>
-        <AppText type="caption">{targetPoints - points} pts until Gold Tier</AppText>
+        <AppText type="caption" bold>
+          {targetPoints - points} pts until Gold Tier
+        </AppText>
       </View>
     </LinearGradient>
   );

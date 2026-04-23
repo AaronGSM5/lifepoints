@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AppText from "@/components/ui/AppText";
@@ -35,7 +35,6 @@ export default function RewardDetailScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Hero-Image */}
           <View style={styles.imageContainer}>
             <Image source={{ uri: reward.image }} style={styles.image} />
 
@@ -47,7 +46,6 @@ export default function RewardDetailScreen() {
             />
           </View>
 
-          {/* 2. Der Content-Bereich */}
           <View style={styles.content}>
             <View style={styles.headerRow}>
               <AppBadge
@@ -58,8 +56,8 @@ export default function RewardDetailScreen() {
               {reward.isLocked && (
                 <AppBadge
                   label={"LOCKED"}
-                  textStyle={{ fontSize: 10, color: MyTheme.muted }}
-                  style={{ backgroundColor: "#2A2A2A" }}
+                  textStyle={{ fontSize: 10, color: MyTheme.text }}
+                  style={{ backgroundColor: MyTheme.muted }}
                 />
               )}
             </View>
@@ -85,10 +83,11 @@ export default function RewardDetailScreen() {
             variant="primary"
             title={reward.isLocked ? "Punkte sammeln zum Freischalten" : "Jetzt einlösen"}
             size="lg"
-            disabled={reward.isLocked}
             style={reward.isLocked ? { opacity: 0.8 } : {}}
-            onPress={() => alert("Reward eingelöst!")}
-            bgColor={MyTheme.primaryAccent}
+            onPress={() => {
+              if (!reward.isLocked) alert("Reward eingelöst!");
+            }}
+            bgColor={reward.isLocked ? MyTheme.muted : MyTheme.primaryAccent}
           />
         </View>
       </View>

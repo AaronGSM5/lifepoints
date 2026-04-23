@@ -43,7 +43,11 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
               onPress={() => onSelectIcon(icon)}
               style={[styles.iconItem, selectedIcon === icon && styles.selectedIconItem]}
             >
-              <MaterialIcons name={icon} size={28} color={selectedIcon === icon ? MyTheme.primaryAccent : "#fff"} />
+              <MaterialIcons
+                name={icon}
+                size={28}
+                color={selectedIcon === icon ? MyTheme.primaryAccent : MyTheme.muted}
+              />
             </Pressable>
           ))}
         </View>

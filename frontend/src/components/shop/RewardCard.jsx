@@ -7,10 +7,11 @@ import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
 import BaseCard from "../ui/BaseCard";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   const styles = getStyles();
-
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.gridCard} padding={0}>
@@ -28,16 +29,16 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
   }
 
   return (
-    <BaseCard style={styles.gridCard} padding={0} onPress={onPress}>
+    <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Image source={{ uri: image }} style={styles.cardImage} />
         <AppBadge
-          iconNode={<Icon name={icon} size={14} color={MyTheme.text} />}
+          iconNode={<Icon name={icon} size={14} color={!isDarkMode && "rgb(0, 0, 0)"} />}
           style={{
             position: "absolute",
             bottom: Spacing.sm,
             right: Spacing.sm,
-            backgroundColor: "rgba(0,0,0,0.5)"
+            backgroundColor: MyTheme.glas
           }}
         />
       </View>
@@ -58,15 +59,15 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
           {isLocked ? (
             <AppBadge
               label={"Locked"}
-              textStyle={{ fontSize: 10, color: MyTheme.muted }}
-              style={{ backgroundColor: "#2A2A2A" }}
+              textStyle={{ fontSize: 10, color: MyTheme.text }}
+              style={{ backgroundColor: MyTheme.muted }}
             />
           ) : (
             <AppBadge
               iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
               style={{
                 backgroundColor: MyTheme.background,
-                borderColor: MyTheme.secondary
+                borderColor: isDarkMode ? MyTheme.secondary : MyTheme.separator
               }}
             />
           )}

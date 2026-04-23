@@ -26,4 +26,4 @@ const useStore = create(logger((set) => ({
 })
 ));
 
-export default useStore;
+export default useStore
