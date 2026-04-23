@@ -6,6 +6,7 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppInput from "../../ui/AppInput";
+import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
 
 // Imports der neuen Komponenten (Pfade ggf. anpassen)
 import IconPicker from "./IconPicker";
@@ -64,144 +65,86 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      presentationStyle="overFullScreen"
-      onRequestClose={handleClose}
-    >
-      <View style={styles.modalOverlay}>
-        <Pressable style={styles.dismissArea} onPress={handleClose} />
+    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={"Neue Community"}>
+      <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
+        {/* Name */}
+        <View style={styles.section}>
+          <AppText type="caption" style={styles.label}>
+            COMMUNITY-NAME (PERMANENT)
+          </AppText>
+          <AppInput
+            placeholder="Wie soll deine Community heißen?"
+            value={name}
+            onChangeText={setName}
+            bottomMargin={false}
+            isForm
+          />
+          <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
+        </View>
 
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.sheetContainer}>
-          <View style={styles.content}>
-            <View style={styles.dragHandle} />
-            <View style={styles.header}>
-              <AppText type="h2" bold>
-                Neue Community
-              </AppText>
-              <Pressable onPress={handleClose} hitSlop={10}>
-                <Icon name="close" color={MyTheme.muted} size={24} />
-              </Pressable>
-            </View>
+        {/* Description */}
+        <View style={styles.section}>
+          <AppText type="caption" style={styles.label}>
+            BESCHREIBUNG
+          </AppText>
+          <AppInput
+            multiline
+            placeholder="Worum geht es in deiner Community?"
+            value={description}
+            onChangeText={setDescription}
+            bottomMargin={false}
+            isForm
+          />
+        </View>
 
-            <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
-              {/* Name */}
-              <View style={styles.section}>
-                <AppText type="caption" style={styles.label}>
-                  COMMUNITY-NAME (PERMANENT)
-                </AppText>
-                <AppInput
-                  placeholder="Wie soll deine Community heißen?"
-                  value={name}
-                  onChangeText={setName}
-                  bottomMargin={false}
-                  isForm
-                />
-                <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
-              </View>
+        <View style={styles.section}>
+          <IconPicker
+            key={`icon-${resetKey}`}
+            icons={mockCommunityIcons}
+            selectedIcon={selectedIcon}
+            onSelectIcon={setSelectedIcon}
+          />
+        </View>
 
-              {/* Description */}
-              <View style={styles.section}>
-                <AppText type="caption" style={styles.label}>
-                  BESCHREIBUNG
-                </AppText>
-                <AppInput
-                  multiline
-                  placeholder="Worum geht es in deiner Community?"
-                  value={description}
-                  onChangeText={setDescription}
-                  bottomMargin={false}
-                  isForm
-                />
-              </View>
+        <View style={styles.section}>
+          <BadgePicker
+            key={`badge-${resetKey}`}
+            badges={mockCommunityBadges}
+            selectedBadges={selectedBadges}
+            onToggleBadge={toggleBadge}
+          />
+        </View>
 
-              <View style={styles.section}>
-                <IconPicker
-                  key={`icon-${resetKey}`}
-                  icons={mockCommunityIcons}
-                  selectedIcon={selectedIcon}
-                  onSelectIcon={setSelectedIcon}
-                />
-              </View>
+        <View style={styles.section}>
+          <BannerUploader
+            bannerUri={bannerUri}
+            onBannerSelect={setBannerUri}
+            onBannerClear={() => setBannerUri(null)}
+          />
+        </View>
 
-              <View style={styles.section}>
-                <BadgePicker
-                  key={`badge-${resetKey}`}
-                  badges={mockCommunityBadges}
-                  selectedBadges={selectedBadges}
-                  onToggleBadge={toggleBadge}
-                />
-              </View>
+        <View style={styles.section}>
+          <SizePicker options={mockCommunitySizes} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
+        </View>
+      </ScrollView>
 
-              <View style={styles.section}>
-                <BannerUploader
-                  bannerUri={bannerUri}
-                  onBannerSelect={setBannerUri}
-                  onBannerClear={() => setBannerUri(null)}
-                />
-              </View>
-
-              <View style={styles.section}>
-                <SizePicker options={mockCommunitySizes} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
-              </View>
-            </ScrollView>
-
-            <View style={styles.footer}>
-              <AppButton
-                title={selectedSize.price === "Gratis" ? "Kostenlos Erstellen" : `Für ${selectedSize.price} Erstellen`}
-                onPress={handleCreate}
-                disabled={!formValid}
-                bgColor={MyTheme.primaryAccent}
-              />
-            </View>
-          </View>
-        </KeyboardAvoidingView>
+      <View style={styles.footer}>
+        <AppButton
+          title={selectedSize.price === "Gratis" ? "Kostenlos Erstellen" : `Für ${selectedSize.price} Erstellen`}
+          onPress={handleCreate}
+          disabled={!formValid}
+          bgColor={MyTheme.primaryAccent}
+        />
       </View>
-    </Modal>
+    </BaseBottomSheet>
   );
 };
 
 const getStyles = () =>
   StyleSheet.create({
-    modalOverlay: {
-      flex: 1,
-      justifyContent: "flex-end",
-      backgroundColor: "rgba(0,0,0,0.7)"
-    },
-    dismissArea: {
-      ...StyleSheet.absoluteFillObject
-    },
-    sheetContainer: {
-      backgroundColor: MyTheme.background,
-      borderTopLeftRadius: 32,
-      borderTopRightRadius: 32,
-      maxHeight: "90%",
-      flexShrink: 1
-    },
-    content: {
-      paddingTop: Spacing.sm,
-      flexShrink: 1
-    },
     scrollContent: {
       paddingHorizontal: Spacing.md,
       paddingBottom: Spacing.lg
-    },
-    dragHandle: {
-      width: 40,
-      height: 5,
-      backgroundColor: "rgba(255,255,255,0.1)",
-      borderRadius: 3,
-      alignSelf: "center",
-      marginBottom: Spacing.md
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: Spacing.md,
-      marginBottom: Spacing.lg
     },
     section: {
       marginBottom: Spacing.lg

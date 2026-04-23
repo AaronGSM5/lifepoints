@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated, // 🔥 NEU: Für unsere Custom-Animationen
-  Dimensions // 🔥 NEU: Um die Bildschirmhöhe zu kennen
+  Dimensions, // 🔥 NEU: Um die Bildschirmhöhe zu kennen
+  PanResponder
 } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -26,6 +27,43 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   // Unsere zwei Animations-Werte
   const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current; // Startet außerhalb des Bildschirms (unten)
   const fadeAnim = useRef(new Animated.Value(0)).current; // Startet unsichtbar
+
+  const panResponder = useRef(
+    PanResponder.create({
+      // 1. Soll die Geste gestartet werden? (Nur wenn nach UNTEN gewischt wird)
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        // Wir aktivieren den Responder nur, wenn der User mindestens 10px nach unten wischt.
+        // Das verhindert, dass versehentliches Tippen als Swipe erkannt wird.
+        return gestureState.dy > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
+      },
+
+      // 2. Was passiert WÄHREND der Finger sich bewegt?
+      onPanResponderMove: (_, gestureState) => {
+        // Das Sheet folgt dem Finger! (Wir lassen keine negativen Werte zu,
+        // damit man das Sheet nicht über den oberen Rand hinausziehen kann)
+        if (gestureState.dy > 0) {
+          slideAnim.setValue(gestureState.dy);
+        }
+      },
+
+      // 3. Was passiert, wenn der Finger LOSLÄSST?
+      onPanResponderRelease: (_, gestureState) => {
+        // War der Wisch schnell genug (vy) ODER weit genug nach unten (dy)?
+        if (gestureState.dy > 150 || gestureState.vy > 1.5) {
+          // Ja! -> Schließen
+          onClose();
+        } else {
+          // Nein! -> Brechen wir ab und federn das Sheet zurück zur Ausgangsposition (0)
+          Animated.spring(slideAnim, {
+            toValue: 0,
+            tension: 65,
+            friction: 11,
+            useNativeDriver: true
+          }).start();
+        }
+      }
+    })
+  ).current;
 
   useEffect(() => {
     if (isVisible) {
@@ -86,6 +124,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
             styles.sheetContainer,
             { transform: [{ translateY: slideAnim }] } // Hier greift unsere Spring-Animation
           ]}
+          {...panResponder.panHandlers}
         >
           <View style={styles.dragHandleContainer}>
             <View style={styles.dragHandle} />
