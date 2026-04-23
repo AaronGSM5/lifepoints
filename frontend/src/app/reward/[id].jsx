@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Image, ScrollView } from "react-native";
+import Animated from "react-native-reanimated";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AppText from "@/components/ui/AppText";
@@ -36,7 +37,11 @@ export default function RewardDetailScreen() {
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.imageContainer}>
-            <Image source={{ uri: reward.image }} style={styles.image} />
+            <Animated.Image
+              source={{ uri: reward.image }}
+              style={styles.image}
+              sharedTransitionTag={`reward-image-${id}`}
+            />
 
             <BackButton />
 

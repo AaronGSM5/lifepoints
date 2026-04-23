@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
 import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -9,7 +10,7 @@ import BaseCard from "../ui/BaseCard";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 
-const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
@@ -31,7 +32,7 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
   return (
     <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
-        <Image source={{ uri: image }} style={styles.cardImage} />
+        <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
         <AppBadge
           iconNode={<Icon name={icon} size={14} color={!isDarkMode && "rgb(0, 0, 0)"} />}
           style={{

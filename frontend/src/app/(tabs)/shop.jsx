@@ -85,6 +85,7 @@ export default function ShopScreen() {
         renderItem={({ item }) => (
           <View style={{ flex: 1 }}>
             <RewardCard
+              id={item.id}
               isLoading={isLoading}
               image={item.image}
               brand={item.brand}

@@ -1,22 +1,19 @@
 import React, { useRef, useEffect } from "react";
-// WICHTIG: Image aus react-native importieren!
-import { View, Animated, StyleSheet, Pressable, Image } from "react-native";
+import { View, Animated as RNAnimated, StyleSheet, Pressable } from "react-native";
+import Animated from "react-native-reanimated";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 import { router } from "expo-router";
 
-// Wir machen das normale Image animierbar, damit wir es faden können
-const AnimatedImage = Animated.createAnimatedComponent(Image);
-
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const styles = getStyles();
-  const animValue = useRef(new Animated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
+  const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
   useEffect(() => {
     if (justUnlocked) {
-      Animated.timing(animValue, {
+      RNAnimated.timing(animValue, {
         toValue: 1,
         duration: 800,
         delay: 300,
@@ -29,7 +26,6 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
     }
   }, [justUnlocked, animValue, id, onAnimationComplete]);
 
-  // Bild ist nur zu 30% sichtbar, wenn gelockt. 100% wenn unlocked.
   const imageOpacity = animValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 1]
@@ -57,19 +53,24 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
   return (
     <Pressable onPress={handlePress}>
       <View style={styles.trophyItem}>
-        {/* Die äußere Box mit Scale-Animation bleibt! */}
-        <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
-          <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
+        <RNAnimated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
+          <RNAnimated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
-          <AnimatedImage source={icon} style={[styles.trophyImage, { opacity: imageOpacity }]} resizeMode="contain" />
+          <RNAnimated.View style={[styles.trophyImage, { opacity: imageOpacity }]}>
+            <Animated.Image
+              source={icon}
+              style={styles.trophyImage}
+              resizeMode="contain"
+              sharedTransitionTag={`trophy-image-${id}`}
+            />
+          </RNAnimated.View>
 
-          {/* Das kleine Schloss bleibt als Icon erhalten */}
           {(!unlocked || justUnlocked) && (
-            <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-              <Icon name="lock" size={13} color="#FFFFFF" />
-            </Animated.View>
+            <RNAnimated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
+              <Icon name="lock" size={13} color={MyTheme.text} />
+            </RNAnimated.View>
           )}
-        </Animated.View>
+        </RNAnimated.View>
 
         <AppText
           animated
@@ -109,7 +110,7 @@ const getStyles = () =>
       right: 5,
       width: 15,
       height: 15,
-      backgroundColor: "#1E1E1E",
+      backgroundColor: MyTheme.background,
       borderRadius: Spacing.borderRadius.full,
       justifyContent: "center",
       alignItems: "center",

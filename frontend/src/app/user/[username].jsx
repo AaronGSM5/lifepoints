@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -12,6 +12,7 @@ import { Skeleton } from "moti/skeleton";
 import { mockPublicProfile } from "@/constants/MockData";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
+import Animated from "react-native-reanimated";
 
 export default function PublicProfileScreen() {
   const styles = getStyles();
@@ -20,7 +21,6 @@ export default function PublicProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simuliere einen Fetch der User-Daten
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -33,11 +33,19 @@ export default function PublicProfileScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      {/* 1. Avatar & Info Section (Zentriert) */}
       <View style={styles.profileHeader}>
+        <View>
+          <Animated.View style={styles.avatarContainer} sharedTransitionTag={`avatar-${username}`}>
+            <AppText type="h1">{username.charAt(0).toUpperCase()}</AppText>
+            <AppBadge
+              label={`LVL ${mockPublicProfile.profileLevel}`}
+              style={styles.levelBadge}
+              textStyle={{ color: MyTheme.text }}
+            />
+          </Animated.View>
+        </View>
         {isLoading ? (
           <View style={{ alignItems: "center" }}>
-            <Skeleton {...skeletonProps} radius="round" width={110} height={110} />
             <View style={{ height: Spacing.md }} />
             <Skeleton {...skeletonProps} width={180} height={28} />
             <View style={{ height: Spacing.xs }} />
@@ -47,29 +55,10 @@ export default function PublicProfileScreen() {
           </View>
         ) : (
           <>
-            <View style={styles.avatarContainer}>
-              <Image source={{ uri: "https://i.pravatar.cc/150?u=aaron" }} style={styles.avatar} />
-              <AppBadge
-                label={`LVL ${mockPublicProfile.profileLevel}`}
-                style={{
-                  position: "absolute",
-                  bottom: -Spacing.sm,
-                  alignSelf: "center",
-                  backgroundColor: MyTheme.primaryAccent,
-                  paddingVertical: 2,
-                  borderWidth: 2,
-                  borderColor: MyTheme.background
-                }}
-                textStyle={{ color: MyTheme.text }}
-              />
-            </View>
-
-            <AppText type="h1" style={{ marginBottom: Spacing.xs }}>
+            <AppText type="h1" style={{ marginVertical: Spacing.xs }}>
               {mockPublicProfile.profileName}
             </AppText>
-
             <AppText style={{ textAlign: "center" }}>{mockPublicProfile.profileBio}</AppText>
-
             <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
               {mockPublicProfile.profileClass} •{" "}
               <AppText bold type="caption" style={{ color: MyTheme.gold }}>
@@ -139,16 +128,30 @@ const getStyles = () =>
       paddingHorizontal: Spacing.lg
     },
     avatarContainer: {
-      position: "relative",
-      marginBottom: Spacing.md
-    },
-    avatar: {
       width: 110,
       height: 110,
       borderRadius: 55,
-      borderWidth: 2,
-      borderColor: MyTheme.secondary
+      backgroundColor: MyTheme.primaryAccent,
+      justifyContent: "center",
+      alignItems: "center",
+      position: "relative"
     },
+    levelBadge: {
+      position: "absolute",
+      bottom: -Spacing.sm,
+      alignSelf: "center",
+      backgroundColor: MyTheme.primaryAccent,
+      paddingVertical: 2,
+      borderWidth: 2,
+      borderColor: MyTheme.background
+    },
+    // avatar: {
+    //   width: 110,
+    //   height: 110,
+    //   borderRadius: 55,
+    //   borderWidth: 2,
+    //   borderColor: MyTheme.secondary
+    // },
     actionButtons: {
       flexDirection: "row",
       gap: Spacing.md,

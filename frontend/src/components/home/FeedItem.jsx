@@ -1,4 +1,5 @@
-import { View, StyleSheet, Image, Pressable, Animated, Share } from "react-native";
+import { View, StyleSheet, Image, Pressable, Animated as RNAnimated, Share } from "react-native";
+import Animated from "react-native-reanimated";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
@@ -22,8 +23,8 @@ export default function FeedItem({
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
   const [lastTap, setLastTap] = useState(0);
-  const heartScale = useRef(new Animated.Value(0)).current;
-  const heartOpacity = useRef(new Animated.Value(0)).current;
+  const heartScale = useRef(new RNAnimated.Value(0)).current;
+  const heartOpacity = useRef(new RNAnimated.Value(0)).current;
 
   const navigateToProfile = () => {
     router.push(`/user/${username}`);
@@ -70,14 +71,14 @@ export default function FeedItem({
         setLikesCount((prev) => prev + 1);
       }
 
-      Animated.sequence([
-        Animated.parallel([
-          Animated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
-          Animated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
+      RNAnimated.sequence([
+        RNAnimated.parallel([
+          RNAnimated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
+          RNAnimated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
         ]),
-        Animated.delay(400), // Das Herz bleibt kurz sichtbar
-        Animated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
+        RNAnimated.delay(400), // Das Herz bleibt kurz sichtbar
+        RNAnimated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+        RNAnimated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
       ]).start();
     } else {
       setLastTap(now);
@@ -108,9 +109,9 @@ export default function FeedItem({
       <View style={styles.header}>
         <Pressable onPress={navigateToProfile}>
           <View style={styles.headerUser}>
-            <View style={styles.avatarPlaceholder}>
+            <Animated.View style={styles.avatarPlaceholder} sharedTransitionTag={`avatar-${username}`}>
               <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
-            </View>
+            </Animated.View>
             <AppText bold style={styles.username}>
               {username}
             </AppText>
@@ -123,7 +124,7 @@ export default function FeedItem({
       <View style={styles.imageContainer}>
         <Pressable style={{ flex: 1 }} onPress={handleDoubleTap}>
           <Image source={image} style={styles.feedImage} resizeMode="cover" />
-          <Animated.View
+          <RNAnimated.View
             style={[
               styles.bigHeartOverlay,
               {
@@ -134,7 +135,7 @@ export default function FeedItem({
             ]}
           >
             <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
-          </Animated.View>
+          </RNAnimated.View>
         </Pressable>
       </View>
       <View style={styles.actionBar}>

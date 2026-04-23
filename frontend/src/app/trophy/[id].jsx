@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import Animated from "react-native-reanimated";
 import { useLocalSearchParams } from "expo-router";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -16,9 +17,12 @@ export default function TrophyScreen() {
     <ScreenWrapper withPaddingTop={false}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconShowcase}>
-          <View style={[styles.iconCircle]}>
-            <Image source={trophy.icon} />
-          </View>
+          <Animated.Image
+            source={trophy.icon}
+            resizeMode="contain"
+            sharedTransitionTag={`trophy-image-${id}`}
+            style={styles.largeTrophyImage}
+          />
         </View>
 
         <AppText type="h1" bold style={{ textAlign: "center", marginBottom: Spacing.sm }}>
@@ -61,20 +65,15 @@ const getStyles = () =>
       alignItems: "center"
     },
     iconShowcase: {
-      width: 180,
-      height: 360,
+      width: "100%",
       justifyContent: "center",
       alignItems: "center",
       marginTop: Spacing.xl,
       marginBottom: Spacing.xl
     },
-    iconCircle: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 2
+    largeTrophyImage: {
+      width: 300,
+      height: 300
     },
     infoBox: {
       backgroundColor: MyTheme.primary,

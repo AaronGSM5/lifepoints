@@ -68,7 +68,6 @@ export default function AppButton({
           (disabled || loading) && styles.disabled
         ]}
       >
-        {/* Hintergrund: Gradient nur bei der Primary-Variante */}
         {isPrimary && !disabled && !loading && !bgColor && (
           <LinearGradient
             colors={[MyTheme.secondary, MyTheme.primary]}
