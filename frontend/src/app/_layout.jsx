@@ -64,7 +64,11 @@ export default function RootLayout() {
           screenOptions={{
             header: (props) => <Toolbar {...props} />,
             headerShown: true,
-            contentStyle: { backgroundColor: MyTheme.background }
+            contentStyle: { backgroundColor: MyTheme.background },
+            gestureEnabled: true,
+            gestureDirection: "horizontal",
+            fullScreenGestureEnabled: true,
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right"
           }}
         >
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
@@ -76,14 +80,14 @@ export default function RootLayout() {
           <Stack.Screen
             name="notifications"
             options={{
-              animation: "slide_from_bottom"
+              animation: "slide_from_right"
             }}
           />
 
           <Stack.Screen
             name="settings"
             options={{
-              animation: "slide_from_bottom"
+              animation: "slide_from_right"
             }}
           />
 
