@@ -9,6 +9,8 @@ import { Skeleton } from "moti/skeleton";
 import AppBadge from "../ui/AppBadge";
 
 const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
+  const styles = getStyles();
+
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>
@@ -90,30 +92,31 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    width: 280,
-    height: 280
-  },
-  cardImage: {
-    height: 120,
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    padding: Spacing.sm
-  },
-  cardContent: {
-    flex: 1,
-    padding: Spacing.md,
-    justifyContent: "space-between"
-  },
-  cardInfoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  lpText: {
-    color: MyTheme.primaryAccent
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    card: {
+      width: 280,
+      height: 280
+    },
+    cardImage: {
+      height: 120,
+      width: "100%",
+      justifyContent: "flex-start",
+      alignItems: "flex-end",
+      padding: Spacing.sm
+    },
+    cardContent: {
+      flex: 1,
+      padding: Spacing.md,
+      justifyContent: "space-between"
+    },
+    cardInfoRow: {
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    lpText: {
+      color: MyTheme.primaryAccent
+    }
+  });
 
 export default FYTaskItem;

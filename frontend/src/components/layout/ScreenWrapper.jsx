@@ -22,6 +22,7 @@ export default function ScreenWrapper({
   withPaddingTop = true,
   style
 }) {
+  const styles = getStyles();
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
   const contentStyles = [
@@ -52,9 +53,10 @@ export default function ScreenWrapper({
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: MyTheme.background // backgroundColor if useGradient = false
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    wrapper: {
+      flex: 1,
+      backgroundColor: MyTheme.background // backgroundColor if useGradient = false
+    }
+  });

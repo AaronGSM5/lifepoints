@@ -16,6 +16,7 @@ import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
 
 export default function TaskDetailScreen() {
+  const styles = getStyles();
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -138,66 +139,67 @@ export default function TaskDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyTheme.background
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: MyTheme.background
-  },
-  imageContainer: {
-    width: "100%",
-    height: 400,
-    position: "relative"
-  },
-  image: {
-    width: "100%",
-    height: "100%"
-  },
-  gradientOverlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100
-  },
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: Spacing.md,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  content: {
-    padding: Spacing.lg,
-    marginTop: -20
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md
-  },
-  stickyFooter: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: Spacing.lg,
-    backgroundColor: MyTheme.background,
-    boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
-    flexDirection: "row",
-    elevation: 20
-  },
-  historySection: {
-    marginTop: Spacing.xl
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: MyTheme.background
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: MyTheme.background
+    },
+    imageContainer: {
+      width: "100%",
+      height: 400,
+      position: "relative"
+    },
+    image: {
+      width: "100%",
+      height: "100%"
+    },
+    gradientOverlay: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 100
+    },
+    backButton: {
+      position: "absolute",
+      top: 50,
+      left: Spacing.md,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: "rgba(0,0,0,0.5)",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    content: {
+      padding: Spacing.lg,
+      marginTop: -20
+    },
+    headerRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: Spacing.md
+    },
+    stickyFooter: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      padding: Spacing.lg,
+      backgroundColor: MyTheme.background,
+      boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
+      flexDirection: "row",
+      elevation: 20
+    },
+    historySection: {
+      marginTop: Spacing.xl
+    }
+  });

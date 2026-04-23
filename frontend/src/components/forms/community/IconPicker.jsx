@@ -6,6 +6,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
+  const styles = getStyles();
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
   const heightAnim = useRef(new Animated.Value(62)).current;
@@ -61,54 +62,55 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   );
 }
 
-const styles = StyleSheet.create({
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  iconGrid: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    gap: 12
-  },
-  iconItem: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    backgroundColor: MyTheme.glas,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "transparent"
-  },
-  selectedIconItem: {
-    borderColor: MyTheme.primaryAccent,
-    backgroundColor: "rgba(47, 196, 146, 0.1)"
-  },
-  animatedWrapper: {
-    overflow: "hidden",
-    width: "100%"
-  },
-  expandContainer: {
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  moreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
-    gap: 4,
-    paddingVertical: 4
-  },
-  measureView: {
-    position: "absolute",
-    opacity: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: -1
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1
+    },
+    iconGrid: {
+      flexDirection: "row",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      gap: 12
+    },
+    iconItem: {
+      width: 50,
+      height: 50,
+      borderRadius: 12,
+      backgroundColor: MyTheme.glas,
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "transparent"
+    },
+    selectedIconItem: {
+      borderColor: MyTheme.primaryAccent,
+      backgroundColor: "rgba(47, 196, 146, 0.1)"
+    },
+    animatedWrapper: {
+      overflow: "hidden",
+      width: "100%"
+    },
+    expandContainer: {
+      alignItems: "center",
+      marginTop: Spacing.sm
+    },
+    moreButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 2,
+      gap: 4,
+      paddingVertical: 4
+    },
+    measureView: {
+      position: "absolute",
+      opacity: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: -1
+    }
+  });

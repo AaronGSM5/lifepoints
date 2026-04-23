@@ -15,6 +15,7 @@ import EmptyState from "@/components/shop/EmptyState";
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
+  const styles = getStyles();
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
   const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
@@ -98,13 +99,14 @@ export default function ShopScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  rowGap: {
-    gap: Spacing.md,
-    marginBottom: Spacing.md,
-    justifyContent: "space-between"
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    rowGap: {
+      gap: Spacing.md,
+      marginBottom: Spacing.md,
+      justifyContent: "space-between"
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    }
+  });

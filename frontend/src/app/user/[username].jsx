@@ -13,6 +13,7 @@ import { mockPublicProfile } from "@/constants/MockData";
 import AppBadge from "@/components/ui/AppBadge";
 
 export default function PublicProfileScreen() {
+  const styles = getStyles();
   const { username } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -128,36 +129,37 @@ export default function PublicProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  profileHeader: {
-    alignItems: "center",
-    paddingTop: Spacing.xl,
-    paddingHorizontal: Spacing.lg
-  },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: Spacing.md
-  },
-  avatar: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    borderWidth: 2,
-    borderColor: MyTheme.secondary
-  },
-  actionButtons: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginTop: Spacing.xl,
-    paddingHorizontal: Spacing.lg
-  },
-  trophySection: {
-    marginTop: Spacing.xl,
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.xl
-  },
-  pinnedGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    profileHeader: {
+      alignItems: "center",
+      paddingTop: Spacing.xl,
+      paddingHorizontal: Spacing.lg
+    },
+    avatarContainer: {
+      position: "relative",
+      marginBottom: Spacing.md
+    },
+    avatar: {
+      width: 110,
+      height: 110,
+      borderRadius: 55,
+      borderWidth: 2,
+      borderColor: MyTheme.secondary
+    },
+    actionButtons: {
+      flexDirection: "row",
+      gap: Spacing.md,
+      marginTop: Spacing.xl,
+      paddingHorizontal: Spacing.lg
+    },
+    trophySection: {
+      marginTop: Spacing.xl,
+      paddingHorizontal: Spacing.lg,
+      marginBottom: Spacing.xl
+    },
+    pinnedGrid: {
+      flexDirection: "row",
+      justifyContent: "space-between"
+    }
+  });

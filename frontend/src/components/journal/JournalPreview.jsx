@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import HistoryCard from "../ui/HistoryCard";
 
 const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
+  const styles = getStyles();
   const previewData = activities.slice(0, 3);
 
   if (isLoading) {
@@ -61,27 +62,28 @@ const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: Spacing.md
-  },
-  activityItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: Spacing.sm
-  },
-  iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: Spacing.md - 4
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: Spacing.md
+    },
+    activityItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: Spacing.sm
+    },
+    iconCircle: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: MyTheme.secondary,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    textContainer: {
+      flex: 1,
+      marginLeft: Spacing.md - 4
+    }
+  });
 
 export default JournalPreview;

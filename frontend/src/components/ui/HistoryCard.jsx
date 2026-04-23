@@ -15,6 +15,7 @@ export default function HistoryCard({
   containerStyle,
   iconContainerStyle
 }) {
+  const styles = getStyles();
   const isSpend = type === "spend";
 
   const pointColor = isSpend ? "#666" : MyTheme.primaryAccent;
@@ -50,29 +51,30 @@ export default function HistoryCard({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius?.md || 8,
-    marginBottom: Spacing.sm,
-    backgroundColor: MyTheme.primary
-  },
-  iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: Spacing.md - 4,
-    marginRight: Spacing.sm
-  },
-  pointsContainer: {
-    alignItems: "flex-end"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    card: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius?.md || 8,
+      marginBottom: Spacing.sm,
+      backgroundColor: MyTheme.primary
+    },
+    iconCircle: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: MyTheme.secondary,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    textContainer: {
+      flex: 1,
+      marginLeft: Spacing.md - 4,
+      marginRight: Spacing.sm
+    },
+    pointsContainer: {
+      alignItems: "flex-end"
+    }
+  });

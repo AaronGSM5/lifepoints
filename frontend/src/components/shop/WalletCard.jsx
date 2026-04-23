@@ -9,6 +9,8 @@ import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 
 const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
+  const styles = getStyles();
+
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
 
   const targetPercentage = targetPoints ? (points / targetPoints) * 100 : 0;
@@ -64,42 +66,43 @@ const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  walletCard: {
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    marginVertical: Spacing.md
-  },
-  walletHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: Spacing.sm
-  },
-  pointsRow: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginBottom: Spacing.md
-  },
-  pointsLabel: {
-    color: MyTheme.primaryAccent,
-    marginLeft: Spacing.xs
-  },
-  progressBarContainer: {
-    marginTop: Spacing.xs
-  },
-  progressBarBg: {
-    height: 8,
-    backgroundColor: "#333",
-    borderRadius: Spacing.borderRadius.full,
-    marginBottom: Spacing.xs,
-    overflow: "hidden"
-  },
-  progressBarFill: {
-    height: "100%",
-    borderRadius: Spacing.borderRadius.full
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    walletCard: {
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      marginVertical: Spacing.md
+    },
+    walletHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: Spacing.sm
+    },
+    pointsRow: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      marginBottom: Spacing.md
+    },
+    pointsLabel: {
+      color: MyTheme.primaryAccent,
+      marginLeft: Spacing.xs
+    },
+    progressBarContainer: {
+      marginTop: Spacing.xs
+    },
+    progressBarBg: {
+      height: 8,
+      backgroundColor: "#333",
+      borderRadius: Spacing.borderRadius.full,
+      marginBottom: Spacing.xs,
+      overflow: "hidden"
+    },
+    progressBarFill: {
+      height: "100%",
+      borderRadius: Spacing.borderRadius.full
+    }
+  });
 
 export default WalletCard;

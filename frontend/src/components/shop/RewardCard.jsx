@@ -9,6 +9,8 @@ import BaseCard from "../ui/BaseCard";
 import AppBadge from "../ui/AppBadge";
 
 const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+  const styles = getStyles();
+
   if (isLoading) {
     return (
       <BaseCard style={styles.gridCard} padding={0}>
@@ -76,41 +78,42 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
   );
 };
 
-const styles = StyleSheet.create({
-  gridCard: {
-    flex: 1
-  },
-  cardImageContainer: {
-    height: 100,
-    backgroundColor: "#333"
-  },
-  cardImage: {
-    width: "100%",
-    height: "100%"
-  },
-  cardContent: {
-    padding: Spacing.sm,
-    gap: 2
-  },
-  cardBrand: {
-    color: MyTheme.primaryAccent,
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.5
-  },
-  titleText: {
-    minHeight: 40
-  },
-  cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: Spacing.xs
-  },
-  lockedOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(18, 18, 18, 0.6)"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    gridCard: {
+      flex: 1
+    },
+    cardImageContainer: {
+      height: 100,
+      backgroundColor: "#333"
+    },
+    cardImage: {
+      width: "100%",
+      height: "100%"
+    },
+    cardContent: {
+      padding: Spacing.sm,
+      gap: 2
+    },
+    cardBrand: {
+      color: MyTheme.primaryAccent,
+      fontSize: 10,
+      textTransform: "uppercase",
+      letterSpacing: 0.5
+    },
+    titleText: {
+      minHeight: 40
+    },
+    cardFooter: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: Spacing.xs
+    },
+    lockedOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(18, 18, 18, 0.6)"
+    }
+  });
 
 export default RewardCard;

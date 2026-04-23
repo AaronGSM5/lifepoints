@@ -28,6 +28,7 @@ const AppInput = forwardRef(
     },
     ref
   ) => {
+    const styles = getStyles();
     const [isFocused, setIsFocused] = useState(false);
 
     // Multiline-Status aus den Props auslesen
@@ -115,69 +116,70 @@ const AppInput = forwardRef(
   }
 );
 
-const styles = StyleSheet.create({
-  wrapper: {
-    width: "100%"
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: Spacing.xs,
-    marginLeft: Spacing.xs
-  },
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    borderRadius: Spacing.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
-    height: 54,
-    paddingHorizontal: Spacing.md
-  },
-  containerMultiline: {
-    height: "auto",
-    minHeight: 100,
-    alignItems: "flex-start", // Sorgt dafür, dass Icon und Text oben anfangen
-    paddingVertical: Spacing.xs
-  },
-  containerFocused: {
-    borderColor: MyTheme.primaryAccent,
-    backgroundColor: "rgba(47, 196, 146, 0.08)"
-  },
-  containerError: {
-    borderColor: "rgb(239, 68, 68)",
-    backgroundColor: "rgba(239, 68, 68, 0.08)"
-  },
-  input: {
-    flex: 1,
-    color: MyTheme.text,
-    fontSize: 16,
-    height: "100%",
-    ...{ outlineStyle: "none" }
-  },
-  inputMultiline: {
-    height: "auto",
-    minHeight: 80,
-    paddingTop: Spacing.sm,
-    paddingBottom: Spacing.sm
-  },
-  leftIcon: {
-    marginRight: Spacing.sm
-  },
-  rightIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: Spacing.borderRadius.full,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: -Spacing.sm
-  },
-  errorText: {
-    color: "#ef4444",
-    fontSize: 12,
-    marginTop: Spacing.xs,
-    marginLeft: Spacing.xs
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    wrapper: {
+      width: "100%"
+    },
+    label: {
+      fontSize: 14,
+      marginBottom: Spacing.xs,
+      marginLeft: Spacing.xs
+    },
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      borderRadius: Spacing.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: "rgba(255, 255, 255, 0.1)",
+      height: 54,
+      paddingHorizontal: Spacing.md
+    },
+    containerMultiline: {
+      height: "auto",
+      minHeight: 100,
+      alignItems: "flex-start", // Sorgt dafür, dass Icon und Text oben anfangen
+      paddingVertical: Spacing.xs
+    },
+    containerFocused: {
+      borderColor: MyTheme.primaryAccent,
+      backgroundColor: "rgba(47, 196, 146, 0.08)"
+    },
+    containerError: {
+      borderColor: "rgb(239, 68, 68)",
+      backgroundColor: "rgba(239, 68, 68, 0.08)"
+    },
+    input: {
+      flex: 1,
+      color: MyTheme.text,
+      fontSize: 16,
+      height: "100%",
+      ...{ outlineStyle: "none" }
+    },
+    inputMultiline: {
+      height: "auto",
+      minHeight: 80,
+      paddingTop: Spacing.sm,
+      paddingBottom: Spacing.sm
+    },
+    leftIcon: {
+      marginRight: Spacing.sm
+    },
+    rightIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.full,
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: -Spacing.sm
+    },
+    errorText: {
+      color: "#ef4444",
+      fontSize: 12,
+      marginTop: Spacing.xs,
+      marginLeft: Spacing.xs
+    }
+  });
 
 export default AppInput;

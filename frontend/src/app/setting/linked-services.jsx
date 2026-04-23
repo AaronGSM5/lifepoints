@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 
 export default function LinkedServicesScreen() {
+  const styles = getStyles();
   const [connections, setConnections] = useState({
     appleHealth: true,
     strava: true,
@@ -125,60 +126,61 @@ export default function LinkedServicesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.lg
-  },
-  subtitle: {
-    marginTop: Spacing.xs,
-    color: MyTheme.muted
-  },
-  section: {
-    marginBottom: Spacing.md
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md
-  },
-  serviceCard: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    gap: Spacing.md
-  },
-  cardMain: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  iconBox: {
-    width: 54,
-    height: 54,
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  infoContainer: {
-    flex: 1
-  },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-    marginBottom: 2
-  },
-  privacyNote: {
-    flexDirection: "row",
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    gap: Spacing.sm,
-    marginBottom: Spacing.xl
-  },
-  privacyText: {
-    flex: 1,
-    color: MyTheme.muted,
-    lineHeight: 16
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    header: {
+      paddingVertical: Spacing.lg
+    },
+    subtitle: {
+      marginTop: Spacing.xs,
+      color: MyTheme.muted
+    },
+    section: {
+      marginBottom: Spacing.md
+    },
+    sectionTitle: {
+      marginBottom: Spacing.md
+    },
+    serviceCard: {
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      gap: Spacing.md
+    },
+    cardMain: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    iconBox: {
+      width: 54,
+      height: 54,
+      borderRadius: 14,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    infoContainer: {
+      flex: 1
+    },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
+      marginBottom: 2
+    },
+    privacyNote: {
+      flexDirection: "row",
+      backgroundColor: MyTheme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      gap: Spacing.sm,
+      marginBottom: Spacing.xl
+    },
+    privacyText: {
+      flex: 1,
+      color: MyTheme.muted,
+      lineHeight: 16
+    }
+  });

@@ -11,6 +11,7 @@ import { router } from "expo-router";
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
+  const styles = getStyles();
   const animValue = useRef(new Animated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
   useEffect(() => {
@@ -84,36 +85,37 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
   );
 };
 
-const styles = StyleSheet.create({
-  trophyItem: {
-    alignItems: "center",
-    width: "100%"
-  },
-  trophyIconBox: {
-    width: "95%",
-    aspectRatio: 1,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative"
-  },
-  trophyImage: {
-    width: "100%",
-    height: "100%"
-  },
-  lockOverlay: {
-    position: "absolute",
-    bottom: 0,
-    right: 5,
-    width: 15,
-    height: 15,
-    backgroundColor: "#1E1E1E",
-    borderRadius: Spacing.borderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.primary
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    trophyItem: {
+      alignItems: "center",
+      width: "100%"
+    },
+    trophyIconBox: {
+      width: "95%",
+      aspectRatio: 1,
+      borderRadius: Spacing.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+      position: "relative"
+    },
+    trophyImage: {
+      width: "100%",
+      height: "100%"
+    },
+    lockOverlay: {
+      position: "absolute",
+      bottom: 0,
+      right: 5,
+      width: 15,
+      height: 15,
+      backgroundColor: "#1E1E1E",
+      borderRadius: Spacing.borderRadius.full,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: MyTheme.primary
+    }
+  });
 
 export default React.memo(TrophyCard);

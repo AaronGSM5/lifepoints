@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 
 export default function NotificationsScreen() {
+  const styles = getStyles();
   const [settings, setSettings] = useState({
     push: true,
     email: false,
@@ -29,14 +30,15 @@ export default function NotificationsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: Spacing.lg },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: { flex: 1, padding: Spacing.lg },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: Spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: "#eee"
+    }
+  });

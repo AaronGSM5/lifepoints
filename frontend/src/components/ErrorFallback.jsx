@@ -9,6 +9,7 @@ import AppText from "./ui/AppText";
 import { router } from "expo-router";
 
 export const ErrorFallback = ({ error, resetError }) => {
+  const styles = getStyles();
   const handleReload = () => {
     resetError();
 
@@ -41,32 +42,33 @@ export const ErrorFallback = ({ error, resetError }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  title: {
-    fontSize: 22,
-    color: MyTheme.text,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-    textAlign: "center"
-  },
-  description: {
-    fontSize: 14,
-    textAlign: "center",
-    marginBottom: Spacing.lg
-  },
-  errorBox: {
-    backgroundColor: "#ffdddd",
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    width: "100%"
-  },
-  errorText: {
-    color: MyTheme.warning,
-    fontFamily: "monospace"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    title: {
+      fontSize: 22,
+      color: MyTheme.text,
+      marginTop: Spacing.md,
+      marginBottom: Spacing.sm,
+      textAlign: "center"
+    },
+    description: {
+      fontSize: 14,
+      textAlign: "center",
+      marginBottom: Spacing.lg
+    },
+    errorBox: {
+      backgroundColor: "#ffdddd",
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      width: "100%"
+    },
+    errorText: {
+      color: MyTheme.warning,
+      fontFamily: "monospace"
+    }
+  });

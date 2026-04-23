@@ -9,6 +9,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function SupportScreen() {
+  const styles = getStyles();
   const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [
@@ -113,81 +114,82 @@ export default function SupportScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.md
-  },
-  subtitle: {
-    color: MyTheme.muted,
-    marginTop: Spacing.xs
-  },
-  contactRow: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  contactCard: {
-    flex: 1,
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    gap: 4
-  },
-  iconCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.xs
-  },
-  section: {
-    marginBottom: Spacing.lg
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md
-  },
-  categoryGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: Spacing.md
-  },
-  categoryItem: {
-    width: "47%",
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  faqItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    marginBottom: Spacing.sm,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  statusBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.full,
-    gap: Spacing.sm,
-    marginBottom: Spacing.xl
-  },
-  statusIndicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#10b981"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    header: {
+      paddingVertical: Spacing.md
+    },
+    subtitle: {
+      color: MyTheme.muted,
+      marginTop: Spacing.xs
+    },
+    contactRow: {
+      flexDirection: "row",
+      gap: Spacing.md,
+      marginBottom: Spacing.lg
+    },
+    contactCard: {
+      flex: 1,
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      gap: 4
+    },
+    iconCircle: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: Spacing.xs
+    },
+    section: {
+      marginBottom: Spacing.lg
+    },
+    sectionTitle: {
+      marginBottom: Spacing.md
+    },
+    categoryGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: Spacing.md
+    },
+    categoryItem: {
+      width: "47%",
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: MyTheme.secondary
+    },
+    faqItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: MyTheme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      marginBottom: Spacing.sm,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary
+    },
+    statusBox: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: MyTheme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.full,
+      gap: Spacing.sm,
+      marginBottom: Spacing.xl
+    },
+    statusIndicator: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: "#10b981"
+    }
+  });

@@ -9,6 +9,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
 
 const JournalPage = () => {
+  const styles = getStyles();
   const renderItem = ({ item }) => (
     <HistoryCard
       title={item.title}
@@ -44,14 +45,15 @@ const JournalPage = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1
-  },
-  sectionHeader: {
-    paddingBottom: Spacing.sm,
-    backgroundColor: "transparent"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    wrapper: {
+      flex: 1
+    },
+    sectionHeader: {
+      paddingBottom: Spacing.sm,
+      backgroundColor: "transparent"
+    }
+  });
 
 export default JournalPage;

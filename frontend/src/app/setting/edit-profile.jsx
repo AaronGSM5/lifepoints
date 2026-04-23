@@ -21,6 +21,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { mockProfile } from "@/constants/MockData";
 
 export default function EditProfileScreen() {
+  const styles = getStyles();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -149,50 +150,51 @@ export default function EditProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: Spacing.xl
-  },
-  avatarSection: {
-    alignItems: "center",
-    paddingVertical: Spacing.xl
-  },
-  avatarContainer: {
-    position: "relative"
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: MyTheme.secondary
-  },
-  editBadge: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: MyTheme.primaryAccent,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: MyTheme.background
-  },
-  avatarHint: {
-    marginTop: Spacing.sm,
-    color: MyTheme.muted
-  },
-  formSection: {
-    marginBottom: Spacing.xl
-  },
-  inputSkeleton: {
-    marginBottom: Spacing.md
-  },
-  footer: {
-    paddingVertical: Spacing.md,
-    borderTopWidth: 2,
-    borderTopColor: "rgba(0, 0, 0, 0.05)"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    scrollContent: {
+      paddingBottom: Spacing.xl
+    },
+    avatarSection: {
+      alignItems: "center",
+      paddingVertical: Spacing.xl
+    },
+    avatarContainer: {
+      position: "relative"
+    },
+    avatar: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      borderWidth: 3,
+      borderColor: MyTheme.secondary
+    },
+    editBadge: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: MyTheme.primaryAccent,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 3,
+      borderColor: MyTheme.background
+    },
+    avatarHint: {
+      marginTop: Spacing.sm,
+      color: MyTheme.muted
+    },
+    formSection: {
+      marginBottom: Spacing.xl
+    },
+    inputSkeleton: {
+      marginBottom: Spacing.md
+    },
+    footer: {
+      paddingVertical: Spacing.md,
+      borderTopWidth: 2,
+      borderTopColor: "rgba(0, 0, 0, 0.05)"
+    }
+  });

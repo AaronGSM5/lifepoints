@@ -12,6 +12,7 @@ export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchHistory = ["Gaming", "Meditation", "Fitness Anfänger", "Rewe"];
+  const styles = getStyles();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -82,32 +83,33 @@ export default function SearchScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingBottom: Spacing.lg,
-    paddingTop: Spacing.sm
-  },
-  filterContainer: {
-    marginBottom: Spacing.lg
-  },
-  filterScroll: {
-    marginHorizontal: -Spacing.md
-  },
-  filterContent: {
-    flexDirection: "row",
-    gap: Spacing.sm,
-    paddingHorizontal: Spacing.md
-  },
-  historyItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-    paddingVertical: Spacing.md
-  },
-  resultsSection: {
-    flex: 1,
-    paddingHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingBottom: Spacing.lg,
+      paddingTop: Spacing.sm
+    },
+    filterContainer: {
+      marginBottom: Spacing.lg
+    },
+    filterScroll: {
+      marginHorizontal: -Spacing.md
+    },
+    filterContent: {
+      flexDirection: "row",
+      gap: Spacing.sm,
+      paddingHorizontal: Spacing.md
+    },
+    historyItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+      paddingVertical: Spacing.md
+    },
+    resultsSection: {
+      flex: 1,
+      paddingHorizontal: Spacing.md
+    }
+  });

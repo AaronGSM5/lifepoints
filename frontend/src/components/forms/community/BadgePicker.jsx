@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 
 export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
+  const styles = getStyles();
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
   const heightAnim = useRef(new Animated.Value(30)).current;
@@ -63,39 +64,40 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   );
 }
 
-const styles = StyleSheet.create({
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  badgeWrapper: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    gap: 8
-  },
-  animatedWrapper: {
-    overflow: "hidden",
-    width: "100%"
-  },
-  expandContainer: {
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  moreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
-    paddingVertical: 4
-  },
-  measureView: {
-    position: "absolute",
-    opacity: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: -1
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1
+    },
+    badgeWrapper: {
+      flexDirection: "row",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      gap: 8
+    },
+    animatedWrapper: {
+      overflow: "hidden",
+      width: "100%"
+    },
+    expandContainer: {
+      alignItems: "center",
+      marginTop: Spacing.sm
+    },
+    moreButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 2,
+      paddingVertical: 4
+    },
+    measureView: {
+      position: "absolute",
+      opacity: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: -1
+    }
+  });

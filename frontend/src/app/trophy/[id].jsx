@@ -8,6 +8,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { mockTrophies } from "@/constants/MockData";
 
 export default function TrophyScreen() {
+  const styles = getStyles();
   const { id } = useLocalSearchParams();
   const trophy = mockTrophies.find((t) => String(t.id) === String(id));
 
@@ -52,52 +53,53 @@ export default function TrophyScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.xl * 2,
-    alignItems: "center"
-  },
-  iconShowcase: {
-    width: 180,
-    height: 360,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: Spacing.xl,
-    marginBottom: Spacing.xl
-  },
-  iconCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 2
-  },
-  infoBox: {
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.lg,
-    marginTop: Spacing.xl,
-    width: "100%"
-  },
-  progressSection: {
-    width: "100%",
-    marginTop: Spacing.xl
-  },
-  progressBarBg: {
-    height: 12,
-    backgroundColor: "#e5e7eb",
-    borderRadius: Spacing.borderRadius.full,
-    overflow: "hidden",
-    marginBottom: Spacing.sm
-  },
-  progressBarFill: {
-    height: "100%",
-    borderRadius: Spacing.borderRadius.full
-  },
-  progressTextRow: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    scrollContent: {
+      paddingHorizontal: Spacing.lg,
+      paddingBottom: Spacing.xl * 2,
+      alignItems: "center"
+    },
+    iconShowcase: {
+      width: 180,
+      height: 360,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: Spacing.xl,
+      marginBottom: Spacing.xl
+    },
+    iconCircle: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 2
+    },
+    infoBox: {
+      backgroundColor: MyTheme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.lg,
+      marginTop: Spacing.xl,
+      width: "100%"
+    },
+    progressSection: {
+      width: "100%",
+      marginTop: Spacing.xl
+    },
+    progressBarBg: {
+      height: 12,
+      backgroundColor: "#e5e7eb",
+      borderRadius: Spacing.borderRadius.full,
+      overflow: "hidden",
+      marginBottom: Spacing.sm
+    },
+    progressBarFill: {
+      height: "100%",
+      borderRadius: Spacing.borderRadius.full
+    },
+    progressTextRow: {
+      flexDirection: "row",
+      justifyContent: "space-between"
+    }
+  });

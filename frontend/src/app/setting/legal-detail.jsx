@@ -7,6 +7,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function LegalDetailScreen() {
+  const styles = getStyles();
   const { type } = useLocalSearchParams();
 
   const LEGAL_CONTENT = {
@@ -106,29 +107,30 @@ export default function LegalDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: Spacing.xl
-  },
-  header: {
-    marginBottom: Spacing.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: MyTheme.text,
-    paddingBottom: Spacing.md
-  },
-  dateText: {
-    marginTop: Spacing.xs
-  },
-  section: {
-    marginBottom: Spacing.lg
-  },
-  heading: {
-    marginBottom: Spacing.sm
-  },
-  bodyText: {
-    fontSize: 14
-  },
-  spacer: {
-    height: Spacing.xl * 2
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: Spacing.xl
+    },
+    header: {
+      marginBottom: Spacing.xl,
+      borderBottomWidth: 1,
+      borderBottomColor: MyTheme.text,
+      paddingBottom: Spacing.md
+    },
+    dateText: {
+      marginTop: Spacing.xs
+    },
+    section: {
+      marginBottom: Spacing.lg
+    },
+    heading: {
+      marginBottom: Spacing.sm
+    },
+    bodyText: {
+      fontSize: 14
+    },
+    spacer: {
+      height: Spacing.xl * 2
+    }
+  });

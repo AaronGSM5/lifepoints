@@ -9,6 +9,8 @@ import { MyTheme } from "@/constants/Colors";
 import AppBadge from "../ui/AppBadge";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
+  const styles = getStyles();
+
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>
@@ -69,51 +71,52 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  communityCard: {
-    width: 160,
-    height: 140,
-    padding: Spacing.md,
-    justifyContent: "space-between"
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start"
-  },
-  iconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: Spacing.borderRadius.md,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative"
-  },
-  notificationDot: {
-    position: "absolute",
-    top: -2,
-    right: -2,
-    width: 12,
-    height: 12,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.warning,
-    borderWidth: 2,
-    borderColor: MyTheme.primary
-  },
-  bottomContent: {
-    gap: 4
-  },
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4
-  },
-  onlineIndicator: {
-    width: 6,
-    height: 6,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.primaryAccent
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    communityCard: {
+      width: 160,
+      height: 140,
+      padding: Spacing.md,
+      justifyContent: "space-between"
+    },
+    headerRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start"
+    },
+    iconBox: {
+      width: 44,
+      height: 44,
+      borderRadius: Spacing.borderRadius.md,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative"
+    },
+    notificationDot: {
+      position: "absolute",
+      top: -2,
+      right: -2,
+      width: 12,
+      height: 12,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: MyTheme.warning,
+      borderWidth: 2,
+      borderColor: MyTheme.primary
+    },
+    bottomContent: {
+      gap: 4
+    },
+    statusRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4
+    },
+    onlineIndicator: {
+      width: 6,
+      height: 6,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: MyTheme.primaryAccent
+    }
+  });
 
 export default MyCommunityCard;

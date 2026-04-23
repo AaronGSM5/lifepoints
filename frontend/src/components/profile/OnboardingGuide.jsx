@@ -10,6 +10,7 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 
 const OnboardingGuide = ({ skeletonProps, isLoading }) => {
+  const styles = getStyles();
   const [tutorialSteps, setTutorialSteps] = useState(mockTutorialSteps);
   const completedCount = tutorialSteps.filter((q) => q.completed).length;
   const progress = completedCount / tutorialSteps.length;
@@ -102,51 +103,52 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
 
 export default OnboardingGuide;
 
-const styles = StyleSheet.create({
-  guideHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    marginBottom: Spacing.lg
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: "#eee",
-    borderRadius: Spacing.borderRadius.sm,
-    marginBottom: Spacing.lg,
-    overflow: "hidden"
-  },
-  progressInner: {
-    height: "100%",
-    backgroundColor: MyTheme.primaryAccent
-  },
-  questList: {
-    gap: Spacing.sm
-  },
-  questItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: Spacing.sm
-  },
-  questItemCompleted: {
-    opacity: 0.8
-  },
-  questIconContainer: {
-    width: 40,
-    alignItems: "center"
-  },
-  questTextContainer: {
-    flex: 1,
-    marginLeft: Spacing.sm
-  },
-  questTitle: {
-    fontSize: 16
-  },
-  textStrikeThrough: {
-    textDecorationLine: "line-through",
-    color: MyTheme.muted
-  },
-  rewardText: {
-    color: MyTheme.primaryAccent
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    guideHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-end",
+      marginBottom: Spacing.lg
+    },
+    progressBar: {
+      height: 8,
+      backgroundColor: "#eee",
+      borderRadius: Spacing.borderRadius.sm,
+      marginBottom: Spacing.lg,
+      overflow: "hidden"
+    },
+    progressInner: {
+      height: "100%",
+      backgroundColor: MyTheme.primaryAccent
+    },
+    questList: {
+      gap: Spacing.sm
+    },
+    questItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: Spacing.sm
+    },
+    questItemCompleted: {
+      opacity: 0.8
+    },
+    questIconContainer: {
+      width: 40,
+      alignItems: "center"
+    },
+    questTextContainer: {
+      flex: 1,
+      marginLeft: Spacing.sm
+    },
+    questTitle: {
+      fontSize: 16
+    },
+    textStrikeThrough: {
+      textDecorationLine: "line-through",
+      color: MyTheme.muted
+    },
+    rewardText: {
+      color: MyTheme.primaryAccent
+    }
+  });

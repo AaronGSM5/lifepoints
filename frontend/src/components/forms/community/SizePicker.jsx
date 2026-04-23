@@ -4,6 +4,8 @@ import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {
+  const styles = getStyles();
+
   return (
     <View>
       <AppText type="caption" style={styles.label}>
@@ -25,27 +27,28 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
   );
 }
 
-const styles = StyleSheet.create({
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  sizeGrid: {
-    flexDirection: "row",
-    gap: 12
-  },
-  sizeCard: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 16,
-    backgroundColor: MyTheme.glas,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "transparent"
-  },
-  selectedSizeCard: {
-    borderColor: MyTheme.primaryAccent,
-    backgroundColor: "rgba(47, 196, 146, 0.1)"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1
+    },
+    sizeGrid: {
+      flexDirection: "row",
+      gap: 12
+    },
+    sizeCard: {
+      flex: 1,
+      padding: 12,
+      borderRadius: 16,
+      backgroundColor: MyTheme.glas,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: "transparent"
+    },
+    selectedSizeCard: {
+      borderColor: MyTheme.primaryAccent,
+      backgroundColor: "rgba(47, 196, 146, 0.1)"
+    }
+  });

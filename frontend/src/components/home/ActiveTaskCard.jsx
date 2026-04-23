@@ -9,6 +9,8 @@ import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
+  const styles = getStyles();
+
   if (isLoading) {
     return <Skeleton colorMode="dark" width="100%" height={70} radius={Spacing.borderRadius.lg} />;
   }
@@ -41,24 +43,25 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  taskCardActive: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "rgba(16, 185, 129, 0.25)"
-  },
-  taskIconContainer: {
-    width: 36,
-    height: 36,
-    backgroundColor: "rgba(16, 185, 129, 0.16)",
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  lpContainer: {
-    marginRight: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    taskCardActive: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderColor: "rgba(16, 185, 129, 0.25)"
+    },
+    taskIconContainer: {
+      width: 36,
+      height: 36,
+      backgroundColor: "rgba(16, 185, 129, 0.16)",
+      borderRadius: Spacing.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    lpContainer: {
+      marginRight: Spacing.md
+    }
+  });
 
 export default ActiveTaskCard;

@@ -9,6 +9,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function SecurityScreen() {
+  const styles = getStyles();
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(true);
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 
@@ -118,37 +119,38 @@ export default function SecurityScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: Spacing.xl
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md
-  },
-  card: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: Spacing.md
-  },
-  rowContent: {
-    flex: 1
-  },
-  deleteButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: Spacing.md,
-    backgroundColor: "white",
-    borderRadius: Spacing.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: MyTheme.warning
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    section: {
+      marginBottom: Spacing.xl
+    },
+    sectionTitle: {
+      marginBottom: Spacing.md
+    },
+    card: {
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: Spacing.md
+    },
+    rowContent: {
+      flex: 1
+    },
+    deleteButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: Spacing.md,
+      backgroundColor: "white",
+      borderRadius: Spacing.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: MyTheme.warning
+    }
+  });

@@ -11,7 +11,7 @@ import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
 
 const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
-  // --- ANIMATIONS LOGIK ---
+  const styles = getStyles();
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
   // Berechnung des Zielwerts (Prozentsatz)
@@ -149,49 +149,50 @@ const ProfileHeader = ({ profile, skeletonProps, isLoading }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  profileHeader: {
-    alignItems: "center",
-    paddingTop: Spacing.lg
-  },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: Spacing.md
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: MyTheme.secondary
-  },
-  xpContainer: {
-    width: "100%",
-    marginTop: Spacing.lg
-  },
-  xpHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: Spacing.sm
-  },
-  progressBarBg: {
-    height: 8,
-    backgroundColor: "#333",
-    borderRadius: Spacing.borderRadius.full,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#333"
-  },
-  progressBarFillContainer: {
-    height: "100%",
-    borderRadius: Spacing.borderRadius.full,
-    overflow: "hidden"
-  },
-  actionButtons: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginTop: Spacing.lg
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    profileHeader: {
+      alignItems: "center",
+      paddingTop: Spacing.lg
+    },
+    avatarContainer: {
+      position: "relative",
+      marginBottom: Spacing.md
+    },
+    avatar: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      borderWidth: 2,
+      borderColor: MyTheme.secondary
+    },
+    xpContainer: {
+      width: "100%",
+      marginTop: Spacing.lg
+    },
+    xpHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: Spacing.sm
+    },
+    progressBarBg: {
+      height: 8,
+      backgroundColor: "#333",
+      borderRadius: Spacing.borderRadius.full,
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: "#333"
+    },
+    progressBarFillContainer: {
+      height: "100%",
+      borderRadius: Spacing.borderRadius.full,
+      overflow: "hidden"
+    },
+    actionButtons: {
+      flexDirection: "row",
+      gap: Spacing.md,
+      marginTop: Spacing.lg
+    }
+  });
 
 export default ProfileHeader;

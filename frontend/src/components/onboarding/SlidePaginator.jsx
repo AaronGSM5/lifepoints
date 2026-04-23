@@ -3,6 +3,7 @@ import { Spacing } from "@/constants/Spacing";
 import { StyleSheet, View } from "react-native";
 
 const SlidePaginator = ({ data, currentIndex }) => {
+  const styles = getStyles();
   return (
     <View style={styles.dotContainer}>
       {data.map((_, index) => (
@@ -12,23 +13,24 @@ const SlidePaginator = ({ data, currentIndex }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  dotContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: Spacing.xl
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: MyTheme.muted,
-    marginHorizontal: 4
-  },
-  activeDot: {
-    backgroundColor: MyTheme.primary,
-    width: 20
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    dotContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginBottom: Spacing.xl
+    },
+    dot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: MyTheme.muted,
+      marginHorizontal: 4
+    },
+    activeDot: {
+      backgroundColor: MyTheme.primary,
+      width: 20
+    }
+  });
 
 export default SlidePaginator;

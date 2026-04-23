@@ -6,6 +6,7 @@ import { Icon } from "@/components/icons/Icon";
 import { MyTheme } from "@/constants/Colors";
 
 export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
+  const styles = getStyles();
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -47,39 +48,40 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
   );
 }
 
-const styles = StyleSheet.create({
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  bannerPlaceholder: {
-    height: 100,
-    borderRadius: 16,
-    backgroundColor: MyTheme.glas,
-    borderStyle: "dashed",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8
-  },
-  bannerImageWrapper: {
-    height: 100,
-    borderRadius: 16,
-    overflow: "hidden",
-    position: "relative"
-  },
-  bannerImage: {
-    width: "100%",
-    height: "100%"
-  },
-  clearImageIcon: {
-    position: "absolute",
-    top: 8,
-    right: 8,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    padding: 6,
-    borderRadius: 16
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1
+    },
+    bannerPlaceholder: {
+      height: 100,
+      borderRadius: 16,
+      backgroundColor: MyTheme.glas,
+      borderStyle: "dashed",
+      borderWidth: 1,
+      borderColor: "rgba(255,255,255,0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8
+    },
+    bannerImageWrapper: {
+      height: 100,
+      borderRadius: 16,
+      overflow: "hidden",
+      position: "relative"
+    },
+    bannerImage: {
+      width: "100%",
+      height: "100%"
+    },
+    clearImageIcon: {
+      position: "absolute",
+      top: 8,
+      right: 8,
+      backgroundColor: "rgba(0,0,0,0.6)",
+      padding: 6,
+      borderRadius: 16
+    }
+  });

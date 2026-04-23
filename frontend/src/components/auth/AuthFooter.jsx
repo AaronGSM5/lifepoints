@@ -6,6 +6,8 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function AuthFooter({ text, linkText, href }) {
+  const styles = getStyles();
+
   return (
     <View style={styles.footer}>
       <AppText type="caption">
@@ -22,10 +24,11 @@ export default function AuthFooter({ text, linkText, href }) {
   );
 }
 
-const styles = StyleSheet.create({
-  footer: {
-    marginTop: "auto",
-    alignItems: "center",
-    marginBottom: Spacing.lg
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    footer: {
+      marginTop: "auto",
+      alignItems: "center",
+      marginBottom: Spacing.lg
+    }
+  });

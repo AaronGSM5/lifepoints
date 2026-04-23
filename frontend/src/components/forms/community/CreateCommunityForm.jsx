@@ -18,6 +18,7 @@ import { mockCommunityIcons, mockCommunityBadges, mockCommunitySizes } from "@/c
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
+  const styles = getStyles();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");
@@ -158,66 +159,67 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.7)"
-  },
-  dismissArea: {
-    ...StyleSheet.absoluteFillObject
-  },
-  sheetContainer: {
-    backgroundColor: MyTheme.background,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    maxHeight: "90%",
-    flexShrink: 1
-  },
-  content: {
-    paddingTop: Spacing.sm,
-    flexShrink: 1
-  },
-  scrollContent: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.lg
-  },
-  dragHandle: {
-    width: 40,
-    height: 5,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 3,
-    alignSelf: "center",
-    marginBottom: Spacing.md
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  section: {
-    marginBottom: Spacing.lg
-  },
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  infoText: {
-    fontSize: 11,
-    color: MyTheme.muted,
-    marginTop: 6,
-    marginLeft: 4
-  },
-  footer: {
-    padding: Spacing.lg,
-    paddingTop: Spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: MyTheme.glas,
-    backgroundColor: MyTheme.background
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: "rgba(0,0,0,0.7)"
+    },
+    dismissArea: {
+      ...StyleSheet.absoluteFillObject
+    },
+    sheetContainer: {
+      backgroundColor: MyTheme.background,
+      borderTopLeftRadius: 32,
+      borderTopRightRadius: 32,
+      maxHeight: "90%",
+      flexShrink: 1
+    },
+    content: {
+      paddingTop: Spacing.sm,
+      flexShrink: 1
+    },
+    scrollContent: {
+      paddingHorizontal: Spacing.md,
+      paddingBottom: Spacing.lg
+    },
+    dragHandle: {
+      width: 40,
+      height: 5,
+      backgroundColor: "rgba(255,255,255,0.1)",
+      borderRadius: 3,
+      alignSelf: "center",
+      marginBottom: Spacing.md
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      marginBottom: Spacing.lg
+    },
+    section: {
+      marginBottom: Spacing.lg
+    },
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1
+    },
+    infoText: {
+      fontSize: 11,
+      color: MyTheme.muted,
+      marginTop: 6,
+      marginLeft: 4
+    },
+    footer: {
+      padding: Spacing.lg,
+      paddingTop: Spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: MyTheme.glas,
+      backgroundColor: MyTheme.background
+    }
+  });
 
 export default CreateCommunityForm;

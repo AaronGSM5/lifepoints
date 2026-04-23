@@ -14,6 +14,7 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLoading, requiresInput }) => {
+  const styles = getStyles();
   const [isExpanded, setIsExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -106,60 +107,61 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    overflow: "hidden"
-  },
-  mainRow: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: Spacing.borderRadius.md,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  title: {
-    marginBottom: Spacing.xs
-  },
-  metaRow: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  lpText: {
-    color: MyTheme.primaryAccent
-  },
-  chevronContainer: {
-    marginLeft: Spacing.sm
-  },
-  expandedContainer: {
-    marginTop: Spacing.md,
-    paddingTop: Spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: MyTheme.secondary
-  },
-  actionRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  trackingRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: Spacing.sm
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.md,
+      overflow: "hidden"
+    },
+    mainRow: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: Spacing.borderRadius.md,
+      backgroundColor: MyTheme.secondary,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    textContainer: {
+      flex: 1,
+      justifyContent: "center"
+    },
+    title: {
+      marginBottom: Spacing.xs
+    },
+    metaRow: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    lpText: {
+      color: MyTheme.primaryAccent
+    },
+    chevronContainer: {
+      marginLeft: Spacing.sm
+    },
+    expandedContainer: {
+      marginTop: Spacing.md,
+      paddingTop: Spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: MyTheme.secondary
+    },
+    actionRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: Spacing.sm
+    },
+    trackingRow: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: Spacing.sm
+    }
+  });
 
 export default TaskItem;

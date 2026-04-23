@@ -10,6 +10,8 @@ import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
+  const styles = getStyles();
+
   if (isLoading) {
     return (
       <BaseCard style={styles.cardContainer}>
@@ -120,66 +122,67 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  cardContainer: {
-    width: 260,
-    height: 196,
-    marginRight: Spacing.md,
-    padding: Spacing.md,
-    paddingBottom: Spacing.md - 4,
-    justifyContent: "space-between"
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start"
-  },
-  iconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: Spacing.borderRadius.md,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  contentArea: {
-    flex: 1,
-    justifyContent: "center",
-    marginTop: Spacing.sm + 2
-  },
-  cardTitle: {
-    fontSize: 18,
-    marginBottom: 4
-  },
-  description: {
-    lineHeight: 20
-  },
-  footerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: Spacing.sm,
-    paddingTop: Spacing.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "rgba(255, 255, 255, 0.1)"
-  },
-  socialProof: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  facepile: {
-    flexDirection: "row",
-    marginRight: Spacing.sm + 2
-  },
-  avatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: MyTheme.primary
-  },
-  memberText: {
-    opacity: 0.8
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    cardContainer: {
+      width: 260,
+      height: 196,
+      marginRight: Spacing.md,
+      padding: Spacing.md,
+      paddingBottom: Spacing.md - 4,
+      justifyContent: "space-between"
+    },
+    headerRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start"
+    },
+    iconBox: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.md,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    contentArea: {
+      flex: 1,
+      justifyContent: "center",
+      marginTop: Spacing.sm + 2
+    },
+    cardTitle: {
+      fontSize: 18,
+      marginBottom: 4
+    },
+    description: {
+      lineHeight: 20
+    },
+    footerRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginTop: Spacing.sm,
+      paddingTop: Spacing.sm,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: "rgba(255, 255, 255, 0.1)"
+    },
+    socialProof: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    facepile: {
+      flexDirection: "row",
+      marginRight: Spacing.sm + 2
+    },
+    avatar: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: MyTheme.primary
+    },
+    memberText: {
+      opacity: 0.8
+    }
+  });
 
 export default RecommendedCommunity;

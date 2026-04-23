@@ -6,6 +6,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 const SettingsRow = ({ setting, isLast, onPress }) => {
+  const styles = getStyles();
   const [isToggled, setIsToggled] = useState(setting.defaultValue || false);
 
   return (
@@ -56,33 +57,34 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: Spacing.sm + 4,
-    paddingHorizontal: Spacing.md,
-    minHeight: 52
-  },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12
-  },
-  itemRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8
-  },
-  valueText: {
-    opacity: 0.7
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    marginHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    item: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: Spacing.sm + 4,
+      paddingHorizontal: Spacing.md,
+      minHeight: 52
+    },
+    itemLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12
+    },
+    itemRight: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8
+    },
+    valueText: {
+      opacity: 0.7
+    },
+    separator: {
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      marginHorizontal: Spacing.md
+    }
+  });
 
 export default SettingsRow;

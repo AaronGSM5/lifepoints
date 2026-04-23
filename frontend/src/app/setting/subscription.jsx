@@ -11,6 +11,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 
 export default function SubscriptionScreen() {
+  const styles = getStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
 
@@ -313,91 +314,92 @@ export default function SubscriptionScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.lg,
-    alignItems: "center"
-  },
-  subtitle: {
-    textAlign: "center",
-    color: MyTheme.muted,
-    marginTop: Spacing.sm,
-    paddingHorizontal: Spacing.lg
-  },
-  toggleContainer: {
-    flexDirection: "row",
-    backgroundColor: MyTheme.primary,
-    borderRadius: 22,
-    marginTop: Spacing.lg,
-    padding: 4,
-    width: "80%",
-    alignSelf: "center"
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: "center",
-    borderRadius: 18,
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 6
-  },
-  toggleActive: {
-    backgroundColor: "#efeff4"
-  },
-  cardsContainer: {
-    paddingBottom: Spacing.xl,
-    gap: Spacing.xl
-  },
-  card: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.lg,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    position: "relative"
-  },
-  highlightCard: {
-    borderWidth: 0,
-    boxShadow: "0px 5px 15px rgba(47, 196, 146, 0.5)",
-    elevation: 10
-  },
-  premiumCard: {
-    borderWidth: 0,
-    boxShadow: "0px 5px 15px rgba(255, 215, 0, 0.5)",
-    elevation: 10
-  },
-  cardHeader: {
-    marginBottom: Spacing.md
-  },
-  priceRow: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginTop: 4
-  },
-  featureList: {
-    gap: Spacing.sm,
-    marginBottom: Spacing.md
-  },
-  featureItem: {
-    flexDirection: "row",
-    alignItems: "flex-start"
-  },
-  footer: {
-    alignItems: "center",
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.xxl,
-    borderTopWidth: 1,
-    borderTopColor: "#efeff4"
-  },
-  restoreText: {
-    color: MyTheme.primaryAccent,
-    marginBottom: Spacing.md
-  },
-  legalText: {
-    textAlign: "center",
-    color: MyTheme.muted,
-    fontSize: 11,
-    lineHeight: 16
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    header: {
+      paddingVertical: Spacing.lg,
+      alignItems: "center"
+    },
+    subtitle: {
+      textAlign: "center",
+      color: MyTheme.muted,
+      marginTop: Spacing.sm,
+      paddingHorizontal: Spacing.lg
+    },
+    toggleContainer: {
+      flexDirection: "row",
+      backgroundColor: MyTheme.primary,
+      borderRadius: 22,
+      marginTop: Spacing.lg,
+      padding: 4,
+      width: "80%",
+      alignSelf: "center"
+    },
+    toggleButton: {
+      flex: 1,
+      paddingVertical: 10,
+      alignItems: "center",
+      borderRadius: 18,
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 6
+    },
+    toggleActive: {
+      backgroundColor: "#efeff4"
+    },
+    cardsContainer: {
+      paddingBottom: Spacing.xl,
+      gap: Spacing.xl
+    },
+    card: {
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.lg,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      position: "relative"
+    },
+    highlightCard: {
+      borderWidth: 0,
+      boxShadow: "0px 5px 15px rgba(47, 196, 146, 0.5)",
+      elevation: 10
+    },
+    premiumCard: {
+      borderWidth: 0,
+      boxShadow: "0px 5px 15px rgba(255, 215, 0, 0.5)",
+      elevation: 10
+    },
+    cardHeader: {
+      marginBottom: Spacing.md
+    },
+    priceRow: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      marginTop: 4
+    },
+    featureList: {
+      gap: Spacing.sm,
+      marginBottom: Spacing.md
+    },
+    featureItem: {
+      flexDirection: "row",
+      alignItems: "flex-start"
+    },
+    footer: {
+      alignItems: "center",
+      paddingTop: Spacing.lg,
+      paddingBottom: Spacing.xxl,
+      borderTopWidth: 1,
+      borderTopColor: "#efeff4"
+    },
+    restoreText: {
+      color: MyTheme.primaryAccent,
+      marginBottom: Spacing.md
+    },
+    legalText: {
+      textAlign: "center",
+      color: MyTheme.muted,
+      fontSize: 11,
+      lineHeight: 16
+    }
+  });

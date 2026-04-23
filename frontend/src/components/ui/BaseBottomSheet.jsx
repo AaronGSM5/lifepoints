@@ -18,6 +18,7 @@ import { Icon } from "@/components/icons/Icon";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
+  const styles = getStyles();
   // Wir entkoppeln den isVisible-State, damit wir die Schließ-Animation abspielen können,
   // BEVOR das Modal wirklich aus dem DOM verschwindet.
   const [showModal, setShowModal] = useState(isVisible);
@@ -104,52 +105,53 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: "flex-end"
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.6)"
-  },
-  sheetContainer: {
-    backgroundColor: MyTheme.background,
-    borderTopLeftRadius: Spacing.borderRadius.lg,
-    borderTopRightRadius: Spacing.borderRadius.lg,
-    overflow: "hidden",
-    height: "80%",
-    width: "100%"
-  },
-  dragHandleContainer: {
-    alignItems: "center",
-    paddingVertical: Spacing.sm
-  },
-  dragHandle: {
-    width: 40,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: MyTheme.muted,
-    opacity: 0.5
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.sm
-  },
-  closeButton: {
-    width: 36,
-    height: 36,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.primary,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  content: {
-    flex: 1
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    overlay: {
+      flex: 1,
+      justifyContent: "flex-end"
+    },
+    backdrop: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(0, 0, 0, 0.6)"
+    },
+    sheetContainer: {
+      backgroundColor: MyTheme.background,
+      borderTopLeftRadius: Spacing.borderRadius.lg,
+      borderTopRightRadius: Spacing.borderRadius.lg,
+      overflow: "hidden",
+      height: "80%",
+      width: "100%"
+    },
+    dragHandleContainer: {
+      alignItems: "center",
+      paddingVertical: Spacing.sm
+    },
+    dragHandle: {
+      width: 40,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: MyTheme.muted,
+      opacity: 0.5
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.lg,
+      marginBottom: Spacing.sm
+    },
+    closeButton: {
+      width: 36,
+      height: 36,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: MyTheme.primary,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    content: {
+      flex: 1
+    }
+  });
 
 export default BaseBottomSheet;

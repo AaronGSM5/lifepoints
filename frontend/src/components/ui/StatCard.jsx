@@ -11,6 +11,7 @@ import AppBadge from "./AppBadge";
 import { router } from "expo-router";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
+  const styles = getStyles();
   if (isLoading) {
     return (
       <BaseCard style={styles.statCard}>
@@ -69,19 +70,20 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  statCard: {
-    width: "47%"
-  },
-  statTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  numberContainer: {
-    overflow: "hidden",
-    borderRadius: 4
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    statCard: {
+      width: "47%"
+    },
+    statTop: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
+    numberContainer: {
+      overflow: "hidden",
+      borderRadius: 4
+    }
+  });
 
 export default StatCard;

@@ -17,6 +17,7 @@ const DUMMY_MESSAGES = [
 ];
 
 export default function MyCommunityChatScreen() {
+  const styles = getStyles();
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -144,112 +145,113 @@ export default function MyCommunityChatScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  customHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: MyTheme.background,
-    paddingBottom: Spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: MyTheme.glas
-  },
-  headerIcon: {
-    padding: Spacing.md,
-    width: 60,
-    alignItems: "center"
-  },
-  headerTitleContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1
-  },
-  headerSubtitleText: {
-    fontSize: 13,
-    marginTop: 2
-  },
-  chatListContent: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.xl
-  },
-  systemMessageContainer: {
-    alignItems: "center",
-    marginVertical: Spacing.md
-  },
-  systemMessageText: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 4,
-    borderRadius: Spacing.borderRadius.md
-  },
-  messageRow: {
-    flexDirection: "row",
-    marginBottom: Spacing.md,
-    alignItems: "flex-end"
-  },
-  messageRowMe: {
-    justifyContent: "flex-end"
-  },
-  messageRowOther: {
-    justifyContent: "flex-start"
-  },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: "rgba(76, 150, 160, 0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: Spacing.sm
-  },
-  avatarText: {
-    color: "#4C96A0",
-    fontSize: 14
-  },
-  messageBubble: {
-    maxWidth: "80%",
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.lg
-  },
-  messageBubbleMe: {
-    backgroundColor: MyTheme.primary,
-    borderBottomRightRadius: Spacing.borderRadius.sm - 4
-  },
-  messageBubbleOther: {
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderBottomLeftRadius: Spacing.borderRadius.sm - 4
-  },
-  senderName: {
-    color: MyTheme.primaryAccent,
-    marginBottom: 2
-  },
-  timeText: {
-    fontSize: 10,
-    marginTop: 4,
-    alignSelf: "flex-end",
-    opacity: 0.6
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.sm,
-    paddingBottom: Spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: MyTheme.glas,
-    backgroundColor: MyTheme.background
-  },
-  attachButton: {
-    flex: 1,
-    borderRadius: Spacing.borderRadius.full,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  sendButton: {
-    flex: 1,
-    borderRadius: Spacing.borderRadius.full,
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    customHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      backgroundColor: MyTheme.background,
+      paddingBottom: Spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: MyTheme.glas
+    },
+    headerIcon: {
+      padding: Spacing.md,
+      width: 60,
+      alignItems: "center"
+    },
+    headerTitleContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      flex: 1
+    },
+    headerSubtitleText: {
+      fontSize: 13,
+      marginTop: 2
+    },
+    chatListContent: {
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.md,
+      paddingBottom: Spacing.xl
+    },
+    systemMessageContainer: {
+      alignItems: "center",
+      marginVertical: Spacing.md
+    },
+    systemMessageText: {
+      backgroundColor: "rgba(255,255,255,0.05)",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: 4,
+      borderRadius: Spacing.borderRadius.md
+    },
+    messageRow: {
+      flexDirection: "row",
+      marginBottom: Spacing.md,
+      alignItems: "flex-end"
+    },
+    messageRowMe: {
+      justifyContent: "flex-end"
+    },
+    messageRowOther: {
+      justifyContent: "flex-start"
+    },
+    avatar: {
+      width: 32,
+      height: 32,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: "rgba(76, 150, 160, 0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: Spacing.sm
+    },
+    avatarText: {
+      color: "#4C96A0",
+      fontSize: 14
+    },
+    messageBubble: {
+      maxWidth: "80%",
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.lg
+    },
+    messageBubbleMe: {
+      backgroundColor: MyTheme.primary,
+      borderBottomRightRadius: Spacing.borderRadius.sm - 4
+    },
+    messageBubbleOther: {
+      backgroundColor: "rgba(255,255,255,0.08)",
+      borderBottomLeftRadius: Spacing.borderRadius.sm - 4
+    },
+    senderName: {
+      color: MyTheme.primaryAccent,
+      marginBottom: 2
+    },
+    timeText: {
+      fontSize: 10,
+      marginTop: 4,
+      alignSelf: "flex-end",
+      opacity: 0.6
+    },
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: Spacing.sm,
+      paddingVertical: Spacing.sm,
+      paddingBottom: Spacing.lg,
+      borderTopWidth: 1,
+      borderTopColor: MyTheme.glas,
+      backgroundColor: MyTheme.background
+    },
+    attachButton: {
+      flex: 1,
+      borderRadius: Spacing.borderRadius.full,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    sendButton: {
+      flex: 1,
+      borderRadius: Spacing.borderRadius.full,
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  });

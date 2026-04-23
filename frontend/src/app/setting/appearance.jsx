@@ -5,6 +5,7 @@ import useStore from "@/store/useStore";
 import { MyTheme } from "@/constants/Colors";
 
 export default function AppearanceScreen() {
+  const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const toggleTheme = useStore((state) => state.toggleDarkMode);
 
@@ -50,48 +51,49 @@ export default function AppearanceScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24
-  },
-  headerContainer: {
-    marginBottom: 32,
-    marginTop: 16
-  },
-  headerText: {
-    fontSize: 28,
-    fontFamily: "Inter-Bold",
-    marginBottom: 8
-  },
-  subText: {
-    fontSize: 15,
-    fontFamily: "Inter-Regular",
-    lineHeight: 22
-  },
-  cardContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 16
-  },
-  card: {
-    flex: 1,
-    paddingVertical: 32,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "transparent",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 12,
-    elevation: 2
-  },
-  cardText: {
-    marginTop: 16,
-    fontSize: 16,
-    fontFamily: "Inter-SemiBold"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 24
+    },
+    headerContainer: {
+      marginBottom: 32,
+      marginTop: 16
+    },
+    headerText: {
+      fontSize: 28,
+      fontFamily: "Inter-Bold",
+      marginBottom: 8
+    },
+    subText: {
+      fontSize: 15,
+      fontFamily: "Inter-Regular",
+      lineHeight: 22
+    },
+    cardContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      gap: 16
+    },
+    card: {
+      flex: 1,
+      paddingVertical: 32,
+      paddingHorizontal: 16,
+      borderRadius: 20,
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 2,
+      borderColor: "transparent",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.05,
+      shadowRadius: 12,
+      elevation: 2
+    },
+    cardText: {
+      marginTop: 16,
+      fontSize: 16,
+      fontFamily: "Inter-SemiBold"
+    }
+  });

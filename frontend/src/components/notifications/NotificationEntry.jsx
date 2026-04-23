@@ -5,6 +5,8 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 
 export default function NotificationEntry({ notification }) {
+  const styles = getStyles();
+
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.containerPressed]}
@@ -30,34 +32,35 @@ export default function NotificationEntry({ notification }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: MyTheme.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    alignItems: "center"
-  },
-  containerPressed: {
-    opacity: 0.7,
-    transform: [{ scale: 0.98 }]
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 4
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      backgroundColor: MyTheme.primary,
+      paddingVertical: Spacing.sm,
+      paddingHorizontal: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      alignItems: "center"
+    },
+    containerPressed: {
+      opacity: 0.7,
+      transform: [{ scale: 0.98 }]
+    },
+    iconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: MyTheme.secondary,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    titleRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 4
+    }
+  });

@@ -17,6 +17,7 @@ export default function FeedItem({
   skeletonProps,
   isLoading
 }) {
+  const styles = getStyles();
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
@@ -172,95 +173,96 @@ export default function FeedItem({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: MyTheme.primary,
-    paddingBottom: Spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.separator
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm + 2
-  },
-  headerUser: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12
-  },
-  avatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.primaryAccent,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  username: {
-    fontSize: 15
-  },
-  imageContainer: {
-    width: "100%",
-    aspectRatio: 4 / 5,
-    backgroundColor: MyTheme.primary,
-    position: "relative",
-    overflow: "hidden"
-  },
-  feedImage: {
-    width: "100%",
-    height: "100%"
-  },
-  bigHeartOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  actionBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    marginTop: 2
-  },
-  actionLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.lg
-  },
-  footer: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.md
-  },
-  likesText: {
-    marginBottom: 4,
-    fontSize: 14
-  },
-  descriptionText: {
-    fontSize: 14,
-    lineHeight: 20
-  },
-  timeAgo: {
-    fontSize: 12,
-    marginTop: Spacing.xs
-  },
-  skeletonContainer: {
-    backgroundColor: MyTheme.primary,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.separator,
-    paddingBottom: Spacing.md
-  },
-  skeletonHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: Spacing.md,
-    gap: Spacing.sm
-  },
-  skeletonFooter: {
-    padding: Spacing.md,
-    gap: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    card: {
+      backgroundColor: MyTheme.primary,
+      paddingBottom: Spacing.sm,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: MyTheme.separator
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.sm + 2
+    },
+    headerUser: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12
+    },
+    avatarPlaceholder: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: MyTheme.primaryAccent,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    username: {
+      fontSize: 15
+    },
+    imageContainer: {
+      width: "100%",
+      aspectRatio: 4 / 5,
+      backgroundColor: MyTheme.primary,
+      position: "relative",
+      overflow: "hidden"
+    },
+    feedImage: {
+      width: "100%",
+      height: "100%"
+    },
+    bigHeartOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    actionBar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.sm,
+      marginTop: 2
+    },
+    actionLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.lg
+    },
+    footer: {
+      paddingHorizontal: Spacing.md,
+      paddingBottom: Spacing.md
+    },
+    likesText: {
+      marginBottom: 4,
+      fontSize: 14
+    },
+    descriptionText: {
+      fontSize: 14,
+      lineHeight: 20
+    },
+    timeAgo: {
+      fontSize: 12,
+      marginTop: Spacing.xs
+    },
+    skeletonContainer: {
+      backgroundColor: MyTheme.primary,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: MyTheme.separator,
+      paddingBottom: Spacing.md
+    },
+    skeletonHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: Spacing.md,
+      gap: Spacing.sm
+    },
+    skeletonFooter: {
+      padding: Spacing.md,
+      gap: Spacing.md
+    }
+  });

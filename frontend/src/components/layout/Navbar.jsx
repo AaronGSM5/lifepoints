@@ -7,6 +7,7 @@ import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
+  const styles = getStyles();
   const scale = useRef(new Animated.Value(1)).current;
 
   const animatePop = () => {
@@ -35,6 +36,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
 };
 
 export default function Navbar({ state, descriptors, navigation }) {
+  const styles = getStyles();
   const insets = useSafeAreaInsets();
 
   // Reihenfolge der Tabs in der Navbar
@@ -80,31 +82,32 @@ export default function Navbar({ state, descriptors, navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  shadowContainer: {
-    position: "absolute",
-    left: 20,
-    right: 20,
-    height: 65,
-    borderRadius: 35,
-    boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
-    elevation: 10
-  },
-  blurBackground: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: Spacing.borderRadius.full,
-    overflow: "hidden"
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  tabButton: {
-    flex: 1,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    shadowContainer: {
+      position: "absolute",
+      left: 20,
+      right: 20,
+      height: 65,
+      borderRadius: 35,
+      boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
+      elevation: 10
+    },
+    blurBackground: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: Spacing.borderRadius.full,
+      overflow: "hidden"
+    },
+    buttonContainer: {
+      flex: 1,
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center"
+    },
+    tabButton: {
+      flex: 1,
+      height: "100%",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  });

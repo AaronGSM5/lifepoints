@@ -47,6 +47,7 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
 });
 
 export default function CommentSheet({ isVisible, onClose, postId }) {
+  const styles = getStyles();
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(mockComments);
@@ -210,140 +211,141 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   );
 }
 
-const styles = StyleSheet.create({
-  listContent: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.xl
-  },
-  commentRow: {
-    flexDirection: "row",
-    paddingVertical: Spacing.sm,
-    width: "100%"
-  },
-  replyRow: {
-    marginBottom: Spacing.sm
-  },
-  commentAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F0F0F0"
-  },
-  replyAvatar: {
-    width: 28,
-    height: 28,
-    borderRadius: 14
-  },
-  repliesContainer: {
-    marginLeft: 44,
-    borderLeftWidth: 1,
-    borderLeftColor: MyTheme.glas,
-    paddingLeft: 12,
-    marginTop: -Spacing.sm,
-    marginBottom: Spacing.sm
-  },
-  replyBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.15)",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: MyTheme.separator
-  },
-  replyBarText: {
-    fontSize: 13,
-    color: MyTheme.muted
-  },
-  commentContainer: {
-    marginBottom: Spacing.sm
-  },
-  commentContent: {
-    flex: 1
-  },
-  commentText: {
-    flex: 1,
-    fontSize: 14,
-    lineHeight: 20,
-    color: MyTheme.text
-  },
-  commentTime: {
-    fontSize: 12,
-    color: MyTheme.muted
-  },
-  commentFooter: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 6,
-    gap: Spacing.md
-  },
-  replyButton: {
-    fontSize: 12,
-    color: MyTheme.muted
-  },
-  inputSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: MyTheme.separator,
-    backgroundColor: MyTheme.background
-  },
-  inputAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: Spacing.borderRadius.full,
-    marginRight: 12,
-    marginBottom: 2
-  },
-  inputBubble: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: MyTheme.glas,
-    borderRadius: Spacing.borderRadius.lg,
-    paddingHorizontal: Spacing.md,
-    minHeight: 36,
-    maxHeight: 120
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 14,
-    color: MyTheme.text,
-    padding: 0,
-    includeFontPadding: false,
-    textAlignVertical: "center",
-    lineHeight: 18,
-    paddingTop: Platform.OS === "ios" ? 9 : 8,
-    paddingBottom: Platform.OS === "ios" ? 9 : 8,
-    outlineStyle: "none"
-  },
-  postButton: {
-    height: 36,
-    justifyContent: "center"
-  },
-  avatarColumn: {
-    marginRight: 12
-  },
-  likeColumn: {
-    paddingLeft: 10,
-    alignItems: "flex-end",
-    justifyContent: "flex-start",
-    paddingTop: 2
-  },
-  usernameText: {
-    marginBottom: 2
-  },
-  textAndLikeRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start"
-  },
-  likeButton: {
-    paddingLeft: 12,
-    paddingTop: 2
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    listContent: {
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.lg,
+      paddingBottom: Spacing.xl
+    },
+    commentRow: {
+      flexDirection: "row",
+      paddingVertical: Spacing.sm,
+      width: "100%"
+    },
+    replyRow: {
+      marginBottom: Spacing.sm
+    },
+    commentAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: "#F0F0F0"
+    },
+    replyAvatar: {
+      width: 28,
+      height: 28,
+      borderRadius: 14
+    },
+    repliesContainer: {
+      marginLeft: 44,
+      borderLeftWidth: 1,
+      borderLeftColor: MyTheme.glas,
+      paddingLeft: 12,
+      marginTop: -Spacing.sm,
+      marginBottom: Spacing.sm
+    },
+    replyBar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.15)",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: 8,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: MyTheme.separator
+    },
+    replyBarText: {
+      fontSize: 13,
+      color: MyTheme.muted
+    },
+    commentContainer: {
+      marginBottom: Spacing.sm
+    },
+    commentContent: {
+      flex: 1
+    },
+    commentText: {
+      flex: 1,
+      fontSize: 14,
+      lineHeight: 20,
+      color: MyTheme.text
+    },
+    commentTime: {
+      fontSize: 12,
+      color: MyTheme.muted
+    },
+    commentFooter: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 6,
+      gap: Spacing.md
+    },
+    replyButton: {
+      fontSize: 12,
+      color: MyTheme.muted
+    },
+    inputSection: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.sm,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: MyTheme.separator,
+      backgroundColor: MyTheme.background
+    },
+    inputAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: Spacing.borderRadius.full,
+      marginRight: 12,
+      marginBottom: 2
+    },
+    inputBubble: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: MyTheme.glas,
+      borderRadius: Spacing.borderRadius.lg,
+      paddingHorizontal: Spacing.md,
+      minHeight: 36,
+      maxHeight: 120
+    },
+    textInput: {
+      flex: 1,
+      fontSize: 14,
+      color: MyTheme.text,
+      padding: 0,
+      includeFontPadding: false,
+      textAlignVertical: "center",
+      lineHeight: 18,
+      paddingTop: Platform.OS === "ios" ? 9 : 8,
+      paddingBottom: Platform.OS === "ios" ? 9 : 8,
+      outlineStyle: "none"
+    },
+    postButton: {
+      height: 36,
+      justifyContent: "center"
+    },
+    avatarColumn: {
+      marginRight: 12
+    },
+    likeColumn: {
+      paddingLeft: 10,
+      alignItems: "flex-end",
+      justifyContent: "flex-start",
+      paddingTop: 2
+    },
+    usernameText: {
+      marginBottom: 2
+    },
+    textAndLikeRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start"
+    },
+    likeButton: {
+      paddingLeft: 12,
+      paddingTop: 2
+    }
+  });

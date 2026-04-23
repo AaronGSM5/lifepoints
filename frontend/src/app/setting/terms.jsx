@@ -8,6 +8,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 
 export default function TermsScreen() {
+  const styles = getStyles();
   const router = useRouter();
 
   const legalItems = [
@@ -81,45 +82,46 @@ export default function TermsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.lg
-  },
-  subtitle: {
-    marginTop: Spacing.sm
-  },
-  listContainer: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  listItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: MyTheme.secondary
-  },
-  iconBackground: {
-    width: 40,
-    height: 40,
-    borderRadius: Spacing.borderRadius.md,
-    backgroundColor: "rgba(47, 196, 146, 0.1)",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  textContainer: {
-    flex: 1
-  },
-  footer: {
-    marginTop: Spacing.xl,
-    alignItems: "center",
-    gap: 4
-  },
-  footerText: {
-    color: MyTheme.muted
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    header: {
+      paddingVertical: Spacing.lg
+    },
+    subtitle: {
+      marginTop: Spacing.sm
+    },
+    listContainer: {
+      backgroundColor: MyTheme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: MyTheme.secondary
+    },
+    listItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: Spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: MyTheme.secondary
+    },
+    iconBackground: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.md,
+      backgroundColor: "rgba(47, 196, 146, 0.1)",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    textContainer: {
+      flex: 1
+    },
+    footer: {
+      marginTop: Spacing.xl,
+      alignItems: "center",
+      gap: 4
+    },
+    footerText: {
+      color: MyTheme.muted
+    }
+  });

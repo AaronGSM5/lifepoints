@@ -19,6 +19,7 @@ const SectionHeader = ({
   style,
   isLoading
 }) => {
+  const styles = getStyles();
   if (isLoading) {
     return (
       <View style={[styles.container, style]}>
@@ -75,18 +76,19 @@ const SectionHeader = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md
-  },
-  leftGroup: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: Spacing.md
+    },
+    leftGroup: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm
+    }
+  });
 
 export default SectionHeader;

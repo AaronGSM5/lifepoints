@@ -24,6 +24,7 @@ const MOCK_MEMBERS = [
 
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
+  const styles = getStyles();
   const { recommended, myCommunities } = useCommunities();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -129,58 +130,59 @@ export default function MyCommunityDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingHorizontal: Spacing.lg,
-    marginTop: Spacing.md,
-    paddingBottom: 40
-  },
-  statsText: {
-    marginTop: Spacing.xs,
-    opacity: 0.7
-  },
-  section: {
-    marginTop: Spacing.xl
-  },
-  description: {
-    lineHeight: 22,
-    opacity: 0.8
-  },
-  liveContainer: {
-    backgroundColor: "rgba(239, 68, 68, 0.1)",
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius?.md || 8,
-    borderWidth: 1,
-    borderColor: "rgba(239, 68, 68, 0.2)",
-    marginBottom: Spacing.lg
-  },
-  badgeContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    columnGap: Spacing.xs,
-    rowGap: Spacing.sm
-  },
-  memberRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: Spacing.md - 4,
-    paddingHorizontal: Spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.05)"
-  },
-  lpContainer: {
-    flexDirection: "row",
-    alignItems: "baseline"
-  },
-  expandButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: Spacing.md,
-    gap: 4
-  },
-  expandButtonText: {
-    color: MyTheme.primaryAccent,
-    fontSize: 14
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    contentContainer: {
+      paddingHorizontal: Spacing.lg,
+      marginTop: Spacing.md,
+      paddingBottom: 40
+    },
+    statsText: {
+      marginTop: Spacing.xs,
+      opacity: 0.7
+    },
+    section: {
+      marginTop: Spacing.xl
+    },
+    description: {
+      lineHeight: 22,
+      opacity: 0.8
+    },
+    liveContainer: {
+      backgroundColor: "rgba(239, 68, 68, 0.1)",
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius?.md || 8,
+      borderWidth: 1,
+      borderColor: "rgba(239, 68, 68, 0.2)",
+      marginBottom: Spacing.lg
+    },
+    badgeContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      columnGap: Spacing.xs,
+      rowGap: Spacing.sm
+    },
+    memberRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: Spacing.md - 4,
+      paddingHorizontal: Spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: "rgba(255, 255, 255, 0.05)"
+    },
+    lpContainer: {
+      flexDirection: "row",
+      alignItems: "baseline"
+    },
+    expandButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: Spacing.md,
+      gap: 4
+    },
+    expandButtonText: {
+      color: MyTheme.primaryAccent,
+      fontSize: 14
+    }
+  });

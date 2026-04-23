@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppButton from "../ui/AppButton";
 
 const EmptyState = ({ activeCat, setActiveCat }) => {
+  const styles = getStyles();
   render(
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconCircle}>
@@ -24,23 +25,24 @@ const EmptyState = ({ activeCat, setActiveCat }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  emptyContainer: {
-    width: "100%",
-    paddingVertical: Spacing.lg,
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: 200
-  },
-  emptyIconCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.sm
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    emptyContainer: {
+      width: "100%",
+      paddingVertical: Spacing.lg,
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: 200
+    },
+    emptyIconCircle: {
+      width: 64,
+      height: 64,
+      borderRadius: 32,
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: Spacing.sm
+    }
+  });
 
 export default EmptyState;

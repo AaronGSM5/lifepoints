@@ -9,6 +9,7 @@ import AppButton from "@/components/ui/AppButton";
 
 export default function DevEntryScreen() {
   const router = useRouter();
+  const styles = getStyles();
 
   const navLinks = [
     { title: "🏠 Main App", href: "/home" },
@@ -43,32 +44,33 @@ export default function DevEntryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Spacing.lg,
-    justifyContent: "center"
-  },
-  header: {
-    marginBottom: Spacing.xl,
-    alignItems: "center"
-  },
-  buttonList: {
-    gap: Spacing.md
-  },
-  button: {
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    alignItems: "center"
-  },
-  buttonPressed: {
-    backgroundColor: MyTheme.secondary,
-    opacity: 0.9
-  },
-  footer: {
-    marginTop: Spacing.xl
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: Spacing.lg,
+      justifyContent: "center"
+    },
+    header: {
+      marginBottom: Spacing.xl,
+      alignItems: "center"
+    },
+    buttonList: {
+      gap: Spacing.md
+    },
+    button: {
+      backgroundColor: MyTheme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.full,
+      borderWidth: 1,
+      borderColor: MyTheme.secondary,
+      alignItems: "center"
+    },
+    buttonPressed: {
+      backgroundColor: MyTheme.secondary,
+      opacity: 0.9
+    },
+    footer: {
+      marginTop: Spacing.xl
+    }
+  });

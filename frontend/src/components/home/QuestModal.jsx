@@ -8,6 +8,7 @@ import BaseBottomSheet from "../ui/BaseBottomSheet";
 import { MyTheme } from "@/constants/Colors";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
+  const styles = getStyles();
   const [activeTab, setActiveTab] = useState("today"); // "today" | "week"
   const quests = mockQuests[activeTab];
 
@@ -71,56 +72,57 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  tabContainer: {
-    flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: Spacing.lg,
-    padding: 4,
-    marginHorizontal: Spacing.lg,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: Spacing.sm,
-    alignItems: "center",
-    borderRadius: Spacing.lg
-  },
-  activeTab: {
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.lg
-  },
-  list: {
-    flex: 1,
-    paddingHorizontal: Spacing.lg
-  },
-  questCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: Spacing.md,
-    padding: Spacing.md,
-    gap: Spacing.sm
-  },
-  progressContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-    marginTop: Spacing.sm
-  },
-  progressTrack: {
-    flex: 1,
-    height: 6,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: Spacing.borderRadius.lg,
-    overflow: "hidden"
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: MyTheme.primaryAccent,
-    borderRadius: Spacing.borderRadius.lg
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    tabContainer: {
+      flexDirection: "row",
+      backgroundColor: "rgba(255,255,255,0.05)",
+      borderRadius: Spacing.lg,
+      padding: 4,
+      marginHorizontal: Spacing.lg,
+      marginTop: Spacing.md,
+      marginBottom: Spacing.lg
+    },
+    tab: {
+      flex: 1,
+      paddingVertical: Spacing.sm,
+      alignItems: "center",
+      borderRadius: Spacing.lg
+    },
+    activeTab: {
+      backgroundColor: MyTheme.primaryAccent,
+      borderRadius: Spacing.lg
+    },
+    list: {
+      flex: 1,
+      paddingHorizontal: Spacing.lg
+    },
+    questCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: Spacing.md,
+      padding: Spacing.md,
+      gap: Spacing.sm
+    },
+    progressContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+      marginTop: Spacing.sm
+    },
+    progressTrack: {
+      flex: 1,
+      height: 6,
+      backgroundColor: "rgba(255,255,255,0.1)",
+      borderRadius: Spacing.borderRadius.lg,
+      overflow: "hidden"
+    },
+    progressFill: {
+      height: "100%",
+      backgroundColor: MyTheme.primaryAccent,
+      borderRadius: Spacing.borderRadius.lg
+    }
+  });
 
 export default QuestModal;

@@ -10,6 +10,7 @@ import AppBadge from "../ui/AppBadge";
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
+  const styles = getStyles();
 
   const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
@@ -75,21 +76,22 @@ export default function Toolbar() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: MyTheme.background,
-    flexDirection: "row",
-    alignItems: "center",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: MyTheme.separator
-  },
-  sideSection: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  centerSection: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: MyTheme.background,
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: MyTheme.separator
+    },
+    sideSection: {
+      flex: 1,
+      justifyContent: "center"
+    },
+    centerSection: {
+      flex: 2,
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  });
