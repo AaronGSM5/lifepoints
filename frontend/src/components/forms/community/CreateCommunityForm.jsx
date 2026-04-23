@@ -14,11 +14,13 @@ import BannerUploader from "./BannerUploader";
 import SizePicker from "./SizePicker";
 
 import { mockCommunityIcons, mockCommunityBadges, mockCommunitySizes } from "@/constants/MockData";
+import useStore from "@/store/useStore";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const styles = getStyles();
+  const { isDarkMode } = useStore();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");
@@ -95,6 +97,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                   value={name}
                   onChangeText={setName}
                   bottomMargin={false}
+                  isForm
                 />
                 <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
               </View>
@@ -110,6 +113,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
                   value={description}
                   onChangeText={setDescription}
                   bottomMargin={false}
+                  isForm
                 />
               </View>
 
@@ -205,7 +209,8 @@ const getStyles = () =>
     label: {
       marginBottom: 8,
       opacity: 0.5,
-      letterSpacing: 1
+      letterSpacing: 1,
+      color: MyTheme.text
     },
     infoText: {
       fontSize: 11,

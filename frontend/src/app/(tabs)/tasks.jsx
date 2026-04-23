@@ -31,7 +31,7 @@ const TasksScreen = () => {
     isRefreshing,
     refreshTasks
   } = useTasks();
-
+  const styles = getStyles();
   const skeletonProps = {
     colorMode: "dark",
     transition: { type: "timing", duration: 1500 },
@@ -159,22 +159,23 @@ const TasksScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  stickySearchWrapper: {
-    zIndex: 10,
-    paddingTop: Spacing.sm
-  },
-  sectionMargin: {
-    marginTop: Spacing.md
-  },
-  carouselContainer: {
-    paddingHorizontal: Spacing.md,
-    gap: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    stickySearchWrapper: {
+      zIndex: 10,
+      paddingTop: Spacing.sm
+    },
+    sectionMargin: {
+      marginTop: Spacing.md
+    },
+    carouselContainer: {
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.md,
+      marginBottom: Spacing.lg
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    }
+  });
 
 export default TasksScreen;

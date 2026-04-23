@@ -16,6 +16,7 @@ const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
   const { myCommunities, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } = useCommunities();
+  const styles = getStyles();
   const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
@@ -196,35 +197,36 @@ export default function CommunitiesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  stickySearchWrapper: {
-    paddingTop: Spacing.sm,
-    zIndex: 10
-  },
-  headerContainer: {
-    paddingBottom: Spacing.md
-  },
-  myCommunitiesSection: {
-    marginTop: Spacing.md,
-    marginBottom: Spacing.md
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  },
-  horizontalScrollContentContainer: {
-    paddingHorizontal: Spacing.md,
-    gap: Spacing.md
-  },
-  sectionContainer: {
-    marginBottom: Spacing.lg
-  },
-  mainListLoader: {
-    paddingVertical: Spacing.xl,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  endOfList: {
-    paddingVertical: Spacing.xl,
-    alignItems: "center"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    stickySearchWrapper: {
+      paddingTop: Spacing.sm,
+      zIndex: 10
+    },
+    headerContainer: {
+      paddingBottom: Spacing.md
+    },
+    myCommunitiesSection: {
+      marginTop: Spacing.md,
+      marginBottom: Spacing.md
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    },
+    horizontalScrollContentContainer: {
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.md
+    },
+    sectionContainer: {
+      marginBottom: Spacing.lg
+    },
+    mainListLoader: {
+      paddingVertical: Spacing.xl,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    endOfList: {
+      paddingVertical: Spacing.xl,
+      alignItems: "center"
+    }
+  });

@@ -71,7 +71,8 @@ const getStyles = () =>
     label: {
       marginBottom: 8,
       opacity: 0.5,
-      letterSpacing: 1
+      letterSpacing: 1,
+      color: MyTheme.text
     },
     iconGrid: {
       flexDirection: "row",

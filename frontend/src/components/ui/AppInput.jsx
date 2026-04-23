@@ -25,6 +25,7 @@ const AppInput = forwardRef(
       blur = false,
       blurIntensity = 65,
       blurTint,
+      isForm = false,
       ...props
     },
     ref
@@ -84,6 +85,7 @@ const AppInput = forwardRef(
     const containerStyles = [
       styles.container,
       isFocused && styles.containerFocused,
+      !isDarkMode && isForm && styles.containerFocused,
       error && styles.containerError,
       isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
       isMultiline && styles.containerMultiline, // Hier kommt unser Multiline-Support rein

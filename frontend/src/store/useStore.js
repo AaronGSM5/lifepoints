@@ -17,7 +17,7 @@ const useStore = create(logger((set) => ({
   user: null,
   setUser: (user) => set({ user }),
 
-  isDarkMode: true,
+  isDarkMode: false,
   toggleDarkMode: () => set((state) => {
     const newMode = !state.isDarkMode;
     applyTheme(newMode);

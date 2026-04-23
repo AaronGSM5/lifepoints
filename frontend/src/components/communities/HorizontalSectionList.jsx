@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
   },
   horizontalScrollContentContainer: {
     paddingHorizontal: Spacing.md,
-    gap: Spacing.md
+    gap: Spacing.md,
+    alignItems: "center"
   },
   horizontalLoader: {
     width: 100,

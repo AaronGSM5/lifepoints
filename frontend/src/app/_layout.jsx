@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { MyTheme } from "@/constants/Colors";
+import { MyTheme, applyTheme } from "@/constants/Colors";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
@@ -35,6 +35,10 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  useEffect(() => {
+    applyTheme(isDarkMode);
+  }, [isDarkMode]);
 
   useEffect(() => {
     const hideNavigationBar = async () => {
