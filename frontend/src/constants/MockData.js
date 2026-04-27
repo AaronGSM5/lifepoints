@@ -39,29 +39,69 @@ export const mockFeedItems = [
   { id: 4, username: 'Zest_Runner', description: 'Helping the homeless', image: require("@/../public/assets/posts/helping.jpg") },
 ]
 
-export const mockMyCommunities = [
-  {
-    id: "5", title: "Early Risers", desc: "Die Community für Frühaufsteher. Wir motivieren uns gegenseitig, jeden Morgen vor der Arbeit die Laufschuhe zu schnüren. Egal ob 3km oder 15km – jeder Schritt zählt!", desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.", members: "1.2k Members", icon: "bolt", color: "#059669", bgColor: "#10b981", borderColor: "rgba(16, 185, 129, 0.3)", banner: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1000&auto=format&fit=crop", isLive: false, hasUnread: true, onlineCount: 20, badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"], avatars: [
-      { url: "https://i.pravatar.cc/150?u=10", isFriend: true },
-      { url: "https://i.pravatar.cc/150?u=11", isFriend: true },
-      { url: "https://i.pravatar.cc/150?u=12", isFriend: false },
-    ]
-  },
-  {
-    id: "6", title: "Code Runners", desc: "Vom Hobbykoch zum Profi. Hier teilen wir Rezepte, misslungene Versuche und die besten Geheimtipps für die perfekte Pasta. Jeden Sonntag gibt es eine neue Cooking-Challenge.", members: "850 Members", icon: "terminal", color: "#3b82f6", bgColor: "#ec4899", borderColor: "rgba(236, 72, 153, 0.3)", banner: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop", isLive: true, liveTitle: "Portfolio Review LIVE", hasUnread: false, onlineCount: 45, badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"], avatars: [
-      { url: "https://i.pravatar.cc/150?u=13", isFriend: true },
-      { url: "https://i.pravatar.cc/150?u=14", isFriend: false },
-      { url: "https://i.pravatar.cc/150?u=15", isFriend: false },
-    ]
-  },
-  {
-    id: "7", title: "Iron Will", desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.", members: "3.4k Members", icon: "fitness-center", color: "#ea580c", bgColor: "#f59e0b", borderColor: "rgba(245, 158, 11, 0.3)", banner: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop", isLive: false, hasUnread: true, onlineCount: 0, badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"], avatars: [
-      { url: "https://i.pravatar.cc/150?u=16", isFriend: true },
-      { url: "https://i.pravatar.cc/150?u=17", isFriend: true },
-      { url: "https://i.pravatar.cc/150?u=18", isFriend: true },
-    ]
-  },
-];
+// export const mockMyCommunities = [
+//   {
+//     id: "5",
+//     title: "Early Risers",
+//     desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.",
+//     members: "1.2k Members",
+//     icon: "bolt",
+//     color: "#059669",
+//     bgColor: "#10b981",
+//     borderColor: "rgba(16, 185, 129, 0.3)",
+//     banner: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1000&auto=format&fit=crop",
+//     isLive: false,
+//     hasUnread: true,
+//     onlineCount: 20,
+//     badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"],
+//     avatars: [
+//       { url: "https://i.pravatar.cc/150?u=10", isFriend: true },
+//       { url: "https://i.pravatar.cc/150?u=11", isFriend: true },
+//       { url: "https://i.pravatar.cc/150?u=12", isFriend: false },
+//     ]
+//   },
+//   {
+//     id: "6",
+//     title: "Code Runners",
+//     desc: "Vom Hobbykoch zum Profi. Hier teilen wir Rezepte, misslungene Versuche und die besten Geheimtipps für die perfekte Pasta. Jeden Sonntag gibt es eine neue Cooking-Challenge.",
+//     members: "850 Members",
+//     icon: "terminal",
+//     color: "#3b82f6",
+//     bgColor: "#ec4899",
+//     borderColor: "rgba(236, 72, 153, 0.3)",
+//     banner: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop",
+//     isLive: true,
+//     liveTitle: "Portfolio Review LIVE",
+//     hasUnread: false,
+//     onlineCount: 45,
+//     badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"],
+//     avatars: [
+//       { url: "https://i.pravatar.cc/150?u=13", isFriend: true },
+//       { url: "https://i.pravatar.cc/150?u=14", isFriend: false },
+//       { url: "https://i.pravatar.cc/150?u=15", isFriend: false },
+//     ]
+//   },
+//   {
+//     id: "7",
+//     title: "Iron Will",
+//     desc: "Ein Ort für Feedback und Inspiration. Wir teilen unsere neuesten UI/UX Entwürfe, diskutieren über Typografie und helfen uns bei kniffligen Auto-Layout Problemen in Figma.",
+//     members: "3.4k Members",
+//     icon: "fitness-center",
+//     color: "#ea580c",
+//     bgColor: "#f59e0b",
+//     borderColor: "rgba(245, 158, 11, 0.3)",
+//     banner: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop",
+//     isLive: false,
+//     hasUnread: true,
+//     onlineCount: 0,
+//     badges: ["creator", "nischen-pro", "tech", "gaming", "fitness"],
+//     avatars: [
+//       { url: "https://i.pravatar.cc/150?u=16", isFriend: true },
+//       { url: "https://i.pravatar.cc/150?u=17", isFriend: true },
+//       { url: "https://i.pravatar.cc/150?u=18", isFriend: true },
+//     ]
+//   },
+// ];
 
 export const mockTasks = [
   { id: 1, title: "Bett-Boost", description: 'Schüttle deine Decke auf und mache dein Bett ordentlich.', difficulty: "easy", xp: 500, lp: 1000, category: 'selfcare', progress: '0%', isLocked: false, icon: 'bed', requiresInput: null },

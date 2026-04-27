@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { mockRecommendedCommunities, mockMyCommunities } from "@/constants/MockData";
+import useStore from "@/store/useStore";
 
 const HORIZONTAL_PAGE_SIZE = 5;
 const VERTICAL_PAGE_SIZE = 2;
@@ -18,32 +18,25 @@ const simulateFetch = (dataArray, page, pageSize) => {
 export const useCommunities = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [myCommunities, setMyCommunities] = useState(mockMyCommunities);
-
-  const [recommendedData, setRecommendedData] = useState([]);
-
-  const fetchInitialData = useCallback(async () => {
-    setIsLoading(true);
-    setMyCommunities(mockMyCommunities);
-
-    const firstPageRecommended = await simulateFetch(mockRecommendedCommunities, 1, HORIZONTAL_PAGE_SIZE * 2);
-    setRecommendedData(firstPageRecommended);
-
-    setIsLoading(false);
-  }, []);
+  const myCommunities = useStore((state) => state.communities.myCommunities);
+  const recommendedCommunities = useStore((state) => state.communities.recommendedCommunities);
 
   useEffect(() => {
-    fetchInitialData();
-  }, [fetchInitialData]);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const fetchCommunitiesForCategory = useCallback(async (categoryKey, page) => {
     console.log(`Hook: Lade Seite ${page} für horizontale Kategorie: ${categoryKey}`);
 
     let dataToPaginate = [];
     if (categoryKey === "recommended_you") {
-      dataToPaginate = mockRecommendedCommunities;
+      dataToPaginate = recommendedCommunities;
     } else {
-      dataToPaginate = [...mockRecommendedCommunities].sort(() => 0.5 - Math.random());
+      dataToPaginate = [...recommendedCommunities].sort(() => 0.5 - Math.random());
     }
 
     const newData = await simulateFetch(dataToPaginate, page, HORIZONTAL_PAGE_SIZE);
@@ -62,7 +55,7 @@ export const useCommunities = () => {
           const sectionId = `dyn-sec-${sectionIndex}`;
           const categoryKey = `topic_${sectionIndex}`;
 
-          const firstPageData = await simulateFetch(mockRecommendedCommunities, 1, HORIZONTAL_PAGE_SIZE);
+          const firstPageData = await simulateFetch(recommendedCommunities, 1, HORIZONTAL_PAGE_SIZE);
 
           newSectionsWithData.push({
             id: sectionId,
@@ -78,7 +71,7 @@ export const useCommunities = () => {
 
   return {
     myCommunities,
-    recommended: recommendedData,
+    recommended: recommendedCommunities,
     searchQuery,
     setSearchQuery,
     isLoading,

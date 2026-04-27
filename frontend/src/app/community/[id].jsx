@@ -9,11 +9,13 @@ import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SectionHeader from "@/components/ui/SectionHeader";
+import useStore from "@/store/useStore";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const { recommended, myCommunities } = useCommunities();
+  const { recommended = [], myCommunities = [] } = useCommunities();
+  const joinCommunity = useStore((state) => state.joinCommunity);
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
 
   return (
@@ -34,7 +36,7 @@ export default function CommunityDetailScreen() {
           </View>
 
           {/* Action Button */}
-          <AppButton title="Join Community" onPress={() => console.log("Joined!")} style={styles.joinButton} />
+          <AppButton title="Join Community" onPress={() => joinCommunity(community)} style={styles.joinButton} />
 
           {/* Live Section */}
           {community?.isLive && (

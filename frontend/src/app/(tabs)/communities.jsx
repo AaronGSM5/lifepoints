@@ -68,7 +68,7 @@ export default function CommunitiesScreen() {
     const loadedSections = dynamicSections.map((section) => ({ ...section, type: "section" }));
 
     return [...topElements, ...staticSections, ...loadedSections];
-  }, [recommended, dynamicSections]);
+  }, [recommended, dynamicSections, myCommunities, isLoading]);
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -113,13 +113,15 @@ export default function CommunitiesScreen() {
               >
                 {isLoading
                   ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
-                  : myCommunities.map((c, index) => (
-                      <MyCommunityCard
-                        key={c.id || index}
-                        item={c}
-                        onPress={() => router.push(`/mycommunity/${c.id}`)}
-                      />
-                    ))}
+                  : myCommunities
+                      .filter((c) => c !== null && c !== undefined)
+                      .map((c, index) => (
+                        <MyCommunityCard
+                          key={c.id || index}
+                          item={c}
+                          onPress={() => router.push(`/mycommunity/${c.id}`)}
+                        />
+                      ))}
               </ScrollView>
             </View>
           );
@@ -153,7 +155,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, fetchCommunitiesForCategory]
+    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible]
   );
 
   const renderMainFooter = () => {
@@ -178,6 +180,7 @@ export default function CommunitiesScreen() {
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={listData}
+        extraData={[myCommunities, isLoading]}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         stickyHeaderIndices={[1]}
@@ -186,7 +189,6 @@ export default function CommunitiesScreen() {
         onEndReached={loadMoreSections}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderMainFooter}
-        removeClippedSubviews={true}
       />
       <CreateCommunityForm
         visible={isCreateModalVisible}

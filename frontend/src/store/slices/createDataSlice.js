@@ -2,14 +2,15 @@ import {
   mockTasks,
   mockTrophies,
   mockRewards,
-  mockMyCommunities
+  mockMyCommunities,
+  mockRecommendedCommunities
 } from '@/constants/MockData';
 
 export const createDataSlice = (set, get) => ({
   tasks: mockTasks,
   trophies: mockTrophies,
   rewards: mockRewards,
-  communities: mockMyCommunities,
+  communities: { myCommunities: mockMyCommunities || [], recommendedCommunities: mockRecommendedCommunities },
   completedTaskIds: [],
 
   // Eine Task abschließen
@@ -45,7 +46,16 @@ export const createDataSlice = (set, get) => ({
   })),
 
   // Community beitreten
-  joinCommunity: (newCommunity) => set((state) => ({
-    communities: [newCommunity, ...state.communities]
-  })),
+  joinCommunity: (newCommunity) => set((state) => {
+    if (!newCommunity || !newCommunity.id) return state;
+    const currentMyCommunities = state.communities?.myCommunities || [];
+
+    if (currentMyCommunities.some(c => c?.id === newCommunity.id)) return state;
+    return {
+      communities: {
+        ...state.communities,
+        myCommunities: [newCommunity, ...currentMyCommunities]
+      }
+    };
+  }),
 });
