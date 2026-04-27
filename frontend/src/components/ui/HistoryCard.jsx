@@ -7,7 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 export default function HistoryCard({
   title,
   points,
-  subtitle,
+  time,
   rightSubtitle,
   type = "earn",
   pointsSuffix = "LP",
@@ -29,9 +29,9 @@ export default function HistoryCard({
         <AppText type="body" bold numberOfLines={1}>
           {title}
         </AppText>
-        {subtitle && (
+        {time && (
           <AppText type="caption" numberOfLines={1} style={{ marginTop: 2 }}>
-            {subtitle}
+            {time}
           </AppText>
         )}
       </View>

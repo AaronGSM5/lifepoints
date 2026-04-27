@@ -1,19 +1,20 @@
 import React from "react";
 import { View, StyleSheet, SectionList } from "react-native";
-import { mockSectionedActivities } from "@/constants/MockData";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
+import useStore from "@/store/useStore";
 
 const JournalPage = () => {
   const styles = getStyles();
+  const activities = useStore((state) => state.activities);
   const renderItem = ({ item }) => (
     <HistoryCard
+      key={item.id}
       title={item.title}
-      subtitle={item.description}
       rightSubtitle={item.time}
       points={item.points}
       type={item.type}
@@ -35,7 +36,7 @@ const JournalPage = () => {
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false} withPaddingTop={false}>
       <ScreenTitle title={"My Impact Journal"} />
       <SectionList
-        sections={mockSectionedActivities}
+        sections={activities || []}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}

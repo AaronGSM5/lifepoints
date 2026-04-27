@@ -13,12 +13,14 @@ import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
+import useStore from "@/store/useStore";
 
 export default function RewardDetailScreen() {
   const styles = getStyles();
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const redeemReward = useStore((state) => state.redeemReward);
 
   const reward = mockRewards.find((c) => String(c.id) === String(id));
 
@@ -90,7 +92,7 @@ export default function RewardDetailScreen() {
             size="lg"
             style={reward.isLocked ? { opacity: 0.8 } : {}}
             onPress={() => {
-              if (!reward.isLocked) alert("Reward eingelöst!");
+              if (!reward.isLocked) redeemReward(reward.id);
             }}
             bgColor={reward.isLocked ? MyTheme.muted : MyTheme.primaryAccent}
           />

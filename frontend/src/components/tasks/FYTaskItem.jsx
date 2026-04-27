@@ -12,6 +12,7 @@ import useStore from "@/store/useStore";
 const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const addLp = useStore((state) => state.addLp);
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>
@@ -102,7 +103,7 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
           </AppText>
         </View>
 
-        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} />
+        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} onPress={() => addLp(lp)} />
       </View>
     </BaseCard>
   );

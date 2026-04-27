@@ -9,7 +9,7 @@ import InviteFriendCard from "@/components/profile/InviteFriendCard";
 import useStore from "@/store/useStore";
 
 export default function ProfileScreen() {
-  const { profile, activities, trophies, isLoading } = useProfile();
+  const { profile, trophies, isLoading } = useProfile();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -27,7 +27,7 @@ export default function ProfileScreen() {
 
       <ProfileTrophies isLoading={isLoading} trophies={trophies} skeletonProps={skeletonProps} />
 
-      <JournalPreview activities={activities} skeletonProps={skeletonProps} isLoading={isLoading} />
+      <JournalPreview skeletonProps={skeletonProps} isLoading={isLoading} />
 
       <InviteFriendCard />
     </ScreenWrapper>

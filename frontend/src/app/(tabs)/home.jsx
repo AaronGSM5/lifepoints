@@ -22,6 +22,7 @@ export default function HomeScreen() {
   const [questmodalVisible, setQuestModalVisible] = useState(false);
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const addLp = useStore((state) => state.addLp);
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -42,12 +43,7 @@ export default function HomeScreen() {
           rightIcon={<Icon name={"survey"} />}
           onRightPress={() => setQuestModalVisible(true)}
         />
-        <ActiveTaskCard
-          title={"Morning Vitality"}
-          points={"500"}
-          isLoading={isLoading}
-          onAction={() => setShouldCrash(true)}
-        />
+        <ActiveTaskCard title={"Morning Vitality"} points={500} isLoading={isLoading} onAction={() => addLp(500)} />
         <View style={{ marginBottom: Spacing.lg }} />
         <SectionHeader title={"Feed"} />
       </View>

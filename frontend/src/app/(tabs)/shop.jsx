@@ -21,6 +21,7 @@ export default function ShopScreen() {
   const bottomPadding = useFloatingNavbarPadding();
   const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const profileLp = useStore((state) => state.profile.profileLp);
 
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -32,7 +33,7 @@ export default function ShopScreen() {
     () => (
       <View>
         <View style={styles.paddedContent}>
-          <WalletCard points={100} targetPoints={1000} skeletonProps={skeletonProps} isLoading={isLoading} />
+          <WalletCard skeletonProps={skeletonProps} isLoading={isLoading} />
           {isLoading && <View style={{ marginTop: Spacing.md }} />}
         </View>
         <CategoryButtons

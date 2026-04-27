@@ -20,20 +20,11 @@ const SKELETON_FY_TASKS = [1, 2, 3];
 const TasksScreen = () => {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
-    const isDarkMode = useStore((state) => state.isDarkMode);
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const completeTask = useStore((state) => state.completeTask);
 
-  const {
-    tasks,
-    recommendedTasks,
-    categories,
-    activeCat,
-    setActiveCat,
-    searchQuery,
-    setSearchQuery,
-    isLoading,
-    isRefreshing,
-    refreshTasks
-  } = useTasks();
+  const { tasks, recommendedTasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } =
+    useTasks();
   const styles = getStyles();
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -123,9 +114,7 @@ const TasksScreen = () => {
               status={item.limit}
               icon={item.icon}
               requiresInput={item.requiresInput}
-              onTrack={(inputValue) => {
-                console.log(`Tracke ${item.title} mit Wert: ${inputValue}`);
-              }}
+              onTrack={() => completeTask(item.id)}
               onNavigate={() => router.push(`task/${item.id}`)}
             />
           </View>

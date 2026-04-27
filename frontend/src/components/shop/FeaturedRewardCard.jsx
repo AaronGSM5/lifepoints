@@ -7,8 +7,10 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
+  const removeLp = useStore((state) => state.removeLp);
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
@@ -44,7 +46,14 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
               </AppText>
               <AppText type="title">2.000 PTS</AppText>
             </View>
-            <AppButton variant="primary" title={"Redeem"} size="md" textStyle={{ color: "#E94057" }} bgColor="white" />
+            <AppButton
+              variant="primary"
+              title={"Redeem"}
+              size="md"
+              textStyle={{ color: "#E94057" }}
+              bgColor="white"
+              onPress={() => removeLp(2000)}
+            />
           </View>
         </View>
       </LinearGradient>

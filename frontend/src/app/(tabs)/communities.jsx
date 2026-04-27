@@ -11,11 +11,13 @@ import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
+import { MyTheme } from "@/constants/Colors";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } = useCommunities();
+  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
+    useCommunities();
   const styles = getStyles();
   const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -26,7 +28,7 @@ export default function CommunitiesScreen() {
   const [allSectionsLoaded, setAllSectionsLoaded] = useState(false);
 
   const handleCreateCommunity = (data) => {
-    console.log("Community wird erstellt:", data);
+    createCommunity(data);
   };
 
   const loadMoreSections = useCallback(async () => {
@@ -96,7 +98,8 @@ export default function CommunitiesScreen() {
           );
 
         case "my_communities":
-          if (!myCommunities?.length && !isLoading) return null;
+          if (!myCommunities?.length && !isLoading)
+            return <View style={{ marginTop: Spacing.md, marginBottom: Spacing.md }}></View>;
           return (
             <View style={styles.myCommunitiesSection}>
               <View style={styles.paddedContent}>
@@ -127,6 +130,10 @@ export default function CommunitiesScreen() {
           );
 
         case "section":
+          const validSectionData = item.data?.filter((c) => c !== null && c !== undefined) || [];
+          if (validSectionData.length === 0 && !isLoading) {
+            return null;
+          }
           if (isLoading) {
             return (
               <View style={styles.sectionContainer}>
@@ -145,7 +152,7 @@ export default function CommunitiesScreen() {
           return (
             <HorizontalSectionList
               title={item.title}
-              initialData={item.data}
+              initialData={validSectionData}
               onLoadMore={(page) => fetchCommunitiesForCategory(item.categoryKey || item.id, page)}
               onPressItem={(community) => router.push(`/community/${community.id}`)}
             />
@@ -162,7 +169,7 @@ export default function CommunitiesScreen() {
     if (isMoreSectionsLoading) {
       return (
         <View style={styles.mainListLoader}>
-          <ActivityIndicator size="large" color="#000" />
+          <ActivityIndicator size="large" color={MyTheme.text} />
         </View>
       );
     }
@@ -223,7 +230,7 @@ const getStyles = () =>
       marginBottom: Spacing.lg
     },
     mainListLoader: {
-      paddingVertical: Spacing.xl,
+      paddingVertical: Spacing.md,
       justifyContent: "center",
       alignItems: "center"
     },

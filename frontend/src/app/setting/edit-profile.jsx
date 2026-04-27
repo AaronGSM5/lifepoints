@@ -18,8 +18,8 @@ import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { mockProfile } from "@/constants/MockData";
 import useStore from "@/store/useStore";
+import { useProfile } from "@/hooks/useProfile";
 
 export default function EditProfileScreen() {
   const styles = getStyles();
@@ -27,37 +27,34 @@ export default function EditProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const { profile } = useProfile();
+  const updateProfile = useStore((state) => state.updateProfile);
 
-  // Originaldaten (kommen später aus dem Backend/Store)
   const initialData = {
-    name: mockProfile.profileName,
-    username: "@" + mockProfile.profileName.toLowerCase().replace(" ", ""),
-    bio: "Ich liebe es, neue Habits aufzubauen. 🚀"
+    profileName: profile.profileName,
+    username: "@" + profile.profileName.toLowerCase().replace(" ", ""),
+    profileDescription: profile.profileDescription
   };
 
-  // State für die Eingabefelder
   const [formData, setFormData] = useState(initialData);
 
   useEffect(() => {
-    // Simuliere API-Ladezeit für die Profildaten
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Prüfen, ob der User etwas geändert hat
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
 
   const handleSave = () => {
     setIsSaving(true);
-    // Simuliere den API-Call zum Speichern
     setTimeout(() => {
+      updateProfile(formData);
       setIsSaving(false);
-      Alert.alert("Erfolg", "Dein Profil wurde aktualisiert.", [{ text: "OK", onPress: () => router.back() }]);
-    }, 1200);
+      router.back();
+    }, 1000);
   };
 
   const handleChangeAvatar = () => {
-    // Hier kommt später der ImagePicker rein
     Alert.alert("Profilbild", "Hier öffnet sich später die Galerie deines Handys.");
   };
 
@@ -110,8 +107,8 @@ export default function EditProfileScreen() {
                 <AppInput
                   label="Anzeigename"
                   placeholder="Dein Name"
-                  value={formData.name}
-                  onChangeText={(text) => setFormData({ ...formData, name: text })}
+                  value={formData.profileName}
+                  onChangeText={(text) => setFormData({ ...formData, profileName: text })}
                   icon="profile"
                 />
                 <View style={{ height: Spacing.md }} />
@@ -127,8 +124,8 @@ export default function EditProfileScreen() {
                 <AppInput
                   label="Über mich"
                   placeholder="Erzähl etwas über deine Ziele..."
-                  value={formData.bio}
-                  onChangeText={(text) => setFormData({ ...formData, bio: text })}
+                  value={formData.profileDescription}
+                  onChangeText={(text) => setFormData({ ...formData, profileDescription: text })}
                   multiline
                   numberOfLines={4}
                   style={{ textAlignVertical: "top" }} // Wichtig für Android Multiline

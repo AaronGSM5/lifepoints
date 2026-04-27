@@ -21,7 +21,7 @@ export default function Toolbar() {
   const logoWidth = Math.min(screenWidth * 0.4, 180);
   const logoHeight = logoWidth / 3.75;
 
-  const LP = "1.250";
+  const LP = useStore((state) => state.profile.profileLp);
 
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
 

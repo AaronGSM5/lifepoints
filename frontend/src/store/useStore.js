@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Platform } from 'react-native';
-import { applyTheme } from '@/constants/Colors';
 
 import { createUISlice } from './slices/createUISlice';
 import { createAuthSlice } from './slices/createAuthSlice';
@@ -31,9 +29,15 @@ const useStore = create(
       }),
       {
         name: 'lifepoints-storage',
-        storage: createJSONStorage(() =>
-          Platform.OS === 'web' ? window.localStorage : AsyncStorage
-        ),
+        storage: createJSONStorage(() => AsyncStorage),
+        partialize: (state) => ({
+          profile: state.profile,
+          completedTaskIds: state.completedTaskIds,
+          communities: state.communities,
+          activities: state.activities,
+          hasCompletedOnboarding: state.hasCompletedOnboarding,
+          isDarkMode: state.isDarkMode,
+        }),
       }
     )
   )

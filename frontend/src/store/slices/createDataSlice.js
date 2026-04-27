@@ -3,7 +3,8 @@ import {
   mockTrophies,
   mockRewards,
   mockMyCommunities,
-  mockRecommendedCommunities
+  mockRecommendedCommunities,
+  mockQuests,
 } from '@/constants/MockData';
 
 export const createDataSlice = (set, get) => ({
@@ -11,41 +12,54 @@ export const createDataSlice = (set, get) => ({
   trophies: mockTrophies,
   rewards: mockRewards,
   communities: { myCommunities: mockMyCommunities || [], recommendedCommunities: mockRecommendedCommunities },
+  quests: mockQuests,
+  activities: [],
   completedTaskIds: [],
 
-  // Eine Task abschließen
   completeTask: (taskId) => {
     const task = get().tasks.find(t => t.id === taskId);
-    if (!task || get().completedTaskIds.includes(taskId)) return;
+    if (!task) return;
 
-    // 1. Task als erledigt markieren
-    set((state) => ({
-      completedTaskIds: [...state.completedTaskIds, taskId],
-      // XP und LP dem Profil hinzufügen (Action aus AuthSlice nutzen)
-    }));
+    const now = new Date();
+    const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-    // 2. XP & Punkte gutschreiben
+    const newActivity = {
+      id: `history-task-${task.id}`,
+      title: task.title,
+      description: task.description,
+      category: task.category,
+      points: task.lp || 0,
+      type: 'gain',
+      time: timeString,
+      icon: task.icon,
+    };
+
+    set((state) => {
+      const updatedActivities = [...state.activities];
+      const todayIndex = updatedActivities.findIndex(s => s.title === "Heute");
+
+      if (todayIndex !== -1) {
+        updatedActivities[todayIndex] = {
+          ...updatedActivities[todayIndex],
+          data: [newActivity, ...updatedActivities[todayIndex].data]
+        };
+      } else {
+        updatedActivities.unshift({
+          title: "Heute",
+          data: [newActivity]
+        });
+      }
+
+      return {
+        completedTaskIds: [...state.completedTaskIds, taskId],
+        activities: updatedActivities,
+      };
+    });
+
     get().addXp(task.xp);
+    if (task.lp) get().addLp(task.lp);
   },
 
-  // Trophäen-Fortschritt aktualisieren
-  updateTrophyProgress: (trophyId, amount) => set((state) => ({
-    trophies: state.trophies.map(t => {
-      if (t.id === trophyId) {
-        const newProgress = Math.min(t.progress + amount, t.goal);
-        const isNowUnlocked = newProgress >= t.goal;
-        return {
-          ...t,
-          progress: newProgress,
-          unlocked: isNowUnlocked,
-          justUnlocked: isNowUnlocked && !t.unlocked
-        };
-      }
-      return t;
-    })
-  })),
-
-  // Community beitreten
   joinCommunity: (newCommunity) => set((state) => {
     if (!newCommunity || !newCommunity.id) return state;
     const currentMyCommunities = state.communities?.myCommunities || [];
@@ -54,8 +68,68 @@ export const createDataSlice = (set, get) => ({
     return {
       communities: {
         ...state.communities,
+        recommendedCommunities: state.communities.recommendedCommunities.filter(c => c.id !== newCommunity.id),
         myCommunities: [newCommunity, ...currentMyCommunities]
       }
     };
   }),
+
+  leaveCommunity: (community) => set((state) => {
+    if (!community || !community.id) return state;
+    const currentMyCommunities = state.communities?.myCommunities || [];
+
+    if (!currentMyCommunities.some(c => c?.id === community.id)) {
+      return state;
+    }
+
+    return {
+      communities: {
+        ...state.communities,
+        recommendedCommunities: [...state.communities.recommendedCommunities, community],
+        myCommunities: currentMyCommunities.filter(c => c.id !== community.id)
+      }
+    };
+  }),
+
+  createCommunity: (data) => set((state) => {
+    const newCommunity = {
+      id: data.name,
+      title: data.name,
+      desc: data.description,
+      icon: data.icon,
+      banner: data.banner,
+      badges: data.badges
+    }
+    return {
+      communities: {
+        ...state.communities,
+        myCommunities: [newCommunity, ...get().communities.myCommunities]
+      }
+    }
+  }),
+
+  collectQuestReward: (questId) => {
+    const allQuests = [...get().quests.today, ...get().quests.week];
+    const quest = allQuests.find(q => q.id === questId);
+
+    if (quest && quest.completed && !quest.collected) {
+      get().addLp(quest.points);
+
+      set((state) => {
+        const markCollected = (list) => list.map(q => q.id === questId ? { ...q, collected: true } : q);
+        return {
+          quests: {
+            today: markCollected(state.quests.today),
+            week: markCollected(state.quests.week)
+          }
+        };
+      });
+    }
+  },
+
+  redeemReward: (rewardId) => {
+    const reward = get().rewards.find(r => r.id === rewardId)
+    if (!reward) return;
+    get().removeLp(reward.points)
+  }
 });

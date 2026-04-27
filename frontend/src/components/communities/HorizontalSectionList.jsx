@@ -3,6 +3,7 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
+import { MyTheme } from "@/constants/Colors";
 
 const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) => {
   const [data, setData] = useState(initialData || []);
@@ -42,7 +43,7 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
     if (localLoading) {
       return (
         <View style={styles.horizontalLoader}>
-          <ActivityIndicator size="small" color="#000" />
+          <ActivityIndicator size="small" color={MyTheme.text} />
         </View>
       );
     }

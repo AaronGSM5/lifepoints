@@ -1,10 +1,13 @@
 export const mockProfile = {
   backgroundImg: "",
   profileName: "Tomhtzx",
+  profileDescription: "Ich liebe es, neue Habits aufzubauen. 🚀",
   profileClass: "Habit Hunter Class",
   profileRank: "Elite",
   profileLevel: 42,
-  profileXp: 9020
+  profileXp: 9020,
+  profileLp: 1250,
+  profileAvatar: ""
 };
 
 export const mockSurveyOptions = [
@@ -457,58 +460,58 @@ export const mockComments = [
   },
 ]
 
-export const mockActivities = [
-  {
-    id: '1',
-    title: 'Nachbarschaftshilfe',
-    description: 'Einkäufe für Frau Müller getragen',
-    category: 'social',
-    points: 50,
-    type: 'gain',
-    time: 'Vor 10 Min.',
-    icon: 'heart',
-  },
-  {
-    id: '2',
-    title: 'Morgen-Workout',
-    description: '45 Min. Yoga & Dehnen',
-    category: 'fitness',
-    points: 30,
-    type: 'gain',
-    time: 'Vor 3 Std.',
-    icon: 'dumbbell',
-  },
-  {
-    id: '3',
-    title: 'Blutspende-Aktion',
-    description: 'DRK Zentrum Stadtmitte',
-    category: 'humanitarian',
-    points: 250,
-    type: 'gain',
-    time: 'Gestern',
-    icon: 'dumbbell',
-  },
-  {
-    id: '4',
-    title: 'Icon-Pack "Nature"',
-    description: 'Kauf im LP-Store',
-    category: 'store',
-    points: 150,
-    type: 'spend',
-    time: 'Gestern',
-    icon: 'shoppingCat',
-  },
-  {
-    id: '5',
-    title: 'Mehrweg-Challenge',
-    description: 'Eine Woche ohne Einwegplastik',
-    category: 'eco',
-    points: 100,
-    type: 'gain',
-    time: 'Vor 2 Tagen',
-    icon: 'techCat',
-  },
-];
+// export const mockActivities = [
+//   {
+//     id: '1',
+//     title: 'Nachbarschaftshilfe',
+//     description: 'Einkäufe für Frau Müller getragen',
+//     category: 'social',
+//     points: 50,
+//     type: 'gain',
+//     time: 'Vor 10 Min.',
+//     icon: 'heart',
+//   },
+//   {
+//     id: '2',
+//     title: 'Morgen-Workout',
+//     description: '45 Min. Yoga & Dehnen',
+//     category: 'fitness',
+//     points: 30,
+//     type: 'gain',
+//     time: 'Vor 3 Std.',
+//     icon: 'dumbbell',
+//   },
+//   {
+//     id: '3',
+//     title: 'Blutspende-Aktion',
+//     description: 'DRK Zentrum Stadtmitte',
+//     category: 'humanitarian',
+//     points: 250,
+//     type: 'gain',
+//     time: 'Gestern',
+//     icon: 'dumbbell',
+//   },
+//   {
+//     id: '4',
+//     title: 'Icon-Pack "Nature"',
+//     description: 'Kauf im LP-Store',
+//     category: 'store',
+//     points: 150,
+//     type: 'spend',
+//     time: 'Gestern',
+//     icon: 'shoppingCat',
+//   },
+//   {
+//     id: '5',
+//     title: 'Mehrweg-Challenge',
+//     description: 'Eine Woche ohne Einwegplastik',
+//     category: 'eco',
+//     points: 100,
+//     type: 'gain',
+//     time: 'Vor 2 Tagen',
+//     icon: 'techCat',
+//   },
+// ];
 
 export const onboardingSlides = [
   {
@@ -670,160 +673,160 @@ export const mockCommunitySizes = [
   { slots: 1000, price: "14.99€" }
 ];
 
-export const mockSectionedActivities = [
-  {
-    title: "Heute",
-    data: [
-      {
-        id: "1",
-        title: "Nachbarschaftshilfe",
-        description: "Einkäufe für Frau Müller getragen",
-        category: "social",
-        points: 50,
-        type: "gain",
-        time: "14:30",
-        icon: "heart"
-      },
-      {
-        id: "2",
-        title: "Morgen-Workout",
-        description: "45 Min. Yoga & Dehnen",
-        category: "fitness",
-        points: 30,
-        type: "gain",
-        time: "07:15",
-        icon: "dumbbell"
-      },
-      {
-        id: "3",
-        title: "Nachbarschaftshilfe",
-        description: "Einkäufe für Frau Müller getragen",
-        category: "social",
-        points: 50,
-        type: "gain",
-        time: "14:30",
-        icon: "heart"
-      },
-      {
-        id: "4",
-        title: "Morgen-Workout",
-        description: "45 Min. Yoga & Dehnen",
-        category: "fitness",
-        points: 30,
-        type: "gain",
-        time: "07:15",
-        icon: "dumbbell"
-      },
-      {
-        id: "5",
-        title: "Nachbarschaftshilfe",
-        description: "Einkäufe für Frau Müller getragen",
-        category: "social",
-        points: 50,
-        type: "gain",
-        time: "14:30",
-        icon: "heart"
-      },
-      {
-        id: "6",
-        title: "Morgen-Workout",
-        description: "45 Min. Yoga & Dehnen",
-        category: "fitness",
-        points: 30,
-        type: "gain",
-        time: "07:15",
-        icon: "dumbbell"
-      },
-      {
-        id: "7",
-        title: "Nachbarschaftshilfe",
-        description: "Einkäufe für Frau Müller getragen",
-        category: "social",
-        points: 50,
-        type: "gain",
-        time: "14:30",
-        icon: "heart"
-      },
-      {
-        id: "8",
-        title: "Morgen-Workout",
-        description: "45 Min. Yoga & Dehnen",
-        category: "fitness",
-        points: 30,
-        type: "gain",
-        time: "07:15",
-        icon: "dumbbell"
-      }
-    ]
-  },
-  {
-    title: "Gestern",
-    data: [
-      {
-        id: "9",
-        title: "Blutspende-Aktion",
-        description: "DRK Zentrum Stadtmitte",
-        category: "humanitarian",
-        points: 250,
-        type: "gain",
-        time: "16:00",
-        icon: "dumbbell"
-      },
-      {
-        id: "10",
-        title: 'Icon-Pack "Nature"',
-        description: "Kauf im LP-Store",
-        category: "store",
-        points: 150,
-        type: "spend",
-        time: "10:00",
-        icon: "sun"
-      },
-      {
-        id: "11",
-        title: "Blutspende-Aktion",
-        description: "DRK Zentrum Stadtmitte",
-        category: "humanitarian",
-        points: 250,
-        type: "gain",
-        time: "16:00",
-        icon: "dumbbell"
-      },
-      {
-        id: "12",
-        title: 'Icon-Pack "Nature"',
-        description: "Kauf im LP-Store",
-        category: "store",
-        points: 150,
-        type: "spend",
-        time: "10:00",
-        icon: "sun"
-      }
-    ]
-  },
-  {
-    title: "Letzte Woche",
-    data: [
-      {
-        id: "13",
-        title: "Mehrweg-Challenge",
-        description: "Eine Woche ohne Einwegplastik",
-        category: "eco",
-        points: 100,
-        type: "gain",
-        time: "Mittwoch",
-        icon: "globe"
-      },
-      {
-        id: "14",
-        title: "Mehrweg-Challenge",
-        description: "Eine Woche ohne Einwegplastik",
-        category: "eco",
-        points: 100,
-        type: "gain",
-        time: "Mittwoch",
-        icon: "globe"
-      }
-    ]
-  }
-];
+// export const mockSectionedActivities = [
+//   {
+//     title: "Heute",
+//     data: [
+//       {
+//         id: "1",
+//         title: "Nachbarschaftshilfe",
+//         description: "Einkäufe für Frau Müller getragen",
+//         category: "social",
+//         points: 50,
+//         type: "gain",
+//         time: "14:30",
+//         icon: "heart"
+//       },
+//       {
+//         id: "2",
+//         title: "Morgen-Workout",
+//         description: "45 Min. Yoga & Dehnen",
+//         category: "fitness",
+//         points: 30,
+//         type: "gain",
+//         time: "07:15",
+//         icon: "dumbbell"
+//       },
+//       {
+//         id: "3",
+//         title: "Nachbarschaftshilfe",
+//         description: "Einkäufe für Frau Müller getragen",
+//         category: "social",
+//         points: 50,
+//         type: "gain",
+//         time: "14:30",
+//         icon: "heart"
+//       },
+//       {
+//         id: "4",
+//         title: "Morgen-Workout",
+//         description: "45 Min. Yoga & Dehnen",
+//         category: "fitness",
+//         points: 30,
+//         type: "gain",
+//         time: "07:15",
+//         icon: "dumbbell"
+//       },
+//       {
+//         id: "5",
+//         title: "Nachbarschaftshilfe",
+//         description: "Einkäufe für Frau Müller getragen",
+//         category: "social",
+//         points: 50,
+//         type: "gain",
+//         time: "14:30",
+//         icon: "heart"
+//       },
+//       {
+//         id: "6",
+//         title: "Morgen-Workout",
+//         description: "45 Min. Yoga & Dehnen",
+//         category: "fitness",
+//         points: 30,
+//         type: "gain",
+//         time: "07:15",
+//         icon: "dumbbell"
+//       },
+//       {
+//         id: "7",
+//         title: "Nachbarschaftshilfe",
+//         description: "Einkäufe für Frau Müller getragen",
+//         category: "social",
+//         points: 50,
+//         type: "gain",
+//         time: "14:30",
+//         icon: "heart"
+//       },
+//       {
+//         id: "8",
+//         title: "Morgen-Workout",
+//         description: "45 Min. Yoga & Dehnen",
+//         category: "fitness",
+//         points: 30,
+//         type: "gain",
+//         time: "07:15",
+//         icon: "dumbbell"
+//       }
+//     ]
+//   },
+//   {
+//     title: "Gestern",
+//     data: [
+//       {
+//         id: "9",
+//         title: "Blutspende-Aktion",
+//         description: "DRK Zentrum Stadtmitte",
+//         category: "humanitarian",
+//         points: 250,
+//         type: "gain",
+//         time: "16:00",
+//         icon: "dumbbell"
+//       },
+//       {
+//         id: "10",
+//         title: 'Icon-Pack "Nature"',
+//         description: "Kauf im LP-Store",
+//         category: "store",
+//         points: 150,
+//         type: "spend",
+//         time: "10:00",
+//         icon: "sun"
+//       },
+//       {
+//         id: "11",
+//         title: "Blutspende-Aktion",
+//         description: "DRK Zentrum Stadtmitte",
+//         category: "humanitarian",
+//         points: 250,
+//         type: "gain",
+//         time: "16:00",
+//         icon: "dumbbell"
+//       },
+//       {
+//         id: "12",
+//         title: 'Icon-Pack "Nature"',
+//         description: "Kauf im LP-Store",
+//         category: "store",
+//         points: 150,
+//         type: "spend",
+//         time: "10:00",
+//         icon: "sun"
+//       }
+//     ]
+//   },
+//   {
+//     title: "Letzte Woche",
+//     data: [
+//       {
+//         id: "13",
+//         title: "Mehrweg-Challenge",
+//         description: "Eine Woche ohne Einwegplastik",
+//         category: "eco",
+//         points: 100,
+//         type: "gain",
+//         time: "Mittwoch",
+//         icon: "globe"
+//       },
+//       {
+//         id: "14",
+//         title: "Mehrweg-Challenge",
+//         description: "Eine Woche ohne Einwegplastik",
+//         category: "eco",
+//         points: 100,
+//         type: "gain",
+//         time: "Mittwoch",
+//         icon: "globe"
+//       }
+//     ]
+//   }
+// ];

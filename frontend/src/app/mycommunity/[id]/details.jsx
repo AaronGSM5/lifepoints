@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -11,6 +11,8 @@ import AppBadge from "@/components/ui/AppBadge";
 import { MyTheme } from "@/constants/Colors";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
+import AppButton from "@/components/ui/AppButton";
+import useStore from "@/store/useStore";
 
 const MOCK_MEMBERS = [
   { id: "1", name: "Sarah", lp: 2450 },
@@ -25,16 +27,24 @@ const MOCK_MEMBERS = [
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const styles = getStyles();
-  const { recommended, myCommunities } = useCommunities();
+  const { myCommunities } = useCommunities();
   const [isExpanded, setIsExpanded] = useState(false);
+  const leaveCommunity = useStore((state) => state.leaveCommunity);
 
-  const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
+  const community = myCommunities.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
+
+  console.log(community);
 
   const sortedMembers = useMemo(() => {
     return [...MOCK_MEMBERS].sort((a, b) => b.lp - a.lp);
   }, []);
 
   const displayedMembers = isExpanded ? sortedMembers : sortedMembers.slice(0, 5);
+
+  const handleLeaveCommunity = (community) => {
+    router.push("/communities");
+    leaveCommunity(community);
+  };
 
   return (
     <>
@@ -125,6 +135,11 @@ export default function MyCommunityDetailScreen() {
             )}
           </View>
         </View>
+        {myCommunities.some((c) => c?.id === community?.id) && (
+          <View>
+            <AppButton title={"Leave Community"} onPress={() => handleLeaveCommunity(community)} />
+          </View>
+        )}
       </ScreenWrapper>
     </>
   );

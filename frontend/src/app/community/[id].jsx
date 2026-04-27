@@ -36,7 +36,9 @@ export default function CommunityDetailScreen() {
           </View>
 
           {/* Action Button */}
-          <AppButton title="Join Community" onPress={() => joinCommunity(community)} style={styles.joinButton} />
+          {!myCommunities.some((c) => c?.id === community.id) && (
+            <AppButton title="Join Community" onPress={() => joinCommunity(community)} style={styles.joinButton} />
+          )}
 
           {/* Live Section */}
           {community?.isLive && (

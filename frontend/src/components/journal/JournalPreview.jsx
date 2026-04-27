@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import AppText from "../ui/AppText";
@@ -8,10 +8,16 @@ import { Skeleton } from "moti/skeleton";
 import SectionHeader from "../ui/SectionHeader";
 import { router } from "expo-router";
 import HistoryCard from "../ui/HistoryCard";
+import useStore from "@/store/useStore";
 
-const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
+const JournalPreview = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
-  const previewData = activities.slice(0, 3);
+  const activities = useStore((state) => state.activities);
+  const flatActivities = useMemo(() => {
+    if (!activities) return [];
+    return activities.flatMap((section) => section.data || []);
+  }, [activities]);
+  const previewData = flatActivities?.slice(0, 3);
 
   if (isLoading) {
     return (
@@ -46,11 +52,11 @@ const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
         isLoading={isLoading}
       />
       <View style={styles.container}>
-        {previewData.map((item) => (
+        {previewData?.map((item) => (
           <HistoryCard
             key={item.id}
             title={item.title}
-            subtitle={item.time}
+            time={item.time}
             points={item.points}
             type={item.type}
             pointsSuffix="LP"

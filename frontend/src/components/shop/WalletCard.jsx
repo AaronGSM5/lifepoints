@@ -7,9 +7,12 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
+import useStore from "@/store/useStore";
 
-const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
+const WalletCard = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const points = useStore((state) => state.profile.profileLp);
+  const targetPoints = (points * 2.6).toFixed(0);
 
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
 

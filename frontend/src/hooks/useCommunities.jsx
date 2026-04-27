@@ -20,6 +20,7 @@ export const useCommunities = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const myCommunities = useStore((state) => state.communities.myCommunities);
   const recommendedCommunities = useStore((state) => state.communities.recommendedCommunities);
+  const createCommunity = useStore((state) => state.createCommunity);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,6 +73,7 @@ export const useCommunities = () => {
   return {
     myCommunities,
     recommended: recommendedCommunities,
+    createCommunity,
     searchQuery,
     setSearchQuery,
     isLoading,
