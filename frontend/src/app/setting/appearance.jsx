@@ -7,7 +7,7 @@ import { MyTheme } from "@/constants/Colors";
 export default function AppearanceScreen() {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const toggleTheme = useStore((state) => state.toggleDarkMode);
+  const toggleDarkMode = useStore((state) => state.toggleDarkMode);
 
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
@@ -24,12 +24,12 @@ export default function AppearanceScreen() {
             !isDarkMode && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
           onPress={() => {
-            if (isDarkMode) toggleTheme();
+            if (isDarkMode) toggleDarkMode();
           }}
           activeOpacity={0.8}
         >
-          <Ionicons name="sunny" size={36} color={!isDarkMode ? MyTheme.primaryAccent : MyTheme.muted} />
-          <Text style={[styles.cardText, { color: !isDarkMode ? MyTheme.text : MyTheme.muted }]}>Hell</Text>
+          <Ionicons name="sunny" size={36} color={isDarkMode ? MyTheme.muted : MyTheme.primaryAccent} />
+          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.muted : MyTheme.text }]}>Hell</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -39,7 +39,7 @@ export default function AppearanceScreen() {
             isDarkMode && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
           onPress={() => {
-            if (!isDarkMode) toggleTheme();
+            if (!isDarkMode) toggleDarkMode();
           }}
           activeOpacity={0.8}
         >
