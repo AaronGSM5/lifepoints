@@ -13,7 +13,7 @@ import { Icon } from "@/components/icons/Icon";
 import QuestModal from "@/components/home/QuestModal";
 import useStore from "@/store/useStore";
 import AppText from "@/components/ui/AppText";
-import { useLeveling } from "@/hooks/useLeveling";
+import LevelUpModal from "@/components/LevelUpModal";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -27,8 +27,10 @@ export default function HomeScreen() {
   const activeTaskIds = useStore((state) => state.activeTaskIds);
   const allTasks = useStore((state) => state.tasks);
   const completeTask = useStore((state) => state.completeTask);
-  const { addExperience } = useLeveling();
-
+  const addExperience = useStore((state) => state.addExperience);
+  const showLevelUpModal = useStore((state) => state.showLevelUpModal);
+  const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
+  const profileLevel = useStore((state) => state.profile.profileLevel);
   const myActiveTasks = allTasks.filter((t) => activeTaskIds.includes(t.id));
 
   if (shouldCrash) {
@@ -112,6 +114,11 @@ export default function HomeScreen() {
         postId={selectedPostId}
       />
       <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
+      <LevelUpModal
+        visible={showLevelUpModal}
+        level={profileLevel}
+        onTransitionEnd={() => setShowLevelUpModal(false)}
+      />
     </ScreenWrapper>
   );
 }

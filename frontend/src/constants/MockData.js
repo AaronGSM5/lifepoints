@@ -4,8 +4,8 @@ export const mockProfile = {
   profileDescription: "Ich liebe es, neue Habits aufzubauen. 🚀",
   profileClass: "Habit Hunter Class",
   profileRank: "Elite",
-  profileLevel: 42,
-  profileXp: 9020,
+  profileLevel: 9,
+  profileXp: 258,
   profileLp: 1250,
   profileAvatar: ""
 };

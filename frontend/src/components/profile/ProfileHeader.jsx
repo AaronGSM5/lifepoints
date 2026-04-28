@@ -1,7 +1,6 @@
-import React, { useCallback, useRef } from "react";
-import { StyleSheet, View, Image, Animated, Easing } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useFocusEffect, router } from "expo-router";
+import React from "react";
+import { StyleSheet, View, Image } from "react-native";
+import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -10,46 +9,15 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import LevelProgress from "../LevelProgress";
+import { getXpThreshold } from "@/utils/xpHelpers";
 
 const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = useStore((state) => state.profile);
-  const animatedWidth = useRef(new Animated.Value(0)).current;
 
-  const maxXP = 500 + profile.profileLevel * 300;
-  const targetPercentage = (profile.profileXp / maxXP) * 100;
-
-  const widthInterpolation = animatedWidth.interpolate({
-    inputRange: [0, 100],
-    outputRange: ["0%", "100%"]
-  });
-
-  useFocusEffect(
-    useCallback(() => {
-      if (isLoading) {
-        animatedWidth.setValue(0);
-        return;
-      }
-
-      animatedWidth.setValue(0);
-      const animation = Animated.timing(animatedWidth, {
-        toValue: targetPercentage,
-        duration: 1800,
-        easing: Easing.bezier(0.4, 0, 0.2, 1),
-        useNativeDriver: false
-      });
-
-      const timer = setTimeout(() => {
-        animation.start();
-      }, 150);
-
-      return () => {
-        animation.stop();
-        clearTimeout(timer);
-      };
-    }, [targetPercentage, isLoading])
-  );
+  const maxXP = getXpThreshold(profile.profileLevel);
 
   return (
     <View style={styles.profileHeader}>
@@ -89,40 +57,12 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
         </>
       )}
 
-      <View style={styles.xpContainer}>
-        <View style={styles.xpHeader}>
-          <AppText bold type="caption" style={!isDarkMode && { color: MyTheme.text }}>
-            XP PROGRESS
-          </AppText>
-          {isLoading ? (
-            <Skeleton {...skeletonProps} width={60} height={12} />
-          ) : (
-            <AppText bold type="caption" style={{ color: MyTheme.text }}>
-              {profile.profileXp} / {maxXP}
-            </AppText>
-          )}
-        </View>
-
-        <View
-          style={[
-            styles.progressBarBg,
-            { backgroundColor: !isDarkMode ? MyTheme.background : "#333", borderWidth: !isDarkMode ? 0 : 1 }
-          ]}
-        >
-          {isLoading ? (
-            <Skeleton {...skeletonProps} width="100%" height={8} />
-          ) : (
-            <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
-              <LinearGradient
-                colors={[MyTheme.primaryAccent, "#335399"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFill}
-              />
-            </Animated.View>
-          )}
-        </View>
-      </View>
+      <LevelProgress
+        currentXp={profile.profileXp}
+        maxXp={maxXP}
+        isLoading={isLoading}
+        style={{ marginTop: Spacing.lg }}
+      />
 
       <View style={styles.actionButtons}>
         {isLoading ? (
@@ -170,26 +110,6 @@ const getStyles = () =>
       borderRadius: 50,
       borderWidth: 2,
       borderColor: MyTheme.secondary
-    },
-    xpContainer: {
-      width: "100%",
-      marginTop: Spacing.lg
-    },
-    xpHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginBottom: Spacing.sm
-    },
-    progressBarBg: {
-      height: 8,
-      borderRadius: Spacing.borderRadius.full,
-      overflow: "hidden",
-      borderColor: "#333"
-    },
-    progressBarFillContainer: {
-      height: "100%",
-      borderRadius: Spacing.borderRadius.full,
-      overflow: "hidden"
     },
     actionButtons: {
       flexDirection: "row",

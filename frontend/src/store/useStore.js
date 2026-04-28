@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createUISlice } from './slices/createUISlice';
 import { createAuthSlice } from './slices/createAuthSlice';
 import { createDataSlice } from './slices/createDataSlice';
+import { createProfileSlice } from './slices/createProfileSlice';
 
 const logger = (config) => (set, get, api) => config(
   (args) => {
@@ -24,8 +25,8 @@ const useStore = create(
     persist(
       (set, get, api) => ({
         ...createUISlice(set, get, api),
-        ...createAuthSlice(set, get, api),
         ...createDataSlice(set, get, api),
+        ...createProfileSlice(set, get, api),
       }),
       {
         name: 'lifepoints-storage',
