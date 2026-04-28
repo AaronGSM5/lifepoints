@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Pressable, Animated as RNAnimated, Share } from "react-native";
+import { View, StyleSheet, Image, Pressable, Animated as RNAnimated, Share, TouchableOpacity } from "react-native";
 import Animated from "react-native-reanimated";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons/Icon";
 import { useRef, useState } from "react";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
+import useStore from "@/store/useStore";
 
 export default function FeedItem({
   username,
@@ -25,6 +26,9 @@ export default function FeedItem({
   const [lastTap, setLastTap] = useState(0);
   const heartScale = useRef(new RNAnimated.Value(0)).current;
   const heartOpacity = useRef(new RNAnimated.Value(0)).current;
+  const startLootGame = useStore((state) => state.startLootGame);
+  // const hasChest = (id * 17) % 20 === 0;
+  const hasChest = true;
 
   const navigateToProfile = () => {
     router.push(`/user/${username}`);
@@ -150,9 +154,17 @@ export default function FeedItem({
             <Icon name="forwardShare" />
           </Pressable>
         </View>
-        <Pressable hitSlop={10} onPress={handleSave}>
-          <Icon outline={!isSaved} name="bookmark" />
-        </Pressable>
+
+        <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
+          {hasChest && (
+            <TouchableOpacity hitSlop={10} style={styles.chestTrigger} onPress={() => startLootGame()}>
+              <Icon name="lock" size={22} color={MyTheme.primaryAccent} />
+            </TouchableOpacity>
+          )}
+          <Pressable hitSlop={10} onPress={handleSave}>
+            <Icon outline={!isSaved} name="bookmark" />
+          </Pressable>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -265,5 +277,13 @@ const getStyles = () =>
     skeletonFooter: {
       padding: Spacing.md,
       gap: Spacing.md
+    },
+    chestTrigger: {
+      marginRight: -4, // Zieht es etwas näher an das Bookmark für kompakte Optik
+      shadowColor: MyTheme.primaryAccent,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.5,
+      shadowRadius: 8,
+      elevation: 5 // Für Android
     }
   });

@@ -14,6 +14,7 @@ import QuestModal from "@/components/home/QuestModal";
 import useStore from "@/store/useStore";
 import AppText from "@/components/ui/AppText";
 import LevelUpModal from "@/components/LevelUpModal";
+import LootGameModal from "@/components/home/LootGameModal";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -114,6 +115,7 @@ export default function HomeScreen() {
         postId={selectedPostId}
       />
       <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
+      <LootGameModal />
       <LevelUpModal
         visible={showLevelUpModal}
         level={profileLevel}
