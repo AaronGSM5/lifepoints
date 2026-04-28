@@ -16,7 +16,7 @@ export const Icon = ({ name, size = 24, color, outline = true, style, ...rest })
 
   return (
     <View style={style}>
-      <IconComponent size={size} color={iconColor} outline={outline} {...rest} />
+      <IconComponent key={isDarkMode ? "dark" : "light"} size={size} color={iconColor} outline={outline} {...rest} />
     </View>
   );
 };

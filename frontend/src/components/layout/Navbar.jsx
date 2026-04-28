@@ -2,14 +2,17 @@ import { View, Pressable, StyleSheet, Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRef } from "react";
 import { BlurView } from "expo-blur";
-import { MyTheme } from "@/constants/Colors";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
-  const styles = getStyles();
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = getStyles(isDarkMode);
   const scale = useRef(new Animated.Value(1)).current;
+
+  const activeColor = "rgb(47, 196, 146)";
+  const inactiveColor = isDarkMode ? "rgb(248, 250, 252)" : "rgb(15, 23, 41)";
 
   const animatePop = () => {
     Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
@@ -28,7 +31,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
         <Icon
           name={route.name || "help"}
           size={26}
-          color={isFocused ? MyTheme.primaryAccent : MyTheme.text}
+          color={isFocused ? activeColor : inactiveColor}
           outline={!isFocused}
         />
       </Animated.View>
@@ -37,8 +40,8 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
 };
 
 export default function Navbar({ state, descriptors, navigation }) {
-  const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = getStyles(isDarkMode);
   const insets = useSafeAreaInsets();
 
   // Reihenfolge der Tabs in der Navbar
@@ -84,7 +87,7 @@ export default function Navbar({ state, descriptors, navigation }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (isDarkMode) =>
   StyleSheet.create({
     shadowContainer: {
       position: "absolute",
@@ -92,8 +95,9 @@ const getStyles = () =>
       right: 20,
       height: 65,
       borderRadius: 35,
-      boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
-      elevation: 10
+      boxShadow: isDarkMode ? "0px 8px 20px rgba(0, 0, 0, 0.4)" : "0px 8px 15px rgba(0, 0, 0, 0.2)",
+      elevation: 10,
+      backgroundColor: "transparent"
     },
     blurBackground: {
       ...StyleSheet.absoluteFillObject,

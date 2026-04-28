@@ -11,7 +11,6 @@ import useStore from "@/store/useStore";
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const styles = getStyles();
 
   const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
@@ -22,8 +21,9 @@ export default function Toolbar() {
   const logoHeight = logoWidth / 3.75;
 
   const LP = useStore((state) => state.profile.profileLp);
-
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
+  const styles = getStyles(isDarkMode);
 
   return (
     <View
@@ -82,14 +82,17 @@ export default function Toolbar() {
   );
 }
 
-const getStyles = () =>
-  StyleSheet.create({
+const getStyles = (isDarkMode) => {
+  const bgColor = isDarkMode ? "rgb(15, 23, 41)" : "rgb(248, 250, 252)";
+  const separatorColor = isDarkMode ? "rgba(0,0,0,0.08)" : "rgba(0, 0, 0, 0.06)";
+
+  return StyleSheet.create({
     container: {
-      backgroundColor: MyTheme.background,
+      backgroundColor: bgColor,
       flexDirection: "row",
       alignItems: "center",
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: MyTheme.separator
+      borderBottomColor: separatorColor
     },
     sideSection: {
       flex: 1,
@@ -101,3 +104,4 @@ const getStyles = () =>
       justifyContent: "center"
     }
   });
+};

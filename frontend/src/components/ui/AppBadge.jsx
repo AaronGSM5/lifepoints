@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppText from "./AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
 
 export default function AppBadge({
   label,
@@ -13,8 +14,9 @@ export default function AppBadge({
   style,
   textStyle
 }) {
-  const styles = getStyles();
   const Container = onPress ? TouchableOpacity : View;
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = getStyles(isDarkMode);
 
   let leftElement = null;
 
@@ -37,8 +39,9 @@ export default function AppBadge({
   );
 }
 
-const getStyles = () =>
-  StyleSheet.create({
+const getStyles = (isDarkMode) => {
+  const bgColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
+  return StyleSheet.create({
     badge: {
       flexDirection: "row",
       alignItems: "center",
@@ -88,10 +91,11 @@ const getStyles = () =>
     },
 
     glas: {
-      backgroundColor: MyTheme.glas,
+      backgroundColor: bgColor,
       borderColor: "rgba(255,255,255,0.1)"
     },
     glasText: {
       color: MyTheme.primaryAccent
     }
   });
+};
