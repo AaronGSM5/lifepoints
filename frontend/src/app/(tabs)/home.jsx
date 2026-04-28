@@ -12,6 +12,8 @@ import { useHome } from "@/hooks/useHome";
 import { Icon } from "@/components/icons/Icon";
 import QuestModal from "@/components/home/QuestModal";
 import useStore from "@/store/useStore";
+import AppText from "@/components/ui/AppText";
+import { useLeveling } from "@/hooks/useLeveling";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -22,7 +24,12 @@ export default function HomeScreen() {
   const [questmodalVisible, setQuestModalVisible] = useState(false);
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const addLp = useStore((state) => state.addLp);
+  const activeTaskIds = useStore((state) => state.activeTaskIds);
+  const allTasks = useStore((state) => state.tasks);
+  const completeTask = useStore((state) => state.completeTask);
+  const { addExperience } = useLeveling();
+
+  const myActiveTasks = allTasks.filter((t) => activeTaskIds.includes(t.id));
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -43,12 +50,35 @@ export default function HomeScreen() {
           rightIcon={<Icon name={"survey"} />}
           onRightPress={() => setQuestModalVisible(true)}
         />
-        <ActiveTaskCard title={"Morning Vitality"} points={500} isLoading={isLoading} onAction={() => addLp(500)} />
-        <View style={{ marginBottom: Spacing.lg }} />
+        {myActiveTasks.length === 0 ? (
+          <>
+            <View style={{ marginBottom: Spacing.md }} />
+            <AppText type="caption" bold style={{ alignSelf: "center" }}>
+              NO ACTIVE TASKS
+            </AppText>
+            <View style={{ marginBottom: Spacing.lg }} />
+          </>
+        ) : (
+          myActiveTasks.map((task) => (
+            <>
+              <ActiveTaskCard
+                key={task.id}
+                title={task.title}
+                points={task.lp}
+                isLoading={isLoading}
+                onAction={() => {
+                  completeTask(task.id);
+                  addExperience(task.xp);
+                }}
+              />
+              <View style={{ marginBottom: Spacing.md }} />
+            </>
+          ))
+        )}
         <SectionHeader title={"Feed"} />
       </View>
     ),
-    [isLoading]
+    [isLoading, myActiveTasks]
   );
 
   const renderFooter = () => (

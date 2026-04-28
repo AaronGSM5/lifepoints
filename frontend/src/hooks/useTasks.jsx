@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { mockTasks, recommendedTasks as mockRecommended } from "@/constants/MockData";
+import useStore from "@/store/useStore";
 
 export const useTasks = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const [tasks, setTasks] = useState([]);
-  const [recommendedTasks, setRecommendedTasks] = useState([]);
+  const tasks = useStore((state) => state.tasks);
+  const recommendedTasks = useStore((state) => state.recommendedTasks);
 
   const [activeCat, setActiveCat] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,8 +15,6 @@ export const useTasks = () => {
     setIsLoading(true);
     // Simulierter API Call
     setTimeout(() => {
-      setTasks(mockTasks);
-      setRecommendedTasks(mockRecommended);
       setIsLoading(false);
     }, 1200);
   }, []);
@@ -30,13 +28,11 @@ export const useTasks = () => {
     fetchTasks();
   }, [fetchTasks]);
 
-  // Kategorien dynamisch aus den Tasks generieren
   const categories = useMemo(() => {
     const unique = [...new Set(tasks.map((c) => c.category))];
     return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
   }, [tasks]);
 
-  // Tasks filtern nach Kategorie UND Suchbegriff
   const filteredTasks = useMemo(() => {
     let result = tasks;
 

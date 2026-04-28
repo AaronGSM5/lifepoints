@@ -10,7 +10,9 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
-  const removeLp = useStore((state) => state.removeLp);
+  const redeemReward = useStore((state) => state.redeemReward);
+  const featuredRewards = useStore((state) => state.featuredRewards);
+  const selectedReward = featuredRewards?.[0];
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
@@ -28,31 +30,37 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         style={styles.featuredCard}
       >
         <View style={styles.featuredIconContainer}>
-          <Icon name="music" size={20} />
+          <Icon name={selectedReward?.icon} size={20} />
         </View>
 
         <View style={styles.featuredContent}>
           <AppBadge label={"BEST VALUE"} variant="secondary" />
 
-          <AppText type="h2">Free Month Premium</AppText>
+          <AppText type="h2">{selectedReward?.title}</AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
-            Spotify Individual Plan
+            {selectedReward?.description}
           </AppText>
 
           <View style={styles.featuredFooter}>
-            <View>
-              <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                2.500 PTS
-              </AppText>
-              <AppText type="title">2.000 PTS</AppText>
-            </View>
+            {selectedReward?.discount ? (
+              <View>
+                <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
+                  {selectedReward?.discount?.oldPrice} LP
+                </AppText>
+                <AppText type="title">{selectedReward?.discount?.newPrice} LP</AppText>
+              </View>
+            ) : (
+              <View>
+                <AppText type="title">{selectedReward?.price} LP</AppText>
+              </View>
+            )}
             <AppButton
               variant="primary"
               title={"Redeem"}
               size="md"
               textStyle={{ color: "#E94057" }}
               bgColor="white"
-              onPress={() => removeLp(2000)}
+              onPress={() => redeemReward(selectedReward.id)}
             />
           </View>
         </View>

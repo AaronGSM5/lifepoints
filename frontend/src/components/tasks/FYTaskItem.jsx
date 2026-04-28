@@ -9,10 +9,10 @@ import { Skeleton } from "moti/skeleton";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 
-const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
+const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const addLp = useStore((state) => state.addLp);
+  const completeTask = useStore((state) => state.completeTask);
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>
@@ -103,7 +103,7 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
           </AppText>
         </View>
 
-        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} onPress={() => addLp(lp)} />
+        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} onPress={() => completeTask(id)} />
       </View>
     </BaseCard>
   );

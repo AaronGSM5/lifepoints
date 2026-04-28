@@ -14,15 +14,26 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLoading, requiresInput }) => {
+const TaskItem = ({
+  title,
+  lp,
+  progress,
+  status,
+  icon,
+  onTrack,
+  onNavigate,
+  isLoading,
+  requiresInput,
+  isExpanded,
+  onToggleExpand
+}) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsExpanded(!isExpanded);
+    onToggleExpand();
   };
 
   if (isLoading) {

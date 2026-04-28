@@ -124,12 +124,12 @@ export const mockTasks = [
   { id: 15, title: "App-Frühjahrsputz", description: 'Lösche eine App, die du seit über einem Monat nicht geöffnet hast.', difficulty: "hard", xp: 1000, lp: 2000, category: 'special', progress: '0%', isLocked: false, icon: 'star', requiresInput: 'Apps' },
 ];
 
-export const recommendedTasks = [
+export const mockRecommendedTasks = [
   {
-    id: 1, title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: 500, badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
+    id: "rt1", title: 'Gym Session', description: 'WOW 500LP for gettin jacked?', lp: 500, xp: 30, badge: 'NEW', image: require("@/../public/assets/tasks/barbellBanner.png")
   },
-  { id: 2, title: 'Healthy Meal', description: 'Mhhh soo good', lp: 75, badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
-  { id: 3, title: 'Cleanup Festival', description: 'Get your things togheter', lp: 150, badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
+  { id: "rt2", title: 'Healthy Meal', description: 'Mhhh soo good', lp: 75, xp: 30, badge: 'HOT', image: require("@/../public/assets/tasks/foodBanner.jpg") },
+  { id: "rt3", title: 'Cleanup Festival', description: 'Get your things togheter', lp: 150, xp: 30, badge: 'NEW', image: require("@/../public/assets/tasks/cleaningBanner.webp") },
 ]
 
 export const mockRewards = [
@@ -178,6 +178,16 @@ export const mockRewards = [
     description: "Zeit für neue Kicks. Erhalte 20% auf alle regulären Lauf- und Trainingsschuhe."
   }
 ];
+
+export const mockFeaturedRewards = [
+  {
+    id: "fr1",
+    icon: 'music',
+    title: "$10 Gift Card",
+    discount: { oldPrice: 2500, newPrice: 2000 },
+    description: "Spotify Individual Plan"
+  }
+]
 
 export const mockNotifications = [
   {

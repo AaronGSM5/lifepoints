@@ -52,9 +52,9 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
         isLoading={isLoading}
       />
       <View style={styles.container}>
-        {previewData?.map((item) => (
+        {previewData?.map((item, i) => (
           <HistoryCard
-            key={item.id}
+            key={i}
             title={item.title}
             time={item.time}
             points={item.points}

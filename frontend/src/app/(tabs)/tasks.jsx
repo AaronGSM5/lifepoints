@@ -6,8 +6,8 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView, FlatList, TouchableOpacity, Pressable } from "react-native";
+import React, { useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList, Pressable } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
@@ -20,8 +20,9 @@ const SKELETON_FY_TASKS = [1, 2, 3];
 const TasksScreen = () => {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const completeTask = useStore((state) => state.completeTask);
+  const trackTask = useStore((state) => state.trackTask);
 
   const { tasks, recommendedTasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } =
     useTasks();
@@ -114,8 +115,12 @@ const TasksScreen = () => {
               status={item.limit}
               icon={item.icon}
               requiresInput={item.requiresInput}
-              onTrack={() => completeTask(item.id)}
+              onTrack={() => trackTask(item.id)}
               onNavigate={() => router.push(`task/${item.id}`)}
+              isExpanded={expandedTaskId === item.id}
+              onToggleExpand={() => {
+                setExpandedTaskId(expandedTaskId === item.id ? null : item.id);
+              }}
             />
           </View>
         );

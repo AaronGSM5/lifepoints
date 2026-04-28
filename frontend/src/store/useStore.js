@@ -33,8 +33,9 @@ const useStore = create(
         partialize: (state) => ({
           profile: state.profile,
           completedTaskIds: state.completedTaskIds,
-          communities: state.communities,
+          activeTaskIds: state.activeTaskIds,
           activities: state.activities,
+          communities: state.communities,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isDarkMode: state.isDarkMode,
         }),

@@ -23,7 +23,7 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
       >
         {/* Icon & Text */}
         <View style={styles.itemLeft}>
-          <Icon name={setting.icon} color={setting.danger ? MyTheme.warning : "white"} />
+          <Icon name={setting.icon} color={setting.danger ? MyTheme.warning : MyTheme.text} />
           <AppText type="title" style={setting.danger ? { color: MyTheme.warning } : {}}>
             {setting.label}
           </AppText>
