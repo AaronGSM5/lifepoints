@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useMemo, useState } from "react";
@@ -15,6 +15,7 @@ import useStore from "@/store/useStore";
 import AppText from "@/components/ui/AppText";
 import LevelUpModal from "@/components/LevelUpModal";
 import LootGameModal from "@/components/home/LootGameModal";
+import { MyTheme } from "@/constants/Colors";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -23,6 +24,8 @@ export default function HomeScreen() {
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [shouldCrash, setShouldCrash] = useState(false);
   const [questmodalVisible, setQuestModalVisible] = useState(false);
+  const [displayedItems, setDisplayedItems] = useState([]);
+  const [isBatchLoading, setIsBatchLoading] = useState(false);
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
@@ -33,6 +36,30 @@ export default function HomeScreen() {
   const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
   const profileLevel = useStore((state) => state.profile.profileLevel);
   const myActiveTasks = allTasks.filter((t) => activeTaskIds.includes(t.id));
+
+  useMemo(() => {
+    if (feedItems && feedItems.length > 0) {
+      setDisplayedItems(feedItems);
+    }
+  }, [feedItems]);
+
+  const loadMoreItems = () => {
+    if (isBatchLoading || isLoading) return;
+
+    setIsBatchLoading(true);
+
+    setTimeout(() => {
+      setDisplayedItems((prev) => {
+        const newBatch = feedItems.map((item) => ({
+          ...item,
+          id: item.id + prev.length
+        }));
+
+        return [...prev, ...newBatch];
+      });
+      setIsBatchLoading(false);
+    }, 500);
+  };
 
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
@@ -86,16 +113,18 @@ export default function HomeScreen() {
 
   const renderFooter = () => (
     <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-      <LpChart />
+      <ActivityIndicator size="large" color={MyTheme.text} />
     </View>
   );
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
-        data={isLoading ? SKELETON_ITEMS : feedItems}
+        data={isLoading ? SKELETON_ITEMS : displayedItems}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+        onEndReached={loadMoreItems}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={refreshHomeData}
