@@ -88,5 +88,6 @@ export const IconMap = {
   wind: ({ outline, ...props }) => <Icon name={getName("windy", outline)} {...props} />,
   backCheck: ({ outline, ...props }) => <Icon name={getName("body-scan", outline)} {...props} />,
   clothes: ({ outline, ...props }) => <Icon name={getName("shirt", outline)} {...props} />,
-  happy: ({ outline, ...props }) => <Icon name={getName("emotion-laugh", outline)} {...props} />
+  happy: ({ outline, ...props }) => <Icon name={getName("emotion-laugh", outline)} {...props} />,
+  remix: ({ outline, ...props }) => <Icon name={getName("remix", outline)} {...props} />
 };

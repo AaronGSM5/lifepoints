@@ -1,6 +1,6 @@
 // src/components/home/LootGameModal.js
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, View, StyleSheet, TouchableOpacity, Animated, Dimensions } from "react-native";
+import { Modal, View, StyleSheet, TouchableOpacity, Animated, Dimensions, Image } from "react-native";
 import * as Haptics from "expo-haptics";
 import useStore from "@/store/useStore";
 import AppText from "../ui/AppText";
@@ -8,10 +8,22 @@ import AppButton from "../ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 import { REWARD_TYPES } from "@/utils/lootLogic";
-import { Icon } from "../icons/Icon";
 
 const { width } = Dimensions.get("window");
 const MYSTERY_COLOR = "#475569";
+
+const chestEpic = require("@/../public/assets/chests/chestPurple.png");
+const chestLegendary = require("@/../public/assets/chests/chestGold.png");
+const chestCommon = require("@/../public/assets/chests/chestBrown.png");
+const chestRare = require("@/../public/assets/chests/chestBlue.png");
+const mysteryChest = require("@/../public/assets/chests/chestBlack.png");
+
+const STATIC_CHESTS = {
+  epic: chestEpic,
+  legendary: chestLegendary,
+  common: chestCommon,
+  rare: chestRare
+};
 
 const LootGameModal = () => {
   const styles = getStyles();
@@ -68,8 +80,19 @@ const LootGameModal = () => {
         <View style={styles.container}>
           {currentLootSet.map((reward, index) => {
             const isChosen = chosenLootIndex === index;
+            const isMysteryPhase = chosenLootIndex === null;
+            const shouldReveal = isChosen || isLootRevealed;
             const showColor = isChosen || isLootRevealed;
             const borderColor = showColor ? reward.rarity.color : MYSTERY_COLOR;
+
+            let chestSource;
+            if (isMysteryPhase) {
+              chestSource = mysteryChest; // Die graue Kiste
+            } else if (shouldReveal) {
+              chestSource = STATIC_CHESTS[reward.rarity.id] || mysteryChest; // Die farbige Kiste oder Fallback
+            } else {
+              chestSource = mysteryChest; // Nicht gewählte, nicht enthüllte Kiste
+            }
 
             let animatedStyle = {};
             if (index === 0) animatedStyle = { transform: [{ translateX: slideLeft }] };
@@ -84,14 +107,9 @@ const LootGameModal = () => {
                   onPress={() => handlePick(index)}
                   style={[styles.chestCard, { borderColor: borderColor }, isChosen && styles.chosenCard]}
                 >
-                  {/* <View style={{ transform: [{ scale: isChosen ? 1.5 : 1 }] }}>
-                    <Icon
-                      name={isChosen ? "unlock" : "lock"}
-                      size={40}
-                      color={showColor ? reward.rarity.color : "#94a3b8"}
-                    />
-                  </View> */}
-                  {showColor && (
+                  <Image source={chestSource} style={styles.chestImage} resizeMode="contain" />
+
+                  {shouldReveal && (
                     <View style={styles.rewardInfo}>
                       <AppText bold style={{ color: reward.rarity.color, fontSize: 12 }}>
                         {reward.rarity.label.toUpperCase()}
@@ -110,8 +128,9 @@ const LootGameModal = () => {
         {isLootRevealed && (
           <Animated.View style={styles.footer}>
             <AppText style={styles.nearMissText}>
-              {currentLootSet[chosenLootIndex].rarity.id === "epic"
-                ? "Wahnsinn!\n Du hast das beste Item erwischt!"
+              {currentLootSet[chosenLootIndex].rarity.id === "epic" ||
+              currentLootSet[chosenLootIndex].rarity.id === "legendary"
+                ? "Wahnsinn!\n Du hast ein tolles Item erwischt!"
                 : "Knapp daneben!\n Die anderen Karten hatten es in sich..."}
             </AppText>
             <AppButton title="BELOHNUNG EINSAMMELN" onPress={collectLoot} variant="primary" />
@@ -135,14 +154,15 @@ const getStyles = () =>
       color: MyTheme.primaryAccent,
       fontSize: 28,
       marginBottom: 60,
-      letterSpacing: 2
+      letterSpacing: 2,
+      textAlign: "center"
     },
     container: {
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      gap: Spacing.sm + 4
+      gap: Spacing.sm
     },
     chestWrapper: {
       width: (width - Spacing.md * 2 - Spacing.sm * 2) / 3
@@ -161,22 +181,21 @@ const getStyles = () =>
       transform: [{ scale: 1.1 }],
       backgroundColor: "#334155"
     },
-    lottie: {
-      width: "140%",
-      height: "140%",
-      position: "absolute"
+    chestImage: {
+      width: "100%", // Passend skalieren
+      height: "100%"
     },
     rewardInfo: {
       position: "absolute",
-      bottom: 12,
+      bottom: 10,
       alignItems: "center",
       width: "100%"
     },
     rewardName: {
       color: "#fff",
-      fontSize: 14,
+      fontSize: 12,
       textAlign: "center",
-      marginTop: 2
+      marginTop: 1
     },
     footer: {
       marginTop: 80,

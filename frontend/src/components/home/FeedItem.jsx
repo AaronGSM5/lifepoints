@@ -27,8 +27,9 @@ export default function FeedItem({
   const heartScale = useRef(new RNAnimated.Value(0)).current;
   const heartOpacity = useRef(new RNAnimated.Value(0)).current;
   const startLootGame = useStore((state) => state.startLootGame);
-  // const hasChest = (id * 17) % 20 === 0;
-  const hasChest = true;
+  const chestTriggerImg = require("@/../public/assets/luck.png");
+  const hasChest = id % 2 === 0;
+  // const hasChest = true;
 
   const navigateToProfile = () => {
     router.push(`/user/${username}`);
@@ -51,10 +52,8 @@ export default function FeedItem({
 
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          // Erfolgreich geteilt mit spezifischer App (nur iOS)
           console.log("Geteilt mit:", result.activityType);
         } else {
-          // Erfolgreich geteilt
           console.log("Erfolgreich geteilt");
         }
       } else if (result.action === Share.dismissedAction) {
@@ -80,7 +79,7 @@ export default function FeedItem({
           RNAnimated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
           RNAnimated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
         ]),
-        RNAnimated.delay(400), // Das Herz bleibt kurz sichtbar
+        RNAnimated.delay(400),
         RNAnimated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
         RNAnimated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
       ]).start();
@@ -157,8 +156,8 @@ export default function FeedItem({
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
           {hasChest && (
-            <TouchableOpacity hitSlop={10} style={styles.chestTrigger} onPress={() => startLootGame()}>
-              <Icon name="lock" size={22} color={MyTheme.primaryAccent} />
+            <TouchableOpacity hitSlop={10} onPress={() => startLootGame()}>
+              <Image source={chestTriggerImg} style={styles.chestIcon} resizeMode="contain" />
             </TouchableOpacity>
           )}
           <Pressable hitSlop={10} onPress={handleSave}>
@@ -278,12 +277,8 @@ const getStyles = () =>
       padding: Spacing.md,
       gap: Spacing.md
     },
-    chestTrigger: {
-      marginRight: -4, // Zieht es etwas näher an das Bookmark für kompakte Optik
-      shadowColor: MyTheme.primaryAccent,
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.5,
-      shadowRadius: 8,
-      elevation: 5 // Für Android
+    chestIcon: {
+      width: 30,
+      height: 30
     }
   });
