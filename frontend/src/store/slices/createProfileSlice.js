@@ -11,10 +11,10 @@ export const createProfileSlice = (set, get) => ({
     rankIndex: 0,
     profileXp: mockProfile.profileXp || 0,
     profileLp: mockProfile.profileLp || 0,
-    activeFrame: null,           // Welcher Rahmen gerade um das Profilbild liegt
-    unlockedFrames: [],          // Alle IDs der gefundenen Rahmen
-    pinnedCollectibles: [],      // Welche Items in der Profil-Vitrine stehen (max z.B. 3)
-    unlockedCollectibles: [],    // Alle gefundenen Sammelobjekte
+    activeFrame: null,
+    unlockedFrames: [],
+    pinnedCollectibles: [],
+    unlockedCollectibles: [],
     isLootGameActive: false,
     currentLootSet: [],
     chosenLootIndex: null,

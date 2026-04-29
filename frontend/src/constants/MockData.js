@@ -7,7 +7,8 @@ export const mockProfile = {
   profileLevel: 9,
   profileXp: 258,
   profileLp: 1250,
-  profileAvatar: ""
+  profileAvatar: "",
+  friends: []
 };
 
 export const mockSurveyOptions = [
@@ -545,10 +546,10 @@ export const onboardingSlides = [
 ];
 
 export const mockTutorialSteps = [
-  { id: "1", title: "Profilbild hinzufügen", reward: 10, completed: false, icon: "camera", route: '/setting/edit-profile' },
-  { id: "2", title: "Ersten Freund adden", reward: 20, completed: false, icon: "profile", route: '/user/Velo_Mind' },
-  { id: "3", title: "Erste gute Tat loggen", reward: 50, completed: true, icon: "heart", route: '/tasks' },
-  { id: "4", title: "Beschreibung hinzufügen", reward: 15, completed: false, icon: "pencil", route: '/setting/edit-profile' },
+  { id: "1", title: "Profilbild hinzufügen", reward: 10, icon: "camera", route: '/setting/edit-profile' },
+  { id: "2", title: "Ersten Freund adden", reward: 20, icon: "profile", route: '/user/Velo_Mind' },
+  { id: "3", title: "Erste gute Tat loggen", reward: 50, icon: "heart", route: '/tasks' },
+  { id: "4", title: "Beschreibung hinzufügen", reward: 15, icon: "pencil", route: '/setting/edit-profile' },
 ]
 
 export const mockTaskTrackingHistory = [

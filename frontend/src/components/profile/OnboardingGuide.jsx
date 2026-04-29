@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -8,10 +8,18 @@ import { mockTutorialSteps } from "@/constants/MockData";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import useStore from "@/store/useStore";
+import { checkQuestCompletion } from "@/utils/onboardingGuideHelpers";
 
 const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
-  const [tutorialSteps, setTutorialSteps] = useState(mockTutorialSteps);
+  const profile = useStore((state) => state.profile);
+  const activities = useStore((state) => state.activities);
+  const addLp = useStore((state) => state.addLp);
+  const tutorialSteps = mockTutorialSteps.map((quest) => ({
+    ...quest,
+    completed: checkQuestCompletion(quest.id, profile, activities)
+  }));
   const completedCount = tutorialSteps.filter((q) => q.completed).length;
   const progress = completedCount / tutorialSteps.length;
 
