@@ -60,7 +60,7 @@ export default function PublicProfileScreen() {
             </AppText>
             <AppText style={{ textAlign: "center" }}>{mockPublicProfile.profileBio}</AppText>
             <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
-              {mockPublicProfile.profileClass} •{" "}
+              {mockPublicProfile.profileLeague} •{" "}
               <AppText bold type="caption" style={{ color: MyTheme.gold }}>
                 {mockPublicProfile.profileRank}
               </AppText>

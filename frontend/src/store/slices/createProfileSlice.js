@@ -7,6 +7,8 @@ export const createProfileSlice = (set, get) => ({
   profile: {
     ...mockProfile,
     profileLevel: mockProfile.profileLevel || 1,
+    leagueIndex: 0,
+    rankIndex: 0,
     profileXp: mockProfile.profileXp || 0,
     profileLp: mockProfile.profileLp || 0,
     activeFrame: null,           // Welcher Rahmen gerade um das Profilbild liegt

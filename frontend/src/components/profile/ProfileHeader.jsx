@@ -11,13 +11,17 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import LevelProgress from "../LevelProgress";
 import { getXpThreshold } from "@/utils/xpHelpers";
+import { formatProfileRank, getLeagueData } from "@/constants/Progression";
 
 const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = useStore((state) => state.profile);
-
   const maxXP = getXpThreshold(profile.profileLevel);
+  const leagueIndex = profile?.leagueIndex ?? 0;
+  const rankIndex = profile?.rankIndex ?? 0;
+  const league = getLeagueData(leagueIndex);
+  const rankName = league.ranks[rankIndex] || "Unbekannt";
 
   return (
     <View style={styles.profileHeader}>
@@ -49,9 +53,9 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
           </View>
           <AppText type="h1">{profile.profileName}</AppText>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
-            {profile.profileClass} •{" "}
-            <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-              {profile.profileRank}
+            {league.name} •{" "}
+            <AppText bold type="caption" style={{ color: league.color }}>
+              {rankName}
             </AppText>
           </AppText>
         </>

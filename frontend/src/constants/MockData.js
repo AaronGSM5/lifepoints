@@ -2,7 +2,7 @@ export const mockProfile = {
   backgroundImg: "",
   profileName: "Tomhtzx",
   profileDescription: "Ich liebe es, neue Habits aufzubauen. 🚀",
-  profileClass: "Habit Hunter Class",
+  profileLeague: "Habit Hunter Class",
   profileRank: "Elite",
   profileLevel: 9,
   profileXp: 258,
@@ -294,7 +294,7 @@ export const mockPublicProfile = {
   profileName: "Sarah Klein",
   profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
   profileLevel: 14,
-  profileClass: "Community Helper",
+  profileLeague: "Community Helper",
   profileRank: "Elite",
   pinnedTrophies: [
     {
