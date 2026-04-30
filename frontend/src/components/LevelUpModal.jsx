@@ -39,6 +39,7 @@ const LevelUpModal = ({ visible, level, onTransitionEnd }) => {
               { id: 3, icon: "sun", color: MyTheme.primaryAccent }
             ].map((item) => (
               <View
+                key={item.id}
                 style={{
                   width: 40,
                   height: 40,

@@ -90,7 +90,7 @@ export default function HomeScreen() {
           </>
         ) : (
           myActiveTasks.map((task) => (
-            <>
+            <View key={task.id}>
               <ActiveTaskCard
                 key={task.id}
                 title={task.title}
@@ -103,7 +103,7 @@ export default function HomeScreen() {
                 }}
               />
               <View style={{ marginBottom: Spacing.md }} />
-            </>
+            </View>
           ))
         )}
         <SectionHeader title={"Feed"} />

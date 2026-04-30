@@ -34,7 +34,7 @@ export const createDataSlice = (set, get) => ({
     const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
 
     const newActivity = {
-      id: `history-task-${task.id}-${timeString}`,
+      id: `act-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       title: task.title,
       description: task.description,
       category: task.category,

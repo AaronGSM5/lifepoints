@@ -28,8 +28,8 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
       <View>
         <SectionHeader title={"My Impact Journal"} icon={"journal"} rightLabel={"More"} isLoading={isLoading} />
         <View style={styles.container}>
-          {previewData.map((item) => (
-            <BaseCard key={item} style={styles.activityItem} padding={Spacing.sm}>
+          {previewData.map((item, i) => (
+            <BaseCard key={item.id || `skel-${i}`} style={styles.activityItem} padding={Spacing.sm}>
               <View style={[styles.iconCircle, { backgroundColor: "transparent" }]}>
                 <Skeleton {...skeletonProps} width={40} height={40} radius="round" />
               </View>
@@ -61,7 +61,7 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
       <View style={styles.container}>
         {previewData?.map((item, i) => (
           <HistoryCard
-            key={i}
+            key={item.id || i}
             title={item.title}
             time={item.time}
             points={item.points}
