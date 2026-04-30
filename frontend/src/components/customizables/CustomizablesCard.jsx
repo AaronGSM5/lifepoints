@@ -15,11 +15,10 @@ const CustomizablesCard = ({
   unlocked = true,
   justUnlocked = false,
   onAnimationComplete,
-  onPress // Erlaubt es dem Parent, das Klick-Verhalten zu überschreiben
+  onPress
 }) => {
   const styles = getStyles();
 
-  // Animations-Logik für "Neu freigeschaltet" (Dopamin-Effekt!)
   const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const CustomizablesCard = ({
         toValue: 1,
         duration: 800,
         delay: 300,
-        useNativeDriver: false // Muss false sein, wenn wir Farben interpolieren
+        useNativeDriver: false
       }).start(({ finished }) => {
         if (finished && onAnimationComplete) {
           onAnimationComplete(id);
@@ -37,7 +36,6 @@ const CustomizablesCard = ({
     }
   }, [justUnlocked, animValue, id, onAnimationComplete]);
 
-  // Interpolationen für den Lock-Zustand
   const itemOpacity = animValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 1]
@@ -74,7 +72,6 @@ const CustomizablesCard = ({
             <Icon name={icon} size={24} color={color} />
           </RNAnimated.View>
 
-          {/* Lock-Overlay wie bei der TrophyCard */}
           {(!unlocked || justUnlocked) && (
             <RNAnimated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
               <Icon name="lock" size={12} color={MyTheme.text} />
@@ -84,25 +81,13 @@ const CustomizablesCard = ({
 
         <AppText
           animated
-          bold={isActive}
+          bold
           type="caption"
           numberOfLines={2}
-          style={{
-            color: isActive ? MyTheme.primaryAccent : textColor,
-            textAlign: "center",
-            fontSize: 10,
-            marginTop: 4,
-            minHeight: 28
-          }}
+          style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
         >
           {name}
         </AppText>
-
-        {isActive && (
-          <AppText type="caption" style={styles.activeLabel}>
-            Aktiv
-          </AppText>
-        )}
       </View>
     </Pressable>
   );
@@ -122,8 +107,7 @@ const getStyles = () =>
       position: "relative"
     },
     cardContainerActive: {
-      borderColor: MyTheme.primaryAccent,
-      backgroundColor: `${MyTheme.primaryAccent}10` // Dezenter Highlight-Hintergrund
+      borderColor: MyTheme.primaryAccent
     },
     iconBox: {
       width: "100%",
@@ -151,18 +135,6 @@ const getStyles = () =>
       alignItems: "center",
       borderWidth: 1,
       borderColor: MyTheme.primary
-    },
-    activeLabel: {
-      position: "absolute",
-      top: -6,
-      backgroundColor: MyTheme.primaryAccent,
-      color: MyTheme.background,
-      fontSize: 8,
-      paddingHorizontal: 6,
-      paddingVertical: 2,
-      borderRadius: 4,
-      overflow: "hidden",
-      fontWeight: "bold"
     }
   });
 
