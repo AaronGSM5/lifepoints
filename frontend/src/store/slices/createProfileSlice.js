@@ -11,8 +11,8 @@ export const createProfileSlice = (set, get) => ({
     rankIndex: 0,
     profileXp: mockProfile.profileXp || 0,
     profileLp: mockProfile.profileLp || 0,
-    activeFrame: null,
-    unlockedFrames: [],
+    activeFrame: 'f0',
+    unlockedFrames: ['f0'],
     pinnedCollectibles: [],
     unlockedCollectibles: [],
     isLootGameActive: false,
@@ -23,7 +23,7 @@ export const createProfileSlice = (set, get) => ({
 
   startLootGame: () => set({
     isLootGameActive: true,
-    currentLootSet: generateTripleLoot(), // Zieht 3 Items aus der utils-Datei
+    currentLootSet: generateTripleLoot(),
     chosenLootIndex: null,
     isLootRevealed: false
   }),
@@ -47,7 +47,6 @@ export const createProfileSlice = (set, get) => ({
     }
     else if (finalReward.type === 'FRAME') {
       set((state) => {
-        // SICHERHEIT: Falls unlockedFrames undefined ist, nimm ein leeres Array
         const currentFrames = state.profile.unlockedFrames || [];
         const hasFrame = currentFrames.includes(finalReward.id);
 
@@ -63,7 +62,6 @@ export const createProfileSlice = (set, get) => ({
     }
     else if (finalReward.type === 'COLLECTIBLE') {
       set((state) => {
-        // SICHERHEIT: Falls unlockedCollectibles undefined ist, nimm ein leeres Array
         const currentCollectibles = state.profile.unlockedCollectibles || [];
         const hasItem = currentCollectibles.includes(finalReward.id);
 
@@ -78,7 +76,6 @@ export const createProfileSlice = (set, get) => ({
       });
     }
 
-    // Modal schließen
     set({
       isLootGameActive: false,
       currentLootSet: [],
@@ -126,5 +123,28 @@ export const createProfileSlice = (set, get) => ({
       },
       showLevelUpModal: hasLeveledUp ? true : state.showLevelUpModal
     }));
-  }
+  },
+
+  claimOnboardingReward: (questId, amount) => {
+    const { profile, addLp } = get();
+    const alreadyClaimed = profile.claimedOnboardingRewards?.includes(questId);
+
+    if (!alreadyClaimed) {
+      addLp(amount);
+
+      set((state) => ({
+        profile: {
+          ...state.profile,
+          claimedOnboardingRewards: [...(state.profile.claimedOnboardingRewards || []), questId]
+        }
+      }));
+    }
+  },
+
+  setActiveFrame: (frameId) => set((state) => ({
+    profile: {
+      ...state.profile,
+      activeFrame: frameId
+    }
+  })),
 });

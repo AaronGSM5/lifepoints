@@ -1,7 +1,7 @@
 export const mockProfile = {
   backgroundImg: "",
   profileName: "Tomhtzx",
-  profileDescription: "Ich liebe es, neue Habits aufzubauen. 🚀",
+  profileDescription: "",
   profileLeague: "Habit Hunter Class",
   profileRank: "Elite",
   profileLevel: 9,

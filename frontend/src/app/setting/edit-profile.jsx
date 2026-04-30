@@ -15,6 +15,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
+import * as ImagePicker from "expo-image-picker";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -33,7 +34,8 @@ export default function EditProfileScreen() {
   const initialData = {
     profileName: profile.profileName,
     username: "@" + profile.profileName.toLowerCase().replace(" ", ""),
-    profileDescription: profile.profileDescription
+    profileDescription: profile.profileDescription,
+    profileAvatar: profile.profileAvatar
   };
 
   const [formData, setFormData] = useState(initialData);
@@ -54,9 +56,29 @@ export default function EditProfileScreen() {
     }, 1000);
   };
 
-  const handleChangeAvatar = () => {
-    Alert.alert("Profilbild", "Hier öffnet sich später die Galerie deines Handys.");
+  const handleChangeAvatar = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      Alert.alert("Berechtigung benötigt", "Wir brauchen Zugriff auf deine Fotos, um dein Profilbild zu ändern.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7
+    });
+
+    if (!result.canceled) {
+      setFormData({ ...formData, profileAvatar: result.assets[0].uri });
+    }
   };
+
+  const avatarSource = formData.profileAvatar
+    ? { uri: formData.profileAvatar }
+    : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -128,7 +150,7 @@ export default function EditProfileScreen() {
                   onChangeText={(text) => setFormData({ ...formData, profileDescription: text })}
                   multiline
                   numberOfLines={4}
-                  style={{ textAlignVertical: "top" }} // Wichtig für Android Multiline
+                  style={{ textAlignVertical: "top" }}
                 />
               </>
             )}

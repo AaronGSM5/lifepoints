@@ -11,7 +11,8 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import LevelProgress from "../LevelProgress";
 import { getXpThreshold } from "@/utils/xpHelpers";
-import { formatProfileRank, getLeagueData } from "@/constants/Progression";
+import { getLeagueData } from "@/constants/Progression";
+import { getFrameById } from "@/constants/Frames";
 
 const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
@@ -22,6 +23,12 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const rankIndex = profile?.rankIndex ?? 0;
   const league = getLeagueData(leagueIndex);
   const rankName = league.ranks[rankIndex] || "Unbekannt";
+
+  const activeFrame = getFrameById(profile.activeFrame);
+
+  const avatarSource = profile.profileAvatar
+    ? { uri: profile.profileAvatar }
+    : require("@/../public/assets/icon-profile.png");
 
   return (
     <View style={styles.profileHeader}>
@@ -36,7 +43,21 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
       ) : (
         <>
           <View style={styles.avatarContainer}>
-            <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
+            <View
+              style={[
+                styles.frameWrapper,
+                activeFrame && {
+                  borderColor: activeFrame.color,
+                  borderWidth: activeFrame.borderWidth,
+                  shadowColor: activeFrame.glow ? activeFrame.color : "transparent",
+                  shadowOpacity: activeFrame.glow ? 0.8 : 0,
+                  shadowRadius: 10
+                }
+              ]}
+            >
+              <Image source={avatarSource} style={styles.avatar} />
+            </View>
+
             <AppBadge
               label={`LVL ${profile.profileLevel}`}
               style={{
@@ -100,6 +121,14 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
 
 const getStyles = () =>
   StyleSheet.create({
+    frameWrapper: {
+      width: 110, // Etwas größer als das Bild
+      height: 110,
+      borderRadius: 55,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "transparent"
+    },
     profileHeader: {
       alignItems: "center",
       paddingTop: Spacing.lg
@@ -111,9 +140,7 @@ const getStyles = () =>
     avatar: {
       width: 100,
       height: 100,
-      borderRadius: 50,
-      borderWidth: 2,
-      borderColor: MyTheme.secondary
+      borderRadius: 50
     },
     actionButtons: {
       flexDirection: "row",

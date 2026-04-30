@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -15,13 +15,30 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
   const profile = useStore((state) => state.profile);
   const activities = useStore((state) => state.activities);
-  const addLp = useStore((state) => state.addLp);
+  const claimOnboardingReward = useStore((state) => state.claimOnboardingReward);
   const tutorialSteps = mockTutorialSteps.map((quest) => ({
     ...quest,
     completed: checkQuestCompletion(quest.id, profile, activities)
   }));
   const completedCount = tutorialSteps.filter((q) => q.completed).length;
+  const isAllCompleted = completedCount === tutorialSteps.length;
   const progress = completedCount / tutorialSteps.length;
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    tutorialSteps.forEach((quest) => {
+      const isAlreadyClaimed = profile.claimedQuests?.includes(quest.id);
+
+      if (quest.completed && !isAlreadyClaimed) {
+        claimOnboardingReward(quest.id, quest.reward);
+      }
+    });
+  }, [completedCount, profile.claimedQuests]);
+
+  if (isAllCompleted && !isLoading) {
+    return null;
+  }
 
   if (isLoading) {
     return (
@@ -71,39 +88,42 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
       </View>
 
       <View style={styles.questList}>
-        {tutorialSteps.map((quest) => (
-          <Pressable
-            key={quest.id}
-            style={({ pressed }) => [
-              styles.questItem,
-              quest.completed && styles.questItemCompleted,
-              pressed && !quest.completed && { opacity: 0.7 }
-            ]}
-            onPress={() => {
-              if (!quest.completed && quest.route) {
-                router.push(quest.route);
-              }
-            }}
-          >
-            <View style={styles.questIconContainer}>
-              <Icon
-                name={quest.completed ? "checkmark" : quest.icon}
-                color={quest.completed ? MyTheme.primaryAccent : "gray"}
-              />
-            </View>
+        {tutorialSteps.map((quest) => {
+          const isClaimed = profile.claimedQuests?.includes(quest.id);
+          return (
+            <Pressable
+              key={quest.id}
+              style={({ pressed }) => [
+                styles.questItem,
+                quest.completed && styles.questItemCompleted,
+                pressed && !quest.completed && { opacity: 0.7 }
+              ]}
+              onPress={() => {
+                if (!quest.completed && quest.route) {
+                  router.push(quest.route);
+                }
+              }}
+            >
+              <View style={styles.questIconContainer}>
+                <Icon
+                  name={quest.completed ? "checkmark" : quest.icon}
+                  color={quest.completed ? MyTheme.primaryAccent : "gray"}
+                />
+              </View>
 
-            <View style={styles.questTextContainer}>
-              <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
-                {quest.title}
-              </AppText>
-              <AppText type="caption" bold style={styles.rewardText}>
-                +{quest.reward} LP
-              </AppText>
-            </View>
+              <View style={styles.questTextContainer}>
+                <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
+                  {quest.title}
+                </AppText>
+                <AppText type="caption" bold style={[styles.rewardText, isClaimed && { color: MyTheme.muted }]}>
+                  {isClaimed ? "LP erhalten" : `+${quest.reward} LP`}
+                </AppText>
+              </View>
 
-            {!quest.completed && <Icon name="right" color={MyTheme.muted} size={20} />}
-          </Pressable>
-        ))}
+              {!quest.completed && <Icon name="right" color={MyTheme.muted} size={20} />}
+            </Pressable>
+          );
+        })}
       </View>
     </BaseCard>
   );
