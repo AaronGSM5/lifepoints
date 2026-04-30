@@ -36,6 +36,33 @@ export const mockSurveyOptions = [
   }
 ]
 
+export const mockCustomizables = [
+  {
+    id: "cust_01",
+    name: "Neon Glow",
+    icon: "star",
+    color: "#00E5FF",
+    isActive: true,
+    type: "frame"
+  },
+  {
+    id: "cust_02",
+    name: "Eco-Held",
+    icon: "leaf",
+    color: "#4CAF50",
+    isActive: false,
+    type: "title"
+  },
+  {
+    id: "cust_03",
+    name: "Gründer-Aura",
+    icon: "fire",
+    color: "#FF9800",
+    isActive: false,
+    type: "frame"
+  }
+];
+
 export const mockFeedItems = [
   { id: 1, username: 'Velo_Mind', description: 'You vs You', image: require("@/../public/assets/posts/sportSelfie2.jpg") },
   { id: 2, username: 'PixelPionier', description: 'Best Run EVER!', image: require("@/../public/assets/posts/sportSelfie1.jpeg") },

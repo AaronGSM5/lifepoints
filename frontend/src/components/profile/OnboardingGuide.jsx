@@ -53,8 +53,8 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
         </View>
 
         <View style={styles.questList}>
-          {[1, 2, 3].map((item) => (
-            <View key={item} style={styles.questItem}>
+          {tutorialSteps.map((item) => (
+            <View key={`skeleton-${item.id}`} style={styles.questItem}>
               <View style={styles.questIconContainer}>
                 <Skeleton {...skeletonProps} width={28} height={28} borderRadius={14} />
               </View>
