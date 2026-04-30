@@ -3,11 +3,11 @@ import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/Scr
 import { Spacing } from "@/constants/Spacing";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import { useState } from "react";
-import { mockTrophies } from "@/constants/MockData";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function TrophiesScreen() {
-  const [trophies, setTrophies] = useState(mockTrophies);
+  const [trophies, setTrophies] = useState(trophiesCatalog);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
 
@@ -18,9 +18,9 @@ export default function TrophiesScreen() {
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const handleAnimationFinished = (id) => {
-    const trophyIndex = mockTrophies.findIndex((trophy) => trophy.id === id);
+    const trophyIndex = trophiesCatalog.findIndex((trophy) => trophy.id === id);
     if (trophyIndex !== -1) {
-      mockTrophies[trophyIndex].justUnlocked = false;
+      trophiesCatalog[trophyIndex].justUnlocked = false;
     }
     setTrophies((currentTrophies) =>
       currentTrophies.map((trophy) => (trophy.id === id ? { ...trophy, justUnlocked: false } : trophy))

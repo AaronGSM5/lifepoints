@@ -18,7 +18,7 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = useStore((state) => state.profile);
-  const maxXP = getXpThreshold(profile.profileLevel);
+  const maxXP = getXpThreshold(profile.level);
   const leagueIndex = profile?.leagueIndex ?? 0;
   const rankIndex = profile?.rankIndex ?? 0;
   const league = getLeagueData(leagueIndex);
@@ -26,9 +26,7 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
 
   const activeFrame = getFrameById(profile.activeFrame);
 
-  const avatarSource = profile.profileAvatar
-    ? { uri: profile.profileAvatar }
-    : require("@/../public/assets/icon-profile.png");
+  const avatarSource = profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png");
 
   return (
     <View style={styles.profileHeader}>
@@ -59,7 +57,7 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
             </View>
 
             <AppBadge
-              label={`LVL ${profile.profileLevel}`}
+              label={`LVL ${profile.level}`}
               style={{
                 position: "absolute",
                 bottom: -Spacing.sm,
@@ -72,7 +70,7 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
               textStyle={{ color: MyTheme.text }}
             />
           </View>
-          <AppText type="h1">{profile.profileName}</AppText>
+          <AppText type="h1">{profile.name}</AppText>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {league.name} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>

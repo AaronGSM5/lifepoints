@@ -5,7 +5,7 @@ import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import { mockComments } from "@/constants/MockData";
+import { postComments } from "@/mocks/PostComments";
 import { router } from "expo-router";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
 
@@ -51,7 +51,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const styles = getStyles();
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(mockComments);
+  const [comments, setComments] = useState(postComments);
   const [replyingTo, setReplyingTo] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 

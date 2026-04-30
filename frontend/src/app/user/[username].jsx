@@ -9,7 +9,7 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
-import { mockPublicProfile } from "@/constants/MockData";
+import { publicProfile } from "@/mocks/PublicProfile";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
 import Animated from "react-native-reanimated";
@@ -38,7 +38,7 @@ export default function PublicProfileScreen() {
           <Animated.View style={styles.avatarContainer} sharedTransitionTag={`avatar-${username}`}>
             <AppText type="h1">{username.charAt(0).toUpperCase()}</AppText>
             <AppBadge
-              label={`LVL ${mockPublicProfile.profileLevel}`}
+              label={`LVL ${publicProfile.level}`}
               style={styles.levelBadge}
               textStyle={{ color: MyTheme.text }}
             />
@@ -56,13 +56,13 @@ export default function PublicProfileScreen() {
         ) : (
           <>
             <AppText type="h1" style={{ marginVertical: Spacing.xs }}>
-              {mockPublicProfile.profileName}
+              {publicProfile.name}
             </AppText>
-            <AppText style={{ textAlign: "center" }}>{mockPublicProfile.profileBio}</AppText>
+            <AppText style={{ textAlign: "center" }}>{publicProfile.profileBio}</AppText>
             <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
-              {mockPublicProfile.profileLeague} •{" "}
+              {publicProfile.profileLeague} •{" "}
               <AppText bold type="caption" style={{ color: MyTheme.gold }}>
-                {mockPublicProfile.profileRank}
+                {publicProfile.profileRank}
               </AppText>
             </AppText>
           </>
@@ -109,7 +109,7 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : mockPublicProfile.pinnedTrophies.map((trophy) => (
+            : publicProfile.pinnedTrophies.map((trophy) => (
                 <View key={trophy.id} style={{ width: 80 }}>
                   <TrophyCard id={trophy.id} title={trophy.title} icon={trophy.icon} unlocked />
                 </View>

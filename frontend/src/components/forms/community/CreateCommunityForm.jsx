@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { Modal, View, StyleSheet, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
 import AppInput from "../../ui/AppInput";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
-
-// Imports der neuen Komponenten (Pfade ggf. anpassen)
 import IconPicker from "./IconPicker";
 import BadgePicker from "./BadgePicker";
 import BannerUploader from "./BannerUploader";
 import SizePicker from "./SizePicker";
-
-import { mockCommunityIcons, mockCommunityBadges, mockCommunitySizes } from "@/constants/MockData";
+import { communityIcons, communityBadges } from "@/constants/CommunityOptions";
+import { communityTiers } from "@/constants/CommunityPricing";
 import useStore from "@/store/useStore";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
@@ -27,7 +24,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const [selectedIcon, setSelectedIcon] = useState("groups");
   const [bannerUri, setBannerUri] = useState(null);
   const [selectedBadges, setSelectedBadges] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(mockCommunitySizes[0]);
+  const [selectedSize, setSelectedSize] = useState(communityTiers[0]);
   const [resetKey, setResetKey] = useState(0);
 
   const toggleBadge = (badge) => {
@@ -40,7 +37,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setSelectedIcon("groups");
     setBannerUri(null);
     setSelectedBadges([]);
-    setSelectedSize(mockCommunitySizes[0]);
+    setSelectedSize(communityTiers[0]);
     setResetKey((prev) => prev + 1);
   };
 
@@ -100,7 +97,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
         <View style={styles.section}>
           <IconPicker
             key={`icon-${resetKey}`}
-            icons={mockCommunityIcons}
+            icons={communityIcons}
             selectedIcon={selectedIcon}
             onSelectIcon={setSelectedIcon}
           />
@@ -109,7 +106,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
         <View style={styles.section}>
           <BadgePicker
             key={`badge-${resetKey}`}
-            badges={mockCommunityBadges}
+            badges={communityBadges}
             selectedBadges={selectedBadges}
             onToggleBadge={toggleBadge}
           />
@@ -124,7 +121,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
         </View>
 
         <View style={styles.section}>
-          <SizePicker options={mockCommunitySizes} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
+          <SizePicker options={communityTiers} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
         </View>
       </ScrollView>
 

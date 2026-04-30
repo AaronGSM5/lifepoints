@@ -1,25 +1,34 @@
 import * as Haptics from "expo-haptics";
 import { getXpThreshold } from "../../utils/xpHelpers";
-import { mockProfile } from '@/constants/MockData';
 import { generateTripleLoot } from "@/utils/lootLogic";
 
-export const createProfileSlice = (set, get) => ({
-  profile: {
-    ...mockProfile,
-    profileLevel: mockProfile.profileLevel || 1,
-    leagueIndex: 0,
-    rankIndex: 0,
-    profileXp: mockProfile.profileXp || 0,
-    profileLp: mockProfile.profileLp || 0,
-    activeFrame: 'f0',
-    unlockedFrames: ['f0'],
-    pinnedCollectibles: [],
-    unlockedCollectibles: [],
-    isLootGameActive: false,
-    currentLootSet: [],
-    chosenLootIndex: null,
-    isLootRevealed: false,
+const initialUserState = {
+  name: "New User",
+  description: "",
+  avatar: "",
+  level: 1,
+  leagueIndex: 0,
+  rankIndex: 0,
+  profileLp: 0,
+  profileXp: 0,
+  activeFrame: 'f0',
+  unlockedFrames: ['f0'],
+  unlockedCollectibles: [],
+  friends: [],
+  isLootGameActive: false,
+  currentLootSet: [],
+  chosenLootIndex: null,
+  isLootRevealed: false,
+  // Onboarding
+  surveyAnswers: {
+    goals: [],
+    interests: [],
   },
+  claimedOnboardingGuideRewards: [],
+}
+
+export const createProfileSlice = (set, get) => ({
+  profile: initialUserState,
 
   startLootGame: () => set({
     isLootGameActive: true,
@@ -102,7 +111,7 @@ export const createProfileSlice = (set, get) => ({
   addExperience: (amount) => {
     const { profile } = get();
     let newXP = profile.profileXp + amount;
-    let newLevel = profile.profileLevel;
+    let newLevel = profile.level;
     let hasLeveledUp = false;
 
     while (newXP >= getXpThreshold(newLevel)) {
@@ -118,7 +127,7 @@ export const createProfileSlice = (set, get) => ({
     set((state) => ({
       profile: {
         ...state.profile,
-        profileLevel: newLevel,
+        level: newLevel,
         profileXp: newXP,
       },
       showLevelUpModal: hasLeveledUp ? true : state.showLevelUpModal
@@ -127,7 +136,7 @@ export const createProfileSlice = (set, get) => ({
 
   claimOnboardingReward: (questId, amount) => {
     const { profile, addLp } = get();
-    const alreadyClaimed = profile.claimedOnboardingRewards?.includes(questId);
+    const alreadyClaimed = profile.claimedOnboardingGuideRewards?.includes(questId);
 
     if (!alreadyClaimed) {
       addLp(amount);
@@ -135,7 +144,7 @@ export const createProfileSlice = (set, get) => ({
       set((state) => ({
         profile: {
           ...state.profile,
-          claimedOnboardingRewards: [...(state.profile.claimedOnboardingRewards || []), questId]
+          claimedOnboardingGuideRewards: [...(state.profile.claimedOnboardingGuideRewards || []), questId]
         }
       }));
     }

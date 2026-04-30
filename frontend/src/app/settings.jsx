@@ -2,7 +2,7 @@ import { View, StyleSheet, Alert } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import { mockSettings } from "@/constants/MockData";
+import { settingsSections } from "@/constants/SettingsConfig";
 import { useRouter } from "expo-router";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
@@ -38,7 +38,7 @@ export default function SettingsScreen() {
     <ScreenWrapper scrollable withPaddingTop={false}>
       <ScreenTitle title={"Settings"} />
 
-      {mockSettings.map((cat) => (
+      {settingsSections.map((cat) => (
         <View key={cat.title} style={styles.section}>
           <AppText type="caption" style={styles.sectionHeader}>
             {cat.title.toUpperCase()}

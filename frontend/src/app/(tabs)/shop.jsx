@@ -21,7 +21,7 @@ export default function ShopScreen() {
   const bottomPadding = useFloatingNavbarPadding();
   const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const profileLp = useStore((state) => state.profile.profileLp);
+  const userLevel = useStore((state) => state.profile.level);
 
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -93,7 +93,7 @@ export default function ShopScreen() {
               title={item.title}
               points={item.points}
               icon={item.icon}
-              isLocked={item.isLocked}
+              isLocked={userLevel < item.requiredLevel}
               onPress={() => router.push(`/reward/${item.id}`)}
               skeletonProps={skeletonProps}
             />

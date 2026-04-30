@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { createUISlice } from './slices/createUISlice';
-import { createAuthSlice } from './slices/createAuthSlice';
+import { createQuestSlice } from './slices/createQuestSlice';
 import { createDataSlice } from './slices/createDataSlice';
 import { createProfileSlice } from './slices/createProfileSlice';
 
@@ -27,6 +27,7 @@ const useStore = create(
         ...createUISlice(set, get, api),
         ...createDataSlice(set, get, api),
         ...createProfileSlice(set, get, api),
+        ...createQuestSlice(set, get, api),
       }),
       {
         name: 'lifepoints-storage',

@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { mockRewards } from "@/constants/MockData";
+import { rewardsCatalog } from "@/constants/RewardsCatalog";
 
 export const useShop = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [rewards, setRewards] = useState(mockRewards);
+  const [rewards, setRewards] = useState(rewardsCatalog);
   const [activeCat, setActiveCat] = useState("all");
 
   const fetchShop = useCallback(async () => {

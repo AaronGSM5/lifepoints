@@ -32,10 +32,10 @@ export default function EditProfileScreen() {
   const updateProfile = useStore((state) => state.updateProfile);
 
   const initialData = {
-    profileName: profile.profileName,
-    username: "@" + profile.profileName.toLowerCase().replace(" ", ""),
-    profileDescription: profile.profileDescription,
-    profileAvatar: profile.profileAvatar
+    name: profile.name,
+    username: "@" + profile.name.toLowerCase().replace(" ", ""),
+    description: profile.description,
+    avatar: profile.avatar
   };
 
   const [formData, setFormData] = useState(initialData);
@@ -72,13 +72,11 @@ export default function EditProfileScreen() {
     });
 
     if (!result.canceled) {
-      setFormData({ ...formData, profileAvatar: result.assets[0].uri });
+      setFormData({ ...formData, avatar: result.assets[0].uri });
     }
   };
 
-  const avatarSource = formData.profileAvatar
-    ? { uri: formData.profileAvatar }
-    : require("@/../public/assets/icon-profile.png");
+  const avatarSource = formData.avatar ? { uri: formData.avatar } : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -129,8 +127,8 @@ export default function EditProfileScreen() {
                 <AppInput
                   label="Anzeigename"
                   placeholder="Dein Name"
-                  value={formData.profileName}
-                  onChangeText={(text) => setFormData({ ...formData, profileName: text })}
+                  value={formData.name}
+                  onChangeText={(text) => setFormData({ ...formData, name: text })}
                   icon="profile"
                 />
                 <View style={{ height: Spacing.md }} />
@@ -146,8 +144,8 @@ export default function EditProfileScreen() {
                 <AppInput
                   label="Über mich"
                   placeholder="Erzähl etwas über deine Ziele..."
-                  value={formData.profileDescription}
-                  onChangeText={(text) => setFormData({ ...formData, profileDescription: text })}
+                  value={formData.description}
+                  onChangeText={(text) => setFormData({ ...formData, description: text })}
                   multiline
                   numberOfLines={4}
                   style={{ textAlignVertical: "top" }}

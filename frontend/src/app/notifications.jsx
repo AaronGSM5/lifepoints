@@ -2,8 +2,8 @@ import { StyleSheet, FlatList } from "react-native";
 import NotificationEntry from "@/components/notifications/NotificationEntry";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import { mockNotifications } from "@/constants/MockData";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { notificationItems } from "@/mocks/NotificationData";
 
 export default function NotificationsScreen() {
   return (
@@ -11,7 +11,7 @@ export default function NotificationsScreen() {
       <ScreenTitle title={"Mitteilungen"} />
 
       <FlatList
-        data={mockNotifications}
+        data={notificationItems}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         renderItem={({ item }) => <NotificationEntry notification={item} />}
         contentContainerStyle={styles.listContainer}

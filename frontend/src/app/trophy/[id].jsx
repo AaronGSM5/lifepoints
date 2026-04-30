@@ -6,12 +6,12 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { mockTrophies } from "@/constants/MockData";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 
 export default function TrophyScreen() {
   const styles = getStyles();
   const { id } = useLocalSearchParams();
-  const trophy = mockTrophies.find((t) => String(t.id) === String(id));
+  const trophy = trophiesCatalog.find((t) => String(t.id) === String(id));
 
   return (
     <ScreenWrapper withPaddingTop={false}>

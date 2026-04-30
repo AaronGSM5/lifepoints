@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
-import { mockTutorialSteps } from "@/constants/MockData";
+import { onboardingGuideSteps } from "@/constants/OnboardingGuideSteps";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
@@ -16,7 +16,7 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const profile = useStore((state) => state.profile);
   const activities = useStore((state) => state.activities);
   const claimOnboardingReward = useStore((state) => state.claimOnboardingReward);
-  const tutorialSteps = mockTutorialSteps.map((quest) => ({
+  const tutorialSteps = onboardingGuideSteps.map((quest) => ({
     ...quest,
     completed: checkQuestCompletion(quest.id, profile, activities)
   }));

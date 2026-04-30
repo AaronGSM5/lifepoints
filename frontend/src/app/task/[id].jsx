@@ -7,10 +7,10 @@ import AppButton from "@/components/ui/AppButton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import { mockTasks } from "@/constants/MockData";
+import { tasksCatalog } from "@/constants/TasksCatalog";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { mockTaskTrackingHistory } from "@/constants/MockData";
+import { taskTrackingHistory } from "@/mocks/ActivityHistory";
 import HistoryCard from "@/components/ui/HistoryCard";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
@@ -21,7 +21,7 @@ export default function TaskDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const task = mockTasks.find((t) => String(t.id) === String(id));
+  const task = tasksCatalog.find((t) => String(t.id) === String(id));
 
   if (!task) {
     return (
@@ -83,8 +83,8 @@ export default function TaskDetailScreen() {
                 Verlauf
               </AppText>
 
-              {mockTaskTrackingHistory.length > 0 ? (
-                mockTaskTrackingHistory.map((item) => (
+              {taskTrackingHistory.length > 0 ? (
+                taskTrackingHistory.map((item) => (
                   <HistoryCard
                     key={item.id}
                     title="Getrackt"

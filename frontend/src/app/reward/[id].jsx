@@ -8,7 +8,7 @@ import AppButton from "@/components/ui/AppButton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import { mockRewards } from "@/constants/MockData";
+import { rewardsCatalog } from "@/constants/RewardsCatalog";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackButton from "@/components/ui/BackButton";
@@ -22,7 +22,7 @@ export default function RewardDetailScreen() {
   const insets = useSafeAreaInsets();
   const redeemReward = useStore((state) => state.redeemReward);
 
-  const reward = mockRewards.find((c) => String(c.id) === String(id));
+  const reward = rewardsCatalog.find((c) => String(c.id) === String(id));
 
   if (!reward) {
     return (

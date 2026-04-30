@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import AppButton from "@/components/ui/AppButton";
-import { mockSurveyOptions } from "@/constants/MockData";
+import { mockSurveyOptions } from "@/constants/OnboardingSurvey";
 import SurveyProgressBar from "@/components/onboarding/SurveyProgressBar";
 import SurveyQuestion from "@/components/onboarding/SurveyQuestion";
 

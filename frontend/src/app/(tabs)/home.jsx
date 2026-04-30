@@ -1,9 +1,8 @@
 import { View, FlatList, ActivityIndicator } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import { useMemo, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import FeedItem from "@/components/home/FeedItem";
-import LpChart from "@/components/home/LpChart";
 import CommentSheet from "@/components/home/CommentSheet";
 import SectionHeader from "@/components/ui/SectionHeader";
 import EventHero from "@/components/home/EventHero";
@@ -34,10 +33,11 @@ export default function HomeScreen() {
   const addExperience = useStore((state) => state.addExperience);
   const showLevelUpModal = useStore((state) => state.showLevelUpModal);
   const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
-  const profileLevel = useStore((state) => state.profile.profileLevel);
+  const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
+  const level = useStore((state) => state.profile.level);
   const myActiveTasks = allTasks.filter((t) => activeTaskIds.includes(t.id));
 
-  useMemo(() => {
+  useEffect(() => {
     if (feedItems && feedItems.length > 0) {
       setDisplayedItems(feedItems);
     }
@@ -52,7 +52,7 @@ export default function HomeScreen() {
       setDisplayedItems((prev) => {
         const newBatch = feedItems.map((item) => ({
           ...item,
-          id: item.id + prev.length
+          id: `${item.id}-${prev.length}`
         }));
 
         return [...prev, ...newBatch];
@@ -98,6 +98,7 @@ export default function HomeScreen() {
                 isLoading={isLoading}
                 onAction={() => {
                   completeTask(task.id);
+                  notifyQuestSystem("TASK_COMPLETED", { category: task.category });
                   addExperience(task.xp);
                 }}
               />
@@ -108,14 +109,17 @@ export default function HomeScreen() {
         <SectionHeader title={"Feed"} />
       </View>
     ),
-    [isLoading, myActiveTasks]
+    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience]
   );
 
-  const renderFooter = () => (
-    <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-      <ActivityIndicator size="large" color={MyTheme.text} />
-    </View>
-  );
+  const renderFooter = () =>
+    isBatchLoading ? (
+      <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
+        <ActivityIndicator size="large" color={MyTheme.text} />
+      </View>
+    ) : (
+      <View style={{ height: Spacing.xl }} />
+    );
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
@@ -145,11 +149,7 @@ export default function HomeScreen() {
       />
       <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
       <LootGameModal />
-      <LevelUpModal
-        visible={showLevelUpModal}
-        level={profileLevel}
-        onTransitionEnd={() => setShowLevelUpModal(false)}
-      />
+      <LevelUpModal visible={showLevelUpModal} level={level} onTransitionEnd={() => setShowLevelUpModal(false)} />
     </ScreenWrapper>
   );
 }

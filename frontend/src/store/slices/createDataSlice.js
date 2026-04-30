@@ -1,22 +1,19 @@
-import {
-  mockTasks,
-  mockRecommendedTasks,
-  mockTrophies,
-  mockRewards,
-  mockMyCommunities,
-  mockRecommendedCommunities,
-  mockQuests,
-  mockFeaturedRewards,
-} from '@/constants/MockData';
+import { tasksCatalog } from '@/constants/TasksCatalog';
+import { recommendedTasks } from '@/mocks/FeaturedTasks';
+import { trophiesCatalog } from '@/constants/TrophiesCatalog';
+import { rewardsCatalog } from '@/constants/RewardsCatalog';
+import { recommendedCommunities } from '@/mocks/RecommendedCommunities';
+import { questCatalog } from '@/constants/QuestCatalog';
+import { featuredRewards } from '@/constants/FeaturedRewards';
 
 export const createDataSlice = (set, get) => ({
-  tasks: mockTasks,
-  recommendedTasks: mockRecommendedTasks,
-  trophies: mockTrophies,
-  rewards: mockRewards,
-  featuredRewards: mockFeaturedRewards,
-  communities: { myCommunities: mockMyCommunities || [], recommendedCommunities: mockRecommendedCommunities },
-  quests: mockQuests,
+  tasks: tasksCatalog,
+  recommendedTasks: recommendedTasks,
+  trophies: trophiesCatalog,
+  rewards: rewardsCatalog,
+  featuredRewards: featuredRewards,
+  communities: { myCommunities: [], recommendedCommunities: recommendedCommunities },
+  quests: questCatalog,
   activities: [],
   activeTaskIds: [],
   completedTaskIds: [],

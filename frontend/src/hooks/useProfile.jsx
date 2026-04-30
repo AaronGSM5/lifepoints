@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { mockTrophies, mockTutorialSteps, mockCustomizables } from "@/constants/MockData";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { onboardingGuideSteps } from "@/constants/OnboardingGuideSteps";
+import { customizables } from "@/constants/CustomizablesCatalog";
 import useStore from "@/store/useStore";
 
 export const useProfile = () => {
@@ -7,9 +9,9 @@ export const useProfile = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const profile = useStore((state) => state.profile);
   const [data, setData] = useState({
-    trophies: mockTrophies,
-    tutorialSteps: mockTutorialSteps,
-    customizables: mockCustomizables
+    trophies: trophiesCatalog,
+    tutorialSteps: onboardingGuideSteps,
+    customizables: customizables
   });
 
   const fetchProfile = useCallback(async () => {
