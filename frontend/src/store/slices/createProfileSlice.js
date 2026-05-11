@@ -4,6 +4,7 @@ import { generateTripleLoot } from "@/utils/lootLogic";
 
 const initialUserState = {
   name: "New User",
+  username: 'newuser',
   description: "",
   avatar: "",
   level: 1,
@@ -156,4 +157,9 @@ export const createProfileSlice = (set, get) => ({
       activeFrame: frameId
     }
   })),
+
+  resetProfile: () => {
+    const { updateProfile } = get()
+    updateProfile(initialUserState)
+  }
 });

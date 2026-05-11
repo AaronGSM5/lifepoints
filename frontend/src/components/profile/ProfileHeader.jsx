@@ -34,9 +34,13 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
         <View style={{ alignItems: "center" }}>
           <Skeleton {...skeletonProps} radius="round" width={100} height={100} />
           <View style={{ height: Spacing.lg }} />
+          <Skeleton {...skeletonProps} width={80} height={14} />
+          <View style={{ height: Spacing.sm }} />
           <Skeleton {...skeletonProps} width={180} height={24} />
-          <View style={{ height: Spacing.md }} />
+          <View style={{ height: Spacing.sm }} />
           <Skeleton {...skeletonProps} width={120} height={14} />
+          <View style={{ height: Spacing.xl }} />
+          <Skeleton {...skeletonProps} width={160} height={14} />
         </View>
       ) : (
         <>
@@ -70,12 +74,17 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
               textStyle={{ color: MyTheme.text }}
             />
           </View>
+          <AppText type="caption">{profile.username}</AppText>
           <AppText type="h1">{profile.name}</AppText>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {league.name} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>
               {rankName}
             </AppText>
+          </AppText>
+          <View style={{ height: Spacing.lg }}></View>
+          <AppText type="title" style={{ color: MyTheme.text, opacity: 0.9 }}>
+            {profile.description}
           </AppText>
         </>
       )}

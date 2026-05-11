@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
@@ -19,7 +19,17 @@ export default function ShopScreen() {
   const styles = getStyles();
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
-  const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
+  const {
+    rewards,
+    activeCat,
+    setActiveCat,
+    categories,
+    isLoading,
+    isRefreshing,
+    refreshShop,
+    fetchMore,
+    isFetchingMore
+  } = useShop();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
 
@@ -68,6 +78,15 @@ export default function ShopScreen() {
     </View>
   );
 
+  const renderFooter = () => {
+    if (!isFetchingMore) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+      </View>
+    );
+  };
+
   return (
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
@@ -79,6 +98,9 @@ export default function ShopScreen() {
         columnWrapperStyle={[styles.rowGap, styles.paddedContent]}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={!isLoading ? renderEmptyState : null}
+        onEndReached={fetchMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
         refreshing={isRefreshing}
         onRefresh={refreshShop}
         tintColor={MyTheme.primaryAccent}
@@ -113,5 +135,10 @@ const getStyles = () =>
     },
     paddedContent: {
       paddingHorizontal: Spacing.md
+    },
+    footerLoader: {
+      paddingVertical: Spacing.lg,
+      alignItems: "center",
+      justifyContent: "center"
     }
   });

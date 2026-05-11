@@ -62,6 +62,10 @@ export const IconMap = {
   coffeeCat: ({ outline, ...props }) => <Icon name={getName("cup", outline)} {...props} />,
   techCat: ({ outline, ...props }) => <Icon name={getName("smartphone", outline)} {...props} />,
   giftCat: ({ outline, ...props }) => <Icon name={getName("gift-2", outline)} {...props} />,
+  foodCat: ({ outline, ...props }) => <Icon name={getName("restaurant", outline)} {...props} />,
+  musicCat: ({ outline, ...props }) => <Icon name={getName("music", outline)} {...props} />,
+  fitnessCat: ({ outline, ...props }) => <Icon name={getName("run", outline)} {...props} />,
+  gamingCat: ({ outline, ...props }) => <Icon name={getName("gamepad", outline)} {...props} />,
   dumbbell: ({ outline, ...props }) => <Icon name={getName("pulse", outline)} {...props} />,
   sun: ({ outline, ...props }) => <Icon name={getName("sun", outline)} {...props} />,
   robot: ({ outline, ...props }) => <Icon name={getName("robot-2", outline)} {...props} />,
@@ -89,5 +93,6 @@ export const IconMap = {
   backCheck: ({ outline, ...props }) => <Icon name={getName("body-scan", outline)} {...props} />,
   clothes: ({ outline, ...props }) => <Icon name={getName("shirt", outline)} {...props} />,
   happy: ({ outline, ...props }) => <Icon name={getName("emotion-laugh", outline)} {...props} />,
-  remix: ({ outline, ...props }) => <Icon name={getName("remix", outline)} {...props} />
+  remix: ({ outline, ...props }) => <Icon name={getName("remix", outline)} {...props} />,
+  reset: ({ outline, ...props }) => <Icon name={getName("reset-right", outline)} {...props} />
 };

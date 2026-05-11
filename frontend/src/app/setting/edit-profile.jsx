@@ -76,7 +76,11 @@ export default function EditProfileScreen() {
     }
   };
 
-  const avatarSource = formData.avatar ? { uri: formData.avatar } : require("@/../public/assets/icon-profile.png");
+  const avatarSource = formData.avatar
+    ? { uri: formData.avatar }
+    : profile.avatar
+      ? { uri: profile.avatar }
+      : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -97,7 +101,7 @@ export default function EditProfileScreen() {
               <Skeleton {...skBase} radius="round" width={120} height={120} />
             ) : (
               <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
-                <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
+                <Image source={avatarSource} style={styles.avatar} />
                 <View style={styles.editBadge}>
                   <Icon name="camera" size={18} color="#fff" />
                 </View>

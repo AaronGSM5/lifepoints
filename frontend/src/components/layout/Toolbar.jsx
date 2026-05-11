@@ -23,7 +23,12 @@ export default function Toolbar() {
   const LP = useStore((state) => state.profile.profileLp);
   const isDarkMode = useStore((state) => state.isDarkMode);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
+  const resetProfile = useStore((state) => state.resetProfile);
   const styles = getStyles(isDarkMode);
+
+  const handleResetProfile = () => {
+    resetProfile();
+  };
 
   return (
     <View
@@ -58,9 +63,14 @@ export default function Toolbar() {
 
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
-          <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
-            <Icon name="settings" />
-          </Pressable>
+          <View style={{ flexDirection: "row", gap: Spacing.md }}>
+            <Pressable hitSlop={15} onPress={handleResetProfile}>
+              <Icon name="reset" />
+            </Pressable>
+            <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
+              <Icon name="settings" />
+            </Pressable>
+          </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg + 4 }}>
             <Pressable hitSlop={15} onPress={() => router.push("/search")}>
