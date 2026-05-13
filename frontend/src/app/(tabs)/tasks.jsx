@@ -13,6 +13,7 @@ import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
 import useStore from "@/store/useStore";
+import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
@@ -21,16 +22,34 @@ const TasksScreen = () => {
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
   const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [taskToTrack, setTaskToTrack] = useState(null);
+  const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
+  const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
+  const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
   const isDarkMode = useStore((state) => state.isDarkMode);
   const trackTask = useStore((state) => state.trackTask);
-
+  const completeTask = useStore((state) => state.completeTask);
   const { tasks, recommendedTasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } =
     useTasks();
+
   const styles = getStyles();
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
+  };
+
+  const handleInstaTrackingConfirm = (dontShowAgain) => {
+    setInstaTrackingModalVisible(false);
+
+    if (dontShowAgain) {
+      disableInstaTrackingModal();
+    }
+
+    if (taskToTrack) {
+      completeTask(taskToTrack);
+      setTaskToTrack(null);
+    }
   };
 
   const listData = useMemo(() => {
@@ -117,6 +136,14 @@ const TasksScreen = () => {
               icon={item.icon}
               requiresInput={item.requiresInput}
               onTrack={() => trackTask(item.id)}
+              onInstaTrack={() => {
+                if (showInstaTrackingModal) {
+                  setTaskToTrack(item.id);
+                  setInstaTrackingModalVisible(true);
+                } else {
+                  completeTask(item.id);
+                }
+              }}
               onNavigate={() => router.push(`task/${item.id}`)}
               isExpanded={expandedTaskId === item.id}
               onToggleExpand={() => {
@@ -152,6 +179,11 @@ const TasksScreen = () => {
         contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
+      />
+      <InstaTrackingModal
+        visible={instaTrackingModalVisible}
+        onClose={() => setInstaTrackingModalVisible(false)}
+        onConfirm={handleInstaTrackingConfirm}
       />
     </ScreenWrapper>
   );

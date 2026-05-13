@@ -32,6 +32,8 @@ const initialUserState = {
 export const createProfileSlice = (set, get) => ({
   profile: initialUserState,
 
+  showInstaTrackingModal: true,
+
   startLootGame: () => set({
     isLootGameActive: true,
     currentLootSet: generateTripleLoot(),
@@ -151,6 +153,8 @@ export const createProfileSlice = (set, get) => ({
       }));
     }
   },
+
+  disableInstaTrackingModal: () => set({ showInstaTrackingModal: false }),
 
   setActiveFrame: (frameId) => set((state) => ({
     profile: {

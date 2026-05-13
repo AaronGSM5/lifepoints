@@ -35,6 +35,8 @@ const getStyles = () =>
       backgroundColor: MyTheme.background,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.lg,
-      minWidth: 280
+      width: "80%",
+      maxWidth: 340,
+      alignItems: "center"
     }
   });

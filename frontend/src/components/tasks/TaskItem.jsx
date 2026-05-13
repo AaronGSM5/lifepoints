@@ -22,6 +22,7 @@ const TaskItem = ({
   status,
   icon,
   onTrack,
+  onInstaTrack,
   onNavigate,
   isLoading,
   requiresInput,
@@ -122,7 +123,7 @@ const TaskItem = ({
                 icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
                 iconPosition="center"
                 size="sm"
-                onPress={() => completeTask(id)}
+                onPress={onInstaTrack}
               />
               <AppButton title={"Tracken"} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
             </View>

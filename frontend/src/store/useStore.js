@@ -40,6 +40,7 @@ const useStore = create(
           communities: state.communities,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isDarkMode: state.isDarkMode,
+          showInstaTrackingModal: state.showInstaTrackingModal
         }),
       }
     )
