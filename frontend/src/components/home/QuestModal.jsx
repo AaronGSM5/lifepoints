@@ -6,21 +6,23 @@ import AppButton from "@/components/ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
   const styles = getStyles();
+  const { t } = useTranslation("home");
   const [activeTab, setActiveTab] = useState("today"); // "today" | "week"
   const quests = mockQuests[activeTab];
 
   return (
-    <BaseBottomSheet isVisible={visible} onClose={onClose} title="Herausforderungen">
+    <BaseBottomSheet isVisible={visible} onClose={onClose} title={t("Challenges")}>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tab, activeTab === "today" && styles.activeTab]}
           onPress={() => setActiveTab("today")}
         >
           <AppText bold style={activeTab === "today" ? { color: MyTheme.text } : { color: MyTheme.muted }}>
-            Heute
+            {t("Today")}
           </AppText>
         </TouchableOpacity>
 
@@ -29,7 +31,7 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
           onPress={() => setActiveTab("week")}
         >
           <AppText bold style={activeTab === "week" ? { color: MyTheme.text } : { color: MyTheme.muted }}>
-            Diese Woche
+            {t("This Week")}
           </AppText>
         </TouchableOpacity>
       </View>
@@ -58,7 +60,7 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
 
               <AppButton
                 size="sm"
-                title={quest.completed ? (quest.collected ? "Erledigt" : `+${quest.points} LP`) : `Starten`}
+                title={quest.completed ? (quest.collected ? t("Erledigt") : `+${quest.points} LP`) : t(`Starten`)}
                 variant={quest.completed ? quest.collected && "primary" : "outline"}
                 bgColor={quest.completed && !quest.collected && MyTheme.primaryAccent}
                 disabled={quest.completed && quest.collected}

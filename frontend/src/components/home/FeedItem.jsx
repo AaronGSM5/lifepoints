@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 export default function FeedItem({
   username,
@@ -27,6 +28,7 @@ export default function FeedItem({
   const heartScale = useRef(new RNAnimated.Value(0)).current;
   const heartOpacity = useRef(new RNAnimated.Value(0)).current;
   const startLootGame = useStore((state) => state.startLootGame);
+  const { t } = useTranslation("home");
   const chestTriggerImg = require("@/../public/assets/luck.png");
   const hasChest = id % 2 === 0;
   // const hasChest = true;
@@ -178,7 +180,7 @@ export default function FeedItem({
         </AppText>
 
         <AppText type="caption" style={styles.timeAgo}>
-          Vor 2 Stunden
+          {t("Vor")} 2 {t("Hours")}
         </AppText>
       </View>
     </View>

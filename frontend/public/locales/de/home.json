@@ -1,1 +1,27 @@
-{}
+{
+  // Active Tasks Section
+  "Active Tasks": "Aktive Aufgaben",
+  "No Active Tasks": "Keine aktiven Aufgaben",
+  // Daily- / Weekly-Quests
+  "Challenges": "Herausforderungen",
+  "Today": "Heute",
+  "This Week": "Diese Woche",
+  "Start": "Starten",
+  "Done": "Erledigt",
+  // Feed
+  "Vor": "Vor",
+  "Hour": "Stunde",
+  "Hours": "Stunden",
+  "Minutes": "Minuten",
+  "Second": "Sekunde",
+  "Seconds": "Sekunden",
+  // CommentSheet
+  "You": "Du",
+  "Comments": "Kommentare",
+  "Reply": "Antworten",
+  "Reply to": "Antwort an",
+  "Post": "Posten",
+  "Just now": "Gerade eben",
+  "Leave a comment...": "Kommentieren...",
+  "No comments yet. Be the first to leave one!": "Noch keine Kommentare. Schreib den ersten!"
+}

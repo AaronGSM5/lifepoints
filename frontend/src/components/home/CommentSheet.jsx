@@ -8,11 +8,13 @@ import { Icon } from "@/components/icons/Icon";
 import { postComments } from "@/mocks/PostComments";
 import { router } from "expo-router";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
+import { useTranslation } from "react-i18next";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
   const styles = getStyles();
+  const { t } = useTranslation("home");
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>
@@ -39,7 +41,7 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
         <View style={styles.commentFooter}>
           <AppText style={styles.commentTime}>{item.time}</AppText>
           <Pressable onPress={onReply} hitSlop={10}>
-            <AppText style={styles.replyButton}>Antworten</AppText>
+            <AppText style={styles.replyButton}>{t("Reply")}</AppText>
           </Pressable>
         </View>
       </View>
@@ -49,6 +51,7 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
 
 export default function CommentSheet({ isVisible, onClose, postId }) {
   const styles = getStyles();
+  const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(postComments);
@@ -84,10 +87,10 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
     if (commentText.trim().length === 0) return;
     const newCommentData = {
       id: Date.now().toString(),
-      username: "Du",
+      username: t("You"),
       avatar: "https://i.pravatar.cc/150?u=du",
       text: commentText,
-      time: "Gerade eben"
+      time: t("Just now")
     };
 
     if (replyingTo) {
@@ -148,12 +151,14 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const renderEmptySection = () => (
     <View style={{ alignItems: "center", marginTop: 40 }}>
       <Icon name="chat" size={40} color={MyTheme.muted} />
-      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>Noch keine Kommentare. Schreib den ersten!</AppText>
+      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>
+        {t("No comments yet. Be the first to leave one!")}
+      </AppText>
     </View>
   );
 
   return (
-    <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={"Kommentare"}>
+    <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={t("Comments")}>
       <View style={{ flex: 1 }}>
         <FlatList
           data={comments}
@@ -171,7 +176,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
         {replyingTo && (
           <View style={styles.replyBar}>
             <AppText style={styles.replyBarText}>
-              Antwort an{" "}
+              {t("Reply to")}{" "}
               <AppText bold style={{ fontSize: 14 }}>
                 @{replyingTo.username}
               </AppText>
@@ -188,7 +193,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
             <TextInput
               ref={inputRef}
               style={styles.textInput}
-              placeholder="Kommentieren..."
+              placeholder={t("Leave a comment...")}
               placeholderTextColor={MyTheme.muted}
               value={commentText}
               onChangeText={setCommentText}
@@ -202,7 +207,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
               disabled={commentText.trim().length === 0}
             >
               <AppText bold style={{ color: MyTheme.primaryAccent }}>
-                Posten
+                {t("Post")}
               </AppText>
             </Pressable>
           </View>

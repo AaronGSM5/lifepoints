@@ -15,11 +15,13 @@ import AppText from "@/components/ui/AppText";
 import LevelUpModal from "@/components/LevelUpModal";
 import LootGameModal from "@/components/home/LootGameModal";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
+  const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [shouldCrash, setShouldCrash] = useState(false);
   const [questmodalVisible, setQuestModalVisible] = useState(false);
@@ -76,7 +78,7 @@ export default function HomeScreen() {
       <View style={{ paddingHorizontal: Spacing.md }}>
         <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
         <SectionHeader
-          title={"Active Tasks"}
+          title={t("Active Tasks")}
           rightIcon={<Icon name={"survey"} />}
           onRightPress={() => setQuestModalVisible(true)}
         />
@@ -84,7 +86,7 @@ export default function HomeScreen() {
           <>
             <View style={{ marginBottom: Spacing.md }} />
             <AppText type="caption" bold style={{ alignSelf: "center" }}>
-              NO ACTIVE TASKS
+              {t("No Active Tasks")}
             </AppText>
             <View style={{ marginBottom: Spacing.lg }} />
           </>
