@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import useStore from "@/store/useStore";
 import { MyTheme } from "@/constants/Colors";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import AppText from "@/components/ui/AppText";
 
 export default function AppearanceScreen() {
   const styles = getStyles();
@@ -12,8 +14,10 @@ export default function AppearanceScreen() {
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
       <View style={styles.headerContainer}>
-        <Text style={[styles.headerText, { color: MyTheme.text }]}>Erscheinungsbild</Text>
-        <Text style={[styles.subText, { color: MyTheme.muted }]}>Passe das Design der App an deine Vorlieben an.</Text>
+        <ScreenTitle title={"Erscheinungsbild"} />
+        <AppText type="caption" style={{ fontSize: 15 }}>
+          Passe das Design der App an deine Vorlieben an.
+        </AppText>
       </View>
 
       <View style={styles.cardContainer}>
@@ -60,16 +64,6 @@ const getStyles = () =>
     headerContainer: {
       marginBottom: 32,
       marginTop: 16
-    },
-    headerText: {
-      fontSize: 28,
-      fontFamily: "Inter-Bold",
-      marginBottom: 8
-    },
-    subText: {
-      fontSize: 15,
-      fontFamily: "Inter-Regular",
-      lineHeight: 22
     },
     cardContainer: {
       flexDirection: "row",
