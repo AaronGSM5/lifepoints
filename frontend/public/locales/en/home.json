@@ -23,5 +23,14 @@
   "Post": "Post",
   "Just now": "Just now",
   "Leave a comment...": "Leave a comment...",
-  "No comments yet. Be the first to leave one!": "No comments yet. Be the first to leave one!"
+  "No comments yet. Be the first to leave one!": "No comments yet. Be the first to leave one!",
+  // LootGame
+  "Select a card": "Select a Card",
+  "Common": "Common",
+  "Rare": "Rare",
+  "Epic": "Epic",
+  "Legendary": "Legendary",
+  "Collect Reward": "Collect Reward",
+  "So close!": "So close!",
+  "Crazy!": "Crazy!",
 }

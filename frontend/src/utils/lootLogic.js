@@ -7,10 +7,10 @@ export const REWARD_TYPES = {
 };
 
 export const RARITIES = {
-  COMMON: { id: 'common', color: '#B2BEC3', label: 'Gewöhnlich' },
-  RARE: { id: 'rare', color: '#0984E3', label: 'Selten' },
-  EPIC: { id: 'epic', color: '#6C5CE7', label: 'EPISCH' },
-  LEGENDARY: { id: 'legendary', color: '#F1C40F', label: 'LEGENDÄR' }
+  COMMON: { id: 'common', color: '#B2BEC3', label: 'Common' },
+  RARE: { id: 'rare', color: '#0984E3', label: 'Rare' },
+  EPIC: { id: 'epic', color: '#6C5CE7', label: 'Epic' },
+  LEGENDARY: { id: 'legendary', color: '#F1C40F', label: 'Legendary' }
 };
 
 const COSMETIC_ITEMS = [

@@ -7,7 +7,7 @@ import AppText from "../ui/AppText";
 import AppButton from "../ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
-import { REWARD_TYPES } from "@/utils/lootLogic";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("window");
 const MYSTERY_COLOR = "#475569";
@@ -27,6 +27,7 @@ const STATIC_CHESTS = {
 
 const LootGameModal = () => {
   const styles = getStyles();
+  const { t } = useTranslation("home");
 
   const isLootGameActive = useStore((state) => state.isLootGameActive);
   const currentLootSet = useStore((state) => state.currentLootSet);
@@ -74,7 +75,7 @@ const LootGameModal = () => {
     <Modal visible={isLootGameActive} transparent animationType="fade">
       <View style={styles.overlay}>
         <AppText type="h1" bold style={styles.mainTitle}>
-          WÄHLE EINE KARTE
+          {t("Select a card")}
         </AppText>
 
         <View style={styles.container}>
@@ -112,7 +113,7 @@ const LootGameModal = () => {
                   {shouldReveal && (
                     <View style={styles.rewardInfo}>
                       <AppText bold style={{ color: reward.rarity.color, fontSize: 12 }}>
-                        {reward.rarity.label.toUpperCase()}
+                        {t(reward.rarity.label).toUpperCase()}
                       </AppText>
                       <AppText bold style={styles.rewardName}>
                         {reward.name}
@@ -130,10 +131,10 @@ const LootGameModal = () => {
             <AppText style={styles.nearMissText}>
               {currentLootSet[chosenLootIndex].rarity.id === "epic" ||
               currentLootSet[chosenLootIndex].rarity.id === "legendary"
-                ? "Wahnsinn!\n Du hast ein tolles Item erwischt!"
-                : "Knapp daneben!\n Die anderen Karten hatten es in sich..."}
+                ? t("Crazy!")
+                : t("So close!")}
             </AppText>
-            <AppButton title="BELOHNUNG EINSAMMELN" onPress={collectLoot} variant="primary" />
+            <AppButton title={t("Collect Reward")} onPress={collectLoot} variant="primary" />
           </Animated.View>
         )}
       </View>

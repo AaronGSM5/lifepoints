@@ -23,5 +23,14 @@
   "Post": "Posten",
   "Just now": "Gerade eben",
   "Leave a comment...": "Kommentieren...",
-  "No comments yet. Be the first to leave one!": "Noch keine Kommentare. Schreib den ersten!"
+  "No comments yet. Be the first to leave one!": "Noch keine Kommentare. Schreib den ersten!",
+  // LootGame
+  "Select a card": "Wähle eine Karte",
+  "Common": "Gewöhnlich",
+  "Rare": "Selten",
+  "Epic": "Episch",
+  "Legendary": "Legendär",
+  "Collect Reward": "Belohnung einsammeln",
+  "So close!": "Knapp daneben!",
+  "Crazy!": "Wahnsinn!",
 }

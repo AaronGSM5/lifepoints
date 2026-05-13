@@ -60,7 +60,7 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
 
               <AppButton
                 size="sm"
-                title={quest.completed ? (quest.collected ? t("Erledigt") : `+${quest.points} LP`) : t(`Starten`)}
+                title={quest.completed ? (quest.collected ? t("Done") : `+${quest.points} LP`) : t("Start")}
                 variant={quest.completed ? quest.collected && "primary" : "outline"}
                 bgColor={quest.completed && !quest.collected && MyTheme.primaryAccent}
                 disabled={quest.completed && quest.collected}
