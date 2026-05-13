@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { BlurView } from "expo-blur";
 import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -37,8 +36,9 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
       <View style={styles.statTop}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
           <View style={styles.numberContainer}>
-            <AppText type="h2">{value}</AppText>
-            {blurred && <BlurView intensity={22} tint="dark" style={StyleSheet.absoluteFill} />}
+            <AppText type="h2" style={blurred ? styles.blurredText : null}>
+              {value}
+            </AppText>
           </View>
 
           {blurred && (
@@ -90,6 +90,12 @@ const getStyles = () =>
     numberContainer: {
       overflow: "hidden",
       borderRadius: 4
+    },
+    blurredText: {
+      color: "transparent",
+      textShadowColor: MyTheme.text,
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 10
     }
   });
 
