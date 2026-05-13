@@ -20,7 +20,7 @@ export default function ProfileScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <ProfileHeader profile={profile} skeletonProps={skeletonProps} isLoading={isLoading} />
+      <ProfileHeader skeletonProps={skeletonProps} isLoading={isLoading} isExternUser={false} />
 
       <OnboardingGuide skeletonProps={skeletonProps} isLoading={isLoading} />
 

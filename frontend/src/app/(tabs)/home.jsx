@@ -115,7 +115,7 @@ export default function HomeScreen() {
   const renderFooter = () =>
     isBatchLoading ? (
       <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-        <ActivityIndicator size="large" color={MyTheme.text} />
+        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
       </View>
     ) : (
       <View style={{ height: Spacing.xl }} />

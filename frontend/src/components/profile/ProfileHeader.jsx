@@ -13,11 +13,15 @@ import LevelProgress from "../LevelProgress";
 import { getXpThreshold } from "@/utils/xpHelpers";
 import { getLeagueData } from "@/constants/Progression";
 import { getFrameById } from "@/constants/Frames";
+import { publicProfile } from "@/mocks/PublicProfile";
 
-const ProfileHeader = ({ skeletonProps, isLoading }) => {
+const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const profile = useStore((state) => state.profile);
+  const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
+  const friendList = useStore((state) => state.profile.friends);
+  const isFriend = friendList.includes(profile.id);
+  const addFriend = useStore((state) => state.addFriend);
   const maxXP = getXpThreshold(profile.level);
   const leagueIndex = profile?.leagueIndex ?? 0;
   const rankIndex = profile?.rankIndex ?? 0;
@@ -74,7 +78,7 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
               textStyle={{ color: MyTheme.text }}
             />
           </View>
-          <AppText type="caption">{profile.username}</AppText>
+          <AppText type="caption">@{profile.username}</AppText>
           <AppText type="h1">{profile.name}</AppText>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {league.name} •{" "}
@@ -89,12 +93,14 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
         </>
       )}
 
-      <LevelProgress
-        currentXp={profile.profileXp}
-        maxXp={maxXP}
-        isLoading={isLoading}
-        style={{ marginTop: Spacing.lg }}
-      />
+      {!isExternUser && (
+        <LevelProgress
+          currentXp={profile.profileXp}
+          maxXp={maxXP}
+          isLoading={isLoading}
+          style={{ marginTop: Spacing.lg }}
+        />
+      )}
 
       <View style={styles.actionButtons}>
         {isLoading ? (
@@ -106,15 +112,25 @@ const ProfileHeader = ({ skeletonProps, isLoading }) => {
           <>
             <AppButton
               variant="primary"
-              title={"Edit Profile"}
-              icon={<Icon name="pencil" size={16} color={MyTheme.background} />}
+              title={isExternUser ? (isFriend ? "Message" : "Add Friend") : "Edit Profile"}
+              icon={
+                isExternUser ? (
+                  isFriend ? (
+                    <Icon name="chat" size={16} color={MyTheme.background} />
+                  ) : (
+                    <Icon name="add" size={16} color={MyTheme.background} />
+                  )
+                ) : (
+                  <Icon name="pencil" size={16} color={MyTheme.background} />
+                )
+              }
               bgColor={MyTheme.primaryAccent}
-              onPress={() => router.push("/setting/edit-profile")}
+              onPress={() => (isExternUser ? addFriend(profile.id) : router.push("/setting/edit-profile"))}
               textStyle={{ color: MyTheme.background }}
             />
             <AppButton
               variant="primary"
-              title={"Share Stats"}
+              title={isExternUser ? "Share Profile" : "Share Stats"}
               icon={<Icon name="share" size={16} color={!isDarkMode ? MyTheme.background : MyTheme.text} />}
               bgColor={"#2a2a2acb"}
               textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}

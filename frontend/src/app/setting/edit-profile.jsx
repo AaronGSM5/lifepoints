@@ -33,7 +33,7 @@ export default function EditProfileScreen() {
 
   const initialData = {
     name: profile.name,
-    username: "@" + profile.name.toLowerCase().replace(" ", ""),
+    username: profile.name.toLowerCase().replace(" ", ""),
     description: profile.description,
     avatar: profile.avatar
   };
@@ -138,7 +138,7 @@ export default function EditProfileScreen() {
                 <View style={{ height: Spacing.md }} />
                 <AppInput
                   label="Benutzername"
-                  placeholder="@username"
+                  placeholder="username"
                   value={formData.username}
                   onChangeText={(text) => setFormData({ ...formData, username: text })}
                   icon="at"

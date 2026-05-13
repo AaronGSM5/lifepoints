@@ -15,6 +15,7 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const TaskItem = ({
+  id,
   title,
   lp,
   progress,
@@ -29,6 +30,7 @@ const TaskItem = ({
 }) => {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const completeTask = useStore((state) => state.completeTask);
   const [inputValue, setInputValue] = useState("");
 
   const toggleExpand = () => {
@@ -120,6 +122,7 @@ const TaskItem = ({
                 icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
                 iconPosition="center"
                 size="sm"
+                onPress={() => completeTask(id)}
               />
               <AppButton title={"Tracken"} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
             </View>

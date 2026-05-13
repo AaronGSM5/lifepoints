@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useLocalSearchParams } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
 import { Skeleton } from "moti/skeleton";
 import { publicProfile } from "@/mocks/PublicProfile";
-import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
-import Animated from "react-native-reanimated";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 
 export default function PublicProfileScreen() {
   const styles = getStyles();
@@ -33,7 +30,8 @@ export default function PublicProfileScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <View style={styles.profileHeader}>
+      <ProfileHeader skeletonProps={skeletonProps} isLoading={isLoading} />
+      {/* <View style={styles.profileHeader}>
         <View>
           <Animated.View style={styles.avatarContainer} sharedTransitionTag={`avatar-${username}`}>
             <AppText type="h1">{username.charAt(0).toUpperCase()}</AppText>
@@ -67,10 +65,10 @@ export default function PublicProfileScreen() {
             </AppText>
           </>
         )}
-      </View>
+      </View> */}
 
       {/* 2. Actionbar (50/50 Split) */}
-      <View style={styles.actionButtons}>
+      {/* <View style={styles.actionButtons}>
         {isLoading ? (
           <>
             <View style={{ flex: 1 }}>
@@ -99,7 +97,7 @@ export default function PublicProfileScreen() {
             />
           </>
         )}
-      </View>
+      </View> */}
 
       <View style={styles.trophySection}>
         <View style={styles.pinnedGrid}>
@@ -109,11 +107,19 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : publicProfile.pinnedTrophies.map((trophy) => (
-                <View key={trophy.id} style={{ width: 80 }}>
-                  <TrophyCard id={trophy.id} title={trophy.title} icon={trophy.icon} unlocked />
-                </View>
-              ))}
+            : publicProfile.pinnedTrophies.map((trophy) => {
+                const selectedTrophy = trophiesCatalog.find((entry) => entry.id === trophy.id);
+                return (
+                  <View key={selectedTrophy.id} style={{ width: 80 }}>
+                    <TrophyCard
+                      id={selectedTrophy.id}
+                      title={selectedTrophy.title}
+                      icon={selectedTrophy.icon}
+                      unlocked
+                    />
+                  </View>
+                );
+              })}
         </View>
       </View>
     </ScreenWrapper>

@@ -169,7 +169,7 @@ export default function CommunitiesScreen() {
     if (isMoreSectionsLoading) {
       return (
         <View style={styles.mainListLoader}>
-          <ActivityIndicator size="large" color={MyTheme.text} />
+          <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
         </View>
       );
     }

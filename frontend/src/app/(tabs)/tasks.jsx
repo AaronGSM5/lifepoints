@@ -108,6 +108,7 @@ const TasksScreen = () => {
         return (
           <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
             <TaskItem
+              id={item.id}
               isLoading={isLoading}
               title={item.title}
               lp={item.lp}

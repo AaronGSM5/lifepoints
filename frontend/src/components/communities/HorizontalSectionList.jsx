@@ -43,7 +43,7 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
     if (localLoading) {
       return (
         <View style={styles.horizontalLoader}>
-          <ActivityIndicator size="small" color={MyTheme.text} />
+          <ActivityIndicator size="small" color={MyTheme.primaryAccent} />
         </View>
       );
     }

@@ -1,11 +1,14 @@
 export const publicProfile = {
   id: "user_sarah_99",
   name: "Sarah Klein",
-  profileBio: "Achtsamkeit im Alltag.🌿\n Ich sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
+  username: "_sa2ahKl3in_",
+  description: "Achtsamkeit im Alltag.🌿\nIch sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
   level: 14,
-  profileLeague: "Community Helper",
-  profileRank: "Elite",
+  leagueIndex: 5,
+  rankIndex: 2,
   avatar: "https://i.pravatar.cc/150?u=sarah",
+  activeFrame: 'f2',
+  unlockedFrames: ['f1', 'f2'],
 
   pinnedTrophies: [
     {

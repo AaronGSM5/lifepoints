@@ -14,12 +14,14 @@ import { taskTrackingHistory } from "@/mocks/ActivityHistory";
 import HistoryCard from "@/components/ui/HistoryCard";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
+import useStore from "@/store/useStore";
 
 export default function TaskDetailScreen() {
   const styles = getStyles();
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const trackTask = useStore((state) => state.trackTask);
 
   const task = tasksCatalog.find((t) => String(t.id) === String(id));
 
@@ -122,7 +124,7 @@ export default function TaskDetailScreen() {
             size="lg"
             disabled={task.isLocked}
             style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}
-            onPress={() => alert("Task getrackt!")}
+            onPress={() => trackTask(task.id)}
             bgColor={MyTheme.primaryAccent}
           />
           {task.isLocked === false && (
