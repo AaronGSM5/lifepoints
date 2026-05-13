@@ -5,10 +5,12 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function LegalDetailScreen() {
   const styles = getStyles();
   const { type } = useLocalSearchParams();
+  const { t } = useTranslation("settings");
 
   const LEGAL_CONTENT = {
     impressum: {

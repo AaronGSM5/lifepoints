@@ -7,9 +7,11 @@ import { useRouter } from "expo-router";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import SettingsRow from "@/components/settings/SettingsRow";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { t } = useTranslation("settings");
 
   const handlePress = (item) => {
     switch (item.type) {
@@ -36,12 +38,12 @@ export default function SettingsScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <ScreenTitle title={"Settings"} />
+      <ScreenTitle title={t("Settings")} />
 
       {settingsSections.map((cat) => (
         <View key={cat.title} style={styles.section}>
           <AppText type="caption" style={styles.sectionHeader}>
-            {cat.title.toUpperCase()}
+            {t(cat.title).toUpperCase()}
           </AppText>
 
           <BaseCard padding={0}>

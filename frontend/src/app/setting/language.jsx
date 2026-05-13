@@ -3,18 +3,24 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import AppText from "@/components/ui/AppText";
+import { useTranslation } from "react-i18next";
 
 export default function LanguageScreen() {
   const styles = getStyles();
+  const { t, i18n } = useTranslation("settings");
 
-  const [selectedLang, setSelectedLang] = useState("de");
+  const selectedLang = i18n.language;
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
       <View style={styles.headerContainer}>
         <ScreenTitle title={"Sprache"} />
         <AppText type="caption" style={{ fontSize: 15 }}>
-          Wähle die Sprache aus, in der LifePoints angezeigt werden soll.
+          {t("Select the language in which you want LifePoints to be displayed.")}
         </AppText>
       </View>
 
@@ -25,12 +31,12 @@ export default function LanguageScreen() {
             { backgroundColor: MyTheme.primary },
             selectedLang === "de" && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
-          onPress={() => setSelectedLang("de")}
+          onPress={() => changeLanguage("de")}
           activeOpacity={0.8}
         >
           <Text style={styles.flagEmoji}>🇩🇪</Text>
           <Text style={[styles.cardText, { color: selectedLang === "de" ? MyTheme.text : MyTheme.muted }]}>
-            Deutsch
+            {t("German")}
           </Text>
         </TouchableOpacity>
 
@@ -40,12 +46,12 @@ export default function LanguageScreen() {
             { backgroundColor: MyTheme.primary },
             selectedLang === "en" && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
-          onPress={() => setSelectedLang("en")}
+          onPress={() => changeLanguage("en")}
           activeOpacity={0.8}
         >
           <Text style={styles.flagEmoji}>🇬🇧</Text>
           <Text style={[styles.cardText, { color: selectedLang === "en" ? MyTheme.text : MyTheme.muted }]}>
-            English
+            {t("English")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -60,8 +66,7 @@ const getStyles = () =>
       padding: 24
     },
     headerContainer: {
-      marginBottom: 32,
-      marginTop: 16
+      marginBottom: 32
     },
     cardContainer: {
       flexDirection: "row",
@@ -84,8 +89,7 @@ const getStyles = () =>
       elevation: 2
     },
     flagEmoji: {
-      fontSize: 36,
-      marginBottom: 4
+      fontSize: 36
     },
     cardText: {
       marginTop: 12,

@@ -5,18 +5,20 @@ import useStore from "@/store/useStore";
 import { MyTheme } from "@/constants/Colors";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import AppText from "@/components/ui/AppText";
+import { useTranslation } from "react-i18next";
 
 export default function AppearanceScreen() {
   const styles = getStyles();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
+  const { t } = useTranslation("settings");
 
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
       <View style={styles.headerContainer}>
-        <ScreenTitle title={"Erscheinungsbild"} />
+        <ScreenTitle title={t("Appearance")} />
         <AppText type="caption" style={{ fontSize: 15 }}>
-          Passe das Design der App an deine Vorlieben an.
+          {t("Customize the app's design to suit your preferences.")}
         </AppText>
       </View>
 
@@ -33,7 +35,7 @@ export default function AppearanceScreen() {
           activeOpacity={0.8}
         >
           <Ionicons name="sunny" size={36} color={isDarkMode ? MyTheme.muted : MyTheme.primaryAccent} />
-          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.muted : MyTheme.text }]}>Hell</Text>
+          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.muted : MyTheme.text }]}>{t("Bright")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -48,7 +50,7 @@ export default function AppearanceScreen() {
           activeOpacity={0.8}
         >
           <Ionicons name="moon" size={36} color={isDarkMode ? MyTheme.primaryAccent : MyTheme.muted} />
-          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.text : MyTheme.muted }]}>Dunkel</Text>
+          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.text : MyTheme.muted }]}>{t("Dark")}</Text>
         </TouchableOpacity>
       </View>
     </View>

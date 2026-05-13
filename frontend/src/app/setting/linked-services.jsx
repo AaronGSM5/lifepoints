@@ -7,9 +7,12 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function LinkedServicesScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("settings");
   const [connections, setConnections] = useState({
     appleHealth: true,
     strava: true,
@@ -31,7 +34,6 @@ export default function LinkedServicesScreen() {
         ]
       );
     } else {
-      // Hier würde der OAuth Flow starten
       setConnections((prev) => ({ ...prev, [id]: true }));
     }
   };
@@ -49,7 +51,7 @@ export default function LinkedServicesScreen() {
             {isConnected && (
               <AppBadge
                 variant="outline"
-                label={"AKTIV"}
+                label={t("AKTIVE")}
                 textStyle={{ color: MyTheme.primaryAccent, fontSize: 10 }}
                 style={{
                   paddingVertical: Spacing.xs - 2,
@@ -63,7 +65,7 @@ export default function LinkedServicesScreen() {
       </View>
 
       <AppButton
-        title={isConnected ? "Verwalten" : "Verbinden"}
+        title={isConnected ? t("Manage") : t("Connect")}
         variant={isConnected ? "secondary" : "primary"}
         size="md"
         onPress={() => handleToggleService(id, name)}
@@ -75,20 +77,20 @@ export default function LinkedServicesScreen() {
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
-        <AppText type="h1">Verknüpfte Dienste</AppText>
+        <ScreenTitle title={t("Linked Services")} />
         <AppText style={styles.subtitle}>
-          Verbinde deine Lieblings-Apps, um LifePoints automatisch durch Aktivitäten zu sammeln.
+          {t("Connect your favorite apps to automatically earn LifePoints through your activities.")}
         </AppText>
       </View>
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Fitness & Gesundheit
+          {t("Fitness & Health")}
         </AppText>
         <ServiceItem
           id="appleHealth"
           name="Apple Health"
-          description="Schritte, Schlaf und Herzfrequenz"
+          description={t("Steps, Sleep, and Heart Rate")}
           icon="heart"
           isConnected={connections.appleHealth}
         />
@@ -96,7 +98,7 @@ export default function LinkedServicesScreen() {
         <ServiceItem
           id="strava"
           name="Strava"
-          description="Lauf- und Radfahrdaten synchronisieren"
+          description={t("Sync running and cycling data")}
           icon="bicycle"
           isConnected={connections.strava}
         />
@@ -104,12 +106,12 @@ export default function LinkedServicesScreen() {
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Entertainment & Lifestyle
+          {t("Entertainment & Lifestyle")}
         </AppText>
         <ServiceItem
           id="spotify"
           name="Spotify"
-          description="Focus-Playlists für Aufgaben nutzen"
+          description={t("Use Focus Playlists for Tasks")}
           icon="spotify"
           isConnected={connections.spotify}
         />
@@ -118,8 +120,9 @@ export default function LinkedServicesScreen() {
       <View style={styles.privacyNote}>
         <Icon name="lock" size={16} color={MyTheme.muted} />
         <AppText type="caption" style={styles.privacyText}>
-          Deine Daten werden verschlüsselt übertragen. Du kannst den Zugriff jederzeit in den Einstellungen des
-          jeweiligen Dienstes widerrufen.
+          {t(
+            "Your data is transmitted in encrypted form. You can revoke access at any time in the settings for the respective service."
+          )}
         </AppText>
       </View>
     </ScreenWrapper>
@@ -129,7 +132,7 @@ export default function LinkedServicesScreen() {
 const getStyles = () =>
   StyleSheet.create({
     header: {
-      paddingVertical: Spacing.lg
+      paddingBottom: Spacing.lg
     },
     subtitle: {
       marginTop: Spacing.xs,

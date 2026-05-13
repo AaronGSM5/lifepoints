@@ -10,9 +10,11 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 export default function SubscriptionScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("settings");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
@@ -40,15 +42,15 @@ export default function SubscriptionScreen() {
       <View style={styles.cardHeader}>
         <AppText type="h2">LifePoints Standard</AppText>
         <AppText type="title" style={{ marginTop: 4 }}>
-          Kostenlos
+          {t("Free")}
         </AppText>
       </View>
       <View style={styles.featureList}>
-        <FeatureItem text="Grundlegende Task-Erstellung" />
-        <FeatureItem text="Zugang zu 2 Communities" />
-        <FeatureItem text="Standard-Rewards im Shop" />
+        <FeatureItem text={t("Grundlegende Task-Erstellung")} />
+        <FeatureItem text={t("Zugang zu 2 Communities")} />
+        <FeatureItem text={t("Standard-Rewards im Shop")} />
       </View>
-      <AppButton title="Aktueller Plan" variant="secondary" disabled style={{ marginTop: Spacing.md }} />
+      <AppButton title={t("Current Plan")} variant="secondary" disabled style={{ marginTop: Spacing.md }} />
     </View>
   );
 
@@ -60,7 +62,7 @@ export default function SubscriptionScreen() {
       style={[styles.card, styles.highlightCard]}
     >
       <AppBadge
-        label={"AM BELIEBTESTEN"}
+        label={t("MOST POPULAR")}
         textStyle={{ color: MyTheme.text, letterSpacing: 1 }}
         style={{
           position: "absolute",
@@ -80,24 +82,24 @@ export default function SubscriptionScreen() {
           <AppText type="h1" style={{ color: "#fff" }}>
             {billingCycle === "yearly" ? "€4.99" : "€6.99"}
           </AppText>
-          <AppText style={{ color: "rgba(255,255,255,0.8)", marginLeft: 4 }}>/ Monat</AppText>
+          <AppText style={{ color: "rgba(255,255,255,0.8)", marginLeft: 4 }}>/ {t("Month")}</AppText>
         </View>
         {billingCycle === "yearly" && (
           <AppText type="caption" style={{ color: "#fff", marginTop: 4 }}>
-            Jährlich abgerechnet (€59.88/Jahr)
+            {t("Billed annually")} (€59.88 / {t("Year")})
           </AppText>
         )}
       </View>
 
       <View style={styles.featureList}>
-        <FeatureItem text="Alles aus Standard" light />
-        <FeatureItem text="Unbegrenzte Communities" light />
-        <FeatureItem text="1.5x LifePoints Multiplikator" light />
-        <FeatureItem text="Erweiterte Statistiken" light />
+        <FeatureItem text={t("Alles aus Standard")} light />
+        <FeatureItem text={t("Unbegrenzte Communities")} light />
+        <FeatureItem text={t("1.5x LifePoints Multiplikator")} light />
+        <FeatureItem text={t("Erweiterte Statistiken")} light />
       </View>
 
       <AppButton
-        title="Jetzt Upgraden"
+        title={t("Upgrade Now")}
         bgColor="#fff"
         textStyle={{ color: "#059669" }}
         onPress={() => handleSubscribe("LifePoints+")}
@@ -117,25 +119,25 @@ export default function SubscriptionScreen() {
         <AppText type="h2">LifePoints Premium</AppText>
         <View style={styles.priceRow}>
           <AppText type="h1">{billingCycle === "yearly" ? "€9.99" : "€12.99"}</AppText>
-          <AppText style={{ color: MyTheme.muted, marginLeft: 4 }}>/ Monat</AppText>
+          <AppText style={{ color: MyTheme.muted, marginLeft: 4 }}>/ {t("Month")}</AppText>
         </View>
         {billingCycle === "yearly" && (
           <AppText type="caption" style={{ color: MyTheme.muted, marginTop: 4 }}>
-            Jährlich abgerechnet (€119.88/Jahr)
+            {t("Billed annually")} (€119.88 / {t("Year")})
           </AppText>
         )}
       </View>
 
       <View style={styles.featureList}>
-        <FeatureItem text="Alles aus LifePoints+" light />
-        <FeatureItem text="Exklusive Premium-Rewards" light />
-        <FeatureItem text="2x LifePoints Multiplikator" light />
-        <FeatureItem text="Priority Support" light />
-        <FeatureItem text="Keine Werbung" light />
+        <FeatureItem text={t("Alles aus LifePoints+")} light />
+        <FeatureItem text={t("Exklusive Premium-Rewards")} light />
+        <FeatureItem text={t("2x LifePoints Multiplikator")} light />
+        <FeatureItem text={t("Priority Support")} light />
+        <FeatureItem text={t("Keine Werbung")} light />
       </View>
 
       <AppButton
-        title="Premium sichern"
+        title={t("Get Premium")}
         variant="primary"
         textStyle={{ color: "#1A1A1A" }}
         bgColor={MyTheme.gold}
@@ -166,10 +168,10 @@ export default function SubscriptionScreen() {
     <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
         <AppText type="h1" style={{ textAlign: "center" }}>
-          Erreiche dein nächstes Level
+          {t("Reach the next level")}
         </AppText>
         <AppText style={styles.subtitle}>
-          Schalte exklusive Funktionen frei und sammle LifePoints noch schneller.
+          {t("Schalte exklusive Funktionen frei und sammle LifePoints noch schneller.")}
         </AppText>
 
         {isLoading ? (
@@ -183,7 +185,7 @@ export default function SubscriptionScreen() {
               onPress={() => setBillingCycle("monthly")}
             >
               <AppText bold style={{ color: billingCycle === "monthly" ? MyTheme.background : MyTheme.text }}>
-                Monatlich
+                {t("Monthly")}
               </AppText>
             </TouchableOpacity>
             <TouchableOpacity
@@ -191,7 +193,7 @@ export default function SubscriptionScreen() {
               onPress={() => setBillingCycle("yearly")}
             >
               <AppText bold style={{ color: billingCycle === "yearly" ? MyTheme.background : MyTheme.text }}>
-                Jährlich
+                {t("Yearly")}
               </AppText>
               <AppBadge
                 variant="primary"
@@ -199,7 +201,7 @@ export default function SubscriptionScreen() {
                 textStyle={{ fontSize: 10, color: MyTheme.text }}
                 style={{
                   paddingHorizontal: 6,
-                  paddingVertical: 2 // borderRadius: 8
+                  paddingVertical: 2
                 }}
               />
             </TouchableOpacity>
@@ -302,13 +304,13 @@ export default function SubscriptionScreen() {
         <View style={styles.footer}>
           <TouchableOpacity onPress={handleRestore}>
             <AppText bold style={styles.restoreText}>
-              Käufe wiederherstellen
+              {t("Käufe wiederherstellen")}
             </AppText>
           </TouchableOpacity>
           <AppText type="caption" style={styles.legalText}>
-            Abonnements verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ablauf des aktuellen
-            Zeitraums gekündigt werden. Du kannst dein Abo jederzeit in den App Store / Play Store Einstellungen
-            verwalten.
+            {t(
+              "AboSubscriptions renew automatically unless you cancel them at least 24 hours before the current period ends. You can manage your subscription at any time in the App Store or Play Store settings."
+            )}
           </AppText>
         </View>
       )}

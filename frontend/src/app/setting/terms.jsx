@@ -6,10 +6,12 @@ import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function TermsScreen() {
   const styles = getStyles();
   const router = useRouter();
+  const { t } = useTranslation("settings");
 
   const legalItems = [
     {

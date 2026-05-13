@@ -7,9 +7,11 @@ import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function SupportScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("settings");
   const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [
@@ -21,14 +23,17 @@ export default function SupportScreen() {
 
   const faq = [
     {
-      q: "Warum wurden meine LifePoints nicht gutgeschrieben?",
-      a: "Es kann bis zu 24 Stunden dauern, bis die Synchronisierung abgeschlossen ist..."
+      q: t("Why haven't my LifePoints been credited?"),
+      a: t("It may take up to 24 hours for the synchronization to complete...")
     },
     {
-      q: "Wie löse ich einen Gutschein ein?",
-      a: "Gehe in deinen Shop-Bereich und wähle den Reiter 'Meine Gutscheine'..."
+      q: t("How do I redeem a coupon?"),
+      a: t("Go to your account page and select the “My Coupons” tab...")
     },
-    { q: "Kann ich LifePoints auf Freunde übertragen?", a: "Aktuell ist dieses Feature noch in der Entwicklung..." }
+    {
+      q: t("Can I transfer LifePoints to friends?"),
+      a: t("This feature is currently still in development...")
+    }
   ];
 
   const handleContactSupport = (type) => {
@@ -40,12 +45,12 @@ export default function SupportScreen() {
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
       <View style={styles.header}>
-        <AppText type="h1">Wie können wir helfen?</AppText>
-        <AppText style={styles.subtitle}>Suche in unseren FAQs oder kontaktiere uns direkt.</AppText>
+        <AppText type="h1">{t("How can we help?")}</AppText>
+        <AppText style={styles.subtitle}>{t("Search our FAQs or contact us directly.")}</AppText>
         <View style={{ marginTop: Spacing.lg }}>
           <AppInput
             icon="search"
-            placeholder="Problem beschreiben..."
+            placeholder={t("Describe the problem...")}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -69,21 +74,21 @@ export default function SupportScreen() {
           </View>
           <AppText bold>Live-Chat</AppText>
           <AppText type="caption" style={{ textAlign: "center" }}>
-            Mo-Fr, 9-18 Uhr
+            {t("Mon-Fri, 9 a.m.-6 p.m.")}
           </AppText>
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Themen-Bereiche
+          {t("Topics")}
         </AppText>
         <View style={styles.categoryGrid}>
           {categories.map((cat) => (
             <TouchableOpacity key={cat.id} style={styles.categoryItem}>
               <Icon name={cat.icon} size={28} color={cat.color} />
               <AppText bold style={{ marginTop: Spacing.xs }}>
-                {cat.title}
+                {t(cat.title)}
               </AppText>
             </TouchableOpacity>
           ))}
@@ -92,7 +97,7 @@ export default function SupportScreen() {
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Häufige Fragen
+          {t("FAQ")}
         </AppText>
         {faq.map((faq, index) => (
           <TouchableOpacity key={index} style={styles.faqItem}>
@@ -107,7 +112,7 @@ export default function SupportScreen() {
       <View style={styles.statusBox}>
         <View style={styles.statusIndicator} />
         <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
-          Alle Systeme laufen normal
+          {t("All systems are operating normally")}
         </AppText>
       </View>
     </ScreenWrapper>

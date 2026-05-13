@@ -4,10 +4,12 @@ import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 const SettingsRow = ({ setting, isLast, onPress }) => {
   const styles = getStyles();
   const [isToggled, setIsToggled] = useState(setting.defaultValue || false);
+  const { t } = useTranslation("settings");
 
   return (
     <View>
@@ -25,7 +27,7 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
         <View style={styles.itemLeft}>
           <Icon name={setting.icon} color={setting.danger ? MyTheme.warning : MyTheme.text} />
           <AppText type="title" style={setting.danger ? { color: MyTheme.warning } : {}}>
-            {setting.label}
+            {t(setting.label)}
           </AppText>
         </View>
 

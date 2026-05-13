@@ -10,6 +10,7 @@ import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import * as NavigationBar from "expo-navigation-bar";
 import useStore from "@/store/useStore";
+import "@/utils/i18n";
 
 SplashScreen.preventAutoHideAsync();
 

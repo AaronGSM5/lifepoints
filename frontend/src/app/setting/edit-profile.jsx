@@ -21,10 +21,13 @@ import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import useStore from "@/store/useStore";
 import { useProfile } from "@/hooks/useProfile";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function EditProfileScreen() {
   const styles = getStyles();
   const router = useRouter();
+  const { t } = useTranslation("settings");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const isDarkMode = useStore((state) => state.isDarkMode);
@@ -60,7 +63,7 @@ export default function EditProfileScreen() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== "granted") {
-      Alert.alert("Berechtigung benötigt", "Wir brauchen Zugriff auf deine Fotos, um dein Profilbild zu ändern.");
+      Alert.alert(t("Permission needed"), t("We need access to your photos to change your profile picture."));
       return;
     }
 
@@ -90,6 +93,7 @@ export default function EditProfileScreen() {
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingTop={false}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <ScreenTitle title={t("Edit Profile")} />
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
@@ -108,7 +112,7 @@ export default function EditProfileScreen() {
               </TouchableOpacity>
             )}
             <AppText type="caption" style={styles.avatarHint}>
-              {isLoading ? " " : "Tippen zum Ändern"}
+              {isLoading ? " " : t("Tap to change")}
             </AppText>
           </View>
 
@@ -129,16 +133,16 @@ export default function EditProfileScreen() {
             ) : (
               <>
                 <AppInput
-                  label="Anzeigename"
-                  placeholder="Dein Name"
+                  label={t("Name")}
+                  placeholder={t("Your Name")}
                   value={formData.name}
                   onChangeText={(text) => setFormData({ ...formData, name: text })}
                   icon="profile"
                 />
                 <View style={{ height: Spacing.md }} />
                 <AppInput
-                  label="Benutzername"
-                  placeholder="username"
+                  label={t("Username")}
+                  placeholder={t("Username")}
                   value={formData.username}
                   onChangeText={(text) => setFormData({ ...formData, username: text })}
                   icon="at"
@@ -146,8 +150,8 @@ export default function EditProfileScreen() {
                 />
                 <View style={{ height: Spacing.md }} />
                 <AppInput
-                  label="Über mich"
-                  placeholder="Erzähl etwas über deine Ziele..."
+                  label={t("About me")}
+                  placeholder={t("MyDescription")}
                   value={formData.description}
                   onChangeText={(text) => setFormData({ ...formData, description: text })}
                   multiline
@@ -161,7 +165,7 @@ export default function EditProfileScreen() {
 
         <View style={styles.footer}>
           <AppButton
-            title={isSaving ? "Speichere..." : "Änderungen speichern"}
+            title={isSaving ? t("Saving...") : t("Save changes")}
             onPress={handleSave}
             disabled={!hasChanges || isSaving || isLoading}
             variant="primary"

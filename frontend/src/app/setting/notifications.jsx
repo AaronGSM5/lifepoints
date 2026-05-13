@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Switch } from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function NotificationsScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("settings");
   const [settings, setSettings] = useState({
     push: true,
     email: false,
@@ -17,15 +20,31 @@ export default function NotificationsScreen() {
 
   return (
     <ScreenWrapper withPaddingTop={false}>
+      <ScreenTitle title={t("Notifications")} />
       <View style={styles.row}>
-        <AppText>Push Notifications</AppText>
+        <AppText>{t("Push Notifications")}</AppText>
         <Switch
           value={settings.push}
           onValueChange={() => toggleSwitch("push")}
           trackColor={{ false: "#767577", true: MyTheme.primaryAccent }}
         />
       </View>
-      {/* ... weitere Zeilen ... */}
+      <View style={styles.row}>
+        <AppText>{t("Email")}</AppText>
+        <Switch
+          value={settings.email}
+          onValueChange={() => toggleSwitch("email")}
+          trackColor={{ false: "#767577", true: MyTheme.primaryAccent }}
+        />
+      </View>
+      <View style={styles.row}>
+        <AppText>{t("Offers")}</AppText>
+        <Switch
+          value={settings.offers}
+          onValueChange={() => toggleSwitch("offers")}
+          trackColor={{ false: "#767577", true: MyTheme.primaryAccent }}
+        />
+      </View>
     </ScreenWrapper>
   );
 }
