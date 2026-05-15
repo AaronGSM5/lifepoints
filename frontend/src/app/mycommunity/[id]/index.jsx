@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useCommunities } from "@/hooks/useCommunities";
 import { MyTheme } from "@/constants/Colors";
 import AppInput from "@/components/ui/AppInput";
+import { useTranslation } from "react-i18next";
 
 const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },
@@ -18,6 +19,7 @@ const DUMMY_MESSAGES = [
 
 export default function MyCommunityChatScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -99,11 +101,9 @@ export default function MyCommunityChatScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
-                <AppText bold style={styles.headerTitleText}>
-                  {community?.title || "Community Chat"}
-                </AppText>
+                <AppText bold>{community?.title || "Community Chat"}</AppText>
                 <AppText type="caption" style={styles.headerSubtitleText}>
-                  Tippe für Infos
+                  {t("Tap for more info")}
                 </AppText>
               </TouchableOpacity>
 
@@ -130,7 +130,7 @@ export default function MyCommunityChatScreen() {
             <Icon name="add" color={MyTheme.muted} />
           </TouchableOpacity>
           <AppInput
-            placeholder="Nachricht schreiben..."
+            placeholder={t("Write a message...")}
             value={inputText}
             onChangeText={setInputText}
             containerStyle={{ flex: 8 }}

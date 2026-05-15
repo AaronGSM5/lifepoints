@@ -13,6 +13,7 @@ import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppButton from "@/components/ui/AppButton";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const MOCK_MEMBERS = [
   { id: "1", name: "Sarah", lp: 2450 },
@@ -27,13 +28,12 @@ const MOCK_MEMBERS = [
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const { myCommunities } = useCommunities();
   const [isExpanded, setIsExpanded] = useState(false);
   const leaveCommunity = useStore((state) => state.leaveCommunity);
 
   const community = myCommunities.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
-
-  console.log(community);
 
   const sortedMembers = useMemo(() => {
     return [...MOCK_MEMBERS].sort((a, b) => b.lp - a.lp);
@@ -56,39 +56,39 @@ export default function MyCommunityDetailScreen() {
           <View style={{ marginBottom: Spacing.lg }}>
             <AppText type="h1">{community?.title}</AppText>
             <AppText type="caption" style={styles.statsText}>
-              {community?.members} Mitglieder • {community?.onlineCount} Online
+              {community?.members} {t("Members")} • {community?.onlineCount} Online
             </AppText>
           </View>
 
           <View style={styles.badgeContainer}>
             {community?.badges?.map((badge, i) => (
-              <AppBadge key={i} variant="glas" label={badge} />
+              <AppBadge key={i} variant="glas" label={t(badge)} />
             ))}
           </View>
 
           {community?.isLive && (
             <View style={styles.liveContainer}>
               <AppText bold style={{ color: "#ef4444" }}>
-                LIVE NOW
+                {t("LIVE NOW")}
               </AppText>
               <AppText type="caption">Morning Meditation with Sarah</AppText>
             </View>
           )}
 
           <View style={styles.section}>
-            <SectionHeader title={"About"} />
+            <SectionHeader title={t("About")} />
             <AppText style={styles.description}>{community?.desc}</AppText>
           </View>
 
           <View style={styles.section}>
-            <SectionHeader title={"Community Tasks"} />
-            <AppText type="caption">Preview of what's waiting for you.</AppText>
+            <SectionHeader title={t("Community Tasks")} />
+            <AppText type="caption">{t("Preview of what's waiting for you.")}</AppText>
           </View>
 
           <View style={styles.section}>
             <SectionHeader
-              title={"Leaderboard"}
-              rightLabel={!isExpanded ? "Show all" : "Show less"}
+              title={t("Leaderboard")}
+              rightLabel={!isExpanded ? t("Show all") : t("Show less")}
               onRightPress={() => setIsExpanded(!isExpanded)}
             />
 
@@ -128,7 +128,7 @@ export default function MyCommunityDetailScreen() {
             {!isExpanded && sortedMembers.length > 5 && (
               <TouchableOpacity style={styles.expandButton} onPress={() => setIsExpanded(true)}>
                 <AppText bold style={styles.expandButtonText}>
-                  Show all {sortedMembers.length} members
+                  {t("Show all the")} {sortedMembers.length} {t("Members")}
                 </AppText>
                 <Icon name="down" size={16} color={MyTheme.primaryAccent} />
               </TouchableOpacity>
@@ -137,7 +137,7 @@ export default function MyCommunityDetailScreen() {
         </View>
         {myCommunities.some((c) => c?.id === community?.id) && (
           <View>
-            <AppButton title={"Leave Community"} onPress={() => handleLeaveCommunity(community)} />
+            <AppButton title={t("Leave Community")} onPress={() => handleLeaveCommunity(community)} />
           </View>
         )}
       </ScreenWrapper>

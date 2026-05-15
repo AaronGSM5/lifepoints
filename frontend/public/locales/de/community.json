@@ -3,6 +3,9 @@
   "Thats all for now!": "Das ist erstmal alles!",
   "My Communities": "Meine Communities",
   "See all": "Mehr anzeigen",
+  "Show all": "Mehr anzeigen",
+  "Show all the": "Zeige alle",
+  "Show less": "Weniger anzeigen",
   "Recommended for you": "Empfehlungen für dich",
   "Lifestyle & Food": "Essen & Lifestyle",
   "Trending Right Now": "Gerade im Trend",
@@ -10,12 +13,17 @@
   "Topic": "Thema",
   // Recommended Community Card
   "Members": "Mitglieder",
+  // MyCommunity Chat
+  "Write a message...": "Nachricht schreiben...",
+  "Tap for more info": "Tippe für Infos",
   // Dedicated Community Page
   "Join Community": "Jetzt beitreten",
   "LIVE NOW": "LIVE",
   "About": "Über uns",
   "Community Tasks": "Community Aufgaben",
   "Preview of what's waiting for you.": "Ein Vorgeschmack darauf, was dich erwartet.",
+  "Leaderboard": "Rangliste",
+  "Leave Community": "Verlassen",
   // CreateCommunityForm
   "New Community": "Neue Community",
   "What should you name your community?": "Wie soll deine Community heißen?",
