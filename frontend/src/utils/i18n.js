@@ -3,14 +3,25 @@ import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Imports für die deutsche Sprache
+import deAuth from '@/../public/locales/de/auth.json';
 import deCommon from '@/../public/locales/de/common.json';
+import deCommunity from '@/../public/locales/de/community.json';
+import deHome from '@/../public/locales/de/home.json';
+import deProfile from '@/../public/locales/de/profile.json';
 import deSettings from '@/../public/locales/de/settings.json';
-import deHome from '@/../public/locales/de/home.json'
+import deTasks from '@/../public/locales/de/tasks.json';
 
+// Imports für die englische Sprache
+import enAuth from '@/../public/locales/en/auth.json';
 import enCommon from '@/../public/locales/en/common.json';
+import enCommunity from '@/../public/locales/en/community.json';
+import enHome from '@/../public/locales/en/home.json';
+import enProfile from '@/../public/locales/en/profile.json';
 import enSettings from '@/../public/locales/en/settings.json';
-import enHome from '@/../public/locales/en/home.json'
+import enTasks from '@/../public/locales/en/tasks.json';
 
+// Erkennt die Nutzersprache: Entweder aus dem Speicher oder vom Betriebssystem
 const languageDetector = {
   type: 'languageDetector',
   async: true,
@@ -20,11 +31,13 @@ const languageDetector = {
       if (savedLanguage) {
         return callback(savedLanguage);
       }
+
+      // Holt die Systemsprache des Smartphones (z.B. 'de' oder 'en')
       const systemLang = Localization.getLocales()[0].languageCode;
       return callback(systemLang);
     } catch (error) {
       console.log('Error reading language', error);
-      callback('en'); // Fallback zu Englisch bei Fehlern
+      callback('en'); // Sicherer Fallback bei Speicherfehlern
     }
   },
   init: () => { },
@@ -39,26 +52,37 @@ i18n
   .init({
     compatibilityJSON: 'v3',
 
+    // Hier werden jetzt ALLE deine Feature-Dateien sauber gemappt
     resources: {
       de: {
+        auth: deAuth,
         common: deCommon,
+        community: deCommunity,
+        home: deHome,
+        profile: deProfile,
         settings: deSettings,
-        home: deHome
+        tasks: deTasks,
       },
       en: {
+        auth: enAuth,
         common: enCommon,
+        community: enCommunity,
+        home: enHome,
+        profile: enProfile,
         settings: enSettings,
-        home: enHome
+        tasks: enTasks,
       },
     },
 
-    ns: ['common', 'settings', 'home'],
+    // Deklaration aller Namespaces, damit i18next weiß, welche Keys existieren
+    ns: ['auth', 'common', 'community', 'home', 'profile', 'settings', 'tasks'],
 
+    // Wenn kein Namespace angegeben wird (z.B. i18n.t('save')), greift 'common'
     defaultNS: 'common',
 
     fallbackLng: 'en',
     interpolation: {
-      escapeValue: false,
+      escapeValue: false, // React schützt uns bereits nativ vor XSS
     },
   });
 

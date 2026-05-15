@@ -10,9 +10,11 @@ import PasswordInput from "@/components/auth/PasswordInput";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthFooter from "@/components/auth/AuthFooter";
 import BaseCard from "@/components/ui/BaseCard";
+import { useTranslation } from "react-i18next";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation("auth");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const isLoginDisabled = !emailInput || !passwordInput;
@@ -21,7 +23,7 @@ export default function LoginScreen() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
         <ScreenWrapper scrollable>
-          <AuthHeader showImageLogo={true} subtitle={"Log in to continue"} />
+          <AuthHeader showImageLogo={true} subtitle={t("Log in to continue")} />
 
           <BaseCard
             style={{
@@ -41,16 +43,16 @@ export default function LoginScreen() {
               autoCapitalize="none"
             />
             <PasswordInput variant="login" value={passwordInput} onChangeText={setPasswordInput} bottomMargin={false} />
-            <AppButton title={"Log in"} disabled={isLoginDisabled} bgColor={MyTheme.primaryAccent} />
+            <AppButton title={t("Log in")} disabled={isLoginDisabled} bgColor={MyTheme.primaryAccent} />
             <AppButton
-              title={"Forgot password?"}
+              title={t("Forgot password?")}
               variant="ghost"
               size="sm"
               textStyle={{ color: MyTheme.primaryAccent }}
             />
           </BaseCard>
 
-          <AuthFooter text={"Don't have an account?"} linkText="Register" href="/auth/register" />
+          <AuthFooter text={t("Don't have an account?")} linkText={t("Register")} href="/auth/register" />
         </ScreenWrapper>
       </View>
     </KeyboardAvoidingView>

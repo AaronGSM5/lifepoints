@@ -5,29 +5,7 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import { MyTheme } from "@/constants/Colors";
-
-const passwordRules = [
-  {
-    name: "lengthRule",
-    validate: (pwInput) => pwInput.length >= 8,
-    displayMessage: "min. length of 8 characters"
-  },
-  {
-    name: "uppercaseRule",
-    validate: (pwInput) => /[A-Z]/.test(pwInput),
-    displayMessage: "min. 1 uppercase letter"
-  },
-  {
-    name: "numberRule",
-    validate: (pwInput) => /[0-9]/.test(pwInput),
-    displayMessage: "min. 1 number"
-  },
-  {
-    name: "specialCharRule",
-    validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
-    displayMessage: "min. 1 special character"
-  }
-];
+import { useTranslation } from "react-i18next";
 
 export default function PasswordInput({
   variant = "login", // Standardmäßig ein normales Login-Feld
@@ -38,9 +16,33 @@ export default function PasswordInput({
   placeholder,
   bottomMargin = true
 }) {
+  const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
   const [ruleStatus, setRuleStatus] = useState({});
+
+  const passwordRules = [
+    {
+      name: "lengthRule",
+      validate: (pwInput) => pwInput.length >= 8,
+      displayMessage: t("min. length of 8 characters")
+    },
+    {
+      name: "uppercaseRule",
+      validate: (pwInput) => /[A-Z]/.test(pwInput),
+      displayMessage: t("min. 1 uppercase letter")
+    },
+    {
+      name: "numberRule",
+      validate: (pwInput) => /[0-9]/.test(pwInput),
+      displayMessage: t("min. 1 number")
+    },
+    {
+      name: "specialCharRule",
+      validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
+      displayMessage: t("min. 1 special character")
+    }
+  ];
 
   // Validierung je nach Variante
   useEffect(() => {
@@ -72,10 +74,10 @@ export default function PasswordInput({
   if (variant === "new") {
     allRulesPassed = Object.values(ruleStatus).every(Boolean);
     hasError = !allRulesPassed && value.length > 0;
-    errorMessage = hasError ? "Passwort erfüllt nicht alle Regeln." : null;
+    errorMessage = hasError ? t("The password does not meet all the requirements.") : null;
   } else if (variant === "repeat") {
     hasError = value.length > 0 && compareTo.length > 0 && value !== compareTo;
-    errorMessage = hasError ? "Passwörter stimmen nicht überein." : null;
+    errorMessage = hasError ? t("The passwords don't match.") : null;
   }
 
   return (
@@ -83,7 +85,7 @@ export default function PasswordInput({
       <AppInput
         value={value}
         onChangeText={onChangeText}
-        placeholder={placeholder || (variant === "repeat" ? "Repeat Password" : "Password")}
+        placeholder={placeholder || (variant === "repeat" ? t("Repeat Password") : t("Password"))}
         bottomMargin={bottomMargin}
         secureTextEntry={!isVisible}
         isValid={!hasError && value.length > 0}
