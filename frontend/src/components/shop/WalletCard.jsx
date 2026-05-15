@@ -8,9 +8,11 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const WalletCard = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("shop");
   const points = useStore((state) => state.profile.profileLp);
   const targetPoints = (points * 2.6).toFixed(0);
 
@@ -45,7 +47,7 @@ const WalletCard = ({ skeletonProps, isLoading }) => {
     <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={styles.walletCard}>
       <View style={styles.walletHeader}>
         <AppText bold type="caption">
-          YOUR POINTS
+          {t("YOUR POINTS")}
         </AppText>
         <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
       </View>
@@ -64,7 +66,7 @@ const WalletCard = ({ skeletonProps, isLoading }) => {
           />
         </View>
         <AppText type="caption" bold>
-          {targetPoints - points} pts until Gold Tier
+          {targetPoints - points} {t("LP until Gold Tier")}
         </AppText>
       </View>
     </LinearGradient>

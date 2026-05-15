@@ -8,8 +8,10 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
+  const { t } = useTranslation("shop");
   const redeemReward = useStore((state) => state.redeemReward);
   const featuredRewards = useStore((state) => state.featuredRewards);
   const selectedReward = featuredRewards?.[0];
@@ -34,11 +36,11 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         </View>
 
         <View style={styles.featuredContent}>
-          <AppBadge label={"BEST VALUE"} variant="secondary" />
+          <AppBadge label={t("BEST VALUE")} variant="secondary" />
 
-          <AppText type="h2">{selectedReward?.title}</AppText>
+          <AppText type="h2">{t(selectedReward?.title)}</AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
-            {selectedReward?.description}
+            {t(selectedReward?.description)}
           </AppText>
 
           <View style={styles.featuredFooter}>
@@ -56,7 +58,7 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
             )}
             <AppButton
               variant="primary"
-              title={"Redeem"}
+              title={t("Redeem")}
               size="md"
               textStyle={{ color: "#E94057" }}
               bgColor="white"

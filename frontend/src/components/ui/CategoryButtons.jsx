@@ -5,8 +5,8 @@ import { MyTheme } from "@/constants/Colors";
 import { ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 
-const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, isLoading }) => {
-  const { t } = useTranslation("tasks");
+const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, isLoading, namespace = "tasks" }) => {
+  const { t } = useTranslation(namespace);
   return (
     <ScrollView
       horizontal
@@ -21,14 +21,15 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
               <Skeleton key={i} {...skeletonProps} width={80} height={45} radius={Spacing.borderRadius.full} />
             ))
         : categories.map((cat, index) => {
-            const isActive = cat.toLowerCase() === activeCat;
+            const lowercaseCat = cat.toLowerCase();
+            const isActive = lowercaseCat === activeCat.toLowerCase();
             return (
               <AppButton
                 key={index}
-                title={t(cat)}
+                title={t(`categories.${lowercaseCat}`)}
                 variant={isActive ? "primary" : "secondary"}
                 size="md"
-                onPress={() => setActiveCat(cat.toLowerCase())}
+                onPress={() => setActiveCat(lowercaseCat)}
                 borderStyle={isActive ? { borderWidth: 1, borderColor: MyTheme.secondary } : undefined}
               />
             );

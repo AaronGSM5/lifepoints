@@ -1,0 +1,27 @@
+{
+  // WalletCard
+  "YOUR POINTS": "DEINE PUNKTE",
+  "LP until Gold Tier": "LP bis Stufe Gold",
+  // CategoryButtons
+  "categories": {
+    "all": "Alle",
+    "fashion": "Mode",
+    "food": "Essen",
+    "tech": "Technik",
+    "entertainment": "Unterhaltung",
+    "rewards": "Coupons"
+  },
+  // FeaturedRewardCard
+  "Featured Reward": "Empfohlener Coupon",
+  "BEST VALUE": "BESTES PREIS-LEISTUNGS-VERHÄLTNIS",
+  "$10 Gift Card": "10€ Geschenkkarte",
+  "Spotify Individual Plan": "Spotify-Einzelabonnement",
+  "Redeem": "Einlösen",
+  // Catalog
+  "For You": "Für dich",
+  "Rewards": "Coupons",
+  "Locked": "Gesperrt",
+  "Description": "Beschreibung",
+  "Earn points to unlock": "Punkte sammeln zum Freischalten",
+  "Redeem Now": "Jetzt einlösen"
+}

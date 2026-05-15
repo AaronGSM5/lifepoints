@@ -14,9 +14,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 export default function RewardDetailScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("shop");
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -62,7 +64,7 @@ export default function RewardDetailScreen() {
 
               {reward.isLocked && (
                 <AppBadge
-                  label={"LOCKED"}
+                  label={t("Locked")}
                   textStyle={{ fontSize: 10, color: MyTheme.text }}
                   style={{ backgroundColor: MyTheme.muted }}
                 />
@@ -73,11 +75,11 @@ export default function RewardDetailScreen() {
               {reward.title}
             </AppText>
             <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {reward.points} PTS
+              {reward.points} LP
             </AppText>
 
             <AppText type="title" style={{ marginBottom: Spacing.sm }}>
-              Beschreibung
+              {t("Description")}
             </AppText>
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
               {reward.description}
@@ -88,7 +90,7 @@ export default function RewardDetailScreen() {
         <View style={styles.stickyFooter}>
           <AppButton
             variant="primary"
-            title={reward.isLocked ? "Punkte sammeln zum Freischalten" : "Jetzt einlösen"}
+            title={reward.isLocked ? t("Earn points to unlock") : t("Redeem Now")}
             size="lg"
             style={reward.isLocked ? { opacity: 0.8 } : {}}
             onPress={() => {

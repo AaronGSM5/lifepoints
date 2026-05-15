@@ -10,6 +10,7 @@ import deCommunity from '@/../public/locales/de/community.json';
 import deHome from '@/../public/locales/de/home.json';
 import deProfile from '@/../public/locales/de/profile.json';
 import deSettings from '@/../public/locales/de/settings.json';
+import deShop from '@/../public/locales/de/shop.json'
 import deTasks from '@/../public/locales/de/tasks.json';
 import deTrophies from '@/../public/locales/de/trophies.json'
 
@@ -20,6 +21,7 @@ import enCommunity from '@/../public/locales/en/community.json';
 import enHome from '@/../public/locales/en/home.json';
 import enProfile from '@/../public/locales/en/profile.json';
 import enSettings from '@/../public/locales/en/settings.json';
+import enShop from '@/../public/locales/en/shop.json'
 import enTasks from '@/../public/locales/en/tasks.json';
 import enTrophies from '@/../public/locales/en/trophies.json'
 
@@ -65,6 +67,7 @@ i18n
         settings: deSettings,
         tasks: deTasks,
         trophies: deTrophies,
+        shop: deShop,
       },
       en: {
         auth: enAuth,
@@ -75,11 +78,12 @@ i18n
         settings: enSettings,
         tasks: enTasks,
         trophies: enTrophies,
+        shop: enShop,
       },
     },
 
     // Deklaration aller Namespaces, damit i18next weiß, welche Keys existieren
-    ns: ['auth', 'common', 'community', 'home', 'profile', 'settings', 'tasks', 'trophies'],
+    ns: ['auth', 'common', 'community', 'home', 'profile', 'settings', 'tasks', 'trophies', 'shop'],
 
     // Wenn kein Namespace angegeben wird (z.B. i18n.t('save')), greift 'common'
     defaultNS: 'common',

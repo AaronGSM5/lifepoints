@@ -12,11 +12,13 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { useShop } from "@/hooks/useShop";
 import EmptyState from "@/components/shop/EmptyState";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("shop");
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();
   const {
@@ -52,17 +54,18 @@ export default function ShopScreen() {
           setActiveCat={setActiveCat}
           skeletonProps={skeletonProps}
           isLoading={isLoading}
+          namespace="shop"
         />
 
         <View style={styles.paddedContent}>
-          <SectionHeader title={"Featured Reward"} isLoading={isLoading} />
+          <SectionHeader title={t("Featured Reward")} isLoading={isLoading} />
           <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
 
           <SectionHeader
             title={
               activeCat.toLowerCase() === "all"
-                ? "For You"
-                : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`
+                ? t("For You")
+                : `${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`
             }
             isLoading={isLoading}
           />

@@ -1,0 +1,14 @@
+{
+  // WalletCard
+  "YOUR POINTS": "YOUR POINTS",
+  "LP until Gold Tier": "LP until Gold Tier",
+  "Featured Reward": "Featured Reward",
+  "categories": {
+    "all": "All",
+    "fashion": "Fashion",
+    "food": "Food",
+    "tech": "Tech",
+    "entertainment": "Entertainment",
+    "rewards": "Rewards"
+  }
+}

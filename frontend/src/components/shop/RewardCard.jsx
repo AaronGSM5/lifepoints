@@ -9,9 +9,11 @@ import { Icon } from "../icons/Icon";
 import BaseCard from "../ui/BaseCard";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("shop");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
@@ -54,12 +56,12 @@ const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, 
 
         <View style={styles.cardFooter}>
           <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
-            {points} PTS
+            {points} LP
           </AppText>
 
           {isLocked ? (
             <AppBadge
-              label={"Locked"}
+              label={t("Locked")}
               textStyle={{ fontSize: 10, color: MyTheme.text }}
               style={{ backgroundColor: MyTheme.muted }}
             />
