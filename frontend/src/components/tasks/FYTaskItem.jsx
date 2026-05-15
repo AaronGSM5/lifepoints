@@ -8,9 +8,11 @@ import BaseCard from "@/components/ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const completeTask = useStore((state) => state.completeTask);
   if (isLoading) {
@@ -70,7 +72,7 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
     return (
       <AppBadge
         variant={"primary"}
-        label={badge}
+        label={t(badge)}
         textStyle={{ color: MyTheme.text }}
         style={{ position: "absolute", right: Spacing.sm, top: Spacing.sm }}
       />
@@ -103,7 +105,7 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
           </AppText>
         </View>
 
-        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} onPress={() => completeTask(id)} />
+        <AppButton title={t("Activate")} bgColor={MyTheme.primaryAccent} onPress={() => completeTask(id)} />
       </View>
     </BaseCard>
   );

@@ -15,9 +15,11 @@ import HistoryCard from "@/components/ui/HistoryCard";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 export default function TaskDetailScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("tasks");
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -59,7 +61,7 @@ export default function TaskDetailScreen() {
 
               {task.isLocked && (
                 <AppBadge
-                  label={"LOCKED"}
+                  label={t("LOCKED")}
                   textStyle={{ fontSize: 10, color: MyTheme.muted }}
                   style={{ backgroundColor: "#2A2A2A" }}
                 />
@@ -67,33 +69,33 @@ export default function TaskDetailScreen() {
             </View>
 
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
-              {task.title}
+              {t(task.title)}
             </AppText>
             <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {task.lp} PTS
+              {task.lp} LP
             </AppText>
 
             <AppText type="title" style={{ marginBottom: Spacing.sm }}>
-              Beschreibung
+              {t("Description")}
             </AppText>
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
-              {task.description}
+              {t(task.description)}
             </AppText>
 
             <View style={styles.historySection}>
               <AppText type="title" style={{ marginBottom: Spacing.md }}>
-                Verlauf
+                {t("History")}
               </AppText>
 
               {taskTrackingHistory.length > 0 ? (
                 taskTrackingHistory.map((item) => (
                   <HistoryCard
                     key={item.id}
-                    title="Getrackt"
+                    title={t("Tracked")}
                     subtitle={item.date}
                     points={item.points}
                     type="earn"
-                    pointsSuffix="PTS"
+                    pointsSuffix="LP"
                     iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
                     containerStyle={{
                       backgroundColor: MyTheme.glas,
@@ -110,7 +112,7 @@ export default function TaskDetailScreen() {
                 ))
               ) : (
                 <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
-                  Noch keine Einträge vorhanden.
+                  {t("No entries yet.")}
                 </AppText>
               )}
             </View>
@@ -120,7 +122,7 @@ export default function TaskDetailScreen() {
         <View style={styles.stickyFooter}>
           <AppButton
             variant="primary"
-            title={task.isLocked ? "Level auf zum Freischalten" : "Jetzt tracken"}
+            title={task.isLocked ? t("Level up to unlock") : t("Track now")}
             size="lg"
             disabled={task.isLocked}
             style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}

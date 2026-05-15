@@ -9,6 +9,7 @@ import AppInput from "@/components/ui/AppInput";
 import { Skeleton } from "moti/skeleton";
 import AppButton from "../ui/AppButton";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -30,8 +31,8 @@ const TaskItem = ({
   onToggleExpand
 }) => {
   const styles = getStyles();
+  const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const completeTask = useStore((state) => state.completeTask);
   const [inputValue, setInputValue] = useState("");
 
   const toggleExpand = () => {
@@ -82,7 +83,7 @@ const TaskItem = ({
 
         <View style={styles.textContainer}>
           <AppText type="body" bold style={styles.title} numberOfLines={1}>
-            {title}
+            {t(title)}
           </AppText>
 
           <View style={styles.metaRow}>
@@ -108,7 +109,7 @@ const TaskItem = ({
         <View style={styles.expandedContainer}>
           {requiresInput && (
             <AppInput
-              placeholder={`Anzahl ${requiresInput} eingeben...`}
+              placeholder={`${t("Anzahl")} ${t(requiresInput)} ${t("eingeben...")}`}
               value={inputValue}
               onChangeText={setInputValue}
               keyboardType="numeric"
@@ -116,7 +117,7 @@ const TaskItem = ({
           )}
 
           <View style={styles.actionRow}>
-            <AppButton title={"Details ansehen"} variant="ghost" onPress={onNavigate} size="sm" />
+            <AppButton title={t("View details")} variant="ghost" onPress={onNavigate} size="sm" />
             <View style={styles.trackingRow}>
               <AppButton
                 variant="ghost"
@@ -125,7 +126,7 @@ const TaskItem = ({
                 size="sm"
                 onPress={onInstaTrack}
               />
-              <AppButton title={"Tracken"} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
+              <AppButton title={t("Track")} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
             </View>
           </View>
         </View>

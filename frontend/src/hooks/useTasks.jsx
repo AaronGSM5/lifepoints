@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 export const useTasks = () => {
+  const { t } = useTranslation("tasks");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -30,7 +32,7 @@ export const useTasks = () => {
 
   const categories = useMemo(() => {
     const unique = [...new Set(tasks.map((c) => c.category))];
-    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+    return [t("All"), ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
   }, [tasks]);
 
   const filteredTasks = useMemo(() => {

@@ -14,12 +14,14 @@ import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
 import useStore from "@/store/useStore";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
+import { useTranslation } from "react-i18next";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
   const router = useRouter();
+  const { t } = useTranslation(["tasks", "common"]);
   const bottomPadding = useFloatingNavbarPadding();
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [taskToTrack, setTaskToTrack] = useState(null);
@@ -74,7 +76,7 @@ const TasksScreen = () => {
             <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
               <Pressable onPress={() => router.push("/search")}>
                 <View pointerEvents="none">
-                  <AppInput icon="search" placeholder="Search..." bottomMargin={false} editable={false} blur />
+                  <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
                 </View>
               </Pressable>
             </Skeleton>
@@ -85,7 +87,7 @@ const TasksScreen = () => {
         return (
           <View style={styles.sectionMargin}>
             <View style={styles.paddedContent}>
-              <SectionHeader title={"For You"} />
+              <SectionHeader title={t("For You")} />
             </View>
             <ScrollView
               horizontal
@@ -108,8 +110,8 @@ const TasksScreen = () => {
               <SectionHeader
                 title={
                   activeCat.toLowerCase() === "all"
-                    ? "All Tasks"
-                    : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
+                    ? t("All Tasks")
+                    : `${t(activeCat.charAt(0).toUpperCase() + activeCat.slice(1))} ${t("Tasks")}`
                 }
               />
             </View>
@@ -161,7 +163,7 @@ const TasksScreen = () => {
   const renderFooter = () => (
     <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
       <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
-        Can't find what you're searching for?
+        {t("Can't find what you're searching for?")}
       </AppText>
       <SuggestTaskInput />
     </View>

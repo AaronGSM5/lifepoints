@@ -5,9 +5,11 @@ import AppInput from "../ui/AppInput";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const SuggestTaskInput = () => {
   const styles = getStyles();
+  const { t } = useTranslation("tasks");
   const [suggestionInput, setSuggestionInput] = useState("");
   const handleSendSuggestion = () => {
     console.log("Mock Send");
@@ -20,13 +22,13 @@ const SuggestTaskInput = () => {
           <Icon name="bulb" size={20} />
         </View>
         <View>
-          <AppText type="title">Suggest a Task</AppText>
-          <AppText type="caption">Earn LP if your idea gets added!</AppText>
+          <AppText type="title">{t("Suggest a Task")}</AppText>
+          <AppText type="caption">{t("Earn LP if your idea gets added!")}</AppText>
         </View>
       </View>
       <AppInput
         bottomMargin={false}
-        placeholder="I want to see a task for..."
+        placeholder={t("I want to see a task for...")}
         value={suggestionInput}
         onChangeText={setSuggestionInput}
         rightIcon="send"
