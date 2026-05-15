@@ -7,12 +7,14 @@ import { Spacing } from "@/constants/Spacing";
 import AppInput from "@/components/ui/AppInput";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppBadge from "@/components/ui/AppBadge";
+import { useTranslation } from "react-i18next";
 
 export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const searchHistory = ["Gaming", "Meditation", "Fitness Anfänger", "Rewe"];
+  const searchHistory = ["Gaming", "Meditation", "Fitness Beginner", "Rewe"];
   const styles = getStyles();
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -36,7 +38,7 @@ export default function SearchScreen() {
           autoFocus={true}
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search..."
+          placeholder={t("Search...")}
           returnKeyType="search"
           icon={"search"}
           bottomMargin={false}
@@ -50,17 +52,17 @@ export default function SearchScreen() {
           style={styles.filterScroll}
           contentContainerStyle={styles.filterContent}
         >
-          <AppBadge variant="glas" label={"Nutzer"} />
-          <AppBadge variant="glas" label={"Community"} />
-          <AppBadge variant="glas" label={"Beitrag"} />
-          <AppBadge variant="glas" label={"Reward"} />
+          <AppBadge variant="glas" label={t("User")} />
+          <AppBadge variant="glas" label={t("Community")} />
+          <AppBadge variant="glas" label={t("Post")} />
+          <AppBadge variant="glas" label={t("Reward")} />
         </ScrollView>
       </View>
 
       {searchQuery === "" ? (
         <View style={{ flex: 1 }}>
           <View style={{ marginVertical: Spacing.md }}>
-            <AppText bold>Zuletzt gesucht</AppText>
+            <AppText bold>{t("Recently Searched")}</AppText>
           </View>
 
           <FlatList
@@ -69,14 +71,16 @@ export default function SearchScreen() {
             renderItem={({ item }) => (
               <TouchableOpacity style={styles.historyItem} onPress={() => setSearchQuery(item)}>
                 <Icon name="history" size={20} color={MyTheme.muted} />
-                <AppText>{item}</AppText>
+                <AppText>{t(item)}</AppText>
               </TouchableOpacity>
             )}
           />
         </View>
       ) : (
         <View style={styles.resultsSection}>
-          <AppText style={{ textAlign: "center", marginTop: 40, opacity: 0.5 }}>Suche nach: "{searchQuery}"</AppText>
+          <AppText style={{ textAlign: "center", marginTop: 40, opacity: 0.5 }}>
+            {t("Search for:")} "{searchQuery}"
+          </AppText>
         </View>
       )}
     </ScreenWrapper>

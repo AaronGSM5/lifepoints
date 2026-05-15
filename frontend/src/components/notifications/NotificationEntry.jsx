@@ -3,14 +3,15 @@ import React from "react";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationEntry({ notification }) {
   const styles = getStyles();
-
+  const { t } = useTranslation("common");
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.containerPressed]}
-      onPress={() => console.log("Notification clicked:", notification.title)}
+      onPress={() => console.log("Notification clicked:", t(notification.title))}
     >
       <View style={styles.iconContainer}>
         <AppText type="body">✨</AppText>
@@ -19,13 +20,13 @@ export default function NotificationEntry({ notification }) {
       <View style={{ flex: 1 }}>
         <View style={styles.titleRow}>
           <AppText type="body" bold style={{ flex: 1 }}>
-            {notification.title}
+            {t(notification.title)}
           </AppText>
-          <AppText type="caption">Vor 2h</AppText>
+          <AppText type="caption">{notification.timestamp}</AppText>
         </View>
 
         <AppText type="caption" numberOfLines={2}>
-          {notification.message}
+          {t(notification.message)}
         </AppText>
       </View>
     </Pressable>

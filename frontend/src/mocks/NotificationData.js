@@ -2,41 +2,41 @@ export const notificationItems = [
   {
     id: "notif_01",
     type: "impact",
-    title: "Tat vollbracht!",
-    message: "Dein Nachweis für „Nachbarschaftshilfe“ wurde bestätigt. +50 LP.",
-    timestamp: "vor 2 Min.",
+    title: "Deed Completed!",
+    message: "Your proof for 'Neighborhood Help' has been confirmed. +50 LP.",
+    timestamp: "2 min ago",
     unread: true
   },
   {
     id: "notif_02",
     type: "karma",
-    title: "Karma-Check",
-    message: "Du hast gerade die Welt ein Stück besser gemacht. Deine LP sind auf dem Weg!",
-    timestamp: "vor 10 Min.",
+    title: "Karma Check",
+    message: "You just made the world a little better. Your LP are on the way!",
+    timestamp: "10 min ago",
     unread: true
   },
   {
     id: "notif_03",
     type: "social",
-    title: "Starke Leistung!",
-    message: "Deine gute Tat wurde in der Community hoch bewertet.",
-    timestamp: "vor 1 Std.",
+    title: "Great Effort!",
+    message: "Your good deed was highly rated in the community.",
+    timestamp: "1 hr ago",
     unread: false
   },
   {
     id: "notif_11",
     type: "level",
     title: "Level Up!",
-    message: "Durch deine 500 LP bist du jetzt vom „Helfer“ zum „Lichtblick“ aufgestiegen.",
-    timestamp: "Gestern",
+    message: "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.",
+    timestamp: "Yesterday",
     unread: false
   },
   {
     id: "notif_14",
     type: "achievement",
-    title: "Abzeichen verdient",
-    message: "Du hast das Badge „Umwelt-Schützer“ freigeschaltet! 🌿",
-    timestamp: "2 Tage",
+    title: "Badge Earned",
+    message: "You unlocked the 'Eco-Protector' badge! 🌿",
+    timestamp: "2 days ago",
     unread: false
   },
-]
+];

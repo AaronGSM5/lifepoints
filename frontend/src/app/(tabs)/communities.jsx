@@ -109,6 +109,7 @@ export default function CommunitiesScreen() {
                   title={t("My Communities")}
                   rightLabel={t("See all")}
                   onRightPress={() => console.log("mockClickReaction xD")}
+                  isLoading={isLoading}
                 />
               </View>
               <ScrollView
