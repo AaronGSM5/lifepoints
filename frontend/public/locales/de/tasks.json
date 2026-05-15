@@ -50,12 +50,14 @@
   "Unfollow an account that doesn't make you feel good.": "Entfolge einem Account, der dir kein gutes Gefühl gibt.",
   "Delete an app that you haven't opened in over a month.": "Lösche eine App, die du seit über einem Monat nicht geöffnet hast.",
   // Task Categories
-  "All": "Alle",
-  "Selfcare": "Selbstliebe",
-  "Health": "Gesundheit",
-  "Social": "Soziales",
-  "Digital": "Digitales",
-  "Special": "Spezial",
+  "categories": {
+  "all": "Alle",
+  "selfcare": "Selbstliebe",
+  "health": "Gesundheit",
+  "social": "Soziales",
+  "digital": "Digitales",
+  "special": "Spezial"
+  },
   // Task dedicated page
   "Description": "Beschreibung",
   "History": "Verlauf",

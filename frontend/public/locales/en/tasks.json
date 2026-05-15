@@ -50,12 +50,14 @@
   "Unfollow an account that doesn't make you feel good.": "Unfollow an account that doesn't make you feel good.",
   "Delete an app that you haven't opened in over a month.": "Delete an app that you haven't opened in over a month.",
   // Task Categories
-  "All": "All",
-  "Selfcare": "Selfcare",
-  "Health": "Health",
-  "Social": "Social",
-  "Digital": "Digital",
-  "Special": "Special",
+  "categories": {
+  "all": "Alle",
+  "selfcare": "Selbstliebe",
+  "health": "Gesundheit",
+  "social": "Soziales",
+  "digital": "Digitales",
+  "special": "Spezial"
+  },
   // Task dedicated page
   "Description": "Description",
   "History": "History",
