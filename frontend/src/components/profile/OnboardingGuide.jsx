@@ -10,9 +10,11 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import useStore from "@/store/useStore";
 import { checkQuestCompletion } from "@/utils/onboardingGuideHelpers";
+import { useTranslation } from "react-i18next";
 
 const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const profile = useStore((state) => state.profile);
   const activities = useStore((state) => state.activities);
   const claimOnboardingReward = useStore((state) => state.claimOnboardingReward);
@@ -77,9 +79,9 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   return (
     <BaseCard style={{ marginTop: Spacing.xl }}>
       <View style={styles.guideHeader}>
-        <AppText type="h2">Dein Leitfaden</AppText>
+        <AppText type="h2">{t("Your Guide")}</AppText>
         <AppText type="caption">
-          {completedCount} von {tutorialSteps.length} erledigt
+          {completedCount} {t("of")} {tutorialSteps.length} {t("done")}
         </AppText>
       </View>
 
@@ -113,10 +115,10 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
 
               <View style={styles.questTextContainer}>
                 <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
-                  {quest.title}
+                  {t(quest.title)}
                 </AppText>
                 <AppText type="caption" bold style={[styles.rewardText, isClaimed && { color: MyTheme.muted }]}>
-                  {isClaimed ? "LP erhalten" : `+${quest.reward} LP`}
+                  {isClaimed ? t("Received LP") : `+${quest.reward} LP`}
                 </AppText>
               </View>
 

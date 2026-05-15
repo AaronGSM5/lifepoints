@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 const { View, ScrollView } = require("react-native");
 const { default: SectionHeader } = require("../ui/SectionHeader");
 const { Spacing } = require("@/constants/Spacing");
@@ -7,13 +9,14 @@ const { Skeleton } = require("moti/skeleton");
 const { default: TrophyCard } = require("../trophies/TrophyCard");
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
+  const { t } = useTranslation("trophies");
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
       <SectionHeader
-        title={"Trophies"}
+        title={t("Trophies")}
         icon={"trophy"}
         iconColor={MyTheme.gold}
-        rightLabel={"See all"}
+        rightLabel={t("See all")}
         rightLabelColor={MyTheme.gold}
         onRightPress={() => router.push("/trophies")}
         isLoading={isLoading}

@@ -7,9 +7,11 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useTranslation } from "react-i18next";
 
 export default function TrophyScreen() {
   const styles = getStyles();
+  const { t } = useTranslation("trophies");
   const { id } = useLocalSearchParams();
   const trophy = trophiesCatalog.find((t) => String(t.id) === String(id));
 
@@ -26,11 +28,13 @@ export default function TrophyScreen() {
         </View>
 
         <AppText type="h1" bold style={{ textAlign: "center", marginBottom: Spacing.sm }}>
-          {trophy.title}
+          {t(trophy.title)}
         </AppText>
 
         <View style={styles.infoBox}>
-          <AppText style={{ textAlign: "center", lineHeight: 24, color: MyTheme.text }}>{trophy.description}</AppText>
+          <AppText style={{ textAlign: "center", lineHeight: 24, color: MyTheme.text }}>
+            {t(trophy.description)}
+          </AppText>
         </View>
 
         <View style={styles.progressSection}>
@@ -39,16 +43,16 @@ export default function TrophyScreen() {
               style={[
                 styles.progressBarFill,
                 {
-                  width: `${(trophy.progress / trophy.goal) * 100}%`,
+                  width: `${((trophy.progress || 0) / trophy.goal) * 100}%`,
                   backgroundColor: MyTheme.primaryAccent
                 }
               ]}
             />
           </View>
           <View style={styles.progressTextRow}>
-            <AppText type="caption">{trophy.requirement}</AppText>
+            <AppText type="caption">{t(trophy.requirement)}</AppText>
             <AppText type="caption" bold>
-              {trophy.progress} / {trophy.goal}
+              {trophy.progress || 0} / {trophy.goal}
             </AppText>
           </View>
         </View>

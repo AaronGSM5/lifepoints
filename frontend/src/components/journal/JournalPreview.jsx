@@ -9,9 +9,11 @@ import SectionHeader from "../ui/SectionHeader";
 import { router } from "expo-router";
 import HistoryCard from "../ui/HistoryCard";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const JournalPreview = ({ skeletonProps, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
 
   const flatActivities = useMemo(() => {
@@ -26,7 +28,7 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
   if (isLoading) {
     return (
       <View>
-        <SectionHeader title={"My Impact Journal"} icon={"journal"} rightLabel={"More"} isLoading={isLoading} />
+        <SectionHeader title={t("My Impact Journal")} icon={"journal"} rightLabel={t("More")} isLoading={isLoading} />
         <View style={styles.container}>
           {previewData.map((item, i) => (
             <BaseCard key={item.id || `skel-${i}`} style={styles.activityItem} padding={Spacing.sm}>
@@ -52,9 +54,9 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
   return (
     <View>
       <SectionHeader
-        title={"My Impact Journal"}
+        title={t("My Impact Journal")}
         icon={"journal"}
-        rightLabel={"More"}
+        rightLabel={t("More")}
         onRightPress={() => router.push("/journal")}
         isLoading={isLoading}
       />

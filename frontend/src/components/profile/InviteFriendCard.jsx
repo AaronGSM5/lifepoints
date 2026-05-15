@@ -4,6 +4,7 @@ import BaseCard from "../ui/BaseCard";
 import AppText from "../ui/AppText";
 import AppButton from "../ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 const InviteFriendCard = ({ referralCode }) => {
   const shareInvite = async () => {
@@ -19,6 +20,8 @@ const InviteFriendCard = ({ referralCode }) => {
     }
   };
 
+  const { t } = useTranslation("profile");
+
   return (
     <BaseCard style={styles.card}>
       <View style={styles.iconContainer}>
@@ -26,14 +29,16 @@ const InviteFriendCard = ({ referralCode }) => {
       </View>
 
       <AppText type="title" style={{ marginBottom: 8 }}>
-        Freunde einladen & kassieren
+        {t("Invite friends & earn rewards")}
       </AppText>
 
       <AppText type="caption" style={styles.description}>
-        Teile deinen Link. Sobald sich ein Freund anmeldet, bekommt ihr beide sofort extra Lifepoints auf euer Konto!
+        {t(
+          "Share your link. As soon as a friend signs up, you'll both instantly receive extra Lifepoints in your account!"
+        )}
       </AppText>
 
-      <AppButton title="Einladungslink senden" fullWidth onPress={shareInvite} />
+      <AppButton title={t("Send invitation link")} fullWidth onPress={shareInvite} />
     </BaseCard>
   );
 };

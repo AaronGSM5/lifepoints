@@ -6,23 +6,23 @@ import CustomizablesCard from "@/components/customizables/CustomizablesCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import AppText from "@/components/ui/AppText";
 import useStore from "@/store/useStore";
-
-const initialMockDatabase = {
-  frames: [
-    { id: "f0", name: "Standard", icon: "eyeOpen", color: "#ccc", unlocked: true, justUnlocked: false },
-    { id: "f1", name: "Neon Glow", icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true },
-    { id: "f2", name: "Solar Flare", icon: "sun", color: "#FF8E00", unlocked: false, justUnlocked: false },
-    { id: "f3", name: "Neon Glow", icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true }
-  ],
-  titles: [
-    { id: "t1", name: "Der Anfänger", icon: "trash", color: "#4C2F30", unlocked: true, justUnlocked: false },
-    { id: "t2", name: "Eco-Held", icon: "bulb", color: "#4CAF50", unlocked: true, justUnlocked: true }
-  ]
-};
+import { useTranslation } from "react-i18next";
 
 export default function CustomizablesScreen() {
+  const { t } = useTranslation("profile");
+  const initialMockDatabase = {
+    frames: [
+      { id: "f0", name: t("Default"), icon: "eyeOpen", color: "#ccc", unlocked: true, justUnlocked: false },
+      { id: "f1", name: t("Neon Glow"), icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true },
+      { id: "f2", name: t("Solar Flare"), icon: "sun", color: "#FF8E00", unlocked: false, justUnlocked: false },
+      { id: "f3", name: t("Neon Glow"), icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true }
+    ],
+    titles: [
+      { id: "t1", name: t("The Beginner"), icon: "trash", color: "#4C2F30", unlocked: true, justUnlocked: false },
+      { id: "t2", name: t("Eco-Hero"), icon: "bulb", color: "#4CAF50", unlocked: true, justUnlocked: true }
+    ]
+  };
   const [customizablesDb, setCustomizablesDb] = useState(initialMockDatabase);
-
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
   const containerWidth = Math.min(width, 480) - 32;
@@ -52,8 +52,8 @@ export default function CustomizablesScreen() {
   };
 
   const categories = [
-    { key: "frames", title: "Frames", data: customizablesDb.frames },
-    { key: "titles", title: "Titel", data: customizablesDb.titles }
+    { key: "frames", title: t("Frames"), data: customizablesDb.frames },
+    { key: "titles", title: t("Title"), data: customizablesDb.titles }
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function CustomizablesScreen() {
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
       >
         <View style={styles.contentMaxWidth}>
-          <ScreenTitle title={"Customizables"} />
+          <ScreenTitle title={t("Customizables")} />
 
           {categories.map((category) => (
             <View key={category.key} style={styles.categorySection}>

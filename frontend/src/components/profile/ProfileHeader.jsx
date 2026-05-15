@@ -14,9 +14,11 @@ import { getXpThreshold } from "@/utils/xpHelpers";
 import { getLeagueData } from "@/constants/Progression";
 import { getFrameById } from "@/constants/Frames";
 import { publicProfile } from "@/mocks/PublicProfile";
+import { useTranslation } from "react-i18next";
 
 const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
   const friendList = useStore((state) => state.profile.friends);
@@ -81,9 +83,9 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
           <AppText type="caption">@{profile.username}</AppText>
           <AppText type="h1">{profile.name}</AppText>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
-            {league.name} •{" "}
+            {t(league.name)} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>
-              {rankName}
+              {t(rankName)}
             </AppText>
           </AppText>
           <View style={{ height: Spacing.lg }}></View>
@@ -112,7 +114,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
           <>
             <AppButton
               variant="primary"
-              title={isExternUser ? (isFriend ? "Message" : "Add Friend") : "Edit Profile"}
+              title={isExternUser ? (isFriend ? t("Message") : t("Add Friend")) : t("Edit Profile")}
               icon={
                 isExternUser ? (
                   isFriend ? (
@@ -130,7 +132,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
             />
             <AppButton
               variant="primary"
-              title={isExternUser ? "Share Profile" : "Share Stats"}
+              title={isExternUser ? t("Share Profile") : t("Share Stats")}
               icon={<Icon name="share" size={16} color={!isDarkMode ? MyTheme.background : MyTheme.text} />}
               bgColor={"#2a2a2acb"}
               textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}

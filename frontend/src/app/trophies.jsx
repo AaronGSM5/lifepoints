@@ -5,8 +5,10 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import { useState } from "react";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { useTranslation } from "react-i18next";
 
 export default function TrophiesScreen() {
+  const { t } = useTranslation("trophies");
   const [trophies, setTrophies] = useState(trophiesCatalog);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
@@ -37,7 +39,7 @@ export default function TrophiesScreen() {
           contentContainerStyle={[styles.flatListContent, { paddingBottom: bottomPadding }]}
           columnWrapperStyle={{ gap: 16, marginBottom: Spacing.lg }}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={<ScreenTitle title={"Trophies"} />}
+          ListHeaderComponent={<ScreenTitle title={t("Trophies")} />}
           renderItem={({ item }) => (
             <View style={{ width: exactCardWidth }}>
               <TrophyCard

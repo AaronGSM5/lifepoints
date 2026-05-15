@@ -10,7 +10,7 @@ import useStore from "@/store/useStore";
 import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 
 export default function ProfileScreen() {
-  const { profile, customizables, trophies, isLoading } = useProfile();
+  const { customizables, trophies, isLoading } = useProfile();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",

@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function HistoryCard({
   title,
@@ -16,6 +17,7 @@ export default function HistoryCard({
   iconContainerStyle
 }) {
   const styles = getStyles();
+  const { t } = useTranslation("tasks");
   const isSpend = type === "spend";
 
   const pointColor = isSpend ? "#666" : MyTheme.primaryAccent;
@@ -27,7 +29,7 @@ export default function HistoryCard({
 
       <View style={styles.textContainer}>
         <AppText type="body" bold numberOfLines={1}>
-          {title}
+          {t(title)}
         </AppText>
         {time && (
           <AppText type="caption" numberOfLines={1} style={{ marginTop: 2 }}>

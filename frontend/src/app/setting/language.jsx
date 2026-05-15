@@ -18,7 +18,7 @@ export default function LanguageScreen() {
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
       <View style={styles.headerContainer}>
-        <ScreenTitle title={"Sprache"} />
+        <ScreenTitle title={t("Language & Region")} />
         <AppText type="caption" style={{ fontSize: 15 }}>
           {t("Select the language in which you want LifePoints to be displayed.")}
         </AppText>

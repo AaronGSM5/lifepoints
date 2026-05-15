@@ -7,9 +7,11 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
@@ -51,7 +53,7 @@ const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeleto
     <View style={[styles.xpContainer, style]}>
       <View style={styles.xpHeader}>
         <AppText bold type="caption" style={!isDarkMode && { color: MyTheme.text }}>
-          XP PROGRESS
+          {t("XP PROGRESS")}
         </AppText>
         {isLoading ? (
           <Skeleton {...skeletonProps} width={60} height={12} />

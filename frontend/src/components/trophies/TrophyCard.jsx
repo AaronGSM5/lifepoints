@@ -6,9 +6,11 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const styles = getStyles();
+  const { t } = useTranslation("trophies");
   const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           numberOfLines={2}
           style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
         >
-          {title}
+          {t(title)}
         </AppText>
       </View>
     </Pressable>

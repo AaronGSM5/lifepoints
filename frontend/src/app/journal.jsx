@@ -7,9 +7,11 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const JournalPage = () => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
   const renderItem = ({ item }) => (
     <HistoryCard
@@ -34,7 +36,7 @@ const JournalPage = () => {
 
   return (
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false} withPaddingTop={false}>
-      <ScreenTitle title={"My Impact Journal"} />
+      <ScreenTitle title={t("My Impact Journal")} />
       <SectionList
         sections={activities || []}
         keyExtractor={(item) => item.id}

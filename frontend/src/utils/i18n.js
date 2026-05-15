@@ -11,6 +11,7 @@ import deHome from '@/../public/locales/de/home.json';
 import deProfile from '@/../public/locales/de/profile.json';
 import deSettings from '@/../public/locales/de/settings.json';
 import deTasks from '@/../public/locales/de/tasks.json';
+import deTrophies from '@/../public/locales/de/trophies.json'
 
 // Imports für die englische Sprache
 import enAuth from '@/../public/locales/en/auth.json';
@@ -20,6 +21,7 @@ import enHome from '@/../public/locales/en/home.json';
 import enProfile from '@/../public/locales/en/profile.json';
 import enSettings from '@/../public/locales/en/settings.json';
 import enTasks from '@/../public/locales/en/tasks.json';
+import enTrophies from '@/../public/locales/en/trophies.json'
 
 // Erkennt die Nutzersprache: Entweder aus dem Speicher oder vom Betriebssystem
 const languageDetector = {
@@ -62,6 +64,7 @@ i18n
         profile: deProfile,
         settings: deSettings,
         tasks: deTasks,
+        trophies: deTrophies,
       },
       en: {
         auth: enAuth,
@@ -71,11 +74,12 @@ i18n
         profile: enProfile,
         settings: enSettings,
         tasks: enTasks,
+        trophies: enTrophies,
       },
     },
 
     // Deklaration aller Namespaces, damit i18next weiß, welche Keys existieren
-    ns: ['auth', 'common', 'community', 'home', 'profile', 'settings', 'tasks'],
+    ns: ['auth', 'common', 'community', 'home', 'profile', 'settings', 'tasks', 'trophies'],
 
     // Wenn kein Namespace angegeben wird (z.B. i18n.t('save')), greift 'common'
     defaultNS: 'common',

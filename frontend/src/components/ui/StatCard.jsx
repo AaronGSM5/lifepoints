@@ -9,9 +9,11 @@ import BaseCard from "@/components/ui/BaseCard";
 import AppBadge from "./AppBadge";
 import { router } from "expo-router";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   const styles = getStyles();
+  const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (

@@ -6,8 +6,10 @@ import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 import SectionHeader from "../ui/SectionHeader";
 import CustomizablesCard from "../customizables/CustomizablesCard";
+import { useTranslation } from "react-i18next";
 
 const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
+  const { t } = useTranslation("profile");
   if (!isLoading && (!customizables || customizables.length === 0)) {
     return null;
   }
@@ -15,10 +17,10 @@ const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.md }}>
       <SectionHeader
-        title={"Customizables"}
+        title={t("Customizables")}
         icon={"star"}
         iconColor={MyTheme.primaryAccent}
-        rightLabel={"See all"}
+        rightLabel={t("See all")}
         rightLabelColor={MyTheme.primaryAccent}
         onRightPress={() => router.push("/customizables")}
         isLoading={isLoading}
@@ -40,7 +42,7 @@ const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
             <View key={`custom-${item?.id || i}`} style={{ width: 80 }}>
               <CustomizablesCard
                 id={item.id}
-                name={item.name}
+                name={t(item.name)}
                 icon={item.icon || "circle"}
                 color={item.color || MyTheme.text}
                 isActive={false}
