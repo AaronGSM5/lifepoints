@@ -9,9 +9,11 @@ import BaseCard from "../ui/BaseCard";
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
@@ -110,7 +112,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
               )}
 
               <AppText type="caption" style={styles.memberText}>
-                {item.members} Members
+                {item.members} {t("Members")}
               </AppText>
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>

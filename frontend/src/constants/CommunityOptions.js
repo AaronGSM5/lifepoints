@@ -13,13 +13,13 @@ export const communityIcons = [
 ];
 
 export const communityBadges = [
-  "freundlich", "chillig", "hilfsbereit", "respektvoll", "safe space",
-  "diskussionsfreudig", "humorvoll", "anfänger", "fortgeschritten",
-  "expert", "pro", "mentor", "creator", "nischen-pro", "tech",
-  "gaming", "fitness", "lifestyle", "kunst", "musik", "kochen",
-  "outdoor", "finanzen", "memes", "coding", "design", "fotografie",
-  "mindfulness", "startup", "networking", "feedback", "support",
-  "lokal", "global", "study-group", "hobby", "täglich aktiv",
-  "wochenend-vibes", "voice-chat", "text-only", "real-life meetups",
-  "events"
+  "Friendly", "Chill", "Helpful", "Respectful", "Safe Space",
+  "Open to Discuss", "Humorous", "Beginner", "Advanced",
+  "Expert", "Pro", "Mentor", "Creator", "Niche Pro", "Tech",
+  "Gaming", "Fitness", "Lifestyle", "Art", "Music", "Cooking",
+  "Outdoor", "Finance", "Memes", "Coding", "Design", "Photography",
+  "Mindfulness", "Startup", "Networking", "Feedback", "Support",
+  "Local", "Global", "Study Group", "Hobby", "Daily Active",
+  "Weekend Vibes", "Voice Chat", "Text Only", "Real-Life Meetups",
+  "Events"
 ];

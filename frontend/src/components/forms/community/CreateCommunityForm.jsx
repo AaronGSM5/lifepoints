@@ -12,13 +12,13 @@ import BannerUploader from "./BannerUploader";
 import SizePicker from "./SizePicker";
 import { communityIcons, communityBadges } from "@/constants/CommunityOptions";
 import { communityTiers } from "@/constants/CommunityPricing";
-import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const styles = getStyles();
-  const isDarkMode = useStore((state) => state.isDarkMode);
+  const { t } = useTranslation("community");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");
@@ -62,7 +62,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
 
   return (
-    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={"Neue Community"}>
+    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={t("New Community")}>
       <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
         {/* Name */}
         <View style={styles.section}>
@@ -70,23 +70,25 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
             COMMUNITY-NAME (PERMANENT)
           </AppText>
           <AppInput
-            placeholder="Wie soll deine Community heißen?"
+            placeholder={t("What should you name your community?")}
             value={name}
             onChangeText={setName}
             bottomMargin={false}
             isForm
           />
-          <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
+          <AppText style={styles.infoText}>
+            {t("Choose carefully. You won't be able to change the name later.")}
+          </AppText>
         </View>
 
         {/* Description */}
         <View style={styles.section}>
           <AppText type="caption" style={styles.label}>
-            BESCHREIBUNG
+            {t("DESCRIPTION")}
           </AppText>
           <AppInput
             multiline
-            placeholder="Worum geht es in deiner Community?"
+            placeholder={t("What is your community about?")}
             value={description}
             onChangeText={setDescription}
             bottomMargin={false}
@@ -127,7 +129,9 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
 
       <View style={styles.footer}>
         <AppButton
-          title={selectedSize.price === "Gratis" ? "Kostenlos Erstellen" : `Für ${selectedSize.price} Erstellen`}
+          title={
+            selectedSize.price === "Gratis" ? t("Create now") : `${t("Für")} ${selectedSize.price} ${t("Erstellen")}`
+          }
           onPress={handleCreate}
           disabled={!formValid}
           bgColor={MyTheme.primaryAccent}

@@ -4,13 +4,15 @@ import * as ImagePicker from "expo-image-picker";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert("Wir brauchen Zugriff auf deine Fotos, um ein Banner hochzuladen.");
+      alert(t("We need access to your photos in order to upload a banner."));
       return;
     }
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,7 +42,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
         <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
           <Icon name="camera" color={MyTheme.muted} />
           <AppText type="caption" style={{ textAlign: "center", marginTop: 4 }}>
-            Tippen zum Auswählen (16:9 empfohlen)
+            {t("Tap to select (16:9 recommended)")}
           </AppText>
         </Pressable>
       )}

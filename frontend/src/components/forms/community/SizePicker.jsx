@@ -2,14 +2,15 @@ import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {
   const styles = getStyles();
-
+  const { t } = useTranslation("community");
   return (
     <View>
       <AppText type="caption" style={styles.label}>
-        COMMUNITY-GRÖSSE
+        {t("COMMUNITY-SIZE")}
       </AppText>
       <View style={styles.sizeGrid}>
         {options.map((opt) => (
@@ -19,7 +20,7 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
             style={[styles.sizeCard, selectedSize.slots === opt.slots && styles.selectedSizeCard]}
           >
             <AppText bold>{opt.slots}</AppText>
-            <AppText type="caption">{opt.price}</AppText>
+            <AppText type="caption">{t(opt.price)}</AppText>
           </Pressable>
         ))}
       </View>

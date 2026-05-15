@@ -12,6 +12,7 @@ import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import { MyTheme } from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -19,6 +20,7 @@ export default function CommunitiesScreen() {
   const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
     useCommunities();
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
@@ -62,9 +64,9 @@ export default function CommunitiesScreen() {
     ];
 
     const staticSections = [
-      { id: "recommended", categoryKey: "recommended_you", title: "Recommended for you", data: recommended },
-      { id: "lifestyle", categoryKey: "lifestyle_food", title: "Lifestyle & Food", data: recommended },
-      { id: "trending", categoryKey: "trending_now", title: "Trending Right Now", data: recommended }
+      { id: "recommended", categoryKey: "recommended_you", title: t("Recommended for you"), data: recommended },
+      { id: "lifestyle", categoryKey: "lifestyle_food", title: t("Lifestyle & Food"), data: recommended },
+      { id: "trending", categoryKey: "trending_now", title: t("Trending Right Now"), data: recommended }
     ].map((section) => ({ ...section, type: "section" }));
 
     const loadedSections = dynamicSections.map((section) => ({ ...section, type: "section" }));
@@ -91,7 +93,7 @@ export default function CommunitiesScreen() {
             <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
               <Pressable onPress={() => router.push("/search")}>
                 <View pointerEvents="none">
-                  <AppInput icon="search" placeholder="Search..." bottomMargin={false} editable={false} blur />
+                  <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
                 </View>
               </Pressable>
             </View>
@@ -104,8 +106,8 @@ export default function CommunitiesScreen() {
             <View style={styles.myCommunitiesSection}>
               <View style={styles.paddedContent}>
                 <SectionHeader
-                  title="My Communities"
-                  rightLabel="See all"
+                  title={t("My Communities")}
+                  rightLabel={t("See all")}
                   onRightPress={() => console.log("mockClickReaction xD")}
                 />
               </View>
@@ -176,7 +178,7 @@ export default function CommunitiesScreen() {
     if (allSectionsLoaded && listData.length > 5) {
       return (
         <View style={styles.endOfList}>
-          <SectionHeader title="Thats all for now! 👋" center />
+          <SectionHeader title={t("Thats all for now!")} center />
         </View>
       );
     }

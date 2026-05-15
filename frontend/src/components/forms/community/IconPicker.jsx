@@ -4,9 +4,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
   const heightAnim = useRef(new Animated.Value(62)).current;
@@ -57,7 +59,7 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
         <View style={styles.expandContainer}>
           <Pressable onPress={expand} style={styles.moreButton}>
             <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
-              see more
+              {t("see more")}
             </AppText>
           </Pressable>
         </View>

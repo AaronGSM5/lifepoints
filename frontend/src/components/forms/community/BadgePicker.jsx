@@ -4,9 +4,11 @@ import AppText from "@/components/ui/AppText";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
+import { useTranslation } from "react-i18next";
 
 export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   const styles = getStyles();
+  const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
   const heightAnim = useRef(new Animated.Value(30)).current;
@@ -31,7 +33,7 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
         onLayout={(event) => setFullHeight(event.nativeEvent.layout.height)}
       >
         {badges.map((badge, index) => (
-          <AppBadge key={`measure-badge-${index}`} label={badge} variant="outline" />
+          <AppBadge key={`measure-badge-${index}`} label={t(badge)} variant="outline" />
         ))}
       </View>
 
@@ -42,7 +44,7 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
             return (
               <AppBadge
                 key={`${badge}-${index}`}
-                label={badge}
+                label={t(badge)}
                 variant={isSelected ? "primary" : "outline"}
                 onPress={() => onToggleBadge(badge)}
               />
@@ -55,7 +57,7 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
         <View style={styles.expandContainer}>
           <Pressable onPress={expand} style={styles.moreButton}>
             <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
-              see more
+              {t("see more")}
             </AppText>
           </Pressable>
         </View>

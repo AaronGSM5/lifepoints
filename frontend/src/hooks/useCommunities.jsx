@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 const HORIZONTAL_PAGE_SIZE = 5;
 const VERTICAL_PAGE_SIZE = 2;
@@ -16,6 +17,7 @@ const simulateFetch = (dataArray, page, pageSize) => {
 };
 
 export const useCommunities = () => {
+  const { t } = useTranslation("community");
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const myCommunities = useStore((state) => state.communities.myCommunities);
@@ -60,7 +62,7 @@ export const useCommunities = () => {
 
           newSectionsWithData.push({
             id: sectionId,
-            title: `Discover: Topic ${sectionIndex + 1}`,
+            title: `${t("Discover")}: ${t("Topic")} ${sectionIndex + 1}`,
             categoryKey: categoryKey,
             data: firstPageData
           });
