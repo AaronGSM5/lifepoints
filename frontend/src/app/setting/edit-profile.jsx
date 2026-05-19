@@ -23,6 +23,7 @@ import useStore from "@/store/useStore";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
   const styles = getStyles();
@@ -52,6 +53,7 @@ export default function EditProfileScreen() {
 
   const handleSave = () => {
     setIsSaving(true);
+    triggerHaptic();
     setTimeout(() => {
       updateProfile(formData);
       setIsSaving(false);

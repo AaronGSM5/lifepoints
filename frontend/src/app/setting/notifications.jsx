@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import { MyTheme } from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function NotificationsScreen() {
   const styles = getStyles();
@@ -16,7 +17,10 @@ export default function NotificationsScreen() {
     offers: true
   });
 
-  const toggleSwitch = (key) => setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleSwitch = (key) => {
+    triggerHaptic();
+    setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <ScreenWrapper withPaddingTop={false}>

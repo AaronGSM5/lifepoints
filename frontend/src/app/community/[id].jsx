@@ -10,6 +10,7 @@ import { useCommunities } from "@/hooks/useCommunities";
 import SectionHeader from "@/components/ui/SectionHeader";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -37,7 +38,14 @@ export default function CommunityDetailScreen() {
 
           {/* Action Button */}
           {!myCommunities.some((c) => c?.id === community.id) && (
-            <AppButton title={t("Join Community")} onPress={() => joinCommunity(community)} style={styles.joinButton} />
+            <AppButton
+              title={t("Join Community")}
+              style={styles.joinButton}
+              onPress={() => {
+                triggerHaptic("medium");
+                joinCommunity(community);
+              }}
+            />
           )}
 
           {/* Live Section */}

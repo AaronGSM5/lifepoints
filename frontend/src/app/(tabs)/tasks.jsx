@@ -15,6 +15,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import useStore from "@/store/useStore";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
@@ -143,6 +144,7 @@ const TasksScreen = () => {
                   setTaskToTrack(item.id);
                   setInstaTrackingModalVisible(true);
                 } else {
+                  triggerHaptic();
                   completeTask(item.id);
                 }
               }}

@@ -14,6 +14,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import AppButton from "@/components/ui/AppButton";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 const MOCK_MEMBERS = [
   { id: "1", name: "Sarah", lp: 2450 },
@@ -137,7 +138,13 @@ export default function MyCommunityDetailScreen() {
         </View>
         {myCommunities.some((c) => c?.id === community?.id) && (
           <View>
-            <AppButton title={t("Leave Community")} onPress={() => handleLeaveCommunity(community)} />
+            <AppButton
+              title={t("Leave Community")}
+              onPress={() => {
+                triggerHaptic("medium");
+                handleLeaveCommunity(community);
+              }}
+            />
           </View>
         )}
       </ScreenWrapper>

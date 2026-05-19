@@ -16,6 +16,7 @@ import LevelUpModal from "@/components/LevelUpModal";
 import LootGameModal from "@/components/home/LootGameModal";
 import { MyTheme } from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -100,6 +101,7 @@ export default function HomeScreen() {
                 isLoading={isLoading}
                 onAction={() => {
                   completeTask(task.id);
+                  triggerHaptic("success");
                   notifyQuestSystem("TASK_COMPLETED", { category: task.category });
                   addExperience(task.xp);
                 }}

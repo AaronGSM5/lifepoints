@@ -11,6 +11,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
   const styles = getStyles();
@@ -30,10 +31,12 @@ export default function SubscriptionScreen() {
   };
 
   const handleSubscribe = (tierName) => {
+    triggerHaptic("success");
     Alert.alert("Upgrade", `Der Kaufprozess für ${tierName} würde jetzt starten.`);
   };
 
   const handleRestore = () => {
+    triggerHaptic();
     Alert.alert("Wiederherstellen", "Suche nach früheren Käufen...");
   };
 
@@ -182,7 +185,10 @@ export default function SubscriptionScreen() {
           <View style={styles.toggleContainer}>
             <TouchableOpacity
               style={[styles.toggleButton, billingCycle === "monthly" && styles.toggleActive]}
-              onPress={() => setBillingCycle("monthly")}
+              onPress={() => {
+                triggerHaptic();
+                setBillingCycle("monthly");
+              }}
             >
               <AppText bold style={{ color: billingCycle === "monthly" ? MyTheme.background : MyTheme.text }}>
                 {t("Monthly")}
@@ -190,7 +196,10 @@ export default function SubscriptionScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.toggleButton, billingCycle === "yearly" && styles.toggleActive]}
-              onPress={() => setBillingCycle("yearly")}
+              onPress={() => {
+                triggerHaptic();
+                setBillingCycle("yearly");
+              }}
             >
               <AppText bold style={{ color: billingCycle === "yearly" ? MyTheme.background : MyTheme.text }}>
                 {t("Yearly")}

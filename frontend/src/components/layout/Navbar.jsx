@@ -5,6 +5,7 @@ import { BlurView } from "expo-blur";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
@@ -76,6 +77,7 @@ export default function Navbar({ state, descriptors, navigation }) {
             });
 
             if (!isFocused && !event.defaultPrevented) {
+              triggerHaptic();
               navigation.navigate(route.name);
             }
           };

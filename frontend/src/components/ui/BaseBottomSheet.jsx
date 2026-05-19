@@ -15,6 +15,7 @@ import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
+import { triggerHaptic } from "@/utils/haptics";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -57,6 +58,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   useEffect(() => {
     if (isVisible) {
       setShowModal(true);
+      triggerHaptic();
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
