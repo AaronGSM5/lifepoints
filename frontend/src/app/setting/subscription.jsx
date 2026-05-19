@@ -46,9 +46,9 @@ export default function SubscriptionScreen() {
         </AppText>
       </View>
       <View style={styles.featureList}>
-        <FeatureItem text={t("Grundlegende Task-Erstellung")} />
-        <FeatureItem text={t("Zugang zu 2 Communities")} />
-        <FeatureItem text={t("Standard-Rewards im Shop")} />
+        <FeatureItem text={t("Track impact")} />
+        <FeatureItem text={t("Standard Rewards")} />
+        <FeatureItem text={t("Standard Look")} />
       </View>
       <AppButton title={t("Current Plan")} variant="secondary" disabled style={{ marginTop: Spacing.md }} />
     </View>
@@ -80,22 +80,22 @@ export default function SubscriptionScreen() {
         </AppText>
         <View style={styles.priceRow}>
           <AppText type="h1" style={{ color: "#fff" }}>
-            {billingCycle === "yearly" ? "€4.99" : "€6.99"}
+            {billingCycle === "yearly" ? "€0.99" : "€1.99"}
           </AppText>
           <AppText style={{ color: "rgba(255,255,255,0.8)", marginLeft: 4 }}>/ {t("Month")}</AppText>
         </View>
         {billingCycle === "yearly" && (
           <AppText type="caption" style={{ color: "#fff", marginTop: 4 }}>
-            {t("Billed annually")} (€59.88 / {t("Year")})
+            {t("Billed annually")} (€11.88 / {t("Year")})
           </AppText>
         )}
       </View>
 
       <View style={styles.featureList}>
-        <FeatureItem text={t("Alles aus Standard")} light />
-        <FeatureItem text={t("Unbegrenzte Communities")} light />
-        <FeatureItem text={t("1.5x LifePoints Multiplikator")} light />
-        <FeatureItem text={t("Erweiterte Statistiken")} light />
+        <FeatureItem text={t("Everything from Standard")} light />
+        <FeatureItem text={t("Advanced Statistics")} light />
+        <FeatureItem text={t("Ad-free")} light />
+        <FeatureItem text={t("Custom Profile & Community Banners")} light />
       </View>
 
       <AppButton
@@ -118,26 +118,28 @@ export default function SubscriptionScreen() {
       <View style={styles.cardHeader}>
         <AppText type="h2">LifePoints Premium</AppText>
         <View style={styles.priceRow}>
-          <AppText type="h1">{billingCycle === "yearly" ? "€9.99" : "€12.99"}</AppText>
+          <AppText type="h1">{billingCycle === "yearly" ? "€4.99" : "€9.99"}</AppText>
           <AppText style={{ color: MyTheme.muted, marginLeft: 4 }}>/ {t("Month")}</AppText>
         </View>
         {billingCycle === "yearly" && (
           <AppText type="caption" style={{ color: MyTheme.muted, marginTop: 4 }}>
-            {t("Billed annually")} (€119.88 / {t("Year")})
+            {t("Billed annually")} (€59.88 / {t("Year")})
           </AppText>
         )}
       </View>
 
       <View style={styles.featureList}>
-        <FeatureItem text={t("Alles aus LifePoints+")} light />
-        <FeatureItem text={t("Exklusive Premium-Rewards")} light />
-        <FeatureItem text={t("2x LifePoints Multiplikator")} light />
-        <FeatureItem text={t("Priority Support")} light />
-        <FeatureItem text={t("Keine Werbung")} light />
+        <FeatureItem text={t("Everything from LifePoints+")} light />
+        <FeatureItem text={t("Mentor Status")} light />
+        <FeatureItem text={t("Charity-Voting")} light />
+        <FeatureItem text={t("Maximum Freedom")} light />
+        <FeatureItem text={t("Smart Community Administration")} light />
+        <FeatureItem text={t("Custom Themes")} light />
+        <AppText type="caption">{t("... and many more benefits")}</AppText>
       </View>
 
       <AppButton
-        title={t("Get Premium")}
+        title={t("Unlock Premium")}
         variant="primary"
         textStyle={{ color: "#1A1A1A" }}
         bgColor={MyTheme.gold}
@@ -170,9 +172,7 @@ export default function SubscriptionScreen() {
         <AppText type="h1" style={{ textAlign: "center" }}>
           {t("Reach the next level")}
         </AppText>
-        <AppText style={styles.subtitle}>
-          {t("Schalte exklusive Funktionen frei und sammle LifePoints noch schneller.")}
-        </AppText>
+        <AppText style={styles.subtitle}>{t("Unlock exclusive features and earn LifePoints even faster.")}</AppText>
 
         {isLoading ? (
           <View style={{ alignSelf: "center", marginTop: Spacing.lg }}>
@@ -309,7 +309,7 @@ export default function SubscriptionScreen() {
           </TouchableOpacity>
           <AppText type="caption" style={styles.legalText}>
             {t(
-              "AboSubscriptions renew automatically unless you cancel them at least 24 hours before the current period ends. You can manage your subscription at any time in the App Store or Play Store settings."
+              "Subscriptions renew automatically unless you cancel them at least 24 hours before the current period ends. You can manage your subscription at any time in the App Store or Play Store settings."
             )}
           </AppText>
         </View>
