@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
-  Animated, // 🔥 NEU: Für unsere Custom-Animationen
-  Dimensions, // 🔥 NEU: Um die Bildschirmhöhe zu kennen
+  Animated,
+  Dimensions,
   PanResponder
 } from "react-native";
 import { MyTheme } from "@/constants/Colors";
@@ -18,42 +18,31 @@ import { Icon } from "@/components/icons/Icon";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
+const SHEET_HEIGHT = SCREEN_HEIGHT * 0.8;
+
 const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   const styles = getStyles();
-  // Wir entkoppeln den isVisible-State, damit wir die Schließ-Animation abspielen können,
-  // BEVOR das Modal wirklich aus dem DOM verschwindet.
   const [showModal, setShowModal] = useState(isVisible);
 
-  // Unsere zwei Animations-Werte
-  const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current; // Startet außerhalb des Bildschirms (unten)
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Startet unsichtbar
+  const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const panResponder = useRef(
     PanResponder.create({
-      // 1. Soll die Geste gestartet werden? (Nur wenn nach UNTEN gewischt wird)
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        // Wir aktivieren den Responder nur, wenn der User mindestens 10px nach unten wischt.
-        // Das verhindert, dass versehentliches Tippen als Swipe erkannt wird.
         return gestureState.dy > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
       },
 
-      // 2. Was passiert WÄHREND der Finger sich bewegt?
       onPanResponderMove: (_, gestureState) => {
-        // Das Sheet folgt dem Finger! (Wir lassen keine negativen Werte zu,
-        // damit man das Sheet nicht über den oberen Rand hinausziehen kann)
         if (gestureState.dy > 0) {
           slideAnim.setValue(gestureState.dy);
         }
       },
 
-      // 3. Was passiert, wenn der Finger LOSLÄSST?
       onPanResponderRelease: (_, gestureState) => {
-        // War der Wisch schnell genug (vy) ODER weit genug nach unten (dy)?
         if (gestureState.dy > 150 || gestureState.vy > 1.5) {
-          // Ja! -> Schließen
           onClose();
         } else {
-          // Nein! -> Brechen wir ab und federn das Sheet zurück zur Ausgangsposition (0)
           Animated.spring(slideAnim, {
             toValue: 0,
             tension: 65,
@@ -68,7 +57,6 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   useEffect(() => {
     if (isVisible) {
       setShowModal(true);
-      // Beim Öffnen: Faden und Sliden gleichzeitig
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
@@ -79,11 +67,10 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
           toValue: 0,
           tension: 65,
           friction: 11,
-          useNativeDriver: true // Macht die Animation extrem flüssig (60fps)
+          useNativeDriver: true
         })
       ]).start();
     } else {
-      // Beim Schließen: Rückwärts abspielen
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
@@ -96,45 +83,32 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
           useNativeDriver: true
         })
       ]).start(() => {
-        // Erst wenn die Animation fertig ist, verstecken wir das Modal komplett
         setShowModal(false);
       });
     }
   }, [isVisible]);
 
-  // Wenn das Modal komplett zu ist, rendern wir nichts (spart Performance)
   if (!showModal) return null;
 
   return (
-    <Modal
-      visible={showModal}
-      transparent={true}
-      animationType="none" // 🔥 WICHTIG: Wir übernehmen die Animation jetzt selbst!
-      onRequestClose={onClose}
-    >
+    <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.overlay}>
-        {/* 1. Der Hintergrund: FADET ein */}
         <TouchableWithoutFeedback onPress={onClose}>
           <Animated.View style={[styles.backdrop, { opacity: fadeAnim }]} />
         </TouchableWithoutFeedback>
 
-        {/* 2. Das Sheet: SLIDET von unten rein */}
-        <Animated.View
-          style={[
-            styles.sheetContainer,
-            { transform: [{ translateY: slideAnim }] } // Hier greift unsere Spring-Animation
-          ]}
-          {...panResponder.panHandlers}
-        >
-          <View style={styles.dragHandleContainer}>
-            <View style={styles.dragHandle} />
-          </View>
+        <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
+          <View {...panResponder.panHandlers} style={styles.panResponderArea}>
+            <View style={styles.dragHandleContainer}>
+              <View style={styles.dragHandle} />
+            </View>
 
-          <View style={styles.header}>
-            {title ? <AppText type="h2">{title}</AppText> : <View />}
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Icon name="close" size={24} color={MyTheme.text} />
-            </TouchableOpacity>
+            <View style={styles.header}>
+              {title ? <AppText type="h2">{title}</AppText> : <View />}
+              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                <Icon name="close" size={24} color={MyTheme.text} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.content}>{children}</View>
@@ -159,8 +133,11 @@ const getStyles = () =>
       borderTopLeftRadius: Spacing.borderRadius.lg,
       borderTopRightRadius: Spacing.borderRadius.lg,
       overflow: "hidden",
-      height: "80%",
+      height: SHEET_HEIGHT,
       width: "100%"
+    },
+    panResponderArea: {
+      backgroundColor: "transparent"
     },
     dragHandleContainer: {
       alignItems: "center",
