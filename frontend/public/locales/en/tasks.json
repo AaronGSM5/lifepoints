@@ -51,12 +51,12 @@
   "Delete an app that you haven't opened in over a month.": "Delete an app that you haven't opened in over a month.",
   // Task Categories
   "categories": {
-  "all": "Alle",
-  "selfcare": "Selbstliebe",
-  "health": "Gesundheit",
-  "social": "Soziales",
-  "digital": "Digitales",
-  "special": "Spezial"
+  "all": "All",
+  "selfcare": "Selfcare",
+  "health": "Health",
+  "social": "Social",
+  "digital": "Digital",
+  "special": "Special"
   },
   // Task dedicated page
   "Description": "Description",
