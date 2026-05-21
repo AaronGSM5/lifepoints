@@ -11,6 +11,9 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
   const [localLoading, setLocalLoading] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
 
+  const CARD_WIDTH = 260;
+  const SNAP_INTERVAL = CARD_WIDTH + Spacing.md;
+
   useEffect(() => {
     setData(initialData || []);
   }, [initialData]);
@@ -37,7 +40,11 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
     }
   };
 
-  const renderHorizontalItem = ({ item }) => <RecommendedCommunity item={item} onPress={() => onPressItem(item)} />;
+  const renderHorizontalItem = ({ item }) => (
+    <View style={{ width: CARD_WIDTH, marginRight: Spacing.md }}>
+      <RecommendedCommunity item={item} onPress={() => onPressItem(item)} />
+    </View>
+  );
 
   const renderFooter = () => {
     if (localLoading) {
@@ -62,7 +69,8 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
         keyExtractor={(item, index) => item.id?.toString() || index.toString()}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.horizontalScrollContentContainer}
-        snapToInterval={260 + Spacing.md}
+        snapToInterval={SNAP_INTERVAL}
+        snapToAlignment="start"
         decelerationRate="fast"
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.5}
@@ -81,8 +89,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md
   },
   horizontalScrollContentContainer: {
-    paddingHorizontal: Spacing.md,
-    gap: Spacing.md,
+    paddingLeft: Spacing.md,
     alignItems: "center"
   },
   horizontalLoader: {
