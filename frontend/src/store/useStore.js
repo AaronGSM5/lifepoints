@@ -37,7 +37,7 @@ const useStore = create(
           completedTaskIds: state.completedTaskIds,
           activeTaskIds: state.activeTaskIds,
           activities: state.activities,
-          communities: state.communities,
+          myCommunities: state.myCommunities,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isDarkMode: state.isDarkMode,
           showInstaTrackingModal: state.showInstaTrackingModal

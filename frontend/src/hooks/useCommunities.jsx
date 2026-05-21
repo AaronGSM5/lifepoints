@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { recommendedCommunities } from "@/mocks/RecommendedCommunities";
 
 const HORIZONTAL_PAGE_SIZE = 5;
 const VERTICAL_PAGE_SIZE = 2;
@@ -20,8 +21,7 @@ export const useCommunities = () => {
   const { t } = useTranslation("community");
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const myCommunities = useStore((state) => state.communities.myCommunities);
-  const recommendedCommunities = useStore((state) => state.communities.recommendedCommunities);
+  const myCommunities = useStore((state) => state.myCommunities);
   const createCommunity = useStore((state) => state.createCommunity);
 
   useEffect(() => {

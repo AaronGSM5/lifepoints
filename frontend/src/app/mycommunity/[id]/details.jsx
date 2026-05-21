@@ -44,7 +44,7 @@ export default function MyCommunityDetailScreen() {
 
   const handleLeaveCommunity = (community) => {
     router.push("/communities");
-    leaveCommunity(community);
+    leaveCommunity(community.id);
   };
 
   return (

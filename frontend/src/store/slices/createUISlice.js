@@ -1,6 +1,6 @@
 import { settingsSections } from "@/constants/SettingsConfig";
 
-export const createUISlice = (set) => ({
+export const createUISlice = (set, get) => ({
   isDarkMode: true,
   hasCompletedOnboarding: false,
   settings: settingsSections,

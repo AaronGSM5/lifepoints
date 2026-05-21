@@ -54,7 +54,6 @@ export default function ShopScreen() {
           setActiveCat={setActiveCat}
           skeletonProps={skeletonProps}
           isLoading={isLoading}
-          namespace="shop"
         />
 
         <View style={styles.paddedContent}>

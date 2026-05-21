@@ -9,11 +9,11 @@ import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { featuredRewards } from "@/constants/FeaturedRewards";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
   const { t } = useTranslation("shop");
   const redeemReward = useStore((state) => state.redeemReward);
-  const featuredRewards = useStore((state) => state.featuredRewards);
   const selectedReward = featuredRewards?.[0];
   if (isLoading) {
     return (

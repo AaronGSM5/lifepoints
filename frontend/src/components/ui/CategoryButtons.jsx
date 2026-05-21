@@ -3,10 +3,8 @@ import AppButton from "./AppButton";
 import { Skeleton } from "moti/skeleton";
 import { MyTheme } from "@/constants/Colors";
 import { ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
 
-const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, isLoading, namespace = "tasks" }) => {
-  const { t } = useTranslation(namespace);
+const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, isLoading }) => {
   return (
     <ScrollView
       horizontal
@@ -20,16 +18,15 @@ const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, i
             .map((_, i) => (
               <Skeleton key={i} {...skeletonProps} width={80} height={45} radius={Spacing.borderRadius.full} />
             ))
-        : categories.map((cat, index) => {
-            const lowercaseCat = cat.toLowerCase();
-            const isActive = lowercaseCat === activeCat.toLowerCase();
+        : categories.map((cat) => {
+            const isActive = cat.id === activeCat;
             return (
               <AppButton
-                key={index}
-                title={t(`categories.${lowercaseCat}`)}
+                key={cat.id}
+                title={cat.label}
                 variant={isActive ? "primary" : "secondary"}
                 size="md"
-                onPress={() => setActiveCat(lowercaseCat)}
+                onPress={() => setActiveCat(cat.id)}
                 borderStyle={isActive ? { borderWidth: 1, borderColor: MyTheme.secondary } : undefined}
               />
             );

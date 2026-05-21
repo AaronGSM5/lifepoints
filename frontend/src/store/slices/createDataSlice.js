@@ -1,19 +1,10 @@
 import { tasksCatalog } from '@/constants/TasksCatalog';
 import { recommendedTasks } from '@/mocks/FeaturedTasks';
-import { trophiesCatalog } from '@/constants/TrophiesCatalog';
 import { rewardsCatalog } from '@/constants/RewardsCatalog';
-import { recommendedCommunities } from '@/mocks/RecommendedCommunities';
-import { questCatalog } from '@/constants/QuestCatalog';
 import { featuredRewards } from '@/constants/FeaturedRewards';
 
 export const createDataSlice = (set, get) => ({
-  tasks: tasksCatalog,
-  recommendedTasks: recommendedTasks,
-  trophies: trophiesCatalog,
-  rewards: rewardsCatalog,
-  featuredRewards: featuredRewards,
-  communities: { myCommunities: [], recommendedCommunities: recommendedCommunities },
-  quests: questCatalog,
+  myCommunities: [],
   activities: [],
   activeTaskIds: [],
   completedTaskIds: [],
@@ -27,7 +18,7 @@ export const createDataSlice = (set, get) => ({
   }),
 
   completeTask: (taskId) => {
-    const task = get().tasks.find(t => t.id === taskId) || get().recommendedTasks.find(t => t.id === taskId);
+    const task = tasksCatalog.find(t => t.id === taskId) || recommendedTasks.find(t => t.id === taskId);
     if (!task) return;
 
     const now = new Date();
@@ -51,7 +42,7 @@ export const createDataSlice = (set, get) => ({
       if (todayIndex !== -1) {
         updatedActivities[todayIndex] = {
           ...updatedActivities[todayIndex],
-          data: [newActivity, ...updatedActivities[todayIndex].data]
+          data: [newActivity, ...updatedActivities[todayIndex].data].slice(0, 20)
         };
       } else {
         updatedActivities.unshift({
@@ -74,35 +65,20 @@ export const createDataSlice = (set, get) => ({
     activeTaskIds: state.activeTaskIds.filter(id => id !== taskId)
   })),
 
-  joinCommunity: (newCommunity) => set((state) => {
-    if (!newCommunity || !newCommunity.id) return state;
-    const currentMyCommunities = state.communities?.myCommunities || [];
+  joinCommunity: (community) => set((state) => {
+    if (!community || !community.id) return state;
 
-    if (currentMyCommunities.some(c => c?.id === newCommunity.id)) return state;
+    if (state.myCommunities.some(c => c?.id === community.id)) return state;
+
     return {
-      communities: {
-        ...state.communities,
-        recommendedCommunities: state.communities.recommendedCommunities.filter(c => c.id !== newCommunity.id),
-        myCommunities: [newCommunity, ...currentMyCommunities]
-      }
+      myCommunities: [community, ...state.myCommunities]
     };
   }),
 
-  leaveCommunity: (community) => set((state) => {
-    if (!community || !community.id) return state;
-    const currentMyCommunities = state.communities?.myCommunities || [];
-
-    if (!currentMyCommunities.some(c => c?.id === community.id)) {
-      return state;
-    }
-
+  leaveCommunity: (communityId) => set((state) => {
     return {
-      communities: {
-        ...state.communities,
-        recommendedCommunities: [...state.communities.recommendedCommunities, community],
-        myCommunities: currentMyCommunities.filter(c => c.id !== community.id)
-      }
-    };
+      myCommunities: state.myCommunities.filter(c => c.id !== communityId)
+    }
   }),
 
   createCommunity: (data) => set((state) => {
@@ -115,39 +91,18 @@ export const createDataSlice = (set, get) => ({
       badges: data.badges
     }
     return {
-      communities: {
-        ...state.communities,
-        myCommunities: [newCommunity, ...get().communities.myCommunities]
-      }
-    }
+      myCommunities: [newCommunity, ...state.myCommunities]
+    };
   }),
 
-  collectQuestReward: (questId) => {
-    const allQuests = [...get().quests.today, ...get().quests.week];
-    const quest = allQuests.find(q => q.id === questId);
-
-    if (quest && quest.completed && !quest.collected) {
-      get().addLp(quest.points);
-
-      set((state) => {
-        const markCollected = (list) => list.map(q => q.id === questId ? { ...q, collected: true } : q);
-        return {
-          quests: {
-            today: markCollected(state.quests.today),
-            week: markCollected(state.quests.week)
-          }
-        };
-      });
-    }
-  },
-
   redeemReward: (rewardId) => {
-    const reward = get().rewards.find(r => r.id === rewardId) || get().featuredRewards.find(r => r.id === rewardId)
+    const reward = rewardsCatalog.find(r => r.id === rewardId) || featuredRewards.find(r => r.id === rewardId)
     if (!reward) return;
     const isDiscount = reward.discount
     const price = isDiscount ? reward?.discount?.newPrice : reward.points
     const currentLp = get().profile.profileLp
-    if (!currentLp) return
-    if (currentLp >= price) get().removeLp(price)
+
+    if (currentLp === undefined || currentLp < price) return
+    get().removeLp(price)
   }
 });

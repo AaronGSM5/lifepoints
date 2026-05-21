@@ -109,11 +109,7 @@ const TasksScreen = () => {
           <View style={styles.sectionMargin}>
             <View style={styles.paddedContent}>
               <SectionHeader
-                title={
-                  activeCat.toLowerCase() === "all"
-                    ? t("All Tasks")
-                    : `${t(activeCat.charAt(0).toUpperCase() + activeCat.slice(1))} ${t("Tasks")}`
-                }
+                title={activeCat === "all" ? t("All Tasks") : `${t(`categories.${activeCat}`)} ${t("Tasks")}`}
               />
             </View>
             <CategoryButtons

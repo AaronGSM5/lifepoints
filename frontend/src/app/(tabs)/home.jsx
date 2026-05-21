@@ -17,6 +17,7 @@ import LootGameModal from "@/components/home/LootGameModal";
 import { MyTheme } from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
+import { tasksCatalog } from "@/constants/TasksCatalog";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -31,14 +32,13 @@ export default function HomeScreen() {
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
-  const allTasks = useStore((state) => state.tasks);
   const completeTask = useStore((state) => state.completeTask);
   const addExperience = useStore((state) => state.addExperience);
   const showLevelUpModal = useStore((state) => state.showLevelUpModal);
   const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
   const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
   const level = useStore((state) => state.profile.level);
-  const myActiveTasks = allTasks.filter((t) => activeTaskIds.includes(t.id));
+  const myActiveTasks = tasksCatalog.filter((t) => activeTaskIds.includes(t.id));
 
   useEffect(() => {
     if (feedItems && feedItems.length > 0) {
