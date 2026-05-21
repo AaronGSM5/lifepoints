@@ -22,7 +22,6 @@ export default function Toolbar() {
 
   const LP = useStore((state) => state.profile.profileLp);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const toggleDarkMode = useStore((state) => state.toggleDarkMode);
   const resetProfile = useStore((state) => state.resetProfile);
   const styles = getStyles(isDarkMode);
 
@@ -78,9 +77,6 @@ export default function Toolbar() {
             </Pressable>
             <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
               <Icon name="notifications" />
-            </Pressable>
-            <Pressable hitSlop={15} onPress={toggleDarkMode}>
-              <Icon name="moon" />
             </Pressable>
           </View>
         ) : (
