@@ -17,7 +17,10 @@ const JournalPage = () => {
     <HistoryCard
       key={item.id}
       title={item.title}
-      rightSubtitle={item.time}
+      rightSubtitle={new Date(item.time).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })}
       points={item.points}
       type={item.type}
       pointsSuffix="LP"

@@ -21,9 +21,6 @@ export const createDataSlice = (set, get) => ({
     const task = tasksCatalog.find(t => t.id === taskId) || recommendedTasks.find(t => t.id === taskId);
     if (!task) return;
 
-    const now = new Date();
-    const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-
     const newActivity = {
       id: `act-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       title: task.title,
@@ -31,7 +28,7 @@ export const createDataSlice = (set, get) => ({
       category: task.category,
       points: task.lp || 0,
       type: 'gain',
-      time: timeString,
+      time: new Date().toISOString(),
       icon: task.icon,
     };
 
