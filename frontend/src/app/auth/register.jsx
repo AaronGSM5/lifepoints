@@ -87,7 +87,12 @@ export default function RegisterScreen() {
               onValidationChange={setIsRepeatValid}
               bottomMargin={false}
             />
-            <AppButton title={t("Register")} bgColor={MyTheme.primaryAccent} disabled={isSubmitDisabled} />
+            <AppButton
+              title={t("Register")}
+              textStyle={{ color: isSubmitDisabled && "white" }}
+              bgColor={MyTheme.primaryAccent}
+              disabled={isSubmitDisabled}
+            />
           </BaseCard>
 
           <AuthFooter text={t("Already have an account?")} linkText={t("Log in")} href="/auth/login" />

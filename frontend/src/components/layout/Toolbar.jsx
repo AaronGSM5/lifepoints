@@ -62,7 +62,7 @@ export default function Toolbar() {
 
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
-          <View style={{ flexDirection: "row", gap: Spacing.md }}>
+          <View style={{ flexDirection: "row", gap: Spacing.lg }}>
             <Pressable hitSlop={15} onPress={handleResetProfile}>
               <Icon name="reset" />
             </Pressable>
@@ -71,7 +71,7 @@ export default function Toolbar() {
             </Pressable>
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg + 4 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
             <Pressable hitSlop={15} onPress={() => router.push("/search")}>
               <Icon name="search" />
             </Pressable>

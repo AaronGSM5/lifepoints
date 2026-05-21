@@ -120,8 +120,9 @@ const AppInput = forwardRef(
   }
 );
 
-const getStyles = () =>
-  StyleSheet.create({
+const getStyles = (isDarkMode) => {
+  const borderColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
+  return StyleSheet.create({
     wrapper: {
       width: "100%"
     },
@@ -136,7 +137,7 @@ const getStyles = () =>
       backgroundColor: "rgba(255, 255, 255, 0.05)",
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
-      borderColor: "rgba(255, 255, 255, 0.1)",
+      borderColor: borderColor,
       height: 54,
       paddingHorizontal: Spacing.md
     },
@@ -185,5 +186,6 @@ const getStyles = () =>
       marginLeft: Spacing.xs
     }
   });
+};
 
 export default AppInput;

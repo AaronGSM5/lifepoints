@@ -6,6 +6,7 @@ import { Icon } from "@/components/icons/Icon";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import { MyTheme } from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
 
 export default function PasswordInput({
   variant = "login", // Standardmäßig ein normales Login-Feld
@@ -20,6 +21,7 @@ export default function PasswordInput({
   const [isVisible, setIsVisible] = useState(false);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
   const [ruleStatus, setRuleStatus] = useState({});
+  const isDarkMode = useStore((state) => state.isDarkMode);
 
   const passwordRules = [
     {
@@ -96,7 +98,9 @@ export default function PasswordInput({
               onPress={() => setIsVisible(!isVisible)}
               size="sm"
               variant="ghost"
-              icon={<Icon name={isVisible ? "eyeClosed" : "eyeOpen"} size={22} color="white" />}
+              icon={
+                <Icon name={isVisible ? "eyeClosed" : "eyeOpen"} size={22} color={isDarkMode ? MyTheme.text : "gray"} />
+              }
               iconPosition="center"
             />
             {variant === "new" && value.length > 0 && (
