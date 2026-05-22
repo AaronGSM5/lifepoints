@@ -21,13 +21,12 @@ export default function AppButton({
   bgColor
 }) {
   const styles = getStyles();
-  // Animation für den physikalischen "Druck"-Effekt
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
       toValue: 0.95,
-      speed: 20,
+      speed: 500,
       bounciness: 10,
       useNativeDriver: true
     }).start();
@@ -131,12 +130,10 @@ const getStyles = () =>
       zIndex: 1,
       elevation: 1
     },
-    // Größen-Definitionen
     sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
     md: { paddingVertical: Spacing.sm + 4, paddingHorizontal: Spacing.lg },
     lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
 
-    // Varianten-Styles
     secondary: {
       borderWidth: 1,
       borderColor: "rgba(255,255,255,0.1)",
