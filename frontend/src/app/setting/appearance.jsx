@@ -5,6 +5,7 @@ import useStore from "@/store/useStore";
 import { MyTheme } from "@/constants/Colors";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
+import ColorThemePicker from "@/components/settings/ColorThemePicker";
 
 export default function AppearanceScreen() {
   const styles = getStyles();
@@ -47,6 +48,8 @@ export default function AppearanceScreen() {
           <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.text : MyTheme.muted }]}>{t("Dark")}</Text>
         </TouchableOpacity>
       </View>
+
+      <ColorThemePicker />
     </View>
   );
 }
