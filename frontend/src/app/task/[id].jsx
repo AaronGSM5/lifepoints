@@ -10,7 +10,6 @@ import { Icon } from "@/components/icons/Icon";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { taskTrackingHistory } from "@/mocks/ActivityHistory";
 import HistoryCard from "@/components/ui/HistoryCard";
 import BackButton from "@/components/ui/BackButton";
 import AppBadge from "@/components/ui/AppBadge";
@@ -24,8 +23,22 @@ export default function TaskDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const trackTask = useStore((state) => state.trackTask);
-
+  const activities = useStore((state) => state.activities);
   const task = tasksCatalog.find((t) => String(t.id) === String(id));
+  const taskTrackingHistory = activities.filter((item) => String(item.taskId) === String(id));
+
+  const formatHistoryDate = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+
+    const dateString = date.toLocaleDateString();
+    const timeString = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    return `${dateString} • ${timeString}`;
+  };
 
   if (!task) {
     return (
@@ -82,17 +95,17 @@ export default function TaskDetailScreen() {
               {t(task.description)}
             </AppText>
 
-            <View style={styles.historySection}>
-              <AppText type="title" style={{ marginBottom: Spacing.md }}>
-                {t("History")}
-              </AppText>
+            {taskTrackingHistory?.length > 0 ? (
+              <View style={styles.historySection}>
+                <AppText type="title" style={{ marginBottom: Spacing.md }}>
+                  {t("History")}
+                </AppText>
 
-              {taskTrackingHistory.length > 0 ? (
-                taskTrackingHistory.map((item) => (
+                {taskTrackingHistory.map((item) => (
                   <HistoryCard
                     key={item.id}
                     title={t("Tracked")}
-                    subtitle={item.date}
+                    subtitle={formatHistoryDate(item.time)}
                     points={item.points}
                     type="earn"
                     pointsSuffix="LP"
@@ -109,13 +122,15 @@ export default function TaskDetailScreen() {
                       borderRadius: 16
                     }}
                   />
-                ))
-              ) : (
+                ))}
+              </View>
+            ) : (
+              <View>
                 <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
                   {t("No entries yet.")}
                 </AppText>
-              )}
-            </View>
+              </View>
+            )}
           </View>
         </ScrollView>
 

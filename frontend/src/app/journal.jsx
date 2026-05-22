@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, SectionList } from "react-native";
 import { MyTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
@@ -13,6 +13,42 @@ const JournalPage = () => {
   const styles = getStyles();
   const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
+  const groupedActivities = useMemo(() => {
+    if (!activities || activities.length === 0) return [];
+
+    const groups = {};
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    activities.forEach((activity) => {
+      const activityDate = new Date(activity.time);
+      const activityDay = new Date(activityDate);
+      activityDay.setHours(0, 0, 0, 0);
+
+      let sectionTitle = activityDate.toLocaleDateString();
+
+      if (activityDay.getTime() === today.getTime()) {
+        sectionTitle = t("Today", "Heute");
+      } else if (activityDay.getTime() === yesterday.getTime()) {
+        sectionTitle = t("Yesterday", "Gestern");
+      }
+
+      if (!groups[sectionTitle]) {
+        groups[sectionTitle] = [];
+      }
+      groups[sectionTitle].push(activity);
+    });
+
+    return Object.keys(groups).map((title) => ({
+      title,
+      data: groups[title]
+    }));
+  }, [activities, t]);
+
   const renderItem = ({ item }) => (
     <HistoryCard
       key={item.id}
@@ -41,7 +77,7 @@ const JournalPage = () => {
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false} withPaddingTop={false}>
       <ScreenTitle title={t("My Impact Journal")} />
       <SectionList
-        sections={activities || []}
+        sections={groupedActivities}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
@@ -58,7 +94,8 @@ const getStyles = () =>
     },
     sectionHeader: {
       paddingBottom: Spacing.sm,
-      backgroundColor: "transparent"
+      backgroundColor: "transparent",
+      marginTop: Spacing.md
     }
   });
 

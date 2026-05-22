@@ -16,21 +16,36 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
   const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
 
-  const flatActivities = useMemo(() => {
-    if (!activities) return [];
-    return activities.flatMap((section) => section.data || []);
-  }, [activities]);
+  const previewData = activities?.slice(0, 3) || [];
 
-  const previewData = flatActivities?.slice(0, 3) || [];
+  const formatTimeOrDate = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    const today = new Date();
 
-  if (previewData.length === 0) return null;
+    const isToday =
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+
+    if (isToday) {
+      // Heute -> z.B. "14:30"
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+    // Älter -> z.B. "22.05.2026"
+    return date.toLocaleDateString();
+  };
+
+  if (!isLoading && previewData.length === 0) return null;
+
+  const renderData = isLoading && previewData.length === 0 ? [1, 2, 3] : previewData;
 
   if (isLoading) {
     return (
       <View>
         <SectionHeader title={t("My Impact Journal")} icon={"journal"} rightLabel={t("More")} isLoading={isLoading} />
         <View style={styles.container}>
-          {previewData.map((item, i) => (
+          {renderData.map((item, i) => (
             <BaseCard key={item.id || `skel-${i}`} style={styles.activityItem} padding={Spacing.sm}>
               <View style={[styles.iconCircle, { backgroundColor: "transparent" }]}>
                 <Skeleton {...skeletonProps} width={40} height={40} radius="round" />
@@ -65,7 +80,7 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
           <HistoryCard
             key={item.id || i}
             title={item.title}
-            time={item.time}
+            time={formatTimeOrDate(item.time)}
             points={item.points}
             type={item.type}
             pointsSuffix="LP"

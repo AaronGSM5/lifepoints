@@ -9,6 +9,7 @@ export default function HistoryCard({
   title,
   points,
   time,
+  subtitle,
   rightSubtitle,
   type = "earn",
   pointsSuffix = "LP",
@@ -22,10 +23,9 @@ export default function HistoryCard({
 
   const pointColor = isSpend ? "#666" : MyTheme.primaryAccent;
   const prefix = isSpend ? "-" : "+";
-  const formattedTime = new Date(time).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+
+  const displaySubtitle = time || subtitle;
+
   return (
     <View style={[styles.card, containerStyle]}>
       <View style={[styles.iconCircle, iconContainerStyle]}>{iconNode}</View>
@@ -34,9 +34,9 @@ export default function HistoryCard({
         <AppText type="body" bold numberOfLines={1}>
           {t(title)}
         </AppText>
-        {time && (
+        {displaySubtitle && (
           <AppText type="caption" numberOfLines={1} style={{ marginTop: 2 }}>
-            {formattedTime}
+            {displaySubtitle}
           </AppText>
         )}
       </View>

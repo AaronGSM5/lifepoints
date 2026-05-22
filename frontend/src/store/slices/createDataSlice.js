@@ -18,11 +18,12 @@ export const createDataSlice = (set, get) => ({
   }),
 
   completeTask: (taskId) => {
-    const task = tasksCatalog.find(t => t.id === taskId) || recommendedTasks.find(t => t.id === taskId);
+    const task = tasksCatalog.find(t => String(t.id) === String(taskId)) || recommendedTasks.find(t => String(t.id) === String(taskId));
     if (!task) return;
 
     const newActivity = {
       id: `act-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      taskId: task.id,
       title: task.title,
       description: task.description,
       category: task.category,
@@ -32,34 +33,17 @@ export const createDataSlice = (set, get) => ({
       icon: task.icon,
     };
 
-    set((state) => {
-      const updatedActivities = [...state.activities];
-      const todayIndex = updatedActivities.findIndex(s => s.title === "Heute");
-
-      if (todayIndex !== -1) {
-        updatedActivities[todayIndex] = {
-          ...updatedActivities[todayIndex],
-          data: [newActivity, ...updatedActivities[todayIndex].data].slice(0, 20)
-        };
-      } else {
-        updatedActivities.unshift({
-          title: "Heute",
-          data: [newActivity]
-        });
-      }
-
-      return {
-        activeTaskIds: state.activeTaskIds.filter(id => id !== taskId),
-        completedTaskIds: [...state.completedTaskIds, taskId],
-        activities: updatedActivities,
-      };
-    });
+    set((state) => ({
+      activeTaskIds: state.activeTaskIds.filter(id => String(id) !== String(taskId)),
+      completedTaskIds: [...state.completedTaskIds, taskId],
+      activities: [newActivity, ...state.activities].slice(0, 100),
+    }));
 
     if (task.lp) get().addLp(task.lp);
   },
 
   cancelTask: (taskId) => set((state) => ({
-    activeTaskIds: state.activeTaskIds.filter(id => id !== taskId)
+    activeTaskIds: state.activeTaskIds.filter(id => String(id) !== String(taskId))
   })),
 
   joinCommunity: (community) => set((state) => {
