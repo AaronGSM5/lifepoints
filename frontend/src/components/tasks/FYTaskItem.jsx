@@ -2,7 +2,7 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "@/components/ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
@@ -11,7 +11,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const completeTask = useStore((state) => state.completeTask);
@@ -111,7 +112,7 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     card: {
       width: 280,
@@ -134,7 +135,7 @@ const getStyles = () =>
       justifyContent: "space-between"
     },
     lpText: {
-      color: MyTheme.primaryAccent
+      color: theme.primaryAccent
     }
   });
 

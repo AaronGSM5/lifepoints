@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { useCommunities } from "@/hooks/useCommunities";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppInput from "@/components/ui/AppInput";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +18,8 @@ const DUMMY_MESSAGES = [
 ];
 
 export default function MyCommunityChatScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
@@ -145,16 +146,16 @@ export default function MyCommunityChatScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     customHeader: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       paddingBottom: Spacing.sm,
       borderBottomWidth: 1,
-      borderBottomColor: MyTheme.glas
+      borderBottomColor: theme.glas
     },
     headerIcon: {
       padding: Spacing.md,
@@ -180,7 +181,7 @@ const getStyles = () =>
       marginVertical: Spacing.md
     },
     systemMessageText: {
-      backgroundColor: MyTheme.glas,
+      backgroundColor: theme.glas,
       paddingHorizontal: Spacing.md,
       paddingVertical: 4,
       borderRadius: Spacing.borderRadius.md
@@ -215,15 +216,15 @@ const getStyles = () =>
       borderRadius: Spacing.borderRadius.lg
     },
     messageBubbleMe: {
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderBottomRightRadius: Spacing.borderRadius.sm - 4
     },
     messageBubbleOther: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderBottomLeftRadius: Spacing.borderRadius.sm - 4
     },
     senderName: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       marginBottom: 2
     },
     timeText: {
@@ -239,8 +240,8 @@ const getStyles = () =>
       paddingVertical: Spacing.sm,
       paddingBottom: Spacing.lg,
       borderTopWidth: 1,
-      borderTopColor: MyTheme.glas,
-      backgroundColor: MyTheme.background
+      borderTopColor: theme.glas,
+      backgroundColor: theme.background
     },
     attachButton: {
       flex: 1,

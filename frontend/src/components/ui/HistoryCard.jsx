@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,8 @@ export default function HistoryCard({
   containerStyle,
   iconContainerStyle
 }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
   const isSpend = type === "spend";
 
@@ -56,7 +57,7 @@ export default function HistoryCard({
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     card: {
       flexDirection: "row",
@@ -64,13 +65,13 @@ const getStyles = () =>
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius?.md || 8,
       marginBottom: Spacing.sm,
-      backgroundColor: MyTheme.primary
+      backgroundColor: theme.primary
     },
     iconCircle: {
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: MyTheme.secondary,
+      backgroundColor: theme.secondary,
       justifyContent: "center",
       alignItems: "center"
     },

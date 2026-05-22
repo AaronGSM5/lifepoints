@@ -6,7 +6,7 @@ import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import useStore from "@/store/useStore";
@@ -14,7 +14,8 @@ import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const [isLoading, setIsLoading] = useState(true);
@@ -239,7 +240,7 @@ export default function SubscriptionScreen() {
             </View>
 
             {/* Skeleton: Plus Card */}
-            <View style={[styles.card, styles.highlightCard, { backgroundColor: MyTheme.primary, shadowOpacity: 0 }]}>
+            <View style={[styles.card, styles.highlightCard, { backgroundColor: MyTheme.primary, boxShadow: "none" }]}>
               <View
                 style={{
                   position: "absolute",
@@ -327,7 +328,7 @@ export default function SubscriptionScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     header: {
       paddingVertical: Spacing.lg,
@@ -335,13 +336,13 @@ const getStyles = () =>
     },
     subtitle: {
       textAlign: "center",
-      color: MyTheme.muted,
+      color: theme.muted,
       marginTop: Spacing.sm,
       paddingHorizontal: Spacing.lg
     },
     toggleContainer: {
       flexDirection: "row",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: 22,
       marginTop: Spacing.lg,
       padding: 4,
@@ -365,11 +366,11 @@ const getStyles = () =>
       gap: Spacing.xl
     },
     card: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.lg,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       position: "relative"
     },
     highlightCard: {
@@ -406,12 +407,12 @@ const getStyles = () =>
       borderTopColor: "#efeff4"
     },
     restoreText: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       marginBottom: Spacing.md
     },
     legalText: {
       textAlign: "center",
-      color: MyTheme.muted,
+      color: theme.muted,
       fontSize: 11,
       lineHeight: 16
     }

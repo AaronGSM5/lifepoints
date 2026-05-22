@@ -1,6 +1,6 @@
 import { View, KeyboardAvoidingView, Platform } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation("auth");
-
+  const MyTheme = useAppTheme();
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");

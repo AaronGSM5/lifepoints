@@ -1,12 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppButton from "../ui/AppButton";
 
 const EmptyState = ({ activeCat, setActiveCat }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   render(
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconCircle}>

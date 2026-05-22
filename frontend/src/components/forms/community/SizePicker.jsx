@@ -1,11 +1,12 @@
 import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   return (
     <View>
@@ -28,13 +29,13 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     label: {
       marginBottom: 8,
       opacity: 0.5,
       letterSpacing: 1,
-      color: MyTheme.text
+      color: theme.text
     },
     sizeGrid: {
       flexDirection: "row",
@@ -44,13 +45,13 @@ const getStyles = () =>
       flex: 1,
       padding: 12,
       borderRadius: 16,
-      backgroundColor: MyTheme.glas,
+      backgroundColor: theme.glas,
       alignItems: "center",
       borderWidth: 1,
       borderColor: "transparent"
     },
     selectedSizeCard: {
-      borderColor: MyTheme.primaryAccent,
+      borderColor: theme.primaryAccent,
       backgroundColor: "rgba(47, 196, 146, 0.1)"
     }
   });

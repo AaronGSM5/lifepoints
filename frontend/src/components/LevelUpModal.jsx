@@ -2,13 +2,15 @@
 import React from "react";
 import { Modal, View, StyleSheet } from "react-native";
 import LottieView from "lottie-react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppText from "./ui/AppText";
 import AppButton from "./ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "./icons/Icon";
 
 const LevelUpModal = ({ visible, level, onTransitionEnd }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.overlay}>
@@ -61,42 +63,43 @@ const LevelUpModal = ({ visible, level, onTransitionEnd }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.8)",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  lottie: {
-    position: "absolute",
-    width: "100%",
-    height: "100%"
-  },
-  card: {
-    width: "80%",
-    maxWidth: 400,
-    backgroundColor: "#1e293b",
-    borderRadius: 30,
-    padding: 30,
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: MyTheme.secondary
-  },
-  title: {
-    fontSize: 40,
-    color: MyTheme.primaryAccent,
-    marginBottom: 20
-  },
-  badge: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: MyTheme.primaryAccent,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    overlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.8)",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    lottie: {
+      position: "absolute",
+      width: "100%",
+      height: "100%"
+    },
+    card: {
+      width: "80%",
+      maxWidth: 400,
+      backgroundColor: "#1e293b",
+      borderRadius: 30,
+      padding: 30,
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: theme.secondary
+    },
+    title: {
+      fontSize: 40,
+      color: theme.primaryAccent,
+      marginBottom: 20
+    },
+    badge: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      backgroundColor: theme.primaryAccent,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 20
+    }
+  });
 
 export default LevelUpModal;

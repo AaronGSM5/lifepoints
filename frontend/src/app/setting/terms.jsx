@@ -1,15 +1,16 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
 export default function TermsScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const router = useRouter();
   const { t } = useTranslation("settings");
 
@@ -84,7 +85,7 @@ export default function TermsScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     header: {
       paddingVertical: Spacing.lg
@@ -93,18 +94,18 @@ const getStyles = () =>
       marginTop: Spacing.sm
     },
     listContainer: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       overflow: "hidden",
       borderWidth: 1,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     listItem: {
       flexDirection: "row",
       alignItems: "center",
       padding: Spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: MyTheme.secondary
+      borderBottomColor: theme.secondary
     },
     iconBackground: {
       width: 40,
@@ -124,6 +125,6 @@ const getStyles = () =>
       gap: 4
     },
     footerText: {
-      color: MyTheme.muted
+      color: theme.muted
     }
   });

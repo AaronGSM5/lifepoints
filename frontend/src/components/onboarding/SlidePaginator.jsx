@@ -1,9 +1,10 @@
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { StyleSheet, View } from "react-native";
 
 const SlidePaginator = ({ data, currentIndex }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   return (
     <View style={styles.dotContainer}>
       {data.map((_, index) => (
@@ -13,7 +14,7 @@ const SlidePaginator = ({ data, currentIndex }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     dotContainer: {
       flexDirection: "row",
@@ -24,11 +25,11 @@ const getStyles = () =>
       width: 8,
       height: 8,
       borderRadius: 4,
-      backgroundColor: MyTheme.muted,
+      backgroundColor: theme.muted,
       marginHorizontal: 4
     },
     activeDot: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       width: 20
     }
   });

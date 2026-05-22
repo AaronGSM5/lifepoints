@@ -1,14 +1,14 @@
 import { useTranslation } from "react-i18next";
-
-const { View, ScrollView } = require("react-native");
-const { default: SectionHeader } = require("../ui/SectionHeader");
-const { Spacing } = require("@/constants/Spacing");
-const { MyTheme } = require("@/constants/Colors");
-const { router } = require("expo-router");
-const { Skeleton } = require("moti/skeleton");
-const { default: TrophyCard } = require("../trophies/TrophyCard");
+import { View, ScrollView } from "react-native";
+import SectionHeader from "../ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+import TrophyCard from "../trophies/TrophyCard";
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
+  const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>

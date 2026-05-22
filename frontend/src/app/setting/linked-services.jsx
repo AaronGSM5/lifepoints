@@ -4,14 +4,15 @@ import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function LinkedServicesScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
   const [connections, setConnections] = useState({
     appleHealth: true,
@@ -129,14 +130,14 @@ export default function LinkedServicesScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     header: {
       paddingBottom: Spacing.lg
     },
     subtitle: {
       marginTop: Spacing.xs,
-      color: MyTheme.muted
+      color: theme.muted
     },
     section: {
       marginBottom: Spacing.md
@@ -145,11 +146,11 @@ const getStyles = () =>
       marginBottom: Spacing.md
     },
     serviceCard: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       gap: Spacing.md
     },
     cardMain: {
@@ -175,7 +176,7 @@ const getStyles = () =>
     },
     privacyNote: {
       flexDirection: "row",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.md,
       gap: Spacing.sm,
@@ -183,7 +184,7 @@ const getStyles = () =>
     },
     privacyText: {
       flex: 1,
-      color: MyTheme.muted,
+      color: theme.muted,
       lineHeight: 16
     }
   });

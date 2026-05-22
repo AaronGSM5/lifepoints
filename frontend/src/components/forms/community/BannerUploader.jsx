@@ -3,11 +3,12 @@ import { View, StyleSheet, Pressable, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 
 export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -50,18 +51,18 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     label: {
       marginBottom: 8,
       opacity: 0.5,
       letterSpacing: 1,
-      color: MyTheme.text
+      color: theme.text
     },
     bannerPlaceholder: {
       height: 100,
       borderRadius: 16,
-      backgroundColor: MyTheme.glas,
+      backgroundColor: theme.glas,
       borderStyle: "dashed",
       borderWidth: 1,
       borderColor: "rgba(255,255,255,0.2)",

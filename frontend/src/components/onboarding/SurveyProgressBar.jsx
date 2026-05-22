@@ -1,9 +1,10 @@
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { StyleSheet, View } from "react-native";
 
 const SurveyProgressBar = ({ currentStep, totalSteps }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
   return (
     <View style={styles.progressBar}>
@@ -12,7 +13,7 @@ const SurveyProgressBar = ({ currentStep, totalSteps }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     progressBar: {
       height: 6,
@@ -22,7 +23,7 @@ const getStyles = () =>
     },
     progressInner: {
       height: "100%",
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderRadius: Spacing.borderRadius.full
     }
   });

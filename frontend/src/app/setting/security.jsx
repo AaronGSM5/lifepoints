@@ -5,13 +5,14 @@ import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function SecurityScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(true);
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
@@ -120,7 +121,7 @@ export default function SecurityScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     section: {
       marginBottom: Spacing.xl
@@ -129,11 +130,11 @@ const getStyles = () =>
       marginBottom: Spacing.md
     },
     card: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
       borderWidth: 1,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     row: {
       flexDirection: "row",
@@ -152,6 +153,6 @@ const getStyles = () =>
       backgroundColor: "white",
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
-      borderColor: MyTheme.warning
+      borderColor: theme.warning
     }
   });

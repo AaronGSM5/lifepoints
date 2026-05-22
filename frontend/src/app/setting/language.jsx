@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import AppText from "@/components/ui/AppText";
 import { useTranslation } from "react-i18next";
 
 export default function LanguageScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t, i18n } = useTranslation("settings");
 
   const selectedLang = i18n.language;
@@ -77,11 +77,7 @@ const getStyles = () =>
       justifyContent: "center",
       borderWidth: 2,
       borderColor: "transparent",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.05,
-      shadowRadius: 12,
-      elevation: 2
+      boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)"
     },
     flagEmoji: {
       fontSize: 36

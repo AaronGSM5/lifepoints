@@ -2,10 +2,13 @@ import { settingsSections } from "@/constants/SettingsConfig";
 
 export const createUISlice = (set, get) => ({
   isDarkMode: true,
+  activeColorThemeId: "default_green",
   hasCompletedOnboarding: false,
   settings: settingsSections,
 
   toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+  setColorTheme: (themeId) => set({ activeColorThemeId: themeId }),
+
   setHasCompletedOnboarding: (value) => set({ hasCompletedOnboarding: value }),
 
   completeTutorialStep: (stepId) => set((state) => {

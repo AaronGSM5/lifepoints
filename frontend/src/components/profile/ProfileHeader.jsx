@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
@@ -17,7 +17,8 @@ import { publicProfile } from "@/mocks/PublicProfile";
 import { useTranslation } from "react-i18next";
 
 const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
@@ -57,9 +58,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
                 activeFrame && {
                   borderColor: activeFrame.color,
                   borderWidth: activeFrame.borderWidth,
-                  shadowColor: activeFrame.glow ? activeFrame.color : "transparent",
-                  shadowOpacity: activeFrame.glow ? 0.8 : 0,
-                  shadowRadius: 10
+                  boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
                 }
               ]}
             >

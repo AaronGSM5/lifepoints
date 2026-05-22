@@ -6,7 +6,7 @@ import useStore from "@/store/useStore";
 import AppText from "../ui/AppText";
 import AppButton from "../ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("window");
@@ -26,7 +26,8 @@ const STATIC_CHESTS = {
 };
 
 const LootGameModal = () => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
 
   const isLootGameActive = useStore((state) => state.isLootGameActive);
@@ -142,7 +143,7 @@ const LootGameModal = () => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
@@ -152,7 +153,7 @@ const getStyles = () =>
       padding: Spacing.md
     },
     mainTitle: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       fontSize: 28,
       marginBottom: 60,
       letterSpacing: 2,

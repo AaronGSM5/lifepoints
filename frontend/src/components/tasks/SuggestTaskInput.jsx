@@ -2,13 +2,14 @@ import { StyleSheet, View } from "react-native";
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
 import AppInput from "../ui/AppInput";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const SuggestTaskInput = () => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
   const [suggestionInput, setSuggestionInput] = useState("");
   const handleSendSuggestion = () => {
@@ -38,10 +39,10 @@ const SuggestTaskInput = () => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     suggestionBox: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.lg
     },
@@ -53,7 +54,7 @@ const getStyles = () =>
     bulbIcon: {
       width: 40,
       height: 40,
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderRadius: Spacing.borderRadius.full,
       justifyContent: "center",
       alignItems: "center",

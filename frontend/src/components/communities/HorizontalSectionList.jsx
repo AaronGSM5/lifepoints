@@ -3,9 +3,11 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const [data, setData] = useState(initialData || []);
   const [page, setPage] = useState(1);
   const [localLoading, setLocalLoading] = useState(false);
@@ -81,22 +83,23 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
   );
 };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginBottom: Spacing.lg
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  },
-  horizontalScrollContentContainer: {
-    paddingLeft: Spacing.md,
-    alignItems: "center"
-  },
-  horizontalLoader: {
-    width: 100,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    sectionContainer: {
+      marginBottom: Spacing.lg
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    },
+    horizontalScrollContentContainer: {
+      paddingLeft: Spacing.md,
+      alignItems: "center"
+    },
+    horizontalLoader: {
+      width: 100,
+      justifyContent: "center",
+      alignItems: "center"
+    }
+  });
 
 export default HorizontalSectionList;

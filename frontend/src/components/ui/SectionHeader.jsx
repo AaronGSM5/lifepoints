@@ -4,7 +4,7 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
 
@@ -16,11 +16,12 @@ const SectionHeader = ({
   rightLabel,
   rightIcon,
   onRightPress,
-  rightLabelColor = MyTheme.primaryAccent,
+  rightLabelColor = "rgb(47, 196, 146)",
   style,
   isLoading
 }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (

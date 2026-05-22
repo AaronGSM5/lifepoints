@@ -3,13 +3,14 @@ import { View, StyleSheet, Switch } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function NotificationsScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
   const [settings, setSettings] = useState({
     push: true,

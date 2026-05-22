@@ -50,6 +50,7 @@ export const IconMap = {
   history: ({ outline, ...props }) => <Icon name={getName("history", outline)} {...props} />,
   square: ({ outline, ...props }) => <Icon name={getName("square", outline)} {...props} />,
   // Placeholders
+  code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,
   leaf: ({ outline, ...props }) => <Icon name={getName("leaf", outline)} {...props} />,
   newFolder: ({ outline, ...props }) => <Icon name={getName("folder-add", outline)} {...props} />,
   timer: ({ outline, ...props }) => <Icon name={getName("timer", outline)} {...props} />,

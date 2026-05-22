@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
@@ -10,7 +10,8 @@ import BaseCard from "@/components/ui/BaseCard";
 import useStore from "@/store/useStore";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (

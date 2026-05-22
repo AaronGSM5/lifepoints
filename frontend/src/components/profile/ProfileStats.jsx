@@ -1,11 +1,12 @@
 import { View } from "react-native";
 import SectionHeader from "../ui/SectionHeader";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import StatCard from "../ui/StatCard";
 import { useTranslation } from "react-i18next";
 
 const ProfileStats = ({ isLoading }) => {
+  const MyTheme = useAppTheme();
   const { t } = useTranslation("profile");
   return (
     <View style={{ marginTop: Spacing.xl }}>

@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Switch, View } from "react-native";
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
 const SettingsRow = ({ setting, isLast, onPress }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const [isToggled, setIsToggled] = useState(setting.defaultValue || false);
   const { t } = useTranslation("settings");
 

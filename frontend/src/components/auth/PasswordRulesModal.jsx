@@ -1,12 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppModal from "../ui/AppModal";
 
 export default function PasswordRulesModal({ visible, onClose, passwordRules, passwordRuleStatus }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   return (
     <AppModal visible={visible} onClose={onClose}>

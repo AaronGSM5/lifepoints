@@ -2,11 +2,12 @@ import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { Link } from "expo-router";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 
 export default function AuthFooter({ text, linkText, href }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   return (
     <View style={styles.footer}>

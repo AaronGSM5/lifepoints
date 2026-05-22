@@ -11,7 +11,7 @@ import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 
 const SKELETON_DATA = [1, 2, 3];
@@ -19,7 +19,8 @@ const SKELETON_DATA = [1, 2, 3];
 export default function CommunitiesScreen() {
   const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
     useCommunities();
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);

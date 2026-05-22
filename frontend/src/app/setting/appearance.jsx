@@ -2,13 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import useStore from "@/store/useStore";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
 import ColorThemePicker from "@/components/settings/ColorThemePicker";
 
 export default function AppearanceScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
   const { t } = useTranslation("settings");
@@ -74,11 +75,7 @@ const getStyles = () =>
       justifyContent: "center",
       borderWidth: 2,
       borderColor: "transparent",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.05,
-      shadowRadius: 12,
-      elevation: 2
+      boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)"
     },
     cardText: {
       marginTop: 16,

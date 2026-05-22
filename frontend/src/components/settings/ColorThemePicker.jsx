@@ -2,26 +2,26 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 import useStore from "@/store/useStore";
 import SectionHeader from "../ui/SectionHeader";
 
 const THEME_OPTIONS = [
-  { id: "default_dark", bg: "#121212", accent: "#4ADE80", isLocked: false },
+  { id: "default_green", bg: "#121212", accent: "#4ADE80", isLocked: false },
   { id: "blue_dark", bg: "#121212", accent: "#3B82F6", isLocked: false },
-  { id: "purple_dark", bg: "#121212", accent: "#A855F7", isLocked: true },
-  { id: "orange_light", bg: "#F8F9FA", accent: "#F97316", isLocked: true },
-  { id: "pink_dark", bg: "#121212", accent: "#EC4899", isLocked: true }
+  { id: "purple_dark", bg: "#121212", accent: "#A855F7", isLocked: false },
+  { id: "orange_light", bg: "#121212", accent: "#F97316", isLocked: false },
+  { id: "pink_dark", bg: "#121212", accent: "#EC4899", isLocked: false }
 ];
 
 export default function ColorThemePicker() {
-  const { t } = useTranslation("settings");
-
-  // WICHTIG: Diese Werte müssen in deinem useStore angelegt werden!
-  const currentColorThemeId = useStore((state) => state.activeColorThemeId) || "default_dark";
+  const currentColorThemeId = useStore((state) => state.activeColorThemeId) || "default_green";
   const setColorTheme = useStore((state) => state.setColorTheme);
+  const { t } = useTranslation("settings");
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   return (
     <View style={styles.container}>
@@ -71,51 +71,45 @@ export default function ColorThemePicker() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: Spacing.xl
-  },
-  scrollContainer: {
-    gap: Spacing.md,
-    paddingVertical: Spacing.xs
-  },
-  squareContainer: {
-    width: 72,
-    height: 72,
-    borderRadius: 16,
-    // Wenn das Element nicht ausgewählt ist, trotzdem einen unsichtbaren Rahmen geben,
-    // damit es beim Auswählen nicht "springt"
-    borderWidth: 3,
-    borderColor: "transparent"
-  },
-  selectedSquare: {
-    borderColor: MyTheme.primaryAccent,
-    transform: [{ scale: 1.05 }] // Leichter Zoom für das ausgewählte Theme
-  },
-  colorBox: {
-    flex: 1,
-    borderRadius: 12, // Etwas kleiner als der äußere Rahmen
-    overflow: "hidden", // Wichtig, damit der Gradient die Ecken nicht überschreibt
-    // Schatten, um das Viereck vom Hintergrund abzuheben
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Halbtransparenter schwarzer Schleier
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  iconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      marginTop: Spacing.xl
+    },
+    scrollContainer: {
+      gap: Spacing.md,
+      paddingVertical: Spacing.xs
+    },
+    squareContainer: {
+      width: 72,
+      height: 72,
+      borderRadius: 16,
+      borderWidth: 3,
+      borderColor: "transparent"
+    },
+    selectedSquare: {
+      borderColor: theme.primaryAccent,
+      transform: [{ scale: 1.05 }]
+    },
+    colorBox: {
+      flex: 1,
+      borderRadius: 12,
+      overflow: "hidden",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)"
+    },
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(0, 0, 0, 0.25)",
+      borderRadius: 12,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    iconCircle: {
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      justifyContent: "center",
+      alignItems: "center"
+    }
+  });

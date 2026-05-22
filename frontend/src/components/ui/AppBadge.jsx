@@ -1,9 +1,8 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppText from "./AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
-import useStore from "@/store/useStore";
 
 export default function AppBadge({
   label,
@@ -14,10 +13,10 @@ export default function AppBadge({
   style,
   textStyle
 }) {
-  const Container = onPress ? TouchableOpacity : View;
-  const isDarkMode = useStore((state) => state.isDarkMode);
-  const styles = getStyles(isDarkMode);
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
+  const Container = onPress ? TouchableOpacity : View;
   let leftElement = null;
 
   if (iconNode) {
@@ -39,8 +38,7 @@ export default function AppBadge({
   );
 }
 
-const getStyles = (isDarkMode) => {
-  const bgColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
+const getStyles = (theme) => {
   return StyleSheet.create({
     badge: {
       flexDirection: "row",
@@ -65,7 +63,7 @@ const getStyles = (isDarkMode) => {
     },
 
     primary: {
-      backgroundColor: MyTheme.primaryAccent
+      backgroundColor: theme.primaryAccent
     },
     primaryText: {
       color: "#000"
@@ -87,15 +85,15 @@ const getStyles = (isDarkMode) => {
       borderColor: "rgba(255,255,255,0.2)"
     },
     outlineText: {
-      color: MyTheme.muted
+      color: theme.muted
     },
 
     glas: {
-      backgroundColor: bgColor,
+      backgroundColor: theme.background,
       borderColor: "rgba(255,255,255,0.1)"
     },
     glasText: {
-      color: MyTheme.primaryAccent
+      color: theme.primaryAccent
     }
   });
 };

@@ -2,7 +2,7 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const useFloatingNavbarPadding = () => {
   const insets = useSafeAreaInsets();
@@ -22,7 +22,8 @@ export default function ScreenWrapper({
   withPaddingTop = true,
   style
 }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
   const contentStyles = [
@@ -55,10 +56,10 @@ export default function ScreenWrapper({
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     wrapper: {
       flex: 1,
-      backgroundColor: MyTheme.background // backgroundColor if useGradient = false
+      backgroundColor: theme.background // backgroundColor if useGradient = false
     }
   });

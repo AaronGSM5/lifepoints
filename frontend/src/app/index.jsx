@@ -3,13 +3,14 @@ import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppButton from "@/components/ui/AppButton";
 
 export default function DevEntryScreen() {
   const router = useRouter();
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   const navLinks = [
     { title: "🏠 Main App", href: "/home" },
@@ -44,7 +45,7 @@ export default function DevEntryScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -59,15 +60,15 @@ const getStyles = () =>
       gap: Spacing.md
     },
     button: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.full,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       alignItems: "center"
     },
     buttonPressed: {
-      backgroundColor: MyTheme.secondary,
+      backgroundColor: theme.secondary,
       opacity: 0.9
     },
     footer: {

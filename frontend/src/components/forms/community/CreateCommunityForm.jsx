@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "../../ui/AppInput";
@@ -17,7 +17,8 @@ import { useTranslation } from "react-i18next";
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -141,7 +142,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     scrollContent: {
       paddingHorizontal: Spacing.md,
@@ -154,11 +155,11 @@ const getStyles = () =>
       marginBottom: 8,
       opacity: 0.5,
       letterSpacing: 1,
-      color: MyTheme.text
+      color: theme.text
     },
     infoText: {
       fontSize: 11,
-      color: MyTheme.muted,
+      color: theme.muted,
       marginTop: 6,
       marginLeft: 4
     },
@@ -166,8 +167,8 @@ const getStyles = () =>
       padding: Spacing.lg,
       paddingTop: Spacing.md,
       borderTopWidth: 1,
-      borderTopColor: MyTheme.glas,
-      backgroundColor: MyTheme.background
+      borderTopColor: theme.glas,
+      backgroundColor: theme.background
     }
   });
 

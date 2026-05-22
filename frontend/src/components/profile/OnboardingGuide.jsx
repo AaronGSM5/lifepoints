@@ -3,7 +3,7 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { onboardingGuideSteps } from "@/constants/OnboardingGuideSteps";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
@@ -13,7 +13,8 @@ import { checkQuestCompletion } from "@/utils/onboardingGuideHelpers";
 import { useTranslation } from "react-i18next";
 
 const OnboardingGuide = ({ skeletonProps, isLoading }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const profile = useStore((state) => state.profile);
   const activities = useStore((state) => state.activities);
@@ -133,7 +134,7 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
 
 export default OnboardingGuide;
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     guideHeader: {
       flexDirection: "row",
@@ -150,7 +151,7 @@ const getStyles = () =>
     },
     progressInner: {
       height: "100%",
-      backgroundColor: MyTheme.primaryAccent
+      backgroundColor: theme.primaryAccent
     },
     questList: {
       gap: Spacing.sm
@@ -176,9 +177,9 @@ const getStyles = () =>
     },
     textStrikeThrough: {
       textDecorationLine: "line-through",
-      color: MyTheme.muted
+      color: theme.muted
     },
     rewardText: {
-      color: MyTheme.primaryAccent
+      color: theme.primaryAccent
     }
   });

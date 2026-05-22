@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
@@ -12,7 +12,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("shop");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
@@ -82,7 +83,7 @@ const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, 
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     gridCard: {
       flex: 1
@@ -100,7 +101,7 @@ const getStyles = () =>
       gap: 2
     },
     cardBrand: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       fontSize: 10,
       textTransform: "uppercase",
       letterSpacing: 0.5

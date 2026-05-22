@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import { View, StyleSheet, Pressable, Animated } from "react-native";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import { useTranslation } from "react-i18next";
 
 export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
@@ -66,13 +67,13 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     label: {
       marginBottom: 8,
       opacity: 0.5,
       letterSpacing: 1,
-      color: MyTheme.text
+      color: theme.text
     },
     badgeWrapper: {
       flexDirection: "row",

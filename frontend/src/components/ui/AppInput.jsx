@@ -2,7 +2,7 @@ import React, { useState, forwardRef } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity, Platform } from "react-native";
 import { BlurView } from "expo-blur";
 
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
@@ -30,7 +30,8 @@ const AppInput = forwardRef(
     },
     ref
   ) => {
-    const styles = getStyles();
+    const MyTheme = useAppTheme();
+    const styles = getStyles(MyTheme);
     const isDarkMode = useStore((state) => state.isDarkMode);
     const [isFocused, setIsFocused] = useState(false);
 
@@ -120,8 +121,7 @@ const AppInput = forwardRef(
   }
 );
 
-const getStyles = (isDarkMode) => {
-  const borderColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
+const getStyles = (theme) => {
   return StyleSheet.create({
     wrapper: {
       width: "100%"
@@ -137,7 +137,7 @@ const getStyles = (isDarkMode) => {
       backgroundColor: "rgba(255, 255, 255, 0.05)",
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
-      borderColor: borderColor,
+      borderColor: theme.inputBorder,
       height: 54,
       paddingHorizontal: Spacing.md
     },
@@ -148,7 +148,7 @@ const getStyles = (isDarkMode) => {
       paddingVertical: Spacing.xs
     },
     containerFocused: {
-      borderColor: MyTheme.primaryAccent,
+      borderColor: theme.primaryAccent,
       backgroundColor: "rgba(47, 196, 146, 0.08)"
     },
     containerError: {
@@ -157,7 +157,7 @@ const getStyles = (isDarkMode) => {
     },
     input: {
       flex: 1,
-      color: MyTheme.text,
+      color: theme.text,
       fontSize: 16,
       height: "100%",
       ...{ outlineStyle: "none" }

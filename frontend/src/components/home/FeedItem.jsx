@@ -2,7 +2,7 @@ import { View, StyleSheet, Image, Pressable, Animated as RNAnimated, Share, Touc
 import Animated from "react-native-reanimated";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "@/components/icons/Icon";
 import { useRef, useState } from "react";
 import { router } from "expo-router";
@@ -20,7 +20,8 @@ export default function FeedItem({
   skeletonProps,
   isLoading
 }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
@@ -187,13 +188,13 @@ export default function FeedItem({
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     card: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       paddingBottom: Spacing.sm,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: MyTheme.separator
+      borderBottomColor: theme.separator
     },
     header: {
       flexDirection: "row",
@@ -211,7 +212,7 @@ const getStyles = () =>
       width: 40,
       height: 40,
       borderRadius: Spacing.borderRadius.full,
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       justifyContent: "center",
       alignItems: "center"
     },
@@ -221,7 +222,7 @@ const getStyles = () =>
     imageContainer: {
       width: "100%",
       aspectRatio: 4 / 5,
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       position: "relative",
       overflow: "hidden"
     },
@@ -264,9 +265,9 @@ const getStyles = () =>
       marginTop: Spacing.xs
     },
     skeletonContainer: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: MyTheme.separator,
+      borderBottomColor: theme.separator,
       paddingBottom: Spacing.md
     },
     skeletonHeader: {

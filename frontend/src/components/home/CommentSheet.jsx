@@ -2,7 +2,7 @@ import React, { useState, useRef, memo, useCallback } from "react";
 import { View, StyleSheet, Pressable, TextInput, Platform, FlatList, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { postComments } from "@/mocks/PostComments";
@@ -13,7 +13,8 @@ import { useTranslation } from "react-i18next";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
@@ -50,7 +51,8 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
 });
 
 export default function CommentSheet({ isVisible, onClose, postId }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
@@ -145,7 +147,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
         )}
       </View>
     ),
-    [handleReply, handleLikeComment, handleNavigate]
+    [handleReply, handleLikeComment, handleNavigate, styles]
   );
 
   const renderEmptySection = () => (
@@ -217,7 +219,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     listContent: {
       paddingHorizontal: Spacing.md,
@@ -246,7 +248,7 @@ const getStyles = () =>
     repliesContainer: {
       marginLeft: 44,
       borderLeftWidth: 1,
-      borderLeftColor: MyTheme.glas,
+      borderLeftColor: theme.glas,
       paddingLeft: 12,
       marginTop: -Spacing.sm,
       marginBottom: Spacing.sm
@@ -259,11 +261,11 @@ const getStyles = () =>
       paddingHorizontal: Spacing.md,
       paddingVertical: 8,
       borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: MyTheme.separator
+      borderTopColor: theme.separator
     },
     replyBarText: {
       fontSize: 13,
-      color: MyTheme.muted
+      color: theme.muted
     },
     commentContainer: {
       marginBottom: Spacing.sm
@@ -275,11 +277,11 @@ const getStyles = () =>
       flex: 1,
       fontSize: 14,
       lineHeight: 20,
-      color: MyTheme.text
+      color: theme.text
     },
     commentTime: {
       fontSize: 12,
-      color: MyTheme.muted
+      color: theme.muted
     },
     commentFooter: {
       flexDirection: "row",
@@ -289,7 +291,7 @@ const getStyles = () =>
     },
     replyButton: {
       fontSize: 12,
-      color: MyTheme.muted
+      color: theme.muted
     },
     inputSection: {
       flexDirection: "row",
@@ -297,8 +299,8 @@ const getStyles = () =>
       paddingHorizontal: Spacing.md,
       paddingTop: Spacing.sm,
       borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: MyTheme.separator,
-      backgroundColor: MyTheme.background
+      borderTopColor: theme.separator,
+      backgroundColor: theme.background
     },
     inputAvatar: {
       width: 36,
@@ -311,7 +313,7 @@ const getStyles = () =>
       flex: 1,
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: MyTheme.glas,
+      backgroundColor: theme.glas,
       borderRadius: Spacing.borderRadius.lg,
       paddingHorizontal: Spacing.md,
       minHeight: 36,
@@ -320,7 +322,7 @@ const getStyles = () =>
     textInput: {
       flex: 1,
       fontSize: 14,
-      color: MyTheme.text,
+      color: theme.text,
       padding: 0,
       includeFontPadding: false,
       textAlignVertical: "center",

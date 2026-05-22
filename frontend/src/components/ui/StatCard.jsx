@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
@@ -9,11 +9,10 @@ import BaseCard from "@/components/ui/BaseCard";
 import AppBadge from "./AppBadge";
 import { router } from "expo-router";
 import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
-  const styles = getStyles();
-  const { t } = useTranslation("profile");
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
@@ -79,7 +78,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     statCard: {
       width: "47%"
@@ -95,9 +94,7 @@ const getStyles = () =>
     },
     blurredText: {
       color: "transparent",
-      textShadowColor: MyTheme.text,
-      textShadowOffset: { width: 0, height: 0 },
-      textShadowRadius: 10
+      textShadow: `0px 0px 10px ${theme.text}`
     }
   });
 

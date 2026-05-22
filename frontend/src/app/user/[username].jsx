@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useLocalSearchParams } from "expo-router";
@@ -12,7 +12,8 @@ import ProfileHeader from "@/components/profile/ProfileHeader";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 
 export default function PublicProfileScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   const { username } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -31,74 +32,6 @@ export default function PublicProfileScreen() {
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
       <ProfileHeader skeletonProps={skeletonProps} isLoading={isLoading} />
-      {/* <View style={styles.profileHeader}>
-        <View>
-          <Animated.View style={styles.avatarContainer} sharedTransitionTag={`avatar-${username}`}>
-            <AppText type="h1">{username.charAt(0).toUpperCase()}</AppText>
-            <AppBadge
-              label={`LVL ${publicProfile.level}`}
-              style={styles.levelBadge}
-              textStyle={{ color: MyTheme.text }}
-            />
-          </Animated.View>
-        </View>
-        {isLoading ? (
-          <View style={{ alignItems: "center" }}>
-            <View style={{ height: Spacing.md }} />
-            <Skeleton {...skeletonProps} width={180} height={28} />
-            <View style={{ height: Spacing.xs }} />
-            <Skeleton {...skeletonProps} width={220} height={16} />
-            <View style={{ height: 4 }} />
-            <Skeleton {...skeletonProps} width={180} height={16} />
-          </View>
-        ) : (
-          <>
-            <AppText type="h1" style={{ marginVertical: Spacing.xs }}>
-              {publicProfile.name}
-            </AppText>
-            <AppText style={{ textAlign: "center" }}>{publicProfile.profileBio}</AppText>
-            <AppText type="caption" style={{ marginTop: Spacing.sm, color: MyTheme.muted }}>
-              {publicProfile.profileLeague} •{" "}
-              <AppText bold type="caption" style={{ color: MyTheme.gold }}>
-                {publicProfile.profileRank}
-              </AppText>
-            </AppText>
-          </>
-        )}
-      </View> */}
-
-      {/* 2. Actionbar (50/50 Split) */}
-      {/* <View style={styles.actionButtons}>
-        {isLoading ? (
-          <>
-            <View style={{ flex: 1 }}>
-              <Skeleton {...skeletonProps} width="100%" height={48} radius={Spacing.borderRadius.full} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Skeleton {...skeletonProps} width="100%" height={48} radius={Spacing.borderRadius.full} />
-            </View>
-          </>
-        ) : (
-          <>
-            <AppButton
-              title="Add Friend"
-              style={{ flex: 1 }}
-              textStyle={{ color: MyTheme.background }}
-              bgColor={MyTheme.primaryAccent}
-              onPress={() => console.log("Friend Request sent")}
-              icon={<Icon name="add" size={18} color={MyTheme.background} />}
-            />
-            <AppButton
-              variant="outline"
-              title="Message"
-              style={{ flex: 1 }}
-              onPress={() => console.log("Open Chat")}
-              icon={<Icon name="chat" size={18} color={MyTheme.primaryAccent} />}
-            />
-          </>
-        )}
-      </View> */}
-
       <View style={styles.trophySection}>
         <View style={styles.pinnedGrid}>
           {isLoading
@@ -126,7 +59,7 @@ export default function PublicProfileScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     profileHeader: {
       alignItems: "center",
@@ -137,7 +70,7 @@ const getStyles = () =>
       width: 110,
       height: 110,
       borderRadius: 55,
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       justifyContent: "center",
       alignItems: "center",
       position: "relative"
@@ -146,18 +79,11 @@ const getStyles = () =>
       position: "absolute",
       bottom: -Spacing.sm,
       alignSelf: "center",
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       paddingVertical: 2,
       borderWidth: 2,
-      borderColor: MyTheme.background
+      borderColor: theme.background
     },
-    // avatar: {
-    //   width: 110,
-    //   height: 110,
-    //   borderRadius: 55,
-    //   borderWidth: 2,
-    //   borderColor: MyTheme.secondary
-    // },
     actionButtons: {
       flexDirection: "row",
       gap: Spacing.md,

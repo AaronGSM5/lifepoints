@@ -2,14 +2,15 @@ import React, { useRef, useEffect } from "react";
 import { View, Animated as RNAnimated, StyleSheet, Pressable } from "react-native";
 import Animated from "react-native-reanimated";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("trophies");
   const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
@@ -88,7 +89,7 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     trophyItem: {
       alignItems: "center",
@@ -112,12 +113,12 @@ const getStyles = () =>
       right: 5,
       width: 15,
       height: 15,
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       borderRadius: Spacing.borderRadius.full,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: MyTheme.primary
+      borderColor: theme.primary
     }
   });
 

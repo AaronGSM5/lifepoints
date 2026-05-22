@@ -4,25 +4,28 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
   Animated,
   Dimensions,
-  PanResponder
+  PanResponder,
+  Pressable
 } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import { triggerHaptic } from "@/utils/haptics";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const SHEET_HEIGHT = SCREEN_HEIGHT * 0.8;
 
 const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const [showModal, setShowModal] = useState(isVisible);
 
   const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
@@ -95,9 +98,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={onClose}>
-          <Animated.View style={[styles.backdrop, { opacity: fadeAnim }]} />
-        </TouchableWithoutFeedback>
+        <AnimatedPressable onPress={onClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
 
         <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
           <View {...panResponder.panHandlers} style={styles.panResponderArea}>
@@ -120,7 +121,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
@@ -131,7 +132,7 @@ const getStyles = () =>
       backgroundColor: "rgba(0, 0, 0, 0.6)"
     },
     sheetContainer: {
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       borderTopLeftRadius: Spacing.borderRadius.lg,
       borderTopRightRadius: Spacing.borderRadius.lg,
       overflow: "hidden",
@@ -149,7 +150,7 @@ const getStyles = () =>
       width: 40,
       height: 4,
       borderRadius: 2,
-      backgroundColor: MyTheme.muted,
+      backgroundColor: theme.muted,
       opacity: 0.5
     },
     header: {
@@ -163,7 +164,7 @@ const getStyles = () =>
       width: 36,
       height: 36,
       borderRadius: Spacing.borderRadius.full,
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       alignItems: "center",
       justifyContent: "center"
     },

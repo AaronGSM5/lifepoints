@@ -3,14 +3,15 @@ import { StyleSheet, View, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const animatedWidth = useRef(new Animated.Value(0)).current;

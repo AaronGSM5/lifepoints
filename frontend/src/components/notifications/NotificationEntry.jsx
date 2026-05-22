@@ -1,12 +1,13 @@
 import { View, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { useTranslation } from "react-i18next";
 
 export default function NotificationEntry({ notification }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("common");
   return (
     <Pressable
@@ -33,16 +34,16 @@ export default function NotificationEntry({ notification }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       paddingVertical: Spacing.sm,
       paddingHorizontal: Spacing.md,
       borderRadius: Spacing.borderRadius.md,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       alignItems: "center"
     },
     containerPressed: {
@@ -53,7 +54,7 @@ const getStyles = () =>
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: MyTheme.secondary,
+      backgroundColor: theme.secondary,
       justifyContent: "center",
       alignItems: "center",
       marginRight: Spacing.md

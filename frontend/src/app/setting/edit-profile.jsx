@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
@@ -26,7 +26,8 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const router = useRouter();
   const { t } = useTranslation("settings");
   const [isLoading, setIsLoading] = useState(true);
@@ -179,7 +180,7 @@ export default function EditProfileScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     scrollContent: {
       paddingBottom: Spacing.xl
@@ -196,24 +197,24 @@ const getStyles = () =>
       height: 120,
       borderRadius: 60,
       borderWidth: 3,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     editBadge: {
       position: "absolute",
       bottom: 0,
       right: 0,
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       width: 36,
       height: 36,
       borderRadius: 18,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 3,
-      borderColor: MyTheme.background
+      borderColor: theme.background
     },
     avatarHint: {
       marginTop: Spacing.sm,
-      color: MyTheme.muted
+      color: theme.muted
     },
     formSection: {
       marginBottom: Spacing.xl

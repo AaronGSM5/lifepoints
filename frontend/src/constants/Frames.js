@@ -1,4 +1,6 @@
-import { MyTheme } from "./Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+const MyTheme = useAppTheme();
 
 export const AVATAR_FRAMES = [
   { id: 'f0', name: 'Standard', color: MyTheme.secondary, borderWidth: 2, glow: false },

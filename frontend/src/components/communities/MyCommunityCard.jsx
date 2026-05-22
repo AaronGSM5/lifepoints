@@ -5,12 +5,13 @@ import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
@@ -72,7 +73,7 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     communityCard: {
       width: 160,
@@ -100,9 +101,9 @@ const getStyles = () =>
       width: 12,
       height: 12,
       borderRadius: Spacing.borderRadius.full,
-      backgroundColor: MyTheme.warning,
+      backgroundColor: theme.warning,
       borderWidth: 2,
-      borderColor: MyTheme.primary
+      borderColor: theme.primary
     },
     bottomContent: {
       gap: 4
@@ -116,7 +117,7 @@ const getStyles = () =>
       width: 6,
       height: 6,
       borderRadius: Spacing.borderRadius.full,
-      backgroundColor: MyTheme.primaryAccent
+      backgroundColor: theme.primaryAccent
     }
   });
 

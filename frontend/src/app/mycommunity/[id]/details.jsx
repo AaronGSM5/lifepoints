@@ -8,7 +8,7 @@ import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
 import SectionHeader from "@/components/ui/SectionHeader";
 import AppBadge from "@/components/ui/AppBadge";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppButton from "@/components/ui/AppButton";
@@ -28,7 +28,8 @@ const MOCK_MEMBERS = [
 
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const { myCommunities } = useCommunities();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -152,7 +153,7 @@ export default function MyCommunityDetailScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     contentContainer: {
       paddingHorizontal: Spacing.lg,
@@ -204,7 +205,7 @@ const getStyles = () =>
       gap: 4
     },
     expandButtonText: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       fontSize: 14
     }
   });

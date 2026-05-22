@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { View, Animated as RNAnimated, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { router } from "expo-router";
@@ -10,14 +10,15 @@ const CustomizablesCard = ({
   id,
   name,
   icon,
-  color = MyTheme.primaryAccent,
+  color = "rgb(47, 196, 146)",
   isActive = false,
   unlocked = true,
   justUnlocked = false,
   onAnimationComplete,
   onPress
 }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
@@ -93,12 +94,12 @@ const CustomizablesCard = ({
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     cardContainer: {
       alignItems: "center",
       width: "100%",
-      backgroundColor: MyTheme.surface,
+      backgroundColor: theme.surface,
       padding: Spacing.sm,
       borderRadius: Spacing.borderRadius.md,
       borderWidth: 1,
@@ -107,7 +108,7 @@ const getStyles = () =>
       position: "relative"
     },
     cardContainerActive: {
-      borderColor: MyTheme.primaryAccent
+      borderColor: theme.primaryAccent
     },
     iconBox: {
       width: "100%",
@@ -129,12 +130,12 @@ const getStyles = () =>
       right: 12,
       width: 18,
       height: 18,
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       borderRadius: 9,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: MyTheme.primary
+      borderColor: theme.primary
     }
   });
 

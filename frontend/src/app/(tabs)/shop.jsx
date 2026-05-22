@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { useRouter } from "expo-router";
@@ -17,7 +17,8 @@ import { useTranslation } from "react-i18next";
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("shop");
   const router = useRouter();
   const bottomPadding = useFloatingNavbarPadding();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, LayoutAnimation, Platform, UIManager, TouchableOpacity } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
@@ -30,7 +30,8 @@ const TaskItem = ({
   isExpanded,
   onToggleExpand
 }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const [inputValue, setInputValue] = useState("");
@@ -135,7 +136,7 @@ const TaskItem = ({
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       paddingVertical: Spacing.md,
@@ -150,7 +151,7 @@ const getStyles = () =>
       width: 48,
       height: 48,
       borderRadius: Spacing.borderRadius.md,
-      backgroundColor: MyTheme.secondary,
+      backgroundColor: theme.secondary,
       justifyContent: "center",
       alignItems: "center",
       marginRight: Spacing.md
@@ -167,7 +168,7 @@ const getStyles = () =>
       alignItems: "center"
     },
     lpText: {
-      color: MyTheme.primaryAccent
+      color: theme.primaryAccent
     },
     chevronContainer: {
       marginLeft: Spacing.sm
@@ -176,7 +177,7 @@ const getStyles = () =>
       marginTop: Spacing.md,
       paddingTop: Spacing.md,
       borderTopWidth: 1,
-      borderTopColor: MyTheme.secondary
+      borderTopColor: theme.secondary
     },
     actionRow: {
       flexDirection: "row",

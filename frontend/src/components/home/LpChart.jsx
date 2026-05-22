@@ -2,11 +2,12 @@ import { StyleSheet, View } from "react-native";
 import AppText from "../ui/AppText";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import SectionHeader from "../ui/SectionHeader";
 
 const LpChart = () => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const lp = 2450;
   return (
     <View>
@@ -31,10 +32,10 @@ const LpChart = () => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     chartCard: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.lg,
       minHeight: 200
@@ -53,7 +54,7 @@ const getStyles = () =>
     },
     chartBar: {
       width: "70%",
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderTopLeftRadius: Spacing.borderRadius.sm,
       borderTopRightRadius: Spacing.borderRadius.sm
     },

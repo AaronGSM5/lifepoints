@@ -3,13 +3,14 @@ import { View, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import SectionHeader from "../ui/SectionHeader";
 import CustomizablesCard from "../customizables/CustomizablesCard";
 import { useTranslation } from "react-i18next";
 
 const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
   const { t } = useTranslation("profile");
+  const MyTheme = useAppTheme();
   if (!isLoading && (!customizables || customizables.length === 0)) {
     return null;
   }

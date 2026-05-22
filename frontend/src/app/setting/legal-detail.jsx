@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
 export default function LegalDetailScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { type } = useLocalSearchParams();
   const { t } = useTranslation("settings");
 
@@ -109,7 +110,7 @@ export default function LegalDetailScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       paddingBottom: Spacing.xl
@@ -117,7 +118,7 @@ const getStyles = () =>
     header: {
       marginBottom: Spacing.xl,
       borderBottomWidth: 1,
-      borderBottomColor: MyTheme.text,
+      borderBottomColor: theme.text,
       paddingBottom: Spacing.md
     },
     dateText: {

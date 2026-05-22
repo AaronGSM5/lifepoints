@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Pressable, StyleSheet, Animated, ActivityIndicator, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "./AppText";
 
@@ -20,7 +20,8 @@ export default function AppButton({
   borderStyle,
   bgColor
 }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
@@ -114,7 +115,7 @@ export default function AppButton({
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     base: {
       borderRadius: Spacing.borderRadius.full,
@@ -141,7 +142,7 @@ const getStyles = () =>
     },
     outline: {
       borderWidth: 1,
-      borderColor: MyTheme.primaryAccent
+      borderColor: theme.primaryAccent
     },
     ghost: {
       backgroundColor: "transparent"

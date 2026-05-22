@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, FlatList, ScrollView } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppInput from "@/components/ui/AppInput";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -13,7 +13,8 @@ export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchHistory = ["Gaming", "Meditation", "Fitness Beginner", "Rewe"];
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("common");
 
   useEffect(() => {

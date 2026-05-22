@@ -1,20 +1,14 @@
 import { StyleSheet, Modal, Pressable } from "react-native";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function AppModal({ visible, onClose, children }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose} // Android Back Button
-    >
-      {/* Hintergrund: Klick hier schließt Modal */}
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.modalBackground} onPress={onClose}>
-        {/* Inhalt: Klick hier bleibt offen */}
         <Pressable style={styles.modalContent} onPress={() => {}}>
           {children}
         </Pressable>
@@ -23,7 +17,7 @@ export default function AppModal({ visible, onClose, children }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     modalBackground: {
       flex: 1,
@@ -32,7 +26,7 @@ const getStyles = () =>
       alignItems: "center"
     },
     modalContent: {
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.lg,
       width: "80%",

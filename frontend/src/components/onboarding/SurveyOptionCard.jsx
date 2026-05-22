@@ -1,11 +1,12 @@
 import { Spacing } from "@/constants/Spacing";
 import AppText from "../ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 const { Pressable, StyleSheet } = require("react-native");
 
 const SurveyOptionCard = ({ option, isSelected, handleSelect }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   return (
     <Pressable
       key={option.value}
@@ -20,20 +21,20 @@ const SurveyOptionCard = ({ option, isSelected, handleSelect }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     optionCard: {
       width: "47%",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.lg,
       borderRadius: Spacing.borderRadius.md,
       alignItems: "center",
       borderWidth: 1,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     selectedCard: {
-      borderColor: MyTheme.primaryAccent,
-      backgroundColor: MyTheme.primaryAccent
+      borderColor: theme.primaryAccent,
+      backgroundColor: theme.primaryAccent
     }
   });
 

@@ -3,14 +3,14 @@ import { View, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
-import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
 export default function SupportScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -38,7 +38,7 @@ export default function SupportScreen() {
 
   const handleContactSupport = (type) => {
     if (type === "email") {
-      Linking.openURL("mailto:support@lifepoints-app.com");
+      Linking.openURL("mailto:lifepoints.app.dev@gmail.com");
     }
   };
 
@@ -119,13 +119,13 @@ export default function SupportScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     header: {
       paddingVertical: Spacing.md
     },
     subtitle: {
-      color: MyTheme.muted,
+      color: theme.muted,
       marginTop: Spacing.xs
     },
     contactRow: {
@@ -135,12 +135,12 @@ const getStyles = () =>
     },
     contactCard: {
       flex: 1,
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
       alignItems: "center",
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       gap: 4
     },
     iconCircle: {
@@ -164,28 +164,28 @@ const getStyles = () =>
     },
     categoryItem: {
       width: "47%",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
       alignItems: "center",
       borderWidth: 1,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     faqItem: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.md,
       marginBottom: Spacing.sm,
       borderWidth: 1,
-      borderColor: MyTheme.secondary
+      borderColor: theme.secondary
     },
     statusBox: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.full,
       gap: Spacing.sm,

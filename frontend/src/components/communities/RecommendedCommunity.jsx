@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Image, Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
@@ -12,7 +12,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
@@ -125,7 +126,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     cardContainer: {
       width: 260,
@@ -181,7 +182,7 @@ const getStyles = () =>
       height: 24,
       borderRadius: 12,
       borderWidth: 2,
-      borderColor: MyTheme.primary
+      borderColor: theme.primary
     },
     memberText: {
       opacity: 0.8

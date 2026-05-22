@@ -4,7 +4,7 @@ import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import useStore from "@/store/useStore";
 
@@ -17,6 +17,7 @@ export default function PasswordInput({
   placeholder,
   bottomMargin = true
 }) {
+  const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);

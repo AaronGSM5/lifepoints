@@ -3,7 +3,7 @@ import { StyleSheet, View, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
@@ -11,7 +11,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const WalletCard = ({ skeletonProps, isLoading }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("shop");
   const points = useStore((state) => state.profile.profileLp);
   const targetPoints = (points * 2.6).toFixed(0);
@@ -73,13 +74,13 @@ const WalletCard = ({ skeletonProps, isLoading }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     walletCard: {
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       marginVertical: Spacing.md
     },
     walletHeader: {
@@ -93,7 +94,7 @@ const getStyles = () =>
       marginBottom: Spacing.md
     },
     pointsLabel: {
-      color: MyTheme.primaryAccent,
+      color: theme.primaryAccent,
       marginLeft: Spacing.xs
     },
     progressBarContainer: {

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet, SectionList } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -10,7 +10,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const JournalPage = () => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
   const groupedActivities = useMemo(() => {

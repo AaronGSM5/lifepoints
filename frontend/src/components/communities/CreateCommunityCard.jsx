@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 
 const CreateCommunityCard = () => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   return (
     <View style={styles.createCard}>
@@ -32,7 +33,7 @@ const CreateCommunityCard = () => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     createCard: {
       flexDirection: "row",
@@ -60,7 +61,7 @@ const getStyles = () =>
       borderColor: "rgba(47, 196, 146, 0.2)"
     },
     createCardTitle: { marginBottom: Spacing.xs },
-    createCardSubtitle: { fontSize: 12, color: MyTheme.muted }
+    createCardSubtitle: { fontSize: 12, color: theme.muted }
   });
 
 export default CreateCommunityCard;

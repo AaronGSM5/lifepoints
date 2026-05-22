@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, View, Pressable } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 
 const BaseCard = ({ children, onPress, style, padding = Spacing.md }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const baseStyles = [styles.card, { padding }, style];
 
   if (onPress) {
@@ -18,13 +19,13 @@ const BaseCard = ({ children, onPress, style, padding = Spacing.md }) => {
   return <View style={baseStyles}>{children}</View>;
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     card: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
-      borderColor: MyTheme.secondary,
+      borderColor: theme.secondary,
       overflow: "hidden"
     },
     pressed: {

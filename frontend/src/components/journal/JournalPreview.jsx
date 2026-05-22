@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppText from "../ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "../ui/BaseCard";
@@ -12,7 +12,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 const JournalPreview = ({ skeletonProps, isLoading }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const activities = useStore((state) => state.activities);
 
@@ -92,7 +93,7 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: Spacing.md
@@ -106,7 +107,7 @@ const getStyles = () =>
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: MyTheme.secondary,
+      backgroundColor: theme.secondary,
       justifyContent: "center",
       alignItems: "center"
     },

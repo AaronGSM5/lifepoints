@@ -2,11 +2,12 @@ import React from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import BackButton from "../ui/BackButton";
 
 const CommunityHeader = ({ community }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
 
   const bannerImg =
     community?.banner || "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
@@ -31,7 +32,7 @@ const CommunityHeader = ({ community }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     headerContainer: {
       marginBottom: Spacing.sm
@@ -68,7 +69,7 @@ const getStyles = () =>
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 4,
-      borderColor: MyTheme.background
+      borderColor: theme.background
     }
   });
 

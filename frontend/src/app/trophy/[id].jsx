@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import Animated from "react-native-reanimated";
 import { useLocalSearchParams } from "expo-router";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -10,7 +10,8 @@ import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useTranslation } from "react-i18next";
 
 export default function TrophyScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("trophies");
   const { id } = useLocalSearchParams();
   const trophy = trophiesCatalog.find((t) => String(t.id) === String(id));
@@ -61,7 +62,7 @@ export default function TrophyScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     scrollContent: {
       paddingHorizontal: Spacing.lg,
@@ -80,7 +81,7 @@ const getStyles = () =>
       height: 300
     },
     infoBox: {
-      backgroundColor: MyTheme.primary,
+      backgroundColor: theme.primary,
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.lg,
       marginTop: Spacing.xl,

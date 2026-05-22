@@ -5,11 +5,12 @@ import BaseCard from "@/components/ui/BaseCard";
 import AppButton from "@/components/ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
   const [activeTab, setActiveTab] = useState("today"); // "today" | "week"
   const quests = mockQuests[activeTab];
@@ -74,7 +75,7 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     tabContainer: {
       flexDirection: "row",
@@ -92,7 +93,7 @@ const getStyles = () =>
       borderRadius: Spacing.lg
     },
     activeTab: {
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderRadius: Spacing.lg
     },
     list: {
@@ -122,7 +123,7 @@ const getStyles = () =>
     },
     progressFill: {
       height: "100%",
-      backgroundColor: MyTheme.primaryAccent,
+      backgroundColor: theme.primaryAccent,
       borderRadius: Spacing.borderRadius.lg
     }
   });

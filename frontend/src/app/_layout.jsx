@@ -1,8 +1,8 @@
 import { Stack } from "expo-router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { MyTheme, applyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
@@ -24,6 +24,7 @@ const initialMetrics = {
 };
 
 export default function RootLayout() {
+  const MyTheme = useAppTheme();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
@@ -38,10 +39,6 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   useEffect(() => {
-    applyTheme(isDarkMode);
-  }, [isDarkMode]);
-
-  useEffect(() => {
     const hideNavigationBar = async () => {
       if (Platform.OS === "android") {
         await NavigationBar.setVisibilityAsync("hidden");
@@ -52,18 +49,20 @@ export default function RootLayout() {
     hideNavigationBar();
   }, []);
 
+  const renderHeader = useCallback((props) => <Toolbar {...props} />, []);
+
   if (!loaded && !error) {
     return null;
   }
 
   return (
-    <View key={isDarkMode ? "dark" : "light"} style={{ flex: 1, backgroundColor: MyTheme.background }}>
+    <View key={MyTheme.primaryAccent} style={{ flex: 1, backgroundColor: MyTheme.background }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
         <StatusBar style={isDarkMode ? "light" : "dark"} translucent backgroundColor="transparent" />
 
         <Stack
           screenOptions={{
-            header: (props) => <Toolbar {...props} />,
+            header: renderHeader,
             headerShown: true,
             contentStyle: { backgroundColor: MyTheme.background },
             gestureEnabled: true,

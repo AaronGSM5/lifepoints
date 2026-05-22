@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react";
 import { View, StyleSheet, Pressable, Animated } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
@@ -68,13 +69,13 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     label: {
       marginBottom: 8,
       opacity: 0.5,
       letterSpacing: 1,
-      color: MyTheme.text
+      color: theme.text
     },
     iconGrid: {
       flexDirection: "row",
@@ -86,14 +87,14 @@ const getStyles = () =>
       width: 50,
       height: 50,
       borderRadius: 12,
-      backgroundColor: MyTheme.glas,
+      backgroundColor: theme.glas,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
       borderColor: "transparent"
     },
     selectedIconItem: {
-      borderColor: MyTheme.primaryAccent,
+      borderColor: theme.primaryAccent,
       backgroundColor: "rgba(47, 196, 146, 0.1)"
     },
     animatedWrapper: {

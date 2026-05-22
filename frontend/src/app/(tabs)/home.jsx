@@ -14,7 +14,7 @@ import useStore from "@/store/useStore";
 import AppText from "@/components/ui/AppText";
 import LevelUpModal from "@/components/LevelUpModal";
 import LootGameModal from "@/components/home/LootGameModal";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
@@ -23,6 +23,7 @@ const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
+  const MyTheme = useAppTheme();
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [shouldCrash, setShouldCrash] = useState(false);
@@ -113,7 +114,7 @@ export default function HomeScreen() {
         <SectionHeader title={"Feed"} />
       </View>
     ),
-    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience]
+    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t]
   );
 
   const renderFooter = () =>
@@ -124,6 +125,7 @@ export default function HomeScreen() {
     ) : (
       <View style={{ height: Spacing.xl }} />
     );
+
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList

@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { tasksCatalog } from "@/constants/TasksCatalog";
@@ -17,7 +17,8 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 
 export default function TaskDetailScreen() {
-  const styles = getStyles();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
   const { id } = useLocalSearchParams();
   const router = useRouter();
@@ -158,17 +159,17 @@ export default function TaskDetailScreen() {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: MyTheme.background
+      backgroundColor: theme.background
     },
     errorContainer: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: MyTheme.background
+      backgroundColor: theme.background
     },
     imageContainer: {
       width: "100%",
@@ -213,7 +214,7 @@ const getStyles = () =>
       left: 0,
       right: 0,
       padding: Spacing.lg,
-      backgroundColor: MyTheme.background,
+      backgroundColor: theme.background,
       boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
       flexDirection: "row",
       elevation: 20
