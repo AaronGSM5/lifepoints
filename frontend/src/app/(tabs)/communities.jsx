@@ -215,9 +215,6 @@ const getStyles = () =>
       paddingTop: Spacing.sm,
       zIndex: 10
     },
-    headerContainer: {
-      paddingBottom: Spacing.md
-    },
     myCommunitiesSection: {
       marginTop: Spacing.md,
       marginBottom: Spacing.md

@@ -17,12 +17,10 @@ export default function LanguageScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
-      <View style={styles.headerContainer}>
-        <ScreenTitle title={t("Language & Region")} />
-        <AppText type="caption" style={{ fontSize: 15 }}>
-          {t("Select the language in which you want LifePoints to be displayed.")}
-        </AppText>
-      </View>
+      <ScreenTitle
+        title={t("Language & Region")}
+        subtitle={t("Select the language in which you want LifePoints to be displayed.")}
+      />
 
       <View style={styles.cardContainer}>
         <TouchableOpacity
@@ -64,9 +62,6 @@ const getStyles = () =>
     container: {
       flex: 1,
       padding: 24
-    },
-    headerContainer: {
-      marginBottom: 32
     },
     cardContainer: {
       flexDirection: "row",

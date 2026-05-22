@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import useStore from "@/store/useStore";
 import { MyTheme } from "@/constants/Colors";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import AppText from "@/components/ui/AppText";
 import { useTranslation } from "react-i18next";
 
 export default function AppearanceScreen() {
@@ -15,12 +14,7 @@ export default function AppearanceScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
-      <View style={styles.headerContainer}>
-        <ScreenTitle title={t("Appearance")} />
-        <AppText type="caption" style={{ fontSize: 15 }}>
-          {t("Customize the app's design to suit your preferences.")}
-        </AppText>
-      </View>
+      <ScreenTitle title={t("Appearance")} subtitle={t("Customize the app's design to suit your preferences.")} />
 
       <View style={styles.cardContainer}>
         <TouchableOpacity
@@ -62,10 +56,6 @@ const getStyles = () =>
     container: {
       flex: 1,
       padding: 24
-    },
-    headerContainer: {
-      marginBottom: 32,
-      marginTop: 16
     },
     cardContainer: {
       flexDirection: "row",
