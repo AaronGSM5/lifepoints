@@ -78,13 +78,14 @@ const getStyles = (theme) =>
     },
     scrollContainer: {
       gap: Spacing.md,
-      paddingVertical: Spacing.xs
+      paddingVertical: Spacing.xs,
+      paddingLeft: Spacing.sm
     },
     squareContainer: {
       width: 72,
       height: 72,
       borderRadius: 16,
-      borderWidth: 3,
+      borderWidth: 2,
       borderColor: "transparent"
     },
     selectedSquare: {

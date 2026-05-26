@@ -57,7 +57,7 @@ export default function TaskDetailScreen() {
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
           <View style={styles.imageContainer}>
             <Image
-              source={task.image ? { uri: task.image } : require("@/../public/assets/icon.png")}
+              source={task.image ? { uri: task.image } : require("@/../public/assets/appIcons/icon.png")}
               style={styles.image}
             />
 

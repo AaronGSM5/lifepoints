@@ -13,7 +13,7 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
     <View style={styles.header}>
       <View style={styles.appIcon}>
         <Image
-          source={require("@/../public/assets/adaptive-icon.png")}
+          source={require("@/../public/assets/appIcons/adaptive-icon.png")}
           style={{ width: logoWidth, height: logoHeight }}
           resizeMode="contain"
         />

@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
 import ColorThemePicker from "@/components/settings/ColorThemePicker";
+import AppIconPicker from "@/components/settings/AppIconPicker";
 
 export default function AppearanceScreen() {
   const MyTheme = useAppTheme();
@@ -51,6 +52,7 @@ export default function AppearanceScreen() {
       </View>
 
       <ColorThemePicker />
+      <AppIconPicker />
     </View>
   );
 }

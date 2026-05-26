@@ -53,7 +53,7 @@ export default function Toolbar() {
       <View style={styles.centerSection}>
         <Pressable onPress={() => router.push("/")}>
           <Image
-            source={require("@/../public/assets/adaptive-icon.png")}
+            source={require("@/../public/assets/appIcons/adaptive-icon.png")}
             style={{ width: logoWidth, height: logoHeight }}
             resizeMode="contain"
           />
