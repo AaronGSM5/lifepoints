@@ -24,8 +24,6 @@ const initialMetrics = {
 };
 
 export default function RootLayout() {
-  const MyTheme = useAppTheme();
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
     "Inter-SemiBold": Inter_600SemiBold,
@@ -56,15 +54,14 @@ export default function RootLayout() {
   }
 
   return (
-    <View key={MyTheme.primaryAccent} style={{ flex: 1, backgroundColor: MyTheme.background }}>
+    <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
-        <StatusBar style={isDarkMode ? "light" : "dark"} translucent backgroundColor="transparent" />
+        <StatusBar style={"auto"} translucent backgroundColor="transparent" />
 
         <Stack
           screenOptions={{
             header: renderHeader,
             headerShown: true,
-            contentStyle: { backgroundColor: MyTheme.background },
             gestureEnabled: true,
             gestureDirection: "horizontal",
             fullScreenGestureEnabled: true,
