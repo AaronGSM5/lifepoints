@@ -11,7 +11,7 @@ const colorThemes = {
 
 export const useAppTheme = () => {
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const activeColorThemeId = useStore((state) => state.activeColorThemeId) || "default_green";
+  const activeColorThemeId = useStore((state) => state.activeColorThemeId) || "orange_light";
 
   const baseTheme = isDarkMode ? DarkTheme : LightTheme;
 

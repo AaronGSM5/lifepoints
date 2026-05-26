@@ -5,6 +5,7 @@ import AppText from "@/components/ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   const MyTheme = useAppTheme();
@@ -44,7 +45,13 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
             <Pressable
               key={`${icon}-${index}`}
               onPress={() => onSelectIcon(icon)}
-              style={[styles.iconItem, selectedIcon === icon && styles.selectedIconItem]}
+              style={[
+                styles.iconItem,
+                selectedIcon === icon && {
+                  borderColor: MyTheme.primaryAccent,
+                  backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1)
+                }
+              ]}
             >
               <MaterialIcons
                 name={icon}
@@ -92,10 +99,6 @@ const getStyles = (theme) =>
       justifyContent: "center",
       borderWidth: 1,
       borderColor: "transparent"
-    },
-    selectedIconItem: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: "rgba(47, 196, 146, 0.1)"
     },
     animatedWrapper: {
       overflow: "hidden",

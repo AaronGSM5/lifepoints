@@ -12,7 +12,7 @@ import useStore from "@/store/useStore";
 import LevelProgress from "../LevelProgress";
 import { getXpThreshold } from "@/utils/xpHelpers";
 import { getLeagueData } from "@/constants/Progression";
-import { getFrameById } from "@/constants/Frames";
+import { useAvatarFrames } from "@/hooks/useAvatarFrames";
 import { publicProfile } from "@/mocks/PublicProfile";
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +22,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
+  const { getFrameById } = useAvatarFrames();
   const friendList = useStore((state) => state.profile.friends);
   const isFriend = friendList.includes(profile.id);
   const addFriend = useStore((state) => state.addFriend);
@@ -30,7 +31,6 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const rankIndex = profile?.rankIndex ?? 0;
   const league = getLeagueData(leagueIndex);
   const rankName = league.ranks[rankIndex] || "Unbekannt";
-
   const activeFrame = getFrameById(profile.activeFrame);
 
   const avatarSource = profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png");

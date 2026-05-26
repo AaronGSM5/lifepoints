@@ -6,14 +6,16 @@ import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
+  const MyTheme = useAppTheme();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const styles = getStyles(isDarkMode);
   const scale = useRef(new Animated.Value(1)).current;
 
-  const activeColor = "rgb(47, 196, 146)";
-  const inactiveColor = isDarkMode ? "rgb(248, 250, 252)" : "rgb(15, 23, 41)";
+  const activeColor = MyTheme.primaryAccent;
+  const inactiveColor = MyTheme.text;
 
   const animatePop = () => {
     Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {

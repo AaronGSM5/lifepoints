@@ -6,13 +6,12 @@ import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
-import { useTranslation } from "react-i18next";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function TermsScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const router = useRouter();
-  const { t } = useTranslation("settings");
 
   const legalItems = [
     {
@@ -57,7 +56,7 @@ export default function TermsScreen() {
             style={styles.listItem}
             onPress={() => router.push(`/setting/legal-detail?type=${item.id}`)}
           >
-            <View style={styles.iconBackground}>
+            <View style={[styles.iconBackground, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
               <Icon name={item.icon} size={22} color={MyTheme.primaryAccent} />
             </View>
 
@@ -111,7 +110,6 @@ const getStyles = (theme) =>
       width: 40,
       height: 40,
       borderRadius: Spacing.borderRadius.md,
-      backgroundColor: "rgba(47, 196, 146, 0.1)",
       justifyContent: "center",
       alignItems: "center",
       marginRight: Spacing.md

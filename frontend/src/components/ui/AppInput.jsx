@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/addOpacity";
 
 const AppInput = forwardRef(
   (
@@ -35,10 +36,8 @@ const AppInput = forwardRef(
     const isDarkMode = useStore((state) => state.isDarkMode);
     const [isFocused, setIsFocused] = useState(false);
 
-    // Multiline-Status aus den Props auslesen
     const isMultiline = props.multiline;
 
-    // Ausgelagerter Inhalt, damit er sowohl im View als auch im BlurView genutzt werden kann
     const renderInputContent = () => (
       <>
         {icon && (
@@ -52,13 +51,11 @@ const AppInput = forwardRef(
 
         <TextInput
           ref={ref}
-          // Hier verheiraten wir den Basis-Style, den Multiline-Style und Custom-Styles
           style={[styles.input, isMultiline && styles.inputMultiline, style]}
           placeholderTextColor={MyTheme.muted}
           selectionColor={MyTheme.primaryAccent}
           underlineColorAndroid="transparent"
           cursorColor={MyTheme.primaryAccent}
-          // Wichtig für Android Multiline
           textAlignVertical={isMultiline ? "top" : "center"}
           {...{ accessibilityRole: "text" }}
           {...props}
@@ -82,14 +79,14 @@ const AppInput = forwardRef(
       </>
     );
 
-    // Dynamische Styles für den Container (egal ob View oder BlurView)
     const containerStyles = [
       styles.container,
-      isFocused && styles.containerFocused,
-      !isDarkMode && isForm && styles.containerFocused,
+      isFocused && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.08) },
+      !isDarkMode &&
+        isForm && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.08) },
       error && styles.containerError,
       isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
-      isMultiline && styles.containerMultiline, // Hier kommt unser Multiline-Support rein
+      isMultiline && styles.containerMultiline,
       blur && { backgroundColor: "transparent" },
       inputStyle
     ];
@@ -144,12 +141,8 @@ const getStyles = (theme) => {
     containerMultiline: {
       height: "auto",
       minHeight: 100,
-      alignItems: "flex-start", // Sorgt dafür, dass Icon und Text oben anfangen
+      alignItems: "flex-start",
       paddingVertical: Spacing.xs
-    },
-    containerFocused: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: "rgba(47, 196, 146, 0.08)"
     },
     containerError: {
       borderColor: "rgb(239, 68, 68)",

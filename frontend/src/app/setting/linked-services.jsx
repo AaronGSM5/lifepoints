@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function LinkedServicesScreen() {
   const MyTheme = useAppTheme();
@@ -42,8 +43,8 @@ export default function LinkedServicesScreen() {
   const ServiceItem = ({ id, name, description, icon, isConnected }) => (
     <View style={styles.serviceCard}>
       <View style={styles.cardMain}>
-        <View style={[styles.iconBox, { backgroundColor: isConnected ? "rgba(47, 196, 146, 0.1)" : "#f2f2f7" }]}>
-          <Icon name={icon} size={28} color={isConnected ? MyTheme.primaryAccent : MyTheme.primaryAccent} />
+        <View style={[styles.iconBox, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
+          <Icon name={icon} size={28} color={MyTheme.primaryAccent} />
         </View>
 
         <View style={styles.infoContainer}>
@@ -77,12 +78,10 @@ export default function LinkedServicesScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <View style={styles.header}>
-        <ScreenTitle title={t("Linked Services")} />
-        <AppText style={styles.subtitle}>
-          {t("Connect your favorite apps to automatically earn LifePoints through your activities.")}
-        </AppText>
-      </View>
+      <ScreenTitle
+        title={t("Linked Services")}
+        subtitle={t("Connect your favorite apps to automatically earn LifePoints through your activities.")}
+      />
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
@@ -132,13 +131,6 @@ export default function LinkedServicesScreen() {
 
 const getStyles = (theme) =>
   StyleSheet.create({
-    header: {
-      paddingBottom: Spacing.lg
-    },
-    subtitle: {
-      marginTop: Spacing.xs,
-      color: theme.muted
-    },
     section: {
       marginBottom: Spacing.md
     },

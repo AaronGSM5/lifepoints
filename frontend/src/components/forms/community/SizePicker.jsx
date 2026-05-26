@@ -3,6 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {
   const MyTheme = useAppTheme();
@@ -18,7 +19,13 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
           <Pressable
             key={opt.slots}
             onPress={() => onSelectSize(opt)}
-            style={[styles.sizeCard, selectedSize.slots === opt.slots && styles.selectedSizeCard]}
+            style={[
+              styles.sizeCard,
+              selectedSize.slots === opt.slots && {
+                borderColor: MyTheme.primaryAccent,
+                backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1)
+              }
+            ]}
           >
             <AppText bold>{opt.slots}</AppText>
             <AppText type="caption">{t(opt.price)}</AppText>
@@ -49,9 +56,5 @@ const getStyles = (theme) =>
       alignItems: "center",
       borderWidth: 1,
       borderColor: "transparent"
-    },
-    selectedSizeCard: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: "rgba(47, 196, 146, 0.1)"
     }
   });
