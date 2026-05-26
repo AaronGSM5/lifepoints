@@ -59,7 +59,7 @@ export default function ColorThemePicker() {
               {isSelected && !theme.isLocked && (
                 <View style={styles.overlay}>
                   <View style={[styles.iconCircle, { backgroundColor: MyTheme.primaryAccent }]}>
-                    <Ionicons name="checkmark-sharp" size={20} color="#FFFFFF" />
+                    <Ionicons name="checkmark-sharp" size={16} color="#FFFFFF" />
                   </View>
                 </View>
               )}
@@ -106,8 +106,8 @@ const getStyles = (theme) =>
       alignItems: "center"
     },
     iconCircle: {
-      width: 32,
-      height: 32,
+      width: 24,
+      height: 24,
       borderRadius: 16,
       backgroundColor: "rgba(0, 0, 0, 0.6)",
       justifyContent: "center",
