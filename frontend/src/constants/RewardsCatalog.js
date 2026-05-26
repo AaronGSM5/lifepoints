@@ -56,7 +56,7 @@ export const rewardsCatalog = [
   },
   {
     id: "r6",
-    image: "https://images.unsplash.com/photo-1593079831268-3381b0c42369?q=80&w=400",
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=400",
     brand: "MYPROTEIN",
     title: "25% Off Whey",
     points: 600,
@@ -144,7 +144,7 @@ export const rewardsCatalog = [
   },
   {
     id: "r14",
-    image: "https://images.unsplash.com/photo-1606144042873-7e031f55811c?q=80&w=400",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400",
     brand: "PLAYSTATION",
     title: "10€ PSN Card",
     points: 2000,
