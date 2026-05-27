@@ -54,7 +54,7 @@ export default function CommunityDetailScreen() {
               <AppText bold style={{ color: "#ef4444" }}>
                 🔴 {t("LIVE NOW")}
               </AppText>
-              <AppText type="caption">Morning Meditation with Sarah</AppText>
+              <AppText type="caption">{community?.liveTitle || ""}</AppText>
             </View>
           )}
 

@@ -64,7 +64,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
         <BaseCard style={[styles.cardContainer, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}>
           {/* Icon & Live Badge */}
           <View style={styles.headerRow}>
-            <View style={[styles.iconBox, { backgroundColor: item.bgColor, borderColor: item.borderColor }]}>
+            <View style={[styles.iconBox, { backgroundColor: item.bgColor }]}>
               <MaterialIcons name={item.icon} size={24} color={"#fff"} />
             </View>
 
