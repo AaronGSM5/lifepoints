@@ -40,9 +40,11 @@
       [
         "expo-dynamic-app-icon",
         {
-          "icons": {
-            "default": "./public/assets/appIcons/icon.png",
-            "dark": "./public/assets/appIcons/icon-dark.png"
+          "default_icon": {
+            "image": "./public/assets/appIcons/icon.png"
+          },
+          "dark": {
+            "image": "./public/assets/appIcons/icon-dark.png"
           }
         }
       ]

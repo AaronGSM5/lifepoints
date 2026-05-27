@@ -7,14 +7,14 @@ import { Spacing } from "@/constants/Spacing";
 import SectionHeader from "../ui/SectionHeader";
 
 const ICONS = [
-  { id: "default", name: "Standard", source: require("@/../public/assets/appIcons/icon.png") },
+  { id: "default_icon", name: "Standard", source: require("@/../public/assets/appIcons/icon.png") },
   { id: "dark", name: "Dark", source: require("@/../public/assets/appIcons/icon-dark.png") }
 ];
 
 export default function AppIconPicker() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const [activeIcon, setActiveIcon] = useState("default");
+  const [activeIcon, setActiveIcon] = useState("default_icon");
 
   const getIconModule = () => {
     if (Platform.OS === "web") return null;
