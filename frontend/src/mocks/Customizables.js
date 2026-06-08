@@ -7,29 +7,23 @@ export const rarityColors = {
 export const mockCustomizables = {
   frames: [
     {
-      id: "f0",
+      id: "frame_default",
       name: "Default",
       icon: "eyeOpen",
       color: rarityColors.common,
     },
     {
-      id: "f1",
+      id: "frame_neon",
       name: "Neon Glow",
       icon: "star",
       color: rarityColors.rare,
     },
     {
-      id: "f2",
+      id: "frame_fire",
       name: "Solar Flare",
       icon: "sun",
       color: rarityColors.legendary,
     },
-    {
-      id: "f3",
-      name: "Neon Glow",
-      icon: "star",
-      color: rarityColors.rare,
-    }
   ],
   titles: [
     {

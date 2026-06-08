@@ -13,9 +13,8 @@ const initialUserState = {
   rankIndex: 0,
   profileLp: 0,
   profileXp: 0,
-  activeFrame: 'f0',
-  unlockedFrames: ['f0'],
-  unlockedCollectibles: [],
+  activeFrame: 'frame_default',
+  unlockedCustomizables: ['frame_default'],
   friends: [],
   isLootGameActive: false,
   currentLootSet: [],
@@ -58,32 +57,17 @@ export const createProfileSlice = (set, get) => ({
     else if (finalReward.type === 'LP') {
       addLp(finalReward.amount);
     }
-    else if (finalReward.type === 'FRAME') {
-      set((state) => {
-        const currentFrames = state.profile.unlockedFrames || [];
-        const hasFrame = currentFrames.includes(finalReward.id);
-
-        if (hasFrame) return state;
-
-        return {
-          profile: {
-            ...state.profile,
-            unlockedFrames: [...currentFrames, finalReward.id]
-          }
-        };
-      });
-    }
     else if (finalReward.type === 'COLLECTIBLE') {
       set((state) => {
-        const currentCollectibles = state.profile.unlockedCollectibles || [];
-        const hasItem = currentCollectibles.includes(finalReward.id);
+        const currentCustomizables = state.profile.unlockedCustomizables || [];
+        const hasItem = currentCustomizables.includes(finalReward.id);
 
         if (hasItem) return state;
 
         return {
           profile: {
             ...state.profile,
-            unlockedCollectibles: [...currentCollectibles, finalReward.id]
+            unlockedCustomizables: [...currentCustomizables, finalReward.id]
           }
         };
       });

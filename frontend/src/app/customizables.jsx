@@ -11,7 +11,7 @@ import { mockCustomizables } from "@/mocks/Customizables";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");
-  const unlockedCollectibles = useStore((state) => state.profile.unlockedCollectibles);
+  const unlockedCustomizables = useStore((state) => state.profile.unlockedCustomizables);
   const [customizablesDb, setCustomizablesDb] = useState(mockCustomizables);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
@@ -19,18 +19,14 @@ export default function CustomizablesScreen() {
   const totalGapSpace = 32;
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
-  const profile = useStore((state) => state.profile);
-  const activeFrame = profile?.activeFrame || "f0";
-  const activeTitle = profile?.activeTitle || "t1";
+  const activeFrame = useStore((state) => state.profile.activeFrame) || "frame_default";
+  const activeTitle = useStore((state) => state.profile.activeTitle) || "t1";
+  const setActiveFrame = useStore((state) => state.setActiveFrame);
 
   const checkIsActive = (categoryKey, itemId) => {
     if (categoryKey === "frames") return activeFrame === itemId;
     if (categoryKey === "titles") return activeTitle === itemId;
     return false;
-  };
-
-  const handleEquip = (categoryKey, itemId) => {
-    console.log(`[Studio] Rüste ${itemId} aus Kategorie ${categoryKey} aus.`);
   };
 
   const handleAnimationFinished = (categoryKey, id) => {
@@ -64,7 +60,7 @@ export default function CustomizablesScreen() {
               <View style={styles.gridContainer}>
                 {category.data.map((item) => {
                   const isActive = checkIsActive(category.key, item.id);
-
+                  const isUnlocked = unlockedCustomizables.some((entry) => entry === item.id);
                   return (
                     <View key={item.id} style={{ width: exactCardWidth }}>
                       <CustomizablesCard
@@ -73,10 +69,10 @@ export default function CustomizablesScreen() {
                         icon={item.icon}
                         color={item.color}
                         isActive={isActive}
-                        unlocked={unlockedCollectibles.some((entry) => entry.id === item.id)}
-                        justUnlocked={item.justUnlocked}
+                        unlocked={isUnlocked}
+                        justUnlocked={isUnlocked} //NEED TO CHANGE THIS
                         onAnimationComplete={() => handleAnimationFinished(category.key, item.id)}
-                        onPress={() => (item.unlocked ? handleEquip(category.key, item.id) : null)}
+                        onPress={() => (isUnlocked ? setActiveFrame(item.id) : null)}
                       />
                     </View>
                   );
