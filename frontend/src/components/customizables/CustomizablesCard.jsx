@@ -5,6 +5,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const CustomizablesCard = ({
   id,
@@ -19,6 +20,7 @@ const CustomizablesCard = ({
 }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
+  const { t } = useTranslation("profile");
 
   const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
@@ -87,7 +89,7 @@ const CustomizablesCard = ({
           numberOfLines={2}
           style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
         >
-          {name}
+          {t(name)}
         </AppText>
       </View>
     </Pressable>

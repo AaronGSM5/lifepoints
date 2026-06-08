@@ -7,22 +7,12 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import AppText from "@/components/ui/AppText";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { mockCustomizables } from "@/mocks/Customizables";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");
-  const initialMockDatabase = {
-    frames: [
-      { id: "f0", name: t("Default"), icon: "eyeOpen", color: "#ccc", unlocked: true, justUnlocked: false },
-      { id: "f1", name: t("Neon Glow"), icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true },
-      { id: "f2", name: t("Solar Flare"), icon: "sun", color: "#FF8E00", unlocked: false, justUnlocked: false },
-      { id: "f3", name: t("Neon Glow"), icon: "star", color: "#00E5FF", unlocked: true, justUnlocked: true }
-    ],
-    titles: [
-      { id: "t1", name: t("The Beginner"), icon: "trash", color: "#4C2F30", unlocked: true, justUnlocked: false },
-      { id: "t2", name: t("Eco-Hero"), icon: "bulb", color: "#4CAF50", unlocked: true, justUnlocked: true }
-    ]
-  };
-  const [customizablesDb, setCustomizablesDb] = useState(initialMockDatabase);
+  const unlockedCollectibles = useStore((state) => state.profile.unlockedCollectibles);
+  const [customizablesDb, setCustomizablesDb] = useState(mockCustomizables);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
   const containerWidth = Math.min(width, 480) - 32;
@@ -52,8 +42,8 @@ export default function CustomizablesScreen() {
   };
 
   const categories = [
-    { key: "frames", title: t("Frames"), data: customizablesDb.frames },
-    { key: "titles", title: t("Title"), data: customizablesDb.titles }
+    { key: "frames", title: "Frames", data: customizablesDb.frames },
+    { key: "titles", title: "Title", data: customizablesDb.titles }
   ];
 
   return (
@@ -68,7 +58,7 @@ export default function CustomizablesScreen() {
           {categories.map((category) => (
             <View key={category.key} style={styles.categorySection}>
               <AppText type="h2" style={styles.categoryTitle}>
-                {category.title}
+                {t(category.title)}
               </AppText>
 
               <View style={styles.gridContainer}>
@@ -83,7 +73,7 @@ export default function CustomizablesScreen() {
                         icon={item.icon}
                         color={item.color}
                         isActive={isActive}
-                        unlocked={item.unlocked}
+                        unlocked={unlockedCollectibles.some((entry) => entry.id === item.id)}
                         justUnlocked={item.justUnlocked}
                         onAnimationComplete={() => handleAnimationFinished(category.key, item.id)}
                         onPress={() => (item.unlocked ? handleEquip(category.key, item.id) : null)}
