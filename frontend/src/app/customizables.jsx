@@ -20,7 +20,7 @@ export default function CustomizablesScreen() {
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const activeFrame = useStore((state) => state.profile.activeFrame) || "frame_default";
-  const activeTitle = useStore((state) => state.profile.activeTitle) || "t1";
+  const activeTitle = useStore((state) => state.profile.activeTitle) || null;
   const setActiveFrame = useStore((state) => state.setActiveFrame);
 
   const checkIsActive = (categoryKey, itemId) => {

@@ -27,13 +27,13 @@ export const mockCustomizables = {
   ],
   titles: [
     {
-      id: "t1",
+      id: "coll_plant",
       name: "The Beginner",
       icon: "trash",
       color: rarityColors.common,
     },
     {
-      id: "t2",
+      id: "coll_crown",
       name: "Eco-Hero",
       icon: "bulb",
       color: rarityColors.epic,

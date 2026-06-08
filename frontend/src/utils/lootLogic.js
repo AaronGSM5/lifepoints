@@ -13,22 +13,35 @@ const COSMETIC_ITEMS = [
   { id: 'coll_crown', type: 'COLLECTIBLE', name: 'Krone der Disziplin', rarity: RARITIES.LEGENDARY, icon: 'crown' },
 ];
 
-export const generateTripleLoot = () => {
+export const generateTripleLoot = (unlockedCustomizables = []) => {
   const currencyDrops = [
     { type: 'XP', amount: 50, rarity: RARITIES.COMMON, name: '50 XP' },
     { type: 'LP', amount: 10, rarity: RARITIES.RARE, name: '10 LP' },
     { type: 'XP', amount: 500, rarity: RARITIES.EPIC, name: '500 XP' },
   ];
 
-  const allPossibleDrops = [...currencyDrops, ...COSMETIC_ITEMS];
+  const availableCosmetics = COSMETIC_ITEMS.filter(
+    item => !unlockedCustomizables.includes(item.id)
+  );
+
+  const allPossibleDrops = [...currencyDrops, ...availableCosmetics];
 
   const shuffled = allPossibleDrops.sort(() => 0.5 - Math.random());
   const selectedLoot = shuffled.slice(0, 3);
 
-  const hasHighRarity = selectedLoot.some(item => item.rarity.id === 'epic' || item.rarity.id === 'legendary');
+  const hasHighRarity = selectedLoot.some(item =>
+    item.rarity.id === 'epic' || item.rarity.id === 'legendary'
+  );
 
   if (!hasHighRarity) {
-    selectedLoot[2] = COSMETIC_ITEMS.find(item => item.id === 'frame_fire');
+    const availableHighRarityPool = allPossibleDrops.filter(
+      item => item.rarity.id === 'epic' || item.rarity.id === 'legendary'
+    );
+
+    if (availableHighRarityPool.length > 0) {
+      const fallbackItem = availableHighRarityPool[Math.floor(Math.random() * availableHighRarityPool.length)];
+      selectedLoot[2] = fallbackItem;
+    }
   }
 
   return selectedLoot.sort(() => 0.5 - Math.random());

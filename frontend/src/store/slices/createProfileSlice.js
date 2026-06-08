@@ -33,12 +33,15 @@ export const createProfileSlice = (set, get) => ({
 
   showInstaTrackingModal: true,
 
-  startLootGame: () => set({
-    isLootGameActive: true,
-    currentLootSet: generateTripleLoot(),
-    chosenLootIndex: null,
-    isLootRevealed: false
-  }),
+  startLootGame: () => {
+    const { profile } = get();
+    set({
+      isLootGameActive: true,
+      currentLootSet: generateTripleLoot(profile.unlockedCustomizables),
+      chosenLootIndex: null,
+      isLootRevealed: false
+    })
+  },
 
   chooseLoot: (index) => {
     if (get().chosenLootIndex !== null) return;
