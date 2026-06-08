@@ -1,3 +1,4 @@
+import { mockCustomizables } from "@/mocks/Customizables";
 
 export const RARITIES = {
   COMMON: { id: 'common', color: '#B2BEC3', label: 'Common' },
@@ -7,17 +8,27 @@ export const RARITIES = {
 };
 
 const COSMETIC_ITEMS = [
-  { id: 'frame_neon', type: 'COLLECTIBLE', name: 'Neon Rahmen', rarity: RARITIES.EPIC, icon: 'hexagon' },
-  { id: 'frame_fire', type: 'COLLECTIBLE', name: 'Feuer Rahmen', rarity: RARITIES.LEGENDARY, icon: 'fire' },
-  { id: 'coll_plant', type: 'COLLECTIBLE', name: 'Kaktus des Fokus', rarity: RARITIES.RARE, icon: 'tree' },
-  { id: 'coll_crown', type: 'COLLECTIBLE', name: 'Krone der Disziplin', rarity: RARITIES.LEGENDARY, icon: 'crown' },
-];
+  ...mockCustomizables.frames,
+  ...mockCustomizables.titles,
+].map(item => {
+  const matchedRarity = Object.values(RARITIES).find(r => r.id === item.rarityId) || RARITIES.COMMON;
+  return {
+    id: item.id,
+    type: 'COLLECTIBLE',
+    name: item.name,
+    icon: item.icon,
+    rarity: matchedRarity
+  }
+});
 
 export const generateTripleLoot = (unlockedCustomizables = []) => {
   const currencyDrops = [
     { type: 'XP', amount: 50, rarity: RARITIES.COMMON, name: '50 XP' },
-    { type: 'LP', amount: 10, rarity: RARITIES.RARE, name: '10 LP' },
+    { type: 'XP', amount: 100, rarity: RARITIES.RARE, name: '100 XP' },
     { type: 'XP', amount: 500, rarity: RARITIES.EPIC, name: '500 XP' },
+    { type: 'LP', amount: 5, rarity: RARITIES.COMMON, name: '5 LP' },
+    { type: 'LP', amount: 10, rarity: RARITIES.RARE, name: '10 LP' },
+    { type: 'LP', amount: 50, rarity: RARITIES.EPIC, name: '50 LP' },
   ];
 
   const availableCosmetics = COSMETIC_ITEMS.filter(

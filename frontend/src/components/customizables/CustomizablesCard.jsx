@@ -72,7 +72,7 @@ const CustomizablesCard = ({
       <View style={[styles.cardContainer, isActive && styles.cardContainerActive]}>
         <RNAnimated.View style={[styles.iconBox, { transform: [{ scale }] }]}>
           <RNAnimated.View style={[styles.iconWrapper, { opacity: itemOpacity, borderColor: color }]}>
-            <Icon name={icon} size={24} color={color} />
+            <Icon name={icon} size={24} color={icon === "profile" ? MyTheme.text : color} />
           </RNAnimated.View>
 
           {(!unlocked || justUnlocked) && (
