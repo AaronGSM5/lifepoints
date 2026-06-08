@@ -20,13 +20,22 @@ export default function CustomizablesScreen() {
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const activeFrame = useStore((state) => state.profile.activeFrame) || "frame_default";
-  const activeTitle = useStore((state) => state.profile.activeTitle) || null;
+  const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge) || null;
   const setActiveFrame = useStore((state) => state.setActiveFrame);
+  const setActiveStatusBadge = useStore((state) => state.setActiveStatusBadge);
 
   const checkIsActive = (categoryKey, itemId) => {
     if (categoryKey === "frames") return activeFrame === itemId;
-    if (categoryKey === "titles") return activeTitle === itemId;
+    if (categoryKey === "badges") return activeStatusBadge === itemId;
     return false;
+  };
+
+  const handleSelectItem = (categoryKey, itemId) => {
+    if (categoryKey === "frames") {
+      setActiveFrame(itemId);
+    } else if (categoryKey === "badges") {
+      setActiveStatusBadge(itemId);
+    }
   };
 
   const handleAnimationFinished = (categoryKey, id) => {
@@ -39,7 +48,7 @@ export default function CustomizablesScreen() {
 
   const categories = [
     { key: "frames", title: "Frames", data: customizablesDb.frames },
-    { key: "titles", title: "Title", data: customizablesDb.titles }
+    { key: "badges", title: "Status Badges", data: customizablesDb.badges }
   ];
 
   return (
@@ -72,7 +81,7 @@ export default function CustomizablesScreen() {
                         unlocked={isUnlocked}
                         justUnlocked={isUnlocked} //NEED TO CHANGE THIS
                         onAnimationComplete={() => handleAnimationFinished(category.key, item.id)}
-                        onPress={() => (isUnlocked ? setActiveFrame(item.id) : null)}
+                        onPress={() => (isUnlocked ? handleSelectItem(category.key, item.id) : null)}
                       />
                     </View>
                   );

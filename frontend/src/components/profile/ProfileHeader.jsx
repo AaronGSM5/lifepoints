@@ -15,6 +15,7 @@ import { getLeagueData } from "@/constants/Progression";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
 import { publicProfile } from "@/mocks/PublicProfile";
 import { useTranslation } from "react-i18next";
+import StatusBadge from "../ui/StatusBadge";
 
 const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const MyTheme = useAppTheme();
@@ -23,6 +24,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
   const { getFrameById } = useAvatarFrames();
+  const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge);
   const friendList = useStore((state) => state.profile.friends);
   const isFriend = friendList.includes(profile.id);
   const addFriend = useStore((state) => state.addFriend);
@@ -80,7 +82,10 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
             />
           </View>
           <AppText type="caption">@{profile.username}</AppText>
-          <AppText type="h1">{profile.name}</AppText>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <AppText type="h1">{profile.name}</AppText>
+            <StatusBadge id={activeStatusBadge} />
+          </View>
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {t(league.name)} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>

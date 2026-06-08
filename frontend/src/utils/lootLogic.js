@@ -9,7 +9,7 @@ export const RARITIES = {
 
 const COSMETIC_ITEMS = [
   ...mockCustomizables.frames,
-  ...mockCustomizables.titles,
+  ...mockCustomizables.badges,
 ].map(item => {
   const matchedRarity = Object.values(RARITIES).find(r => r.id === item.rarityId) || RARITIES.COMMON;
   return {

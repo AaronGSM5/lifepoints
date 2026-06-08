@@ -14,6 +14,7 @@ const initialUserState = {
   profileLp: 0,
   profileXp: 0,
   activeFrame: 'frame_default',
+  activeStatusBadge: null,
   unlockedCustomizables: ['frame_default'],
   friends: [],
   isLootGameActive: false,
@@ -147,6 +148,13 @@ export const createProfileSlice = (set, get) => ({
     profile: {
       ...state.profile,
       activeFrame: frameId
+    }
+  })),
+
+  setActiveStatusBadge: (badgeId) => set((state) => ({
+    profile: {
+      ...state.profile,
+      activeStatusBadge: badgeId
     }
   })),
 

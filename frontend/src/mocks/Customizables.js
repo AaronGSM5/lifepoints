@@ -42,18 +42,25 @@ export const mockCustomizables = {
       rarityId: 'legendary',
     },
   ],
-  titles: [
+  badges: [
     {
-      id: "coll_plant",
-      name: "The Beginner",
-      icon: "trash",
+      id: "badge_rookie",
+      name: "Rookie",
+      icon: "star",
       color: '#B2BEC3',
       rarityId: 'common',
     },
     {
-      id: "coll_crown",
-      name: "Eco-Hero",
-      icon: "bulb",
+      id: "badge_grinder",
+      name: "Life Grinder",
+      icon: "leaf",
+      color: '#E17055',
+      rarityId: 'rare',
+    },
+    {
+      id: "badge_elite",
+      name: "Elite-User",
+      icon: "trophy",
       color: '#6C5CE7',
       rarityId: 'epic',
     }
