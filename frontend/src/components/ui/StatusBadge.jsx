@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { mockCustomizables } from "@/mocks/Customizables";
 
-export default function StatusBadge({ id, size = 16 }) {
+export default function StatusBadge({ id, size = 16, style }) {
   const badgeData = mockCustomizables.badges.find((badge) => badge.id === id);
 
   if (!badgeData) return null;
@@ -20,7 +20,8 @@ export default function StatusBadge({ id, size = 16 }) {
           width: size,
           height: size,
           borderRadius: size / 2
-        }
+        },
+        style
       ]}
     >
       <MaterialCommunityIcons name={icon} size={iconSize} color="#FFFFFF" />

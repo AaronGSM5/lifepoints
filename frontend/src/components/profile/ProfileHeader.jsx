@@ -82,10 +82,14 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
             />
           </View>
           <AppText type="caption">@{profile.username}</AppText>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          {activeStatusBadge ? (
+            <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
+              <AppText type="h1">{profile.name}</AppText>
+              <StatusBadge id={activeStatusBadge} size={28} style={{ marginTop: Spacing.xs }} />
+            </View>
+          ) : (
             <AppText type="h1">{profile.name}</AppText>
-            <StatusBadge id={activeStatusBadge} />
-          </View>
+          )}
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
             {t(league.name)} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>
