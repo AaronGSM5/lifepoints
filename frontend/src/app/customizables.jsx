@@ -25,8 +25,15 @@ export default function CustomizablesScreen() {
   const setActiveStatusBadge = useStore((state) => state.setActiveStatusBadge);
 
   const checkIsActive = (categoryKey, itemId) => {
-    if (categoryKey === "frames") return activeFrame === itemId;
-    if (categoryKey === "badges") return activeStatusBadge === itemId;
+    if (categoryKey === "frames") {
+      return activeFrame === itemId;
+    }
+    if (categoryKey === "badges") {
+      if (itemId === "badge_none") {
+        return activeStatusBadge === null;
+      }
+      return activeStatusBadge === itemId;
+    }
     return false;
   };
 
@@ -34,6 +41,10 @@ export default function CustomizablesScreen() {
     if (categoryKey === "frames") {
       setActiveFrame(itemId);
     } else if (categoryKey === "badges") {
+      if (itemId === "badge_none") {
+        setActiveStatusBadge(null);
+        return;
+      }
       setActiveStatusBadge(itemId);
     }
   };
@@ -69,7 +80,8 @@ export default function CustomizablesScreen() {
               <View style={styles.gridContainer}>
                 {category.data.map((item) => {
                   const isActive = checkIsActive(category.key, item.id);
-                  const isUnlocked = unlockedCustomizables.some((entry) => entry === item.id);
+                  const isUnlocked =
+                    unlockedCustomizables.some((entry) => entry === item.id) || item.id === "badge_none";
                   return (
                     <View key={item.id} style={{ width: exactCardWidth }}>
                       <CustomizablesCard
