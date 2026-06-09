@@ -93,9 +93,7 @@ const getStyles = (theme) => {
     container: {
       backgroundColor: theme.background,
       flexDirection: "row",
-      alignItems: "center",
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.seperator
+      alignItems: "center"
     },
     sideSection: {
       flex: 1,

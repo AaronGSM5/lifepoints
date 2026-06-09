@@ -10,7 +10,7 @@ export const DarkTheme = {
   muted: 'rgba(248, 250, 252, 0.5)',
   success: 'rgb(0, 240, 160)',
   warning: 'rgb(240, 0, 0)',
-  separator: "rgba(0,0,0,0.08)",
+  separator: "rgba(0, 0, 0, 0.08)",
   inputBorder: "rgba(255, 255, 255, 0.1)",
   glas: "rgba(255,255,255,0.05)"
 };
