@@ -15,15 +15,16 @@ import AppButton from "@/components/ui/AppButton";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
+import StatusBadge from "@/components/ui/StatusBadge";
 
 const MOCK_MEMBERS = [
-  { id: "1", name: "Sarah", lp: 2450 },
-  { id: "2", name: "Lukas", lp: 1820 },
-  { id: "3", name: "Julia", lp: 2100 },
-  { id: "4", name: "Marc", lp: 950 },
-  { id: "5", name: "Elena", lp: 1600 },
-  { id: "6", name: "Tim", lp: 1200 },
-  { id: "7", name: "Svenja", lp: 800 }
+  { id: "1", name: "Sarah", badge: "badge_elite", lp: 2450 },
+  { id: "2", name: "Lukas", badge: "badge_rookie", lp: 1820 },
+  { id: "3", name: "Julia", badge: "badge_elite", lp: 2100 },
+  { id: "4", name: "Marc", badge: "badge_rookie", lp: 950 },
+  { id: "5", name: "Elena", badge: "badge_elite", lp: 1600 },
+  { id: "6", name: "Tim", badge: "badge_rookie", lp: 1200 },
+  { id: "7", name: "Svenja", badge: null, lp: 800 }
 ];
 
 export default function MyCommunityDetailScreen() {
@@ -111,9 +112,16 @@ export default function MyCommunityDetailScreen() {
                     </AppText>
                   </View>
 
-                  <AppText bold style={{ flex: 1 }}>
-                    {member.name}
-                  </AppText>
+                  {member.badge ? (
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs, flex: 1 }}>
+                      <AppText bold>{member.name}</AppText>
+                      <StatusBadge id={member.badge} size={16} />
+                    </View>
+                  ) : (
+                    <AppText bold style={{ flex: 1 }}>
+                      {member.name}
+                    </AppText>
+                  )}
 
                   <View style={styles.lpContainer}>
                     <AppText bold style={{ color: MyTheme.primaryAccent }}>

@@ -9,9 +9,11 @@ import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import StatusBadge from "../ui/StatusBadge";
 
 export default function FeedItem({
   username,
+  badge,
   description,
   image,
   initialLikes = 120,
@@ -118,9 +120,18 @@ export default function FeedItem({
             <Animated.View style={styles.avatarPlaceholder} sharedTransitionTag={`avatar-${username}`}>
               <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
             </Animated.View>
-            <AppText bold style={styles.username}>
-              {username}
-            </AppText>
+            {badge ? (
+              <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
+                <AppText bold style={styles.username}>
+                  {username}
+                </AppText>
+                <StatusBadge id={badge} size={16} />
+              </View>
+            ) : (
+              <AppText bold style={styles.username}>
+                {username}
+              </AppText>
+            )}
           </View>
         </Pressable>
         <Pressable hitSlop={15}>

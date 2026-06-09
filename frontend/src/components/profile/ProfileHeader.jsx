@@ -82,10 +82,14 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
             />
           </View>
           <AppText type="caption">@{profile.username}</AppText>
-          {activeStatusBadge ? (
+          {activeStatusBadge || profile.badge ? (
             <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
               <AppText type="h1">{profile.name}</AppText>
-              <StatusBadge id={activeStatusBadge} size={28} style={{ marginTop: Spacing.xs }} />
+              <StatusBadge
+                id={isExternUser ? profile.badge : activeStatusBadge}
+                size={28}
+                style={{ marginTop: Spacing.xs }}
+              />
             </View>
           ) : (
             <AppText type="h1">{profile.name}</AppText>

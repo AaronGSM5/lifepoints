@@ -2,6 +2,7 @@ export const publicProfile = {
   id: "user_sarah_99",
   name: "Sarah Klein",
   username: "_sa2ahKl3in_",
+  badge: "badge_elite",
   description: "Achtsamkeit im Alltag.🌿\nIch sammle LifePoints durch viele kleine Gesten in der Nachbarschaft.",
   level: 14,
   leagueIndex: 5,

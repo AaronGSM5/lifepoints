@@ -9,6 +9,8 @@ import { postComments } from "@/mocks/PostComments";
 import { router } from "expo-router";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
 import { useTranslation } from "react-i18next";
+import StatusBadge from "../ui/StatusBadge";
+import useStore from "@/store/useStore";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -25,9 +27,18 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
       </View>
 
       <View style={styles.commentContent}>
-        <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
-          {item.username}
-        </AppText>
+        {item.badge ? (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
+            <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+              {item.username}
+            </AppText>
+            <StatusBadge id={item.badge} size={16} />
+          </View>
+        ) : (
+          <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+            {item.username}
+          </AppText>
+        )}
 
         <View style={styles.textAndLikeRow}>
           <AppText style={styles.commentText}>{item.text}</AppText>
@@ -59,6 +70,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const [comments, setComments] = useState(postComments);
   const [replyingTo, setReplyingTo] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge);
 
   const inputRef = useRef(null);
 
@@ -87,9 +99,11 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   const handlePostComment = () => {
     if (commentText.trim().length === 0) return;
+    console.log(activeStatusBadge);
     const newCommentData = {
       id: Date.now().toString(),
       username: t("You"),
+      badge: activeStatusBadge,
       avatar: "https://i.pravatar.cc/150?u=du",
       text: commentText,
       time: t("Just now")
