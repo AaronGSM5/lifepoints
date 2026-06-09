@@ -13,16 +13,16 @@ import LevelProgress from "../LevelProgress";
 import { getXpThreshold } from "@/utils/xpHelpers";
 import { getLeagueData } from "@/constants/Progression";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
-import { publicProfile } from "@/mocks/PublicProfile";
 import { useTranslation } from "react-i18next";
 import StatusBadge from "../ui/StatusBadge";
+import Animated from "react-native-reanimated";
 
-const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
+const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const profile = isExternUser ? publicProfile : useStore((state) => state.profile);
+  const profile = isExternUser ? profileData : useStore((state) => state.profile);
   const { getFrameById } = useAvatarFrames();
   const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge);
   const friendList = useStore((state) => state.profile.friends);
@@ -37,12 +37,59 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
 
   const avatarSource = profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png");
 
+  const transitionTag = sourceId ? `avatar-${profile.username}-${sourceId}` : `avatar-${profile.username}`;
+
   return (
     <View style={styles.profileHeader}>
+      <View style={styles.avatarContainer}>
+        {isExternUser ? (
+          <Animated.View
+            sharedTransitionTag={transitionTag}
+            style={[
+              styles.frameWrapper,
+              activeFrame && {
+                borderColor: activeFrame.color,
+                borderWidth: activeFrame.borderWidth,
+                boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
+              }
+            ]}
+          >
+            <Image source={avatarSource} style={styles.avatar} />
+          </Animated.View>
+        ) : (
+          <View
+            style={[
+              styles.frameWrapper,
+              activeFrame && {
+                borderColor: activeFrame.color,
+                borderWidth: activeFrame.borderWidth,
+                boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
+              }
+            ]}
+          >
+            <Image source={avatarSource} style={styles.avatar} />
+          </View>
+        )}
+        {!isLoading && (
+          <AppBadge
+            label={`LVL ${profile.level}`}
+            style={{
+              position: "absolute",
+              bottom: -Spacing.sm,
+              alignSelf: "center",
+              backgroundColor: MyTheme.primaryAccent,
+              paddingVertical: 2,
+              borderWidth: 2,
+              borderColor: MyTheme.background
+            }}
+            textStyle={{ color: MyTheme.text }}
+          />
+        )}
+      </View>
+
       {isLoading ? (
         <View style={{ alignItems: "center" }}>
-          <Skeleton {...skeletonProps} radius="round" width={100} height={100} />
-          <View style={{ height: Spacing.lg }} />
+          <View style={{ height: Spacing.sm }} />
           <Skeleton {...skeletonProps} width={80} height={14} />
           <View style={{ height: Spacing.sm }} />
           <Skeleton {...skeletonProps} width={180} height={24} />
@@ -50,37 +97,14 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
           <Skeleton {...skeletonProps} width={120} height={14} />
           <View style={{ height: Spacing.xl }} />
           <Skeleton {...skeletonProps} width={160} height={14} />
+
+          <View style={styles.actionButtons}>
+            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
+            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
+          </View>
         </View>
       ) : (
         <>
-          <View style={styles.avatarContainer}>
-            <View
-              style={[
-                styles.frameWrapper,
-                activeFrame && {
-                  borderColor: activeFrame.color,
-                  borderWidth: activeFrame.borderWidth,
-                  boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
-                }
-              ]}
-            >
-              <Image source={avatarSource} style={styles.avatar} />
-            </View>
-
-            <AppBadge
-              label={`LVL ${profile.level}`}
-              style={{
-                position: "absolute",
-                bottom: -Spacing.sm,
-                alignSelf: "center",
-                backgroundColor: MyTheme.primaryAccent,
-                paddingVertical: 2,
-                borderWidth: 2,
-                borderColor: MyTheme.background
-              }}
-              textStyle={{ color: MyTheme.text }}
-            />
-          </View>
           <AppText type="caption">@{profile.username}</AppText>
           {activeStatusBadge || profile.badge ? (
             <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
@@ -101,29 +125,20 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
             </AppText>
           </AppText>
           <View style={{ height: Spacing.lg }}></View>
-          <AppText type="title" style={{ color: MyTheme.text, opacity: 0.9 }}>
+          <AppText type="body" style={{ color: MyTheme.text, opacity: 0.9 }}>
             {profile.description}
           </AppText>
-        </>
-      )}
 
-      {!isExternUser && (
-        <LevelProgress
-          currentXp={profile.profileXp}
-          maxXp={maxXP}
-          isLoading={isLoading}
-          style={{ marginTop: Spacing.lg }}
-        />
-      )}
+          {!isExternUser && (
+            <LevelProgress
+              currentXp={profile.profileXp}
+              maxXp={maxXP}
+              isLoading={isLoading}
+              style={{ marginTop: Spacing.lg }}
+            />
+          )}
 
-      <View style={styles.actionButtons}>
-        {isLoading ? (
-          <>
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-          </>
-        ) : (
-          <>
+          <View style={styles.actionButtons}>
             <AppButton
               variant="primary"
               title={isExternUser ? (isFriend ? t("Message") : t("Add Friend")) : t("Edit Profile")}
@@ -149,9 +164,9 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true }) => {
               bgColor={"#2a2a2acb"}
               textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}
             />
-          </>
-        )}
-      </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };

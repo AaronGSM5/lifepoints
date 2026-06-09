@@ -1,7 +1,6 @@
 import * as Haptics from "expo-haptics";
 import { getXpThreshold } from "../../utils/xpHelpers";
 import { generateTripleLoot } from "@/utils/lootLogic";
-import { publicProfile } from "@/mocks/PublicProfile";
 
 const initialUserState = {
   name: "New User",
@@ -160,12 +159,11 @@ export const createProfileSlice = (set, get) => ({
 
   addFriend: (userId) => {
     const { profile } = get()
-    const userProfile = publicProfile
     if (profile.friends.includes(userId)) return
     set((state) => ({
       profile: {
         ...state.profile,
-        friends: [...state.profile.friends, userProfile.id]
+        friends: [...state.profile.friends, userId]
       }
     }))
   },

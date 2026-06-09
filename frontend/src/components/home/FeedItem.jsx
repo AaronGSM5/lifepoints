@@ -14,6 +14,7 @@ import StatusBadge from "../ui/StatusBadge";
 export default function FeedItem({
   username,
   badge,
+  avatar,
   description,
   image,
   initialLikes = 120,
@@ -37,7 +38,10 @@ export default function FeedItem({
   // const hasChest = true;
 
   const navigateToProfile = () => {
-    router.push(`/user/${username}`);
+    router.push({
+      pathname: `/user/${username}`,
+      params: { sourceId: id }
+    });
   };
 
   const handleLike = () => {
@@ -117,8 +121,16 @@ export default function FeedItem({
       <View style={styles.header}>
         <Pressable onPress={navigateToProfile}>
           <View style={styles.headerUser}>
-            <Animated.View style={styles.avatarPlaceholder} sharedTransitionTag={`avatar-${username}`}>
-              <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
+            <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
+              {avatar ? (
+                <Image
+                  source={{ uri: avatar }}
+                  style={{ width: "100%", height: "100%", borderRadius: Spacing.borderRadius.full }}
+                  resizeMode="cover"
+                />
+              ) : (
+                <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
+              )}
             </Animated.View>
             {badge ? (
               <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
@@ -219,7 +231,7 @@ const getStyles = (theme) =>
       alignItems: "center",
       gap: 12
     },
-    avatarPlaceholder: {
+    avatar: {
       width: 40,
       height: 40,
       borderRadius: Spacing.borderRadius.full,

@@ -6,7 +6,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useLocalSearchParams } from "expo-router";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import { Skeleton } from "moti/skeleton";
-import { publicProfile } from "@/mocks/PublicProfile";
+import { publicProfiles } from "@/mocks/PublicProfile";
 import useStore from "@/store/useStore";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
@@ -15,7 +15,8 @@ export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const { username } = useLocalSearchParams();
+  const { username, sourceId } = useLocalSearchParams();
+  const activePublicProfile = publicProfiles.find((profile) => profile.username === username);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -31,7 +32,12 @@ export default function PublicProfileScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <ProfileHeader skeletonProps={skeletonProps} isLoading={isLoading} />
+      <ProfileHeader
+        skeletonProps={skeletonProps}
+        isLoading={isLoading}
+        sourceId={sourceId}
+        profileData={activePublicProfile}
+      />
       <View style={styles.trophySection}>
         <View style={styles.pinnedGrid}>
           {isLoading
@@ -40,7 +46,7 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : publicProfile.pinnedTrophies.map((trophy) => {
+            : activePublicProfile.pinnedTrophies.map((trophy) => {
                 const selectedTrophy = trophiesCatalog.find((entry) => entry.id === trophy.id);
                 return (
                   <View key={selectedTrophy.id} style={{ width: 80 }}>
