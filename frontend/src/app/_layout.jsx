@@ -10,6 +10,7 @@ import { ErrorFallback } from "@/components/ErrorFallback";
 import * as NavigationBar from "expo-navigation-bar";
 import "@/utils/i18n";
 import TrophyPopup from "@/components/ui/TrophyPopup";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,6 +46,8 @@ export default function RootLayout() {
 
     hideNavigationBar();
   }, []);
+
+  usePushNotifications();
 
   const renderHeader = useCallback((props) => <Toolbar {...props} />, []);
 

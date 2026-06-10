@@ -32,10 +32,20 @@ const initialUserState = {
   },
   claimedOnboardingGuideRewards: [],
   eventStats: {},
+  hasSeenNotificationPrompt: false,
+  pushToken: null,
 }
 
 export const createProfileSlice = (set, get) => ({
   profile: initialUserState,
+
+  setNotificationPermissionSettings: (hasSeen, token = null) => set((state) => ({
+    profile: {
+      ...state.profile,
+      hasSeenNotificationPrompt: hasSeen,
+      pushToken: token
+    }
+  })),
 
   showInstaTrackingModal: true,
 
