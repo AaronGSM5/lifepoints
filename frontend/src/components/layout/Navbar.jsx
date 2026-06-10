@@ -11,6 +11,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 const TabBarItem = ({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
   const styles = getStyles(isDarkMode);
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -31,6 +32,9 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
   return (
     <Pressable onPress={handlePress} style={styles.tabButton}>
       <Animated.View style={{ transform: [{ scale }] }}>
+        {route.name === "profile" && hasUnread && !isFocused && (
+          <View style={[styles.badge, { backgroundColor: MyTheme.warning || "#ff0000" }]} />
+        )}
         <Icon
           name={route.name || "help"}
           size={26}
@@ -119,5 +123,14 @@ const getStyles = (isDarkMode) =>
       height: "100%",
       alignItems: "center",
       justifyContent: "center"
+    },
+    badge: {
+      position: "absolute",
+      top: -2,
+      right: -2,
+      zIndex: 1,
+      width: 8,
+      height: 8,
+      borderRadius: Spacing.borderRadius.full
     }
   });

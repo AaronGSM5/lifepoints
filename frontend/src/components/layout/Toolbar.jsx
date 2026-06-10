@@ -69,9 +69,7 @@ export default function Toolbar() {
             <Pressable hitSlop={15} onPress={handleResetProfile}>
               <Icon name="reset" />
             </Pressable>
-            <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
-              <NotificationIcon onPress={() => router.push("/notifications")} />
-            </Pressable>
+            <NotificationIcon onPress={() => router.push("/notifications")} />
             <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
               <Icon name="settings" />
             </Pressable>

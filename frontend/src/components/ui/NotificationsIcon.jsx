@@ -7,7 +7,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function NotificationIcon({ onPress }) {
   const MyTheme = useAppTheme();
-  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || false);
+  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
 
   return (
     <Pressable hitSlop={15} onPress={onPress}>
