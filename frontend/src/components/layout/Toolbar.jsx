@@ -6,6 +6,7 @@ import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+import NotificationIcon from "../ui/NotificationsIcon";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -68,17 +69,20 @@ export default function Toolbar() {
             <Pressable hitSlop={15} onPress={handleResetProfile}>
               <Icon name="reset" />
             </Pressable>
+            <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
+              <NotificationIcon onPress={() => router.push("/notifications")} />
+            </Pressable>
             <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
               <Icon name="settings" />
             </Pressable>
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
+            <Pressable hitSlop={15} onPress={() => console.log("HIER WIRD BEITRAG ERSTELLT")}>
+              <Icon name="add" />
+            </Pressable>
             <Pressable hitSlop={15} onPress={() => router.push("/search")}>
               <Icon name="search" />
-            </Pressable>
-            <Pressable hitSlop={15} onPress={() => router.push("/notifications")}>
-              <Icon name="notifications" />
             </Pressable>
           </View>
         ) : (
