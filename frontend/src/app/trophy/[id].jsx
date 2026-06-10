@@ -8,6 +8,7 @@ import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
 
 export default function TrophyScreen() {
   const MyTheme = useAppTheme();
@@ -15,6 +16,12 @@ export default function TrophyScreen() {
   const { t } = useTranslation("trophies");
   const { id } = useLocalSearchParams();
   const trophy = trophiesCatalog.find((t) => String(t.id) === String(id));
+  const eventStats = useStore((state) => state.profile.eventStats);
+  const currentProgress = trophy?.triggerEvent ? eventStats[trophy.triggerEvent] || 0 : 0;
+  const cappedProgress = Math.min(currentProgress, trophy?.goal || 1);
+  const progressPercentage = (cappedProgress / trophy?.goal) * 100;
+
+  if (!trophy) return null;
 
   return (
     <ScreenWrapper withPaddingTop={false}>
@@ -44,7 +51,7 @@ export default function TrophyScreen() {
               style={[
                 styles.progressBarFill,
                 {
-                  width: `${((trophy.progress || 0) / trophy.goal) * 100}%`,
+                  width: `${progressPercentage}%`,
                   backgroundColor: MyTheme.primaryAccent
                 }
               ]}
@@ -53,7 +60,7 @@ export default function TrophyScreen() {
           <View style={styles.progressTextRow}>
             <AppText type="caption">{t(trophy.requirement)}</AppText>
             <AppText type="caption" bold>
-              {trophy.progress || 0} / {trophy.goal}
+              {cappedProgress} / {trophy.goal}
             </AppText>
           </View>
         </View>

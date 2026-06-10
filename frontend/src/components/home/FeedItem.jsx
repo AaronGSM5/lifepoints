@@ -10,6 +10,7 @@ import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import StatusBadge from "../ui/StatusBadge";
+import { APP_EVENTS } from "@/constants/Events";
 
 export default function FeedItem({
   username,
@@ -32,6 +33,7 @@ export default function FeedItem({
   const heartScale = useRef(new RNAnimated.Value(0)).current;
   const heartOpacity = useRef(new RNAnimated.Value(0)).current;
   const startLootGame = useStore((state) => state.startLootGame);
+  const trackEvent = useStore((state) => state.trackEvent);
   const { t } = useTranslation("home");
   const chestTriggerImg = require("@/../public/assets/luck.png");
   const hasChest = id % 2 === 0;
@@ -46,6 +48,9 @@ export default function FeedItem({
 
   const handleLike = () => {
     setIsLiked(!isLiked);
+    if (!isLiked) {
+      trackEvent(APP_EVENTS.LIKE_POST);
+    }
   };
 
   const handleSave = () => {
@@ -81,6 +86,7 @@ export default function FeedItem({
       if (!isLiked) {
         setIsLiked(true);
         setLikesCount((prev) => prev + 1);
+        trackEvent(APP_EVENTS.LIKE_POST);
       }
 
       RNAnimated.sequence([

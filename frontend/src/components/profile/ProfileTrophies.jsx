@@ -6,10 +6,12 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import TrophyCard from "../trophies/TrophyCard";
+import useStore from "@/store/useStore";
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
+  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
       <SectionHeader
@@ -35,7 +37,13 @@ const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
         {!isLoading &&
           trophies?.map((t, i) => (
             <View key={`trophy-${t?.id || i}`} style={{ width: 80 }}>
-              <TrophyCard key={t.id} id={t.id} title={t.title} icon={t.icon} unlocked={t.unlocked} />
+              <TrophyCard
+                key={t.id}
+                id={t.id}
+                title={t.title}
+                icon={t.icon}
+                unlocked={unlockedTrophies.includes(t.id)}
+              />
             </View>
           ))}
       </ScrollView>

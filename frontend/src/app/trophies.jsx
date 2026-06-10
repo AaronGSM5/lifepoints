@@ -6,12 +6,14 @@ import { useState } from "react";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
 
 export default function TrophiesScreen() {
   const { t } = useTranslation("trophies");
   const [trophies, setTrophies] = useState(trophiesCatalog);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
+  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
 
   const containerWidth = Math.min(width, 480) - 32;
 
@@ -20,10 +22,6 @@ export default function TrophiesScreen() {
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const handleAnimationFinished = (id) => {
-    const trophyIndex = trophiesCatalog.findIndex((trophy) => trophy.id === id);
-    if (trophyIndex !== -1) {
-      trophiesCatalog[trophyIndex].justUnlocked = false;
-    }
     setTrophies((currentTrophies) =>
       currentTrophies.map((trophy) => (trophy.id === id ? { ...trophy, justUnlocked: false } : trophy))
     );
@@ -46,7 +44,7 @@ export default function TrophiesScreen() {
                 id={item.id}
                 title={item.title}
                 icon={item.icon}
-                unlocked={item.unlocked}
+                unlocked={unlockedTrophies.includes(item.id)}
                 justUnlocked={item.justUnlocked}
                 onAnimationComplete={handleAnimationFinished}
                 cardWidth={exactCardWidth}
