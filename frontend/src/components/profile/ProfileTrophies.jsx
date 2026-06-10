@@ -43,6 +43,7 @@ const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
                 title={t.title}
                 icon={t.icon}
                 unlocked={unlockedTrophies.includes(t.id)}
+                justUnlocked={false}
               />
             </View>
           ))}

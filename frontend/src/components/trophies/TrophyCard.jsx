@@ -26,8 +26,10 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           onAnimationComplete(id);
         }
       });
+    } else {
+      animValue.setValue(unlocked ? 1 : 0);
     }
-  }, [justUnlocked, animValue, id, onAnimationComplete]);
+  }, [justUnlocked, unlocked, animValue, id, onAnimationComplete]);
 
   const imageOpacity = animValue.interpolate({
     inputRange: [0, 1],

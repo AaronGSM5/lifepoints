@@ -17,6 +17,7 @@ const initialUserState = {
   activeStatusBadge: null,
   unlockedCustomizables: ['frame_default'],
   unlockedTrophies: [],
+  justUnlockedTrophies: [],
   friends: [],
   // Loot Game
   isLootGameActive: false,
@@ -48,17 +49,32 @@ export const createProfileSlice = (set, get) => ({
         !state.profile.unlockedTrophies.includes(t.id)
       );
 
+      const newlyUnlockedIds = newlyUnlocked.map(t => t.id);
+
       return {
         profile: {
           ...state.profile,
           eventStats: { ...state.profile.eventStats, [eventName]: newCount },
           unlockedTrophies: [
             ...state.profile.unlockedTrophies,
-            ...newlyUnlocked.map(t => t.id)
-          ]
+            ...newlyUnlockedIds
+          ],
+          justUnlockedTrophies: [
+            ...(state.profile.justUnlockedTrophies || []),
+            ...newlyUnlockedIds
+          ],
         }
       };
     });
+  },
+
+  clearJustUnlockedTrophy: (trophyId) => {
+    set((state) => ({
+      profile: {
+        ...state.profile,
+        justUnlockedTrophies: (state.profile.justUnlockedTrophies || []).filter(id => id !== trophyId)
+      }
+    }));
   },
 
   startLootGame: () => {
