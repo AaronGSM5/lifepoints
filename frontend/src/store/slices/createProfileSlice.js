@@ -1,6 +1,7 @@
 import * as Haptics from "expo-haptics";
 import { getXpThreshold } from "../../utils/xpHelpers";
 import { generateTripleLoot } from "@/utils/lootLogic";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 
 const initialUserState = {
   name: "New User",
@@ -15,7 +16,9 @@ const initialUserState = {
   activeFrame: 'frame_default',
   activeStatusBadge: null,
   unlockedCustomizables: ['frame_default'],
+  unlockedTrophies: [],
   friends: [],
+  // Loot Game
   isLootGameActive: false,
   currentLootSet: [],
   chosenLootIndex: null,
@@ -26,12 +29,37 @@ const initialUserState = {
     interests: [],
   },
   claimedOnboardingGuideRewards: [],
+  eventStats: {},
 }
 
 export const createProfileSlice = (set, get) => ({
   profile: initialUserState,
 
   showInstaTrackingModal: true,
+
+  trackEvent: (eventName, amount = 1) => {
+    set((state) => {
+      const currentCount = state.profile.eventStats[eventName] || 0;
+      const newCount = currentCount + amount;
+
+      const newlyUnlocked = trophiesCatalog.filter(t =>
+        t.triggerEvent === eventName &&
+        newCount >= t.goal &&
+        !state.profile.unlockedTrophies.includes(t.id)
+      );
+
+      return {
+        profile: {
+          ...state.profile,
+          eventStats: { ...state.profile.eventStats, [eventName]: newCount },
+          unlockedTrophies: [
+            ...state.profile.unlockedTrophies,
+            ...newlyUnlocked.map(t => t.id)
+          ]
+        }
+      };
+    });
+  },
 
   startLootGame: () => {
     const { profile } = get();
