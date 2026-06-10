@@ -18,6 +18,7 @@ const initialUserState = {
   unlockedCustomizables: ['frame_default'],
   unlockedTrophies: [],
   justUnlockedTrophies: [],
+  popupQueue: [],
   friends: [],
   // Loot Game
   isLootGameActive: false,
@@ -55,14 +56,9 @@ export const createProfileSlice = (set, get) => ({
         profile: {
           ...state.profile,
           eventStats: { ...state.profile.eventStats, [eventName]: newCount },
-          unlockedTrophies: [
-            ...state.profile.unlockedTrophies,
-            ...newlyUnlockedIds
-          ],
-          justUnlockedTrophies: [
-            ...(state.profile.justUnlockedTrophies || []),
-            ...newlyUnlockedIds
-          ],
+          unlockedTrophies: [...state.profile.unlockedTrophies, ...newlyUnlockedIds],
+          justUnlockedTrophies: [...(state.profile.justUnlockedTrophies || []), ...newlyUnlockedIds],
+          popupQueue: [...(state.profile.popupQueue || []), ...newlyUnlockedIds]
         }
       };
     });
@@ -76,6 +72,17 @@ export const createProfileSlice = (set, get) => ({
       }
     }));
   },
+
+  shiftPopupQueue: () => set((state) => {
+    const newQueue = [...(state.profile.popupQueue || [])];
+    newQueue.shift();
+    return {
+      profile: {
+        ...state.profile,
+        popupQueue: newQueue
+      }
+    };
+  }),
 
   startLootGame: () => {
     const { profile } = get();

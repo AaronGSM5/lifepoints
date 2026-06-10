@@ -2,15 +2,14 @@ import { Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
 import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import * as NavigationBar from "expo-navigation-bar";
-import useStore from "@/store/useStore";
 import "@/utils/i18n";
+import TrophyPopup from "@/components/ui/TrophyPopup";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -57,6 +56,8 @@ export default function RootLayout() {
     <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
         <StatusBar style={"auto"} translucent backgroundColor="transparent" />
+
+        <TrophyPopup />
 
         <Stack
           screenOptions={{

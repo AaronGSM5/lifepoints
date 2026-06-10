@@ -23,7 +23,7 @@ export const trophiesCatalog = [
     description: "Knowledge is power.\nBy completing your monthly reading goal and sharing your key insights, you've unlocked this scholarly honor.",
     icon: trophyImages['bookTrans'],
     requirement: 'Track reading 12 times',
-    goal: 12,
+    goal: 3,
     triggerEvent: 'LIKE_POST'
   },
   {
