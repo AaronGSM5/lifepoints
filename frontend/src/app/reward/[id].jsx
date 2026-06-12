@@ -24,8 +24,10 @@ export default function RewardDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const redeemReward = useStore((state) => state.redeemReward);
+  const userLevel = useStore((state) => state.profile.level);
 
   const reward = rewardsCatalog.find((c) => String(c.id) === String(id));
+  const isLocked = userLevel < reward.requiredLevel;
 
   if (!reward) {
     return (
@@ -63,7 +65,7 @@ export default function RewardDetailScreen() {
                 iconNode={<Icon name={reward.icon} size={14} color={MyTheme.primaryAccent} />}
               />
 
-              {reward.isLocked && (
+              {isLocked && (
                 <AppBadge
                   label={t("Locked")}
                   textStyle={{ fontSize: 10, color: MyTheme.text }}
@@ -91,13 +93,13 @@ export default function RewardDetailScreen() {
         <View style={styles.stickyFooter}>
           <AppButton
             variant="primary"
-            title={reward.isLocked ? t("Earn points to unlock") : t("Redeem Now")}
+            title={isLocked ? t("Locked") : t("Redeem Now")}
             size="lg"
-            style={reward.isLocked ? { opacity: 0.8 } : {}}
+            style={isLocked ? { opacity: 0.8 } : {}}
             onPress={() => {
-              if (!reward.isLocked) redeemReward(reward.id);
+              if (!isLocked) redeemReward(reward.id);
             }}
-            bgColor={reward.isLocked ? MyTheme.muted : MyTheme.primaryAccent}
+            bgColor={isLocked ? MyTheme.muted : MyTheme.primaryAccent}
           />
         </View>
       </View>
