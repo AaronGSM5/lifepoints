@@ -109,6 +109,7 @@ export default function CommunitiesScreen() {
                 <SectionHeader
                   title={t("My Communities")}
                   rightLabel={t("See all")}
+                  rightLabelColor={MyTheme.primaryAccent}
                   onRightPress={() => console.log("mockClickReaction xD")}
                   isLoading={isLoading}
                 />
@@ -166,7 +167,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible]
+    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible, MyTheme]
   );
 
   const renderMainFooter = () => {

@@ -8,6 +8,7 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/addOpacity";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
@@ -47,17 +48,17 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   );
 };
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     taskCardActive: {
       flexDirection: "row",
       alignItems: "center",
-      borderColor: "rgba(16, 185, 129, 0.25)"
+      borderColor: addOpacity(theme.primaryAccent, 0.3)
     },
     taskIconContainer: {
       width: 36,
       height: 36,
-      backgroundColor: "rgba(16, 185, 129, 0.16)",
+      backgroundColor: addOpacity(theme.primaryAccent, 0.16),
       borderRadius: Spacing.borderRadius.md,
       justifyContent: "center",
       alignItems: "center",

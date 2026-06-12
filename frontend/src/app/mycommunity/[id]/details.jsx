@@ -92,6 +92,7 @@ export default function MyCommunityDetailScreen() {
             <SectionHeader
               title={t("Leaderboard")}
               rightLabel={!isExpanded ? t("Show all") : t("Show less")}
+              rightLabelColor={MyTheme.primaryAccent}
               onRightPress={() => setIsExpanded(!isExpanded)}
             />
 

@@ -73,6 +73,7 @@ const JournalPreview = ({ skeletonProps, isLoading }) => {
         title={t("My Impact Journal")}
         icon={"journal"}
         rightLabel={t("More")}
+        rightLabelColor={MyTheme.primaryAccent}
         onRightPress={() => router.push("/journal")}
         isLoading={isLoading}
       />
