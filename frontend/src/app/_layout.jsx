@@ -68,7 +68,6 @@ export default function RootLayout() {
             headerShown: true,
             gestureEnabled: true,
             gestureDirection: "horizontal",
-            fullScreenGestureEnabled: true,
             animation: Platform.OS === "ios" ? "default" : "slide_from_right"
           }}
         >
