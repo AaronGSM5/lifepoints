@@ -9,7 +9,8 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-  Pressable
+  Pressable,
+  Keyboard
 } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
@@ -45,6 +46,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
 
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dy > 150 || gestureState.vy > 1.5) {
+          Keyboard.dismiss();
           onClose();
         } else {
           Animated.spring(slideAnim, {
@@ -98,7 +100,13 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.overlay}>
-        <AnimatedPressable onPress={onClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
+        <AnimatedPressable
+          onPress={() => {
+            Keyboard.dismiss();
+            onClose();
+          }}
+          style={[styles.backdrop, { opacity: fadeAnim }]}
+        />
 
         <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
           <View {...panResponder.panHandlers} style={styles.panResponderArea}>
