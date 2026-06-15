@@ -97,7 +97,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.overlay}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.overlay}>
         <AnimatedPressable onPress={onClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
 
         <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
@@ -136,8 +136,9 @@ const getStyles = (theme) =>
       borderTopLeftRadius: Spacing.borderRadius.lg,
       borderTopRightRadius: Spacing.borderRadius.lg,
       overflow: "hidden",
-      height: SHEET_HEIGHT,
-      width: "100%"
+      maxHeight: SHEET_HEIGHT,
+      width: "100%",
+      flex: 1
     },
     panResponderArea: {
       backgroundColor: "transparent"
