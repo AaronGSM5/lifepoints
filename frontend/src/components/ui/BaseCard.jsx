@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { addOpacity } from "@/utils/addOpacity";
 
 const BaseCard = ({ children, onPress, style, padding = Spacing.md }) => {
   const MyTheme = useAppTheme();
@@ -22,10 +23,10 @@ const BaseCard = ({ children, onPress, style, padding = Spacing.md }) => {
 const getStyles = (theme) =>
   StyleSheet.create({
     card: {
-      backgroundColor: theme.primary,
+      backgroundColor: addOpacity(theme.primary, 0.6),
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
-      borderColor: theme.secondary,
+      borderColor: addOpacity(theme.secondary, 0.7),
       overflow: "hidden"
     },
     pressed: {

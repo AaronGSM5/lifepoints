@@ -37,7 +37,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
       <View style={styles.statTop}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
           <View style={styles.numberContainer}>
-            <AppText type="h2" style={blurred ? styles.blurredText : null}>
+            <AppText type="h1" style={blurred ? styles.blurredText : null}>
               {value}
             </AppText>
           </View>
@@ -58,22 +58,12 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
             />
           )}
         </View>
-
         <Icon name={icon} size={16} color={color} />
       </View>
-
-      <AppText type="caption" style={{ marginTop: Spacing.xs }}>
+      <View></View>
+      <AppText type="caption" style={{ fontSize: "0.8em" }}>
         {label}
       </AppText>
-
-      {badge && (
-        <AppBadge
-          variant={"primary"}
-          label={badge}
-          textStyle={{ fontSize: 12, color: MyTheme.background }}
-          style={{ marginTop: Spacing.sm }}
-        />
-      )}
     </BaseCard>
   );
 };
