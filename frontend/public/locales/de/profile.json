@@ -4,8 +4,8 @@
   "Message": "Nachricht",
   "Add Friend": "Freund hinzufügen",
   "Edit Profile": "Profil bearbeiten",
-  "Share Profile": "Profil teilen",
-  "Share Stats": "Stats teilen",
+  "Share Profile": "Teilen",
+  "Share Stats": "Teilen",
   // OnboardingGuide
   "Your Guide": "Dein Leitfaden",
   "of": "von",
@@ -19,7 +19,7 @@
   "Your Stats": "Deine Stats",
   "DAY STREAK": "TAGE IN FOLGE",
   "TOTAL POINTS": "GESAMTPUNKTZAHL",
-  "BAD HABITS AVOIDED": "GEWOHNHEITEN VERMIEDEN",
+  "HABITS AVOIDED": "HABITS VERMIEDEN",
   "MEMBER SINCE": "MITGLIED SEIT",
   // ProfileCustomizables
   "Customizables": "Anpassbares",

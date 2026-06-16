@@ -10,6 +10,7 @@ import { useCommunities } from "@/hooks/useCommunities";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import AppInput from "@/components/ui/AppInput";
 import { useTranslation } from "react-i18next";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },
@@ -102,7 +103,12 @@ export default function MyCommunityChatScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
-                <AppText bold>{community?.title || "Community Chat"}</AppText>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
+                  <View style={[styles.iconBox, { backgroundColor: community.color }]}>
+                    <MaterialIcons name={community.icon} size={20} color="#fff" />
+                  </View>
+                  <AppText bold>{community?.title || "Community Chat"}</AppText>
+                </View>
                 <AppText type="caption" style={styles.headerSubtitleText}>
                   {t("Tap for more info")}
                 </AppText>
@@ -153,7 +159,6 @@ const getStyles = (theme) =>
       alignItems: "center",
       justifyContent: "space-between",
       backgroundColor: theme.background,
-      paddingBottom: Spacing.sm,
       borderBottomWidth: 1,
       borderBottomColor: theme.glas
     },
@@ -163,13 +168,14 @@ const getStyles = (theme) =>
       alignItems: "center"
     },
     headerTitleContainer: {
+      flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      flex: 1
+      flex: 1,
+      gap: Spacing.md
     },
     headerSubtitleText: {
-      fontSize: 13,
-      marginTop: 2
+      fontSize: 13
     },
     chatListContent: {
       paddingHorizontal: Spacing.md,
@@ -238,7 +244,6 @@ const getStyles = (theme) =>
       alignItems: "center",
       paddingHorizontal: Spacing.sm,
       paddingVertical: Spacing.sm,
-      paddingBottom: Spacing.lg,
       borderTopWidth: 1,
       borderTopColor: theme.glas,
       backgroundColor: theme.background
@@ -254,5 +259,13 @@ const getStyles = (theme) =>
       borderRadius: Spacing.borderRadius.full,
       alignItems: "center",
       justifyContent: "center"
+    },
+    iconBox: {
+      width: 32,
+      height: 32,
+      borderRadius: Spacing.borderRadius.md,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative"
     }
   });

@@ -33,14 +33,7 @@ const ProfileStats = ({ isLoading }) => {
           color="#007ec7"
           badge="Top 5%"
         />
-        <StatCard
-          isLoading={isLoading}
-          label={t("BAD HABITS AVOIDED")}
-          value="120"
-          icon="ban"
-          color="#900C3F"
-          blurred
-        />
+        <StatCard isLoading={isLoading} label={t("HABITS AVOIDED")} value="120" icon="ban" color="#900C3F" blurred />
         <StatCard isLoading={isLoading} label={t("MEMBER SINCE")} value="2023" icon="calendar" color="#581845" />
       </View>
     </View>

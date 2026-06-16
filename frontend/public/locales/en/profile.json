@@ -4,7 +4,7 @@
   "Message": "Message",
   "Add Friend": "Add Friend",
   "Edit Profile": "Edit Profile",
-  "Share Profile": "Share Profile",
+  "Share Profile": "Share",
   "Share Stats": "Share Stats",
   // OnboardingGuide
   "Your Guide": "Your Guide",
@@ -19,7 +19,7 @@
   "Your Stats": "Your Stats",
   "DAY STREAK": "DAY STREAK",
   "TOTAL POINTS": "TOTAL POINTS",
-  "BAD HABITS AVOIDED": "BAD HABITS AVOIDED",
+  "HABITS AVOIDED": "HABITS AVOIDED",
   "MEMBER SINCE": "MEMBER SINCE",
   // ProfileCustomizables
   "Customizables": "Customizables",
