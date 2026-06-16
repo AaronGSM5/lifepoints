@@ -77,6 +77,8 @@ export default function RootLayout() {
 
           <Stack.Screen name="auth" options={{ headerShown: false }} />
 
+          <Stack.Screen name="post/create" options={{ headerShown: false, presentation: "modal" }} />
+
           <Stack.Screen
             name="notifications"
             options={{

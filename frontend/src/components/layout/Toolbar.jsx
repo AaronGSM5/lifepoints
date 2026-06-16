@@ -76,7 +76,7 @@ export default function Toolbar() {
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
-            <Pressable hitSlop={15} onPress={() => console.log("HIER WIRD BEITRAG ERSTELLT")}>
+            <Pressable hitSlop={15} onPress={() => router.push("/post/create")}>
               <Icon name="add" />
             </Pressable>
             <Pressable hitSlop={15} onPress={() => router.push("/search")}>
