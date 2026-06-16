@@ -1,7 +1,7 @@
 import { View, FlatList, ActivityIndicator } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import FeedItem from "@/components/home/FeedItem";
 import CommentSheet from "@/components/home/CommentSheet";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -30,6 +30,8 @@ export default function HomeScreen() {
   const [questmodalVisible, setQuestModalVisible] = useState(false);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [isBatchLoading, setIsBatchLoading] = useState(false);
+  const [visibleItemIds, setVisibleItemIds] = useState([]);
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 80 }).current;
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
@@ -68,6 +70,11 @@ export default function HomeScreen() {
   if (shouldCrash) {
     throw new Error("Das ist ein provozierter Render-Crash!");
   }
+
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    const visibleIds = viewableItems.map((vItem) => String(vItem.key));
+    setVisibleItemIds(visibleIds);
+  }, []);
 
   const skeletonProps = {
     colorMode: isDarkMode ? "dark" : "light",
@@ -130,23 +137,29 @@ export default function HomeScreen() {
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={isLoading ? SKELETON_ITEMS : displayedItems}
-        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
+        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : String(item.id))}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewConfig}
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={refreshHomeData}
         refreshing={isRefreshing}
-        renderItem={({ item }) => (
-          <FeedItem
-            {...item}
-            isLoading={isLoading}
-            skeletonProps={skeletonProps}
-            onOpenComments={(id) => setSelectedPostId(id)}
-          />
-        )}
+        renderItem={({ item }) => {
+          const isItemVisible = item?.id ? visibleItemIds.includes(String(item.id)) : false;
+          return (
+            <FeedItem
+              {...item}
+              isLoading={isLoading}
+              skeletonProps={skeletonProps}
+              onOpenComments={(id) => setSelectedPostId(id)}
+              isReady={isItemVisible}
+            />
+          );
+        }}
       />
       <CommentSheet
         isVisible={selectedPostId !== null}

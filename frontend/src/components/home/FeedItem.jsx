@@ -11,6 +11,7 @@ import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import StatusBadge from "../ui/StatusBadge";
 import { APP_EVENTS } from "@/constants/Events";
+import { LootGameTrigger } from "./LootGameTrigger";
 
 export default function FeedItem({
   username,
@@ -22,7 +23,8 @@ export default function FeedItem({
   id,
   onOpenComments,
   skeletonProps,
-  isLoading
+  isLoading,
+  isReady
 }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
@@ -173,6 +175,8 @@ export default function FeedItem({
           </RNAnimated.View>
         </Pressable>
       </View>
+      {hasChest && <LootGameTrigger isReady={isReady} onPress={() => startLootGame()} />}
+
       <View style={styles.actionBar}>
         <View style={styles.actionLeft}>
           <Pressable hitSlop={10} onPress={handleLike}>
@@ -187,11 +191,6 @@ export default function FeedItem({
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
-          {hasChest && (
-            <TouchableOpacity hitSlop={10} onPress={() => startLootGame()}>
-              <Image source={chestTriggerImg} style={styles.chestIcon} resizeMode="contain" />
-            </TouchableOpacity>
-          )}
           <Pressable hitSlop={10} onPress={handleSave}>
             <Icon outline={!isSaved} name="bookmark" />
           </Pressable>
