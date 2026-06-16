@@ -9,14 +9,15 @@ export default function StatusBadge({ id, size = 16, style }) {
   if (!badgeData) return null;
 
   const { icon, color } = badgeData;
-  const iconSize = Math.round(size * 0.7);
+  const iconSize = Math.round(size * 0.6);
 
   return (
     <View
       style={[
         styles.badgeContainer,
         {
-          backgroundColor: color || "#bdc3c7",
+          borderWidth: 1,
+          borderColor: color,
           width: size,
           height: size,
           borderRadius: size / 2
@@ -24,7 +25,7 @@ export default function StatusBadge({ id, size = 16, style }) {
         style
       ]}
     >
-      <MaterialCommunityIcons name={icon} size={iconSize} color="#FFFFFF" />
+      <MaterialCommunityIcons name={icon} size={iconSize} color={color} />
     </View>
   );
 }

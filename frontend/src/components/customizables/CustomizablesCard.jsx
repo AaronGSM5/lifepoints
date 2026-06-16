@@ -36,8 +36,10 @@ const CustomizablesCard = ({
           onAnimationComplete(id);
         }
       });
+    } else {
+      animValue.setValue(unlocked ? 1 : 0);
     }
-  }, [justUnlocked, animValue, id, onAnimationComplete]);
+  }, [justUnlocked, unlocked, animValue, id, onAnimationComplete]);
 
   const itemOpacity = animValue.interpolate({
     inputRange: [0, 1],

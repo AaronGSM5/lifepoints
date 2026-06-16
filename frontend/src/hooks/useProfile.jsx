@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { onboardingGuideSteps } from "@/constants/OnboardingGuideSteps";
-import { customizables } from "@/constants/CustomizablesCatalog";
+import { mockCustomizables } from "@/mocks/Customizables";
 import useStore from "@/store/useStore";
 
 export const useProfile = () => {
@@ -11,7 +11,7 @@ export const useProfile = () => {
   const [data, setData] = useState({
     trophies: trophiesCatalog,
     tutorialSteps: onboardingGuideSteps,
-    customizables: customizables
+    customizables: [...mockCustomizables.frames, ...mockCustomizables.badges]
   });
 
   const fetchProfile = useCallback(async () => {

@@ -7,10 +7,15 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import SectionHeader from "../ui/SectionHeader";
 import CustomizablesCard from "../customizables/CustomizablesCard";
 import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
 
 const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
   const { t } = useTranslation("profile");
   const MyTheme = useAppTheme();
+  const unlockedCustomizables = useStore((state) => state.profile.unlockedCustomizables);
+  const activeFrame = useStore((state) => state.profile.activeFrame);
+  const activeBadge = useStore((state) => state.profile.activeBadge);
+  const activeCustomizables = [activeFrame, activeBadge];
   if (!isLoading && (!customizables || customizables.length === 0)) {
     return null;
   }
@@ -39,15 +44,15 @@ const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
             />
           ))}
         {!isLoading &&
-          customizables.map((item, i) => (
+          customizables?.map((item, i) => (
             <View key={`custom-${item?.id || i}`} style={{ width: 80 }}>
               <CustomizablesCard
                 id={item.id}
                 name={t(item.name)}
                 icon={item.icon || "circle"}
                 color={item.color || MyTheme.text}
-                isActive={false}
-                unlocked={true}
+                isActive={activeCustomizables.includes(item.id)}
+                unlocked={unlockedCustomizables.includes(item.id)}
               />
             </View>
           ))}

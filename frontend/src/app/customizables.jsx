@@ -11,18 +11,21 @@ import { mockCustomizables } from "@/mocks/Customizables";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");
-  const unlockedCustomizables = useStore((state) => state.profile.unlockedCustomizables);
   const [customizablesDb, setCustomizablesDb] = useState(mockCustomizables);
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
-  const containerWidth = Math.min(width, 480) - 32;
-  const totalGapSpace = 32;
-  const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
+  const unlockedCustomizables = useStore((state) => state.profile.unlockedCustomizables);
+  const justUnlockedCustomizables = useStore((state) => state.profile.justUnlockedCustomizables);
+  const clearJustUnlockedCustomizable = useStore((state) => state.clearJustUnlockedCustomizable);
   const activeFrame = useStore((state) => state.profile.activeFrame) || "frame_default";
   const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge) || null;
   const setActiveFrame = useStore((state) => state.setActiveFrame);
   const setActiveStatusBadge = useStore((state) => state.setActiveStatusBadge);
+
+  const containerWidth = Math.min(width, 480) - 32;
+  const totalGapSpace = 32;
+  const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const checkIsActive = (categoryKey, itemId) => {
     if (categoryKey === "frames") {
@@ -49,14 +52,6 @@ export default function CustomizablesScreen() {
     }
   };
 
-  const handleAnimationFinished = (categoryKey, id) => {
-    setCustomizablesDb((prevDb) => {
-      const newDb = { ...prevDb };
-      newDb[categoryKey] = newDb[categoryKey].map((item) => (item.id === id ? { ...item, justUnlocked: false } : item));
-      return newDb;
-    });
-  };
-
   const categories = [
     { key: "frames", title: "Frames", data: customizablesDb.frames },
     { key: "badges", title: "Status Badges", data: customizablesDb.badges }
@@ -80,8 +75,8 @@ export default function CustomizablesScreen() {
               <View style={styles.gridContainer}>
                 {category.data.map((item) => {
                   const isActive = checkIsActive(category.key, item.id);
-                  const isUnlocked =
-                    unlockedCustomizables.some((entry) => entry === item.id) || item.id === "badge_none";
+                  const isUnlocked = unlockedCustomizables.includes(item.id) || item.id === "badge_none";
+                  const isJustUnlocked = justUnlockedCustomizables.includes(item.id);
                   return (
                     <View key={item.id} style={{ width: exactCardWidth }}>
                       <CustomizablesCard
@@ -91,8 +86,8 @@ export default function CustomizablesScreen() {
                         color={item.color}
                         isActive={isActive}
                         unlocked={isUnlocked}
-                        justUnlocked={isUnlocked} //NEED TO CHANGE THIS
-                        onAnimationComplete={() => handleAnimationFinished(category.key, item.id)}
+                        justUnlocked={isJustUnlocked}
+                        onAnimationComplete={() => clearJustUnlockedCustomizable(item.id)}
                         onPress={() => (isUnlocked ? handleSelectItem(category.key, item.id) : null)}
                       />
                     </View>

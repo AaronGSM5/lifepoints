@@ -16,6 +16,7 @@ const initialUserState = {
   activeFrame: 'frame_default',
   activeStatusBadge: null,
   unlockedCustomizables: ['frame_default'],
+  justUnlockedCustomizables: [],
   unlockedTrophies: [],
   justUnlockedTrophies: [],
   popupQueue: [],
@@ -83,6 +84,15 @@ export const createProfileSlice = (set, get) => ({
     }));
   },
 
+  clearJustUnlockedCustomizable: (customizableId) => {
+    set((state) => ({
+      profile: {
+        ...state.profile,
+        justUnlockedCustomizables: (state.profile.justUnlockedCustomizables || []).filter(id => id !== customizableId)
+      }
+    }));
+  },
+
   shiftPopupQueue: () => set((state) => {
     const newQueue = [...(state.profile.popupQueue || [])];
     newQueue.shift();
@@ -131,7 +141,8 @@ export const createProfileSlice = (set, get) => ({
         return {
           profile: {
             ...state.profile,
-            unlockedCustomizables: [...currentCustomizables, finalReward.id]
+            unlockedCustomizables: [...currentCustomizables, finalReward.id],
+            justUnlockedCustomizables: [...(state.profile.justUnlockedCustomizables || []), finalReward.id]
           }
         };
       });

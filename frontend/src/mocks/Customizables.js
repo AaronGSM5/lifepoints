@@ -53,8 +53,8 @@ export const mockCustomizables = {
     {
       id: "badge_rookie",
       name: "Rookie",
-      icon: "star",
-      color: '#B2BEC3',
+      icon: "heart",
+      color: '#47aad4',
       rarityId: 'common',
     },
     {
