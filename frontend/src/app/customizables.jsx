@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
@@ -11,7 +11,7 @@ import { mockCustomizables } from "@/mocks/Customizables";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");
-  const [customizablesDb, setCustomizablesDb] = useState(mockCustomizables);
+  const customizables = mockCustomizables;
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
 
@@ -53,8 +53,8 @@ export default function CustomizablesScreen() {
   };
 
   const categories = [
-    { key: "frames", title: "Frames", data: customizablesDb.frames },
-    { key: "badges", title: "Status Badges", data: customizablesDb.badges }
+    { key: "frames", title: "Frames", data: customizables.frames },
+    { key: "badges", title: "Status Badges", data: customizables.badges }
   ];
 
   return (
