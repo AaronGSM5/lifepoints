@@ -18,6 +18,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
+import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -26,6 +27,7 @@ export default function HomeScreen() {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [optionsPostData, setOptionsPostData] = useState(null);
   const [shouldCrash, setShouldCrash] = useState(false);
   const [questmodalVisible, setQuestModalVisible] = useState(false);
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -156,6 +158,7 @@ export default function HomeScreen() {
               isLoading={isLoading}
               skeletonProps={skeletonProps}
               onOpenComments={(id) => setSelectedPostId(id)}
+              onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
               isReady={isItemVisible}
             />
           );
@@ -165,6 +168,12 @@ export default function HomeScreen() {
         isVisible={selectedPostId !== null}
         onClose={() => setSelectedPostId(null)}
         postId={selectedPostId}
+      />
+      <PostOptionsSheet
+        isVisible={optionsPostData !== null}
+        onClose={() => setOptionsPostData(null)}
+        postId={optionsPostData?.id}
+        isOwner={optionsPostData?.isOwner}
       />
       <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
       <LootGameModal />

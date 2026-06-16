@@ -49,6 +49,11 @@ export const IconMap = {
   survey: ({ outline, ...props }) => <Icon name={getName("survey", outline)} {...props} />,
   history: ({ outline, ...props }) => <Icon name={getName("history", outline)} {...props} />,
   square: ({ outline, ...props }) => <Icon name={getName("square", outline)} {...props} />,
+  target: ({ outline, ...props }) => <Icon name={getName("target", outline)} {...props} />,
+  dislike: ({ outline, ...props }) => <Icon name={getName("dislike", outline)} {...props} />,
+  alert: ({ outline, ...props }) => <Icon name={getName("alert", outline)} {...props} />,
+  mute: ({ outline, ...props }) => <Icon name={getName("volume-mute", outline)} {...props} />,
+  archive: ({ outline, ...props }) => <Icon name={getName("archive-2", outline)} {...props} />,
   // Placeholders
   code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,
   leaf: ({ outline, ...props }) => <Icon name={getName("leaf", outline)} {...props} />,

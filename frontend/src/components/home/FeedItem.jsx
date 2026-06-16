@@ -22,6 +22,7 @@ export default function FeedItem({
   initialLikes = 120,
   id,
   onOpenComments,
+  onOpenOptions,
   skeletonProps,
   isLoading,
   isReady
@@ -37,7 +38,8 @@ export default function FeedItem({
   const startLootGame = useStore((state) => state.startLootGame);
   const trackEvent = useStore((state) => state.trackEvent);
   const { t } = useTranslation("home");
-  const chestTriggerImg = require("@/../public/assets/luck.png");
+  const myUsername = useStore((state) => state.profile.username);
+  const isOwner = username === myUsername;
   const hasChest = id % 2 === 0;
   // const hasChest = true;
 
@@ -154,7 +156,7 @@ export default function FeedItem({
             )}
           </View>
         </Pressable>
-        <Pressable hitSlop={15}>
+        <Pressable hitSlop={15} onPress={() => onOpenOptions(id, isOwner)}>
           <Icon name={"dots"} size={20} color={MyTheme.muted} />
         </Pressable>
       </View>
