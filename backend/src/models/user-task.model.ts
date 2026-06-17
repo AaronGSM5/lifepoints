@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const userTaskSchema = new mongoose.Schema({
     taskStarted: {
@@ -32,4 +32,4 @@ const userTaskSchema = new mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('userTask', userTaskSchema);
+export default mongoose.model('userTask', userTaskSchema);
