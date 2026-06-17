@@ -22,11 +22,11 @@ const userTaskSchema = new mongoose.Schema({
       required: true
     },
     lifepoints: {
-      type: String,
+      type: Number,
       required: true
     },
     proof: {
-      type: String,
+      type: mongoose.Schema.Types.Mixed,
     },
 }, {
   timestamps: true
