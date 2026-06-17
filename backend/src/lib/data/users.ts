@@ -11,6 +11,7 @@ export default [
     "settings": { "theme": "dark", "notifications": true }
   },
   {
+    "_id": "",
     "username": "nature_lover92",
     "name": "Sarah Miller",
     "about": "Hiking is my therapy.",

@@ -9,13 +9,13 @@ const userTaskSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    user: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true
     },
     status: {
       type: String,
-      enum: ['active', 'done', 'abandoned']
+      enum: ['active', 'done']
     },
     task: {
       type: mongoose.Schema.Types.ObjectId,

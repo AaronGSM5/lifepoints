@@ -8,4 +8,8 @@ const getUserInfo = async () => {
   return mockUsers[0]
 }
 
-export default { getAllUsers, getUserInfo }
+const getUsersInfo = async (userId) => {
+  return mockUsers.filter(user => user._id)
+}
+
+export default { getAllUsers, getUserInfo, getUsersInfo }
