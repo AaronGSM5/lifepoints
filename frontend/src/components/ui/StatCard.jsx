@@ -61,9 +61,7 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
         <Icon name={icon} size={16} color={color} />
       </View>
       <View></View>
-      <AppText type="caption" style={{ fontSize: "0.8em" }}>
-        {label}
-      </AppText>
+      <AppText type="caption">{label}</AppText>
     </BaseCard>
   );
 };

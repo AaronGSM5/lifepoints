@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
   mascotImage: {
     width: 90,
-    height: 90,
-    resizeMode: "contain"
+    height: 90
   }
 });
