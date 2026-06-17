@@ -10,7 +10,7 @@ export const LootGameTrigger = ({ isReady, onPress }) => {
       hasAppeared.current = true;
 
       Animated.sequence([
-        Animated.delay(300),
+        Animated.delay(100),
         Animated.spring(translateX, {
           toValue: 0,
           friction: 12,

@@ -33,7 +33,7 @@ export default function HomeScreen() {
   const [displayedItems, setDisplayedItems] = useState([]);
   const [isBatchLoading, setIsBatchLoading] = useState(false);
   const [visibleItemIds, setVisibleItemIds] = useState([]);
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 80 }).current;
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 70 }).current;
   const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
