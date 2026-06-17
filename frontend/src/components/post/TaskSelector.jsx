@@ -5,12 +5,13 @@ import { Icon } from "@/components/icons/Icon";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "../ui/BaseCard";
+import { tasksCatalog } from "@/constants/TasksCatalog";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default function TaskSelector({ tasks, selectedTaskId, onSelectTask }) {
+export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const [expanded, setExpanded] = useState(false);
@@ -25,7 +26,7 @@ export default function TaskSelector({ tasks, selectedTaskId, onSelectTask }) {
     toggleExpand();
   };
 
-  const selectedTask = tasks.find((t) => t.id === selectedTaskId);
+  const selectedTask = tasksCatalog.find((t) => t.id === selectedTaskId);
 
   return (
     <BaseCard padding={0}>
@@ -53,7 +54,9 @@ export default function TaskSelector({ tasks, selectedTaskId, onSelectTask }) {
       {expanded && (
         <View style={styles.dropdown}>
           <ScrollView style={styles.scrollArea} nestedScrollEnabled={true}>
-            {tasks.map((task) => {
+            {taskIds.map((id) => {
+              const task = tasksCatalog.find((entry) => entry.id === id);
+              if (!task) return null;
               const isSelected = task.id === selectedTaskId;
               return (
                 <TouchableOpacity
@@ -104,7 +107,7 @@ const getStyles = (theme) =>
       borderTopColor: theme.separator
     },
     scrollArea: {
-      maxHeight: 200 // Begrenzt die Höhe, falls es zu viele Tasks werden
+      maxHeight: 200
     },
     taskItem: {
       flexDirection: "row",
@@ -116,7 +119,7 @@ const getStyles = (theme) =>
       borderBottomColor: theme.separator
     },
     taskItemSelected: {
-      backgroundColor: "rgba(0,0,0,0.02)" // Ganz leichter Background für selektiertes Item
+      backgroundColor: "rgba(0,0,0,0.02)"
     },
     taskItemLeft: {
       flexDirection: "row",

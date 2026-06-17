@@ -21,25 +21,38 @@ import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import TaskSelector from "@/components/post/TaskSelector";
+import useStore from "@/store/useStore";
+import AppButton from "@/components/ui/AppButton";
 
 export default function CreatePost() {
   const router = useRouter();
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-
   const [isPublic, setIsPublic] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState(null);
+  const activeTaskIds = useStore((state) => state.activeTaskIds);
+  const activities = useStore((state) => state.activities);
 
-  const availableTasks = [
-    { id: "1", title: "5km Lauf", icon: "fitnessCat" },
-    { id: "2", title: "Meditation (10 Min)", icon: "moon" },
-    { id: "3", title: "Buch gelesen", icon: "book" },
-    { id: "4", title: "Gym Session", icon: "dumbbell" }
-  ];
+  const oneDayInMs = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const todayActivities = activities
+    .filter((entry) => {
+      const activityTime = new Date(entry.time).getTime();
+      const timeDifference = now - activityTime;
 
-  const isPostButtonEnabled = isPublic ? image !== null && caption.trim().length > 0 : caption.trim().length > 0;
+      return timeDifference >= 0 && timeDifference <= oneDayInMs;
+    })
+    .map((entry) => {
+      return entry.taskId;
+    });
+
+  const availableTaskIds = [...new Set([...activeTaskIds, ...todayActivities])];
+
+  const isPostButtonEnabled = isPublic
+    ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
+    : caption.trim().length > 0 && selectedTaskId !== null;
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -104,7 +117,18 @@ export default function CreatePost() {
 
           <View>
             <SectionHeader title={"Task auswählen"} />
-            <TaskSelector tasks={availableTasks} selectedTaskId={selectedTaskId} onSelectTask={setSelectedTaskId} />
+            {availableTaskIds && availableTaskIds.length !== 0 ? (
+              <TaskSelector
+                taskIds={availableTaskIds}
+                selectedTaskId={selectedTaskId}
+                onSelectTask={setSelectedTaskId}
+              />
+            ) : (
+              <BaseCard style={{ flexDirection: "column", alignItems: "center", gap: Spacing.md }}>
+                <AppText type="title">Keine verfügbaren Tasks</AppText>
+                <AppButton title={"Task erledigen"} variant="outline" size="md" onPress={() => router.push("/tasks")} />
+              </BaseCard>
+            )}
           </View>
 
           <View>
