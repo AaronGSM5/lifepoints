@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { mockTasks, recommendedTasks as mockRecommended } from "@/constants/MockData";
+import { useTranslation } from "react-i18next";
+import { tasksCatalog } from "@/constants/TasksCatalog";
+import { recommendedTasks } from "@/mocks/FeaturedTasks";
 
 export const useTasks = () => {
+  const { t } = useTranslation("tasks");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const [tasks, setTasks] = useState([]);
-  const [recommendedTasks, setRecommendedTasks] = useState([]);
 
   const [activeCat, setActiveCat] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,8 +15,6 @@ export const useTasks = () => {
     setIsLoading(true);
     // Simulierter API Call
     setTimeout(() => {
-      setTasks(mockTasks);
-      setRecommendedTasks(mockRecommended);
       setIsLoading(false);
     }, 1200);
   }, []);
@@ -30,18 +28,23 @@ export const useTasks = () => {
     fetchTasks();
   }, [fetchTasks]);
 
-  // Kategorien dynamisch aus den Tasks generieren
   const categories = useMemo(() => {
-    const unique = [...new Set(tasks.map((c) => c.category))];
-    return ["All", ...unique.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
-  }, [tasks]);
+    const uniqueCategories = [...new Set(tasksCatalog.map((c) => c.category))];
 
-  // Tasks filtern nach Kategorie UND Suchbegriff
+    return [
+      { id: "all", label: t("categories.all", "Alle") },
+      ...uniqueCategories.map((c) => ({
+        id: c,
+        label: t(`categories.${c}`, c.charAt(0).toUpperCase() + c.slice(1))
+      }))
+    ];
+  }, [t]);
+
   const filteredTasks = useMemo(() => {
-    let result = tasks;
+    let result = tasksCatalog;
 
-    if (activeCat.toLowerCase() !== "all") {
-      result = result.filter((c) => c.category === activeCat.toLowerCase());
+    if (activeCat !== "all") {
+      result = result.filter((c) => c.category === activeCat);
     }
 
     if (searchQuery.trim() !== "") {
@@ -49,7 +52,7 @@ export const useTasks = () => {
     }
 
     return result;
-  }, [tasks, activeCat, searchQuery]);
+  }, [activeCat, searchQuery]);
 
   return {
     tasks: filteredTasks,

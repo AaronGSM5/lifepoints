@@ -11,61 +11,92 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
+import * as ImagePicker from "expo-image-picker";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { mockProfile } from "@/constants/MockData";
+import useStore from "@/store/useStore";
+import { useProfile } from "@/hooks/useProfile";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const router = useRouter();
+  const { t } = useTranslation("settings");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const { profile } = useProfile();
+  const updateProfile = useStore((state) => state.updateProfile);
 
-  // Originaldaten (kommen später aus dem Backend/Store)
   const initialData = {
-    name: mockProfile.profileName,
-    username: "@" + mockProfile.profileName.toLowerCase().replace(" ", ""),
-    bio: "Ich liebe es, neue Habits aufzubauen. 🚀"
+    name: profile.name,
+    username: profile.name.toLowerCase().replace(" ", ""),
+    description: profile.description,
+    avatar: profile.avatar
   };
 
-  // State für die Eingabefelder
   const [formData, setFormData] = useState(initialData);
 
   useEffect(() => {
-    // Simuliere API-Ladezeit für die Profildaten
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Prüfen, ob der User etwas geändert hat
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
 
   const handleSave = () => {
     setIsSaving(true);
-    // Simuliere den API-Call zum Speichern
+    triggerHaptic();
     setTimeout(() => {
+      updateProfile(formData);
       setIsSaving(false);
-      Alert.alert("Erfolg", "Dein Profil wurde aktualisiert.", [{ text: "OK", onPress: () => router.back() }]);
-    }, 1200);
+      router.back();
+    }, 1000);
   };
 
-  const handleChangeAvatar = () => {
-    // Hier kommt später der ImagePicker rein
-    Alert.alert("Profilbild", "Hier öffnet sich später die Galerie deines Handys.");
+  const handleChangeAvatar = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      Alert.alert(t("Permission needed"), t("We need access to your photos to change your profile picture."));
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7
+    });
+
+    if (!result.canceled) {
+      setFormData({ ...formData, avatar: result.assets[0].uri });
+    }
   };
+
+  const avatarSource = formData.avatar
+    ? { uri: formData.avatar }
+    : profile.avatar
+      ? { uri: profile.avatar }
+      : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingTop={false}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <ScreenTitle title={t("Edit Profile")} />
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
@@ -77,14 +108,14 @@ export default function EditProfileScreen() {
               <Skeleton {...skBase} radius="round" width={120} height={120} />
             ) : (
               <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
-                <Image source={require("@/../public/assets/icon-profile.png")} style={styles.avatar} />
+                <Image source={avatarSource} style={styles.avatar} />
                 <View style={styles.editBadge}>
                   <Icon name="camera" size={18} color="#fff" />
                 </View>
               </TouchableOpacity>
             )}
             <AppText type="caption" style={styles.avatarHint}>
-              {isLoading ? " " : "Tippen zum Ändern"}
+              {isLoading ? " " : t("Tap to change")}
             </AppText>
           </View>
 
@@ -105,16 +136,16 @@ export default function EditProfileScreen() {
             ) : (
               <>
                 <AppInput
-                  label="Anzeigename"
-                  placeholder="Dein Name"
+                  label={t("Name")}
+                  placeholder={t("Your Name")}
                   value={formData.name}
                   onChangeText={(text) => setFormData({ ...formData, name: text })}
                   icon="profile"
                 />
                 <View style={{ height: Spacing.md }} />
                 <AppInput
-                  label="Benutzername"
-                  placeholder="@username"
+                  label={t("Username")}
+                  placeholder={t("Username")}
                   value={formData.username}
                   onChangeText={(text) => setFormData({ ...formData, username: text })}
                   icon="at"
@@ -122,13 +153,13 @@ export default function EditProfileScreen() {
                 />
                 <View style={{ height: Spacing.md }} />
                 <AppInput
-                  label="Über mich"
-                  placeholder="Erzähl etwas über deine Ziele..."
-                  value={formData.bio}
-                  onChangeText={(text) => setFormData({ ...formData, bio: text })}
+                  label={t("About me")}
+                  placeholder={t("MyDescription")}
+                  value={formData.description}
+                  onChangeText={(text) => setFormData({ ...formData, description: text })}
                   multiline
                   numberOfLines={4}
-                  style={{ textAlignVertical: "top" }} // Wichtig für Android Multiline
+                  style={{ textAlignVertical: "top" }}
                 />
               </>
             )}
@@ -137,7 +168,7 @@ export default function EditProfileScreen() {
 
         <View style={styles.footer}>
           <AppButton
-            title={isSaving ? "Speichere..." : "Änderungen speichern"}
+            title={isSaving ? t("Saving...") : t("Save changes")}
             onPress={handleSave}
             disabled={!hasChanges || isSaving || isLoading}
             variant="primary"
@@ -149,50 +180,51 @@ export default function EditProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: Spacing.xl
-  },
-  avatarSection: {
-    alignItems: "center",
-    paddingVertical: Spacing.xl
-  },
-  avatarContainer: {
-    position: "relative"
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: MyTheme.secondary
-  },
-  editBadge: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: MyTheme.primaryAccent,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: MyTheme.background
-  },
-  avatarHint: {
-    marginTop: Spacing.sm,
-    color: MyTheme.muted
-  },
-  formSection: {
-    marginBottom: Spacing.xl
-  },
-  inputSkeleton: {
-    marginBottom: Spacing.md
-  },
-  footer: {
-    paddingVertical: Spacing.md,
-    borderTopWidth: 2,
-    borderTopColor: "rgba(0, 0, 0, 0.05)"
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    scrollContent: {
+      paddingBottom: Spacing.xl
+    },
+    avatarSection: {
+      alignItems: "center",
+      paddingVertical: Spacing.xl
+    },
+    avatarContainer: {
+      position: "relative"
+    },
+    avatar: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      borderWidth: 3,
+      borderColor: theme.secondary
+    },
+    editBadge: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: theme.primaryAccent,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 3,
+      borderColor: theme.background
+    },
+    avatarHint: {
+      marginTop: Spacing.sm,
+      color: theme.muted
+    },
+    formSection: {
+      marginBottom: Spacing.xl
+    },
+    inputSkeleton: {
+      marginBottom: Spacing.md
+    },
+    footer: {
+      paddingVertical: Spacing.md,
+      borderTopWidth: 2,
+      borderTopColor: "rgba(0, 0, 0, 0.05)"
+    }
+  });

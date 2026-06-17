@@ -1,29 +1,31 @@
 import React, { useState } from "react";
-import { Modal, View, StyleSheet, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
 import AppInput from "../../ui/AppInput";
-
-// Imports der neuen Komponenten (Pfade ggf. anpassen)
+import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
 import IconPicker from "./IconPicker";
 import BadgePicker from "./BadgePicker";
 import BannerUploader from "./BannerUploader";
 import SizePicker from "./SizePicker";
-
-import { mockCommunityIcons, mockCommunityBadges, mockCommunitySizes } from "@/constants/MockData";
+import { communityIcons, communityBadges } from "@/constants/CommunityOptions";
+import { communityTiers } from "@/constants/CommunityPricing";
+import { useTranslation } from "react-i18next";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("community");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("groups");
   const [bannerUri, setBannerUri] = useState(null);
   const [selectedBadges, setSelectedBadges] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(mockCommunitySizes[0]);
+  const [selectedSize, setSelectedSize] = useState(communityTiers[0]);
   const [resetKey, setResetKey] = useState(0);
 
   const toggleBadge = (badge) => {
@@ -36,7 +38,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setSelectedIcon("groups");
     setBannerUri(null);
     setSelectedBadges([]);
-    setSelectedSize(mockCommunitySizes[0]);
+    setSelectedSize(communityTiers[0]);
     setResetKey((prev) => prev + 1);
   };
 
@@ -61,163 +63,113 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      presentationStyle="overFullScreen"
-      onRequestClose={handleClose}
-    >
-      <View style={styles.modalOverlay}>
-        <Pressable style={styles.dismissArea} onPress={handleClose} />
+    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={t("New Community")}>
+      <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
+        {/* Name */}
+        <View style={styles.section}>
+          <AppText type="caption" style={styles.label}>
+            COMMUNITY-NAME (PERMANENT)
+          </AppText>
+          <AppInput
+            placeholder={t("What should you name your community?")}
+            value={name}
+            onChangeText={setName}
+            bottomMargin={false}
+            isForm
+          />
+          <AppText style={styles.infoText}>
+            {t("Choose carefully. You won't be able to change the name later.")}
+          </AppText>
+        </View>
 
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.sheetContainer}>
-          <View style={styles.content}>
-            <View style={styles.dragHandle} />
-            <View style={styles.header}>
-              <AppText type="h2" bold>
-                Neue Community
-              </AppText>
-              <Pressable onPress={handleClose} hitSlop={10}>
-                <Icon name="close" color={MyTheme.muted} size={24} />
-              </Pressable>
-            </View>
+        {/* Description */}
+        <View style={styles.section}>
+          <AppText type="caption" style={styles.label}>
+            {t("DESCRIPTION")}
+          </AppText>
+          <AppInput
+            multiline
+            placeholder={t("What is your community about?")}
+            value={description}
+            onChangeText={setDescription}
+            bottomMargin={false}
+            isForm
+          />
+        </View>
 
-            <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
-              {/* Name */}
-              <View style={styles.section}>
-                <AppText type="caption" style={styles.label}>
-                  COMMUNITY-NAME (PERMANENT)
-                </AppText>
-                <AppInput
-                  placeholder="Wie soll deine Community heißen?"
-                  value={name}
-                  onChangeText={setName}
-                  bottomMargin={false}
-                />
-                <AppText style={styles.infoText}>Wähle weise. Der Name kann später nicht mehr geändert werden.</AppText>
-              </View>
+        <View style={styles.section}>
+          <IconPicker
+            key={`icon-${resetKey}`}
+            icons={communityIcons}
+            selectedIcon={selectedIcon}
+            onSelectIcon={setSelectedIcon}
+          />
+        </View>
 
-              {/* Description */}
-              <View style={styles.section}>
-                <AppText type="caption" style={styles.label}>
-                  BESCHREIBUNG
-                </AppText>
-                <AppInput
-                  multiline
-                  placeholder="Worum geht es in deiner Community?"
-                  value={description}
-                  onChangeText={setDescription}
-                  bottomMargin={false}
-                />
-              </View>
+        <View style={styles.section}>
+          <BadgePicker
+            key={`badge-${resetKey}`}
+            badges={communityBadges}
+            selectedBadges={selectedBadges}
+            onToggleBadge={toggleBadge}
+          />
+        </View>
 
-              <View style={styles.section}>
-                <IconPicker
-                  key={`icon-${resetKey}`}
-                  icons={mockCommunityIcons}
-                  selectedIcon={selectedIcon}
-                  onSelectIcon={setSelectedIcon}
-                />
-              </View>
+        <View style={styles.section}>
+          <BannerUploader
+            bannerUri={bannerUri}
+            onBannerSelect={setBannerUri}
+            onBannerClear={() => setBannerUri(null)}
+          />
+        </View>
 
-              <View style={styles.section}>
-                <BadgePicker
-                  key={`badge-${resetKey}`}
-                  badges={mockCommunityBadges}
-                  selectedBadges={selectedBadges}
-                  onToggleBadge={toggleBadge}
-                />
-              </View>
+        <View style={styles.section}>
+          <SizePicker options={communityTiers} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
+        </View>
+      </ScrollView>
 
-              <View style={styles.section}>
-                <BannerUploader
-                  bannerUri={bannerUri}
-                  onBannerSelect={setBannerUri}
-                  onBannerClear={() => setBannerUri(null)}
-                />
-              </View>
-
-              <View style={styles.section}>
-                <SizePicker options={mockCommunitySizes} selectedSize={selectedSize} onSelectSize={setSelectedSize} />
-              </View>
-            </ScrollView>
-
-            <View style={styles.footer}>
-              <AppButton
-                title={selectedSize.price === "Gratis" ? "Kostenlos Erstellen" : `Für ${selectedSize.price} Erstellen`}
-                onPress={handleCreate}
-                disabled={!formValid}
-                bgColor={MyTheme.primaryAccent}
-              />
-            </View>
-          </View>
-        </KeyboardAvoidingView>
+      <View style={styles.footer}>
+        <AppButton
+          title={
+            selectedSize.price === "Gratis" ? t("Create now") : `${t("Für")} ${selectedSize.price} ${t("Erstellen")}`
+          }
+          onPress={handleCreate}
+          disabled={!formValid}
+          bgColor={MyTheme.primaryAccent}
+        />
       </View>
-    </Modal>
+    </BaseBottomSheet>
   );
 };
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.7)"
-  },
-  dismissArea: {
-    ...StyleSheet.absoluteFillObject
-  },
-  sheetContainer: {
-    backgroundColor: MyTheme.background,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    maxHeight: "90%",
-    flexShrink: 1
-  },
-  content: {
-    paddingTop: Spacing.sm,
-    flexShrink: 1
-  },
-  scrollContent: {
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.lg
-  },
-  dragHandle: {
-    width: 40,
-    height: 5,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 3,
-    alignSelf: "center",
-    marginBottom: Spacing.md
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  section: {
-    marginBottom: Spacing.lg
-  },
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  infoText: {
-    fontSize: 11,
-    color: MyTheme.muted,
-    marginTop: 6,
-    marginLeft: 4
-  },
-  footer: {
-    padding: Spacing.lg,
-    paddingTop: Spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: MyTheme.glas,
-    backgroundColor: MyTheme.background
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    scrollContent: {
+      paddingHorizontal: Spacing.md,
+      paddingBottom: Spacing.lg
+    },
+    section: {
+      marginBottom: Spacing.lg
+    },
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1,
+      color: theme.text
+    },
+    infoText: {
+      fontSize: 11,
+      color: theme.muted,
+      marginTop: 6,
+      marginLeft: 4
+    },
+    footer: {
+      padding: Spacing.lg,
+      paddingTop: Spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: theme.glas,
+      backgroundColor: theme.background
+    }
+  });
 
 export default CreateCommunityForm;

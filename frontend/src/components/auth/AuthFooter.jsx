@@ -2,10 +2,13 @@ import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { Link } from "expo-router";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 
 export default function AuthFooter({ text, linkText, href }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+
   return (
     <View style={styles.footer}>
       <AppText type="caption">
@@ -22,10 +25,11 @@ export default function AuthFooter({ text, linkText, href }) {
   );
 }
 
-const styles = StyleSheet.create({
-  footer: {
-    marginTop: "auto",
-    alignItems: "center",
-    marginBottom: Spacing.lg
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    footer: {
+      marginTop: "auto",
+      alignItems: "center",
+      marginBottom: Spacing.lg
+    }
+  });

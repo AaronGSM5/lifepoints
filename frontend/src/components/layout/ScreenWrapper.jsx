@@ -2,7 +2,7 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const useFloatingNavbarPadding = () => {
   const insets = useSafeAreaInsets();
@@ -22,6 +22,8 @@ export default function ScreenWrapper({
   withPaddingTop = true,
   style
 }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
   const contentStyles = [
@@ -35,7 +37,9 @@ export default function ScreenWrapper({
 
   return (
     <View style={styles.wrapper}>
-      {useGradient && <LinearGradient colors={[MyTheme.background, "#121212"]} style={StyleSheet.absoluteFillObject} />}
+      {useGradient && (
+        <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={StyleSheet.absoluteFillObject} />
+      )}
       {scrollable ? (
         <ScrollView
           style={{ flex: 1 }}
@@ -52,9 +56,10 @@ export default function ScreenWrapper({
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: MyTheme.background // backgroundColor if useGradient = false
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    wrapper: {
+      flex: 1,
+      backgroundColor: theme.background // backgroundColor if useGradient = false
+    }
+  });

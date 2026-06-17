@@ -1,16 +1,23 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
+import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/addOpacity";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
-    return <Skeleton colorMode="dark" width="100%" height={70} radius={Spacing.borderRadius.lg} />;
+    return (
+      <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="100%" height={70} radius={Spacing.borderRadius.lg} />
+    );
   }
 
   return (
@@ -41,24 +48,25 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  taskCardActive: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "rgba(16, 185, 129, 0.25)"
-  },
-  taskIconContainer: {
-    width: 36,
-    height: 36,
-    backgroundColor: "rgba(16, 185, 129, 0.16)",
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  lpContainer: {
-    marginRight: Spacing.md
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    taskCardActive: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderColor: addOpacity(theme.primaryAccent, 0.3)
+    },
+    taskIconContainer: {
+      width: 36,
+      height: 36,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.16),
+      borderRadius: Spacing.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    lpContainer: {
+      marginRight: Spacing.md
+    }
+  });
 
 export default ActiveTaskCard;

@@ -1,6 +1,6 @@
 import { View, KeyboardAvoidingView, Platform } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
@@ -10,10 +10,12 @@ import PasswordInput from "@/components/auth/PasswordInput";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthFooter from "@/components/auth/AuthFooter";
 import BaseCard from "@/components/ui/BaseCard";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
-
+  const { t } = useTranslation("auth");
+  const MyTheme = useAppTheme();
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -40,7 +42,7 @@ export default function RegisterScreen() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
         <ScreenWrapper scrollable>
-          <AuthHeader showImageLogo={true} subtitle={"Register to continue"} />
+          <AuthHeader showImageLogo={true} subtitle={t("Register to continue")} />
 
           <BaseCard
             style={{
@@ -54,10 +56,10 @@ export default function RegisterScreen() {
             <AppInput
               value={nameInput}
               onChangeText={setNameInput}
-              placeholder="Username"
+              placeholder={t("Username")}
               bottomMargin={false}
               isValid={isNameValidFlag && nameInput.length > 0}
-              error={!isNameValidFlag && nameInput.length > 0 ? "Username is already taken.." : null}
+              error={!isNameValidFlag && nameInput.length > 0 ? t("Username is already taken..") : null}
             />
             <AppInput
               value={emailInput}
@@ -85,10 +87,15 @@ export default function RegisterScreen() {
               onValidationChange={setIsRepeatValid}
               bottomMargin={false}
             />
-            <AppButton title={"Register"} bgColor={MyTheme.primaryAccent} disabled={isSubmitDisabled} />
+            <AppButton
+              title={t("Register")}
+              textStyle={{ color: isSubmitDisabled && "white" }}
+              bgColor={MyTheme.primaryAccent}
+              disabled={isSubmitDisabled}
+            />
           </BaseCard>
 
-          <AuthFooter text="Already have an account?" linkText="Log in" href="/auth/login" />
+          <AuthFooter text={t("Already have an account?")} linkText={t("Log in")} href="/auth/login" />
         </ScreenWrapper>
       </View>
     </KeyboardAvoidingView>

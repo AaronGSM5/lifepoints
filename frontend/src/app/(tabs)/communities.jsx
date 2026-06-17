@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
@@ -10,26 +10,52 @@ import { useCommunities } from "@/hooks/useCommunities";
 import EventHero from "@/components/home/EventHero";
 import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
+import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useTranslation } from "react-i18next";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, recommended, searchQuery, setSearchQuery, isLoading } = useCommunities();
+  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
+    useCommunities();
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("community");
   const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
+  const [dynamicSections, setDynamicSections] = useState([]);
+  const [verticalPage, setVerticalPage] = useState(1);
+  const [isMoreSectionsLoading, setIsMoreSectionsLoading] = useState(false);
+  const [allSectionsLoaded, setAllSectionsLoaded] = useState(false);
+
   const handleCreateCommunity = (data) => {
-    console.log("Community wird erstellt:", data);
+    createCommunity(data);
   };
 
-  const sections = useMemo(
-    () => [
-      { id: "recommended", title: "Recommended for you", data: recommended },
-      { id: "lifestyle", title: "Lifestyle & Food", data: recommended },
-      { id: "trending", title: "Trending Right Now", data: recommended }
-    ],
-    [recommended]
-  );
+  const loadMoreSections = useCallback(async () => {
+    if (isMoreSectionsLoading || allSectionsLoaded || isLoading) return;
+
+    setIsMoreSectionsLoading(true);
+    const nextPage = verticalPage + 1;
+    console.log(`Screen: Lade weitere vertikale Sektionen, Seite ${nextPage}`);
+
+    try {
+      const newSections = await fetchMoreSections(nextPage);
+
+      if (newSections && newSections.length > 0) {
+        setDynamicSections((prev) => [...prev, ...newSections]);
+        setVerticalPage(nextPage);
+      } else {
+        setAllSectionsLoaded(true);
+      }
+    } catch (error) {
+      console.error("Error loading more vertical sections", error);
+    } finally {
+      setIsMoreSectionsLoading(false);
+    }
+  }, [verticalPage, isMoreSectionsLoading, allSectionsLoaded, isLoading, fetchMoreSections]);
 
   const listData = useMemo(() => {
     const topElements = [
@@ -38,101 +64,143 @@ export default function CommunitiesScreen() {
       { id: "my_communities", type: "my_communities" }
     ];
 
-    return [...topElements, ...sections.map((section) => ({ ...section, type: "section" }))];
-  }, [sections]);
+    const staticSections = [
+      { id: "recommended", categoryKey: "recommended_you", title: t("Recommended for you"), data: recommended },
+      { id: "lifestyle", categoryKey: "lifestyle_food", title: t("Lifestyle & Food"), data: recommended },
+      { id: "trending", categoryKey: "trending_now", title: t("Trending Right Now"), data: recommended }
+    ].map((section) => ({ ...section, type: "section" }));
 
-  const renderItem = ({ item }) => {
-    switch (item.type) {
-      case "hero":
-        return (
-          <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
-            <EventHero
-              imageSource={require("../../../public/assets/creativeBanner.png")}
-              isLoading={isLoading}
-              onPress={() => setIsCreateModalVisible(true)}
-            />
-          </View>
-        );
+    const loadedSections = dynamicSections.map((section) => ({ ...section, type: "section" }));
 
-      case "search":
-        return (
-          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
-            <AppInput
-              icon="search"
-              placeholder="Search communities..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              blur
-              bottomMargin={false}
-            />
-          </View>
-        );
+    return [...topElements, ...staticSections, ...loadedSections];
+  }, [recommended, dynamicSections, myCommunities, isLoading]);
 
-      case "my_communities":
-        if (!myCommunities?.length && !isLoading) return null;
-        return (
-          <View style={styles.myCommunitiesSection}>
-            <View style={styles.paddedContent}>
-              <SectionHeader
-                title="My Communities"
-                rightLabel="See all"
-                onRightPress={() => console.log("mockClickReaction xD")}
+  const renderItem = useCallback(
+    ({ item }) => {
+      switch (item.type) {
+        case "hero":
+          return (
+            <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
+              <EventHero
+                imageSource={require("../../../public/assets/createCommunityBanner.png")}
+                isLoading={isLoading}
+                onPress={() => setIsCreateModalVisible(true)}
               />
             </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContentContainer}
-            >
-              {isLoading
-                ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
-                : myCommunities.map((c, index) => (
-                    <MyCommunityCard key={c.id || index} item={c} onPress={() => router.push(`/community/${c.id}`)} />
-                  ))}
-            </ScrollView>
-          </View>
-        );
+          );
 
-      case "section":
-        return (
-          <View style={styles.sectionContainer}>
-            <View style={styles.paddedContent}>
-              <SectionHeader title={item.title} />
+        case "search":
+          return (
+            <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+              <Pressable onPress={() => router.push("/search")}>
+                <View pointerEvents="none">
+                  <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
+                </View>
+              </Pressable>
             </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContentContainer}
-              snapToInterval={260 + Spacing.md}
-              decelerationRate="fast"
-            >
-              {isLoading
-                ? SKELETON_DATA.map((i) => <RecommendedCommunity key={`skeleton-rec-${i}`} isLoading={true} />)
-                : item.data?.map((community, index) => (
-                    <RecommendedCommunity
-                      key={community.id || index}
-                      item={community}
-                      onPress={() => router.push(`/community/${community.id}`)}
-                    />
-                  ))}
-            </ScrollView>
-          </View>
-        );
+          );
 
-      default:
-        return null;
+        case "my_communities":
+          if (!myCommunities?.length && !isLoading)
+            return <View style={{ marginTop: Spacing.md, marginBottom: Spacing.md }}></View>;
+          return (
+            <View style={styles.myCommunitiesSection}>
+              <View style={styles.paddedContent}>
+                <SectionHeader
+                  title={t("My Communities")}
+                  rightLabel={t("See all")}
+                  rightLabelColor={MyTheme.primaryAccent}
+                  onRightPress={() => console.log("mockClickReaction xD")}
+                  isLoading={isLoading}
+                />
+              </View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.horizontalScrollContentContainer}
+              >
+                {isLoading
+                  ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
+                  : myCommunities
+                      .filter((c) => c !== null && c !== undefined)
+                      .map((c, index) => (
+                        <MyCommunityCard
+                          key={c.id || index}
+                          item={c}
+                          onPress={() => router.push(`/mycommunity/${c.id}`)}
+                        />
+                      ))}
+              </ScrollView>
+            </View>
+          );
+
+        case "section":
+          const validSectionData = item.data?.filter((c) => c !== null && c !== undefined) || [];
+          if (validSectionData.length === 0 && !isLoading) {
+            return null;
+          }
+          if (isLoading) {
+            return (
+              <View style={styles.sectionContainer}>
+                <View style={styles.paddedContent}>
+                  <SectionHeader title={item.title} isLoading={true} />
+                </View>
+                <FlatList
+                  horizontal
+                  data={SKELETON_DATA}
+                  contentContainerStyle={styles.horizontalScrollContentContainer}
+                  renderItem={() => <RecommendedCommunity isLoading={true} />}
+                />
+              </View>
+            );
+          }
+          return (
+            <HorizontalSectionList
+              title={item.title}
+              initialData={validSectionData}
+              onLoadMore={(page) => fetchCommunitiesForCategory(item.categoryKey || item.id, page)}
+              onPressItem={(community) => router.push(`/community/${community.id}`)}
+            />
+          );
+
+        default:
+          return null;
+      }
+    },
+    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible, MyTheme]
+  );
+
+  const renderMainFooter = () => {
+    if (isMoreSectionsLoading) {
+      return (
+        <View style={styles.mainListLoader}>
+          <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+        </View>
+      );
     }
+    if (allSectionsLoaded && listData.length > 5) {
+      return (
+        <View style={styles.endOfList}>
+          <SectionHeader title={t("Thats all for now!")} center />
+        </View>
+      );
+    }
+    return <View style={{ height: Spacing.md }} />;
   };
 
   return (
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <FlatList
         data={listData}
+        extraData={[myCommunities, isLoading]}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: bottomPadding }}
+        onEndReached={loadMoreSections}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderMainFooter}
       />
       <CreateCommunityForm
         visible={isCreateModalVisible}
@@ -143,25 +211,33 @@ export default function CommunitiesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  stickySearchWrapper: {
-    paddingTop: Spacing.sm,
-    zIndex: 10
-  },
-  headerContainer: {
-    paddingBottom: Spacing.md
-  },
-  myCommunitiesSection: {
-    marginTop: Spacing.md,
-    marginBottom: Spacing.md
-  },
-  sectionContainer: {
-    marginBottom: Spacing.lg
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  },
-  scrollContentContainer: {
-    paddingHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    stickySearchWrapper: {
+      paddingTop: Spacing.sm,
+      zIndex: 10
+    },
+    myCommunitiesSection: {
+      marginTop: Spacing.md,
+      marginBottom: Spacing.md
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    },
+    horizontalScrollContentContainer: {
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.md
+    },
+    sectionContainer: {
+      marginBottom: Spacing.lg
+    },
+    mainListLoader: {
+      paddingVertical: Spacing.md,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    endOfList: {
+      paddingVertical: Spacing.xl,
+      alignItems: "center"
+    }
+  });

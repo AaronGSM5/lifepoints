@@ -1,15 +1,17 @@
 import { Stack } from "expo-router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { MyTheme } from "@/constants/Colors";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import Toolbar from "@/components/layout/Toolbar";
 import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
+import * as NavigationBar from "expo-navigation-bar";
+import "@/utils/i18n";
+import TrophyPopup from "@/components/ui/TrophyPopup";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
-// Verhindert, dass der Splash-Screen verschwindet, bevor die Schrift geladen ist
 SplashScreen.preventAutoHideAsync();
 
 export function ErrorBoundary({ error, retry }) {
@@ -22,7 +24,6 @@ const initialMetrics = {
 };
 
 export default function RootLayout() {
-  // Schriften laden
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
     "Inter-SemiBold": Inter_600SemiBold,
@@ -31,26 +32,43 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded || error) {
-      // Sobald geladen, Splash-Screen ausblenden
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
 
-  // Wichtig: Solange die Fonts laden, geben wir null zurück (App bleibt beim Splash-Screen)
+  useEffect(() => {
+    const hideNavigationBar = async () => {
+      if (Platform.OS === "android") {
+        await NavigationBar.setVisibilityAsync("hidden");
+        await NavigationBar.setBehaviorAsync("overlay-swipe");
+      }
+    };
+
+    hideNavigationBar();
+  }, []);
+
+  usePushNotifications();
+
+  const renderHeader = useCallback((props) => <Toolbar {...props} />, []);
+
   if (!loaded && !error) {
     return null;
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: MyTheme.background }}>
+    <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
+        <StatusBar style={"auto"} translucent backgroundColor="transparent" />
+
+        <TrophyPopup />
 
         <Stack
           screenOptions={{
-            header: (props) => <Toolbar {...props} />,
+            header: renderHeader,
             headerShown: true,
-            contentStyle: { backgroundColor: MyTheme.background }
+            gestureEnabled: true,
+            gestureDirection: "horizontal",
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right"
           }}
         >
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
@@ -59,17 +77,19 @@ export default function RootLayout() {
 
           <Stack.Screen name="auth" options={{ headerShown: false }} />
 
+          <Stack.Screen name="post/create" options={{ headerShown: false, presentation: "modal" }} />
+
           <Stack.Screen
             name="notifications"
             options={{
-              animation: "slide_from_bottom"
+              animation: "slide_from_right"
             }}
           />
 
           <Stack.Screen
             name="settings"
             options={{
-              animation: "slide_from_bottom"
+              animation: "slide_from_right"
             }}
           />
 

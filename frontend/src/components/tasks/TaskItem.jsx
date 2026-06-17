@@ -1,24 +1,44 @@
 import React, { useState } from "react";
 import { StyleSheet, View, LayoutAnimation, Platform, UIManager, TouchableOpacity } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppInput from "@/components/ui/AppInput";
 import { Skeleton } from "moti/skeleton";
+import AppButton from "../ui/AppButton";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLoading, requiresInput }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const TaskItem = ({
+  id,
+  title,
+  lp,
+  progress,
+  status,
+  icon,
+  onTrack,
+  onInstaTrack,
+  onNavigate,
+  isLoading,
+  requiresInput,
+  isExpanded,
+  onToggleExpand
+}) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("tasks");
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const [inputValue, setInputValue] = useState("");
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsExpanded(!isExpanded);
+    onToggleExpand();
   };
 
   if (isLoading) {
@@ -27,7 +47,7 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
         <View style={styles.mainRow}>
           <View style={styles.iconContainer}>
             <Skeleton
-              colorMode="dark"
+              colorMode={isDarkMode ? "dark" : "light"}
               width="100%"
               height="100%"
               radius={Spacing.borderRadius.md}
@@ -36,9 +56,19 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
           </View>
           <View style={styles.textContainer}>
             <View style={{ marginBottom: 8 }}>
-              <Skeleton colorMode="dark" width="70%" height={16} transition={{ type: "timing", duration: 1500 }} />
+              <Skeleton
+                colorMode={isDarkMode ? "dark" : "light"}
+                width="70%"
+                height={16}
+                transition={{ type: "timing", duration: 1500 }}
+              />
             </View>
-            <Skeleton colorMode="dark" width="40%" height={12} transition={{ type: "timing", duration: 1500 }} />
+            <Skeleton
+              colorMode={isDarkMode ? "dark" : "light"}
+              width="40%"
+              height={12}
+              transition={{ type: "timing", duration: 1500 }}
+            />
           </View>
         </View>
       </BaseCard>
@@ -54,7 +84,7 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
 
         <View style={styles.textContainer}>
           <AppText type="body" bold style={styles.title} numberOfLines={1}>
-            {title}
+            {t(title)}
           </AppText>
 
           <View style={styles.metaRow}>
@@ -80,7 +110,7 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
         <View style={styles.expandedContainer}>
           {requiresInput && (
             <AppInput
-              placeholder={`Anzahl ${requiresInput} eingeben...`}
+              placeholder={`${t("Anzahl")} ${t(requiresInput)} ${t("eingeben...")}`}
               value={inputValue}
               onChangeText={setInputValue}
               keyboardType="numeric"
@@ -88,17 +118,17 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
           )}
 
           <View style={styles.actionRow}>
-            <TouchableOpacity onPress={onNavigate} style={styles.detailBtn}>
-              <AppText type="caption" style={{ color: MyTheme.muted }}>
-                Details ansehen
-              </AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.trackBtn} onPress={() => onTrack(inputValue)}>
-              <AppText type="body" bold>
-                Tracken
-              </AppText>
-            </TouchableOpacity>
+            <AppButton title={t("View details")} variant="ghost" onPress={onNavigate} size="sm" />
+            <View style={styles.trackingRow}>
+              <AppButton
+                variant="ghost"
+                icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
+                iconPosition="center"
+                size="sm"
+                onPress={onInstaTrack}
+              />
+              <AppButton title={t("Track")} bgColor={MyTheme.primaryAccent} onPress={() => onTrack(inputValue)} />
+            </View>
           </View>
         </View>
       )}
@@ -106,63 +136,61 @@ const TaskItem = ({ title, lp, progress, status, icon, onTrack, onNavigate, isLo
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    overflow: "hidden"
-  },
-  mainRow: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: Spacing.borderRadius.md,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  title: {
-    marginBottom: Spacing.xs
-  },
-  metaRow: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  lpText: {
-    color: MyTheme.primaryAccent
-  },
-  chevronContainer: {
-    marginLeft: Spacing.sm
-  },
-  expandedContainer: {
-    marginTop: Spacing.md,
-    paddingTop: Spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: MyTheme.secondary
-  },
-  actionRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  detailBtn: {
-    paddingVertical: Spacing.sm
-  },
-  trackBtn: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.sm
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.md,
+      overflow: "hidden"
+    },
+    mainRow: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: Spacing.borderRadius.md,
+      backgroundColor: theme.secondary,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    textContainer: {
+      flex: 1,
+      justifyContent: "center"
+    },
+    title: {
+      marginBottom: Spacing.xs
+    },
+    metaRow: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    lpText: {
+      color: theme.primaryAccent
+    },
+    chevronContainer: {
+      marginLeft: Spacing.sm
+    },
+    expandedContainer: {
+      marginTop: Spacing.md,
+      paddingTop: Spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: theme.secondary
+    },
+    actionRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: Spacing.sm
+    },
+    trackingRow: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: Spacing.sm
+    }
+  });
 
 export default TaskItem;

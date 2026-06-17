@@ -1,25 +1,33 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { BlurView } from "expo-blur";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import AppBadge from "./AppBadge";
 import { router } from "expo-router";
+import useStore from "@/store/useStore";
 
 const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.statCard}>
         <View style={styles.statTop}>
-          <Skeleton colorMode="dark" width={50} height={20} transition={{ type: "timing", duration: 1500 }} />
-          <Skeleton colorMode="dark" width={16} height={16} radius={4} />
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={50}
+            height={20}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={16} height={16} radius={4} />
         </View>
         <View style={{ height: Spacing.sm }} />
-        <Skeleton colorMode="dark" width={80} height={10} />
+        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={80} height={10} />
       </BaseCard>
     );
   }
@@ -29,8 +37,9 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
       <View style={styles.statTop}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
           <View style={styles.numberContainer}>
-            <AppText type="h2">{value}</AppText>
-            {blurred && <BlurView intensity={22} tint="dark" style={StyleSheet.absoluteFill} />}
+            <AppText type="h1" style={blurred ? styles.blurredText : null}>
+              {value}
+            </AppText>
           </View>
 
           {blurred && (
@@ -49,39 +58,32 @@ const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
             />
           )}
         </View>
-
         <Icon name={icon} size={16} color={color} />
       </View>
-
-      <AppText type="caption" style={{ marginTop: Spacing.xs }}>
-        {label}
-      </AppText>
-
-      {badge && (
-        <AppBadge
-          variant={"primary"}
-          label={badge}
-          textStyle={{ fontSize: 12, color: MyTheme.background }}
-          style={{ marginTop: Spacing.sm }}
-        />
-      )}
+      <View></View>
+      <AppText type="caption">{label}</AppText>
     </BaseCard>
   );
 };
 
-const styles = StyleSheet.create({
-  statCard: {
-    width: "47%"
-  },
-  statTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  numberContainer: {
-    overflow: "hidden",
-    borderRadius: 4
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    statCard: {
+      width: "47%"
+    },
+    statTop: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
+    numberContainer: {
+      overflow: "hidden",
+      borderRadius: 4
+    },
+    blurredText: {
+      color: "transparent",
+      textShadow: `0px 0px 10px ${theme.text}`
+    }
+  });
 
 export default StatCard;

@@ -6,36 +6,53 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import React, { useMemo, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList, Pressable } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
+import useStore from "@/store/useStore";
+import InstaTrackingModal from "@/components/home/InstaTrackingModal";
+import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
   const router = useRouter();
+  const { t } = useTranslation(["tasks", "common"]);
   const bottomPadding = useFloatingNavbarPadding();
-  const {
-    tasks,
-    recommendedTasks,
-    categories,
-    activeCat,
-    setActiveCat,
-    searchQuery,
-    setSearchQuery,
-    isLoading,
-    isRefreshing,
-    refreshTasks
-  } = useTasks();
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [taskToTrack, setTaskToTrack] = useState(null);
+  const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
+  const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
+  const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const trackTask = useStore((state) => state.trackTask);
+  const completeTask = useStore((state) => state.completeTask);
+  const { tasks, recommendedTasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } =
+    useTasks();
 
+  const styles = getStyles();
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
+  };
+
+  const handleInstaTrackingConfirm = (dontShowAgain) => {
+    setInstaTrackingModalVisible(false);
+
+    if (dontShowAgain) {
+      disableInstaTrackingModal();
+    }
+
+    if (taskToTrack) {
+      completeTask(taskToTrack);
+      setTaskToTrack(null);
+    }
   };
 
   const listData = useMemo(() => {
@@ -58,14 +75,11 @@ const TasksScreen = () => {
         return (
           <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
             <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-              <AppInput
-                icon="search"
-                placeholder="Search tasks..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                blur={true}
-                bottomMargin={false}
-              />
+              <Pressable onPress={() => router.push("/search")}>
+                <View pointerEvents="none">
+                  <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
+                </View>
+              </Pressable>
             </Skeleton>
           </View>
         );
@@ -74,7 +88,7 @@ const TasksScreen = () => {
         return (
           <View style={styles.sectionMargin}>
             <View style={styles.paddedContent}>
-              <SectionHeader title={"For You"} />
+              <SectionHeader title={t("For You")} />
             </View>
             <ScrollView
               horizontal
@@ -95,11 +109,7 @@ const TasksScreen = () => {
           <View style={styles.sectionMargin}>
             <View style={styles.paddedContent}>
               <SectionHeader
-                title={
-                  activeCat.toLowerCase() === "all"
-                    ? "All Tasks"
-                    : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
-                }
+                title={activeCat === "all" ? t("All Tasks") : `${t(`categories.${activeCat}`)} ${t("Tasks")}`}
               />
             </View>
             <CategoryButtons
@@ -116,6 +126,7 @@ const TasksScreen = () => {
         return (
           <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
             <TaskItem
+              id={item.id}
               isLoading={isLoading}
               title={item.title}
               lp={item.lp}
@@ -123,10 +134,21 @@ const TasksScreen = () => {
               status={item.limit}
               icon={item.icon}
               requiresInput={item.requiresInput}
-              onTrack={(inputValue) => {
-                console.log(`Tracke ${item.title} mit Wert: ${inputValue}`);
+              onTrack={() => trackTask(item.id)}
+              onInstaTrack={() => {
+                if (showInstaTrackingModal) {
+                  setTaskToTrack(item.id);
+                  setInstaTrackingModalVisible(true);
+                } else {
+                  triggerHaptic();
+                  completeTask(item.id);
+                }
               }}
               onNavigate={() => router.push(`task/${item.id}`)}
+              isExpanded={expandedTaskId === item.id}
+              onToggleExpand={() => {
+                setExpandedTaskId(expandedTaskId === item.id ? null : item.id);
+              }}
             />
           </View>
         );
@@ -139,7 +161,7 @@ const TasksScreen = () => {
   const renderFooter = () => (
     <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
       <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
-        Can't find what you're searching for?
+        {t("Can't find what you're searching for?")}
       </AppText>
       <SuggestTaskInput />
     </View>
@@ -158,26 +180,32 @@ const TasksScreen = () => {
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
       />
+      <InstaTrackingModal
+        visible={instaTrackingModalVisible}
+        onClose={() => setInstaTrackingModalVisible(false)}
+        onConfirm={handleInstaTrackingConfirm}
+      />
     </ScreenWrapper>
   );
 };
 
-const styles = StyleSheet.create({
-  stickySearchWrapper: {
-    zIndex: 10,
-    paddingTop: Spacing.sm
-  },
-  sectionMargin: {
-    marginTop: Spacing.md
-  },
-  carouselContainer: {
-    paddingHorizontal: Spacing.md,
-    gap: Spacing.md,
-    marginBottom: Spacing.lg
-  },
-  paddedContent: {
-    paddingHorizontal: Spacing.md
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    stickySearchWrapper: {
+      zIndex: 10,
+      paddingTop: Spacing.sm
+    },
+    sectionMargin: {
+      marginTop: Spacing.md
+    },
+    carouselContainer: {
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.md,
+      marginBottom: Spacing.lg
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    }
+  });
 
 export default TasksScreen;

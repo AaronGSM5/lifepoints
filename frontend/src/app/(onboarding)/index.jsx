@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import { onboardingSlides } from "@/constants/MockData";
+import { onboardingSlides } from "@/constants/OnboardingContent";
 import AppButton from "@/components/ui/AppButton";
 import OnboardingItem from "@/components/onboarding/OnboardingItem";
 import SlidePaginator from "@/components/onboarding/SlidePaginator";

@@ -7,8 +7,14 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
+import { featuredRewards } from "@/constants/FeaturedRewards";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
+  const { t } = useTranslation("shop");
+  const redeemReward = useStore((state) => state.redeemReward);
+  const selectedReward = featuredRewards?.[0];
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
@@ -26,25 +32,38 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         style={styles.featuredCard}
       >
         <View style={styles.featuredIconContainer}>
-          <Icon name="music" size={20} />
+          <Icon name={selectedReward?.icon} size={20} />
         </View>
 
         <View style={styles.featuredContent}>
-          <AppBadge label={"BEST VALUE"} variant="secondary" />
+          <AppBadge label={t("BEST VALUE")} variant="secondary" />
 
-          <AppText type="h2">Free Month Premium</AppText>
+          <AppText type="h2">{t(selectedReward?.title)}</AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
-            Spotify Individual Plan
+            {t(selectedReward?.description)}
           </AppText>
 
           <View style={styles.featuredFooter}>
-            <View>
-              <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                2.500 PTS
-              </AppText>
-              <AppText type="title">2.000 PTS</AppText>
-            </View>
-            <AppButton variant="primary" title={"Redeem"} size="md" textStyle={{ color: "#E94057" }} bgColor="white" />
+            {selectedReward?.discount ? (
+              <View>
+                <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
+                  {selectedReward?.discount?.oldPrice} LP
+                </AppText>
+                <AppText type="title">{selectedReward?.discount?.newPrice} LP</AppText>
+              </View>
+            ) : (
+              <View>
+                <AppText type="title">{selectedReward?.price} LP</AppText>
+              </View>
+            )}
+            <AppButton
+              variant="primary"
+              title={t("Redeem")}
+              size="md"
+              textStyle={{ color: "#E94057" }}
+              bgColor="white"
+              onPress={() => redeemReward(selectedReward.id)}
+            />
           </View>
         </View>
       </LinearGradient>

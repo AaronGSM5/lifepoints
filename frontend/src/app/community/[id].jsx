@@ -7,13 +7,16 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { useCommunities } from "@/hooks/useCommunities";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SectionHeader from "@/components/ui/SectionHeader";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
-  const insets = useSafeAreaInsets();
-  const { recommended, myCommunities } = useCommunities();
+  const { t } = useTranslation("community");
+  const { recommended = [], myCommunities = [] } = useCommunities();
+  const joinCommunity = useStore((state) => state.joinCommunity);
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
 
   return (
@@ -29,33 +32,42 @@ export default function CommunityDetailScreen() {
               {community?.title}
             </AppText>
             <AppText type="caption" style={styles.statsText}>
-              {community?.members} Mitglieder • {community?.onlineCount} Online
+              {community?.members} {t("Members")} • {community?.onlineCount} Online
             </AppText>
           </View>
 
           {/* Action Button */}
-          <AppButton title="Join Community" onPress={() => console.log("Joined!")} style={styles.joinButton} />
+          {!myCommunities.some((c) => c?.id === community.id) && (
+            <AppButton
+              title={t("Join Community")}
+              style={styles.joinButton}
+              onPress={() => {
+                triggerHaptic("medium");
+                joinCommunity(community);
+              }}
+            />
+          )}
 
           {/* Live Section */}
           {community?.isLive && (
             <View style={styles.liveContainer}>
               <AppText bold style={{ color: "#ef4444" }}>
-                🔴 LIVE NOW
+                🔴 {t("LIVE NOW")}
               </AppText>
-              <AppText type="caption">Morning Meditation with Sarah</AppText>
+              <AppText type="caption">{community?.liveTitle || ""}</AppText>
             </View>
           )}
 
           {/* About Section */}
           <View style={styles.section}>
-            <SectionHeader title={"About"} />
+            <SectionHeader title={t("About")} />
             <AppText style={styles.description}>{community?.desc}</AppText>
           </View>
 
           {/* Sneak Peek / Preview Bereich */}
           <View style={styles.section}>
-            <SectionHeader title={"Community Tasks"} />
-            <AppText type="caption">Preview of what's waiting for you.</AppText>
+            <SectionHeader title={t("Community Tasks")} />
+            <AppText type="caption">{t("Preview of what's waiting for you.")}</AppText>
           </View>
         </View>
       </ScreenWrapper>

@@ -3,12 +3,20 @@ import { StyleSheet, View, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "@/components/icons/Icon";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
-const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
+const WalletCard = ({ skeletonProps, isLoading }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("shop");
+  const points = useStore((state) => state.profile.profileLp);
+  const targetPoints = (points * 2.6).toFixed(0);
+
   const animatedWalletProgress = useRef(new Animated.Value(0)).current;
 
   const targetPercentage = targetPoints ? (points / targetPoints) * 100 : 0;
@@ -37,10 +45,10 @@ const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
   }
 
   return (
-    <LinearGradient colors={[MyTheme.background, "#121212"]} style={styles.walletCard}>
+    <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={styles.walletCard}>
       <View style={styles.walletHeader}>
-        <AppText bold type="caption" style={{ opacity: 0.9 }}>
-          YOUR POINTS
+        <AppText bold type="caption">
+          {t("YOUR POINTS")}
         </AppText>
         <Icon name="wallet" size={22} color={MyTheme.primaryAccent} />
       </View>
@@ -58,48 +66,51 @@ const WalletCard = ({ points, targetPoints, skeletonProps, isLoading }) => {
             style={[styles.progressBarFill, { width: walletWidth, backgroundColor: MyTheme.primaryAccent }]}
           />
         </View>
-        <AppText type="caption">{targetPoints - points} pts until Gold Tier</AppText>
+        <AppText type="caption" bold>
+          {targetPoints - points} {t("LP until Gold Tier")}
+        </AppText>
       </View>
     </LinearGradient>
   );
 };
 
-const styles = StyleSheet.create({
-  walletCard: {
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    marginVertical: Spacing.md
-  },
-  walletHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: Spacing.sm
-  },
-  pointsRow: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginBottom: Spacing.md
-  },
-  pointsLabel: {
-    color: MyTheme.primaryAccent,
-    marginLeft: Spacing.xs
-  },
-  progressBarContainer: {
-    marginTop: Spacing.xs
-  },
-  progressBarBg: {
-    height: 8,
-    backgroundColor: "#333",
-    borderRadius: Spacing.borderRadius.full,
-    marginBottom: Spacing.xs,
-    overflow: "hidden"
-  },
-  progressBarFill: {
-    height: "100%",
-    borderRadius: Spacing.borderRadius.full
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    walletCard: {
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: theme.secondary,
+      marginVertical: Spacing.md
+    },
+    walletHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: Spacing.sm
+    },
+    pointsRow: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      marginBottom: Spacing.md
+    },
+    pointsLabel: {
+      color: theme.primaryAccent,
+      marginLeft: Spacing.xs
+    },
+    progressBarContainer: {
+      marginTop: Spacing.xs
+    },
+    progressBarBg: {
+      height: 8,
+      backgroundColor: "#333",
+      borderRadius: Spacing.borderRadius.full,
+      marginBottom: Spacing.xs,
+      overflow: "hidden"
+    },
+    progressBarFill: {
+      height: "100%",
+      borderRadius: Spacing.borderRadius.full
+    }
+  });
 
 export default WalletCard;

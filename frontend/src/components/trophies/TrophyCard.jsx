@@ -1,21 +1,22 @@
 import React, { useRef, useEffect } from "react";
-// WICHTIG: Image aus react-native importieren!
-import { View, Animated, StyleSheet, Pressable, Image } from "react-native";
+import { View, Animated as RNAnimated, StyleSheet, Pressable } from "react-native";
+import Animated from "react-native-reanimated";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "../icons/Icon";
 import { router } from "expo-router";
-
-// Wir machen das normale Image animierbar, damit wir es faden können
-const AnimatedImage = Animated.createAnimatedComponent(Image);
+import { useTranslation } from "react-i18next";
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
-  const animValue = useRef(new Animated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("trophies");
+  const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
 
   useEffect(() => {
     if (justUnlocked) {
-      Animated.timing(animValue, {
+      RNAnimated.timing(animValue, {
         toValue: 1,
         duration: 800,
         delay: 300,
@@ -25,10 +26,11 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           onAnimationComplete(id);
         }
       });
+    } else {
+      animValue.setValue(unlocked ? 1 : 0);
     }
-  }, [justUnlocked, animValue, id, onAnimationComplete]);
+  }, [justUnlocked, unlocked, animValue, id, onAnimationComplete]);
 
-  // Bild ist nur zu 30% sichtbar, wenn gelockt. 100% wenn unlocked.
   const imageOpacity = animValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 1]
@@ -56,19 +58,24 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
   return (
     <Pressable onPress={handlePress}>
       <View style={styles.trophyItem}>
-        {/* Die äußere Box mit Scale-Animation bleibt! */}
-        <Animated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
-          <Animated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
+        <RNAnimated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
+          <RNAnimated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
-          <AnimatedImage source={icon} style={[styles.trophyImage, { opacity: imageOpacity }]} resizeMode="contain" />
+          <RNAnimated.View style={[styles.trophyImage, { opacity: imageOpacity }]}>
+            <Animated.Image
+              source={icon}
+              style={styles.trophyImage}
+              resizeMode="contain"
+              sharedTransitionTag={`trophy-image-${id}`}
+            />
+          </RNAnimated.View>
 
-          {/* Das kleine Schloss bleibt als Icon erhalten */}
           {(!unlocked || justUnlocked) && (
-            <Animated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-              <Icon name="lock" size={13} color="#FFFFFF" />
-            </Animated.View>
+            <RNAnimated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
+              <Icon name="lock" size={13} color={MyTheme.text} />
+            </RNAnimated.View>
           )}
-        </Animated.View>
+        </RNAnimated.View>
 
         <AppText
           animated
@@ -77,43 +84,44 @@ const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComple
           numberOfLines={2}
           style={{ color: textColor, textAlign: "center", fontSize: 12, marginTop: 4, minHeight: 34 }}
         >
-          {title}
+          {t(title)}
         </AppText>
       </View>
     </Pressable>
   );
 };
 
-const styles = StyleSheet.create({
-  trophyItem: {
-    alignItems: "center",
-    width: "100%"
-  },
-  trophyIconBox: {
-    width: "95%",
-    aspectRatio: 1,
-    borderRadius: Spacing.borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative"
-  },
-  trophyImage: {
-    width: "100%",
-    height: "100%"
-  },
-  lockOverlay: {
-    position: "absolute",
-    bottom: 0,
-    right: 5,
-    width: 15,
-    height: 15,
-    backgroundColor: "#1E1E1E",
-    borderRadius: Spacing.borderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.primary
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    trophyItem: {
+      alignItems: "center",
+      width: "100%"
+    },
+    trophyIconBox: {
+      width: "95%",
+      aspectRatio: 1,
+      borderRadius: Spacing.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+      position: "relative"
+    },
+    trophyImage: {
+      width: "100%",
+      height: "100%"
+    },
+    lockOverlay: {
+      position: "absolute",
+      bottom: 0,
+      right: 5,
+      width: 15,
+      height: 15,
+      backgroundColor: theme.background,
+      borderRadius: Spacing.borderRadius.full,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: theme.primary
+    }
+  });
 
 export default React.memo(TrophyCard);

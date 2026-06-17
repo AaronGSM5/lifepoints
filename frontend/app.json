@@ -5,11 +5,11 @@
     "version": "1.0.0",
     "scheme": "lifepoints",
     "orientation": "portrait",
-    "icon": "./public/assets/icon.png",
+    "icon": "./public/assets/appIcons/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./public/assets/splash-icon.png",
+      "image": "./public/assets/appIcons/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#0F1729"
     },
@@ -23,19 +23,31 @@
     "android": {
       "package": "com.lifepoints.app",
       "adaptiveIcon": {
-        "foregroundImage": "./public/assets/adaptive-icon-evenSmaller.png",
-        "backgroundImage": "./public/assets/adaptive-icon-background.png"
+        "foregroundImage": "./public/assets/appIcons/adaptive-icon-evenSmaller.png",
+        "backgroundImage": "./public/assets/appIcons/adaptive-icon-background.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
-      "favicon": "./public/assets/favicon.png"
+      "favicon": "./public/assets/appIcons/favicon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-dynamic-app-icon",
+        {
+          "default_icon": {
+            "image": "./public/assets/appIcons/icon.png"
+          },
+          "dark": {
+            "image": "./public/assets/appIcons/icon-dark.png"
+          }
+        }
+      ]
     ]
   }
 }

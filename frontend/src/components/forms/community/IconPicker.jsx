@@ -2,10 +2,15 @@ import React, { useRef, useState } from "react";
 import { View, StyleSheet, Pressable, Animated } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
   const heightAnim = useRef(new Animated.Value(62)).current;
@@ -40,9 +45,19 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
             <Pressable
               key={`${icon}-${index}`}
               onPress={() => onSelectIcon(icon)}
-              style={[styles.iconItem, selectedIcon === icon && styles.selectedIconItem]}
+              style={[
+                styles.iconItem,
+                selectedIcon === icon && {
+                  borderColor: MyTheme.primaryAccent,
+                  backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1)
+                }
+              ]}
             >
-              <MaterialIcons name={icon} size={28} color={selectedIcon === icon ? MyTheme.primaryAccent : "#fff"} />
+              <MaterialIcons
+                name={icon}
+                size={28}
+                color={selectedIcon === icon ? MyTheme.primaryAccent : MyTheme.muted}
+              />
             </Pressable>
           ))}
         </View>
@@ -52,7 +67,7 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
         <View style={styles.expandContainer}>
           <Pressable onPress={expand} style={styles.moreButton}>
             <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
-              see more
+              {t("see more")}
             </AppText>
           </Pressable>
         </View>
@@ -61,54 +76,52 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   );
 }
 
-const styles = StyleSheet.create({
-  label: {
-    marginBottom: 8,
-    opacity: 0.5,
-    letterSpacing: 1
-  },
-  iconGrid: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    gap: 12
-  },
-  iconItem: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    backgroundColor: MyTheme.glas,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "transparent"
-  },
-  selectedIconItem: {
-    borderColor: MyTheme.primaryAccent,
-    backgroundColor: "rgba(47, 196, 146, 0.1)"
-  },
-  animatedWrapper: {
-    overflow: "hidden",
-    width: "100%"
-  },
-  expandContainer: {
-    alignItems: "center",
-    marginTop: Spacing.sm
-  },
-  moreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
-    gap: 4,
-    paddingVertical: 4
-  },
-  measureView: {
-    position: "absolute",
-    opacity: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: -1
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    label: {
+      marginBottom: 8,
+      opacity: 0.5,
+      letterSpacing: 1,
+      color: theme.text
+    },
+    iconGrid: {
+      flexDirection: "row",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      gap: 12
+    },
+    iconItem: {
+      width: 50,
+      height: 50,
+      borderRadius: 12,
+      backgroundColor: theme.glas,
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "transparent"
+    },
+    animatedWrapper: {
+      overflow: "hidden",
+      width: "100%"
+    },
+    expandContainer: {
+      alignItems: "center",
+      marginTop: Spacing.sm
+    },
+    moreButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 2,
+      gap: 4,
+      paddingVertical: 4
+    },
+    measureView: {
+      position: "absolute",
+      opacity: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: -1
+    }
+  });

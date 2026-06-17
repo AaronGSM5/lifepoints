@@ -4,11 +4,17 @@ import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppBadge from "@/components/ui/AppBadge";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function LinkedServicesScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("settings");
   const [connections, setConnections] = useState({
     appleHealth: true,
     strava: true,
@@ -30,7 +36,6 @@ export default function LinkedServicesScreen() {
         ]
       );
     } else {
-      // Hier würde der OAuth Flow starten
       setConnections((prev) => ({ ...prev, [id]: true }));
     }
   };
@@ -38,8 +43,8 @@ export default function LinkedServicesScreen() {
   const ServiceItem = ({ id, name, description, icon, isConnected }) => (
     <View style={styles.serviceCard}>
       <View style={styles.cardMain}>
-        <View style={[styles.iconBox, { backgroundColor: isConnected ? "rgba(47, 196, 146, 0.1)" : "#f2f2f7" }]}>
-          <Icon name={icon} size={28} color={isConnected ? MyTheme.primaryAccent : MyTheme.primaryAccent} />
+        <View style={[styles.iconBox, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
+          <Icon name={icon} size={28} color={MyTheme.primaryAccent} />
         </View>
 
         <View style={styles.infoContainer}>
@@ -48,7 +53,7 @@ export default function LinkedServicesScreen() {
             {isConnected && (
               <AppBadge
                 variant="outline"
-                label={"AKTIV"}
+                label={t("AKTIVE")}
                 textStyle={{ color: MyTheme.primaryAccent, fontSize: 10 }}
                 style={{
                   paddingVertical: Spacing.xs - 2,
@@ -62,7 +67,7 @@ export default function LinkedServicesScreen() {
       </View>
 
       <AppButton
-        title={isConnected ? "Verwalten" : "Verbinden"}
+        title={isConnected ? t("Manage") : t("Connect")}
         variant={isConnected ? "secondary" : "primary"}
         size="md"
         onPress={() => handleToggleService(id, name)}
@@ -73,21 +78,19 @@ export default function LinkedServicesScreen() {
 
   return (
     <ScreenWrapper scrollable withPaddingTop={false}>
-      <View style={styles.header}>
-        <AppText type="h1">Verknüpfte Dienste</AppText>
-        <AppText style={styles.subtitle}>
-          Verbinde deine Lieblings-Apps, um LifePoints automatisch durch Aktivitäten zu sammeln.
-        </AppText>
-      </View>
+      <ScreenTitle
+        title={t("Linked Services")}
+        subtitle={t("Connect your favorite apps to automatically earn LifePoints through your activities.")}
+      />
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Fitness & Gesundheit
+          {t("Fitness & Health")}
         </AppText>
         <ServiceItem
           id="appleHealth"
           name="Apple Health"
-          description="Schritte, Schlaf und Herzfrequenz"
+          description={t("Steps, Sleep, and Heart Rate")}
           icon="heart"
           isConnected={connections.appleHealth}
         />
@@ -95,7 +98,7 @@ export default function LinkedServicesScreen() {
         <ServiceItem
           id="strava"
           name="Strava"
-          description="Lauf- und Radfahrdaten synchronisieren"
+          description={t("Sync running and cycling data")}
           icon="bicycle"
           isConnected={connections.strava}
         />
@@ -103,12 +106,12 @@ export default function LinkedServicesScreen() {
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Entertainment & Lifestyle
+          {t("Entertainment & Lifestyle")}
         </AppText>
         <ServiceItem
           id="spotify"
           name="Spotify"
-          description="Focus-Playlists für Aufgaben nutzen"
+          description={t("Use Focus Playlists for Tasks")}
           icon="spotify"
           isConnected={connections.spotify}
         />
@@ -117,68 +120,63 @@ export default function LinkedServicesScreen() {
       <View style={styles.privacyNote}>
         <Icon name="lock" size={16} color={MyTheme.muted} />
         <AppText type="caption" style={styles.privacyText}>
-          Deine Daten werden verschlüsselt übertragen. Du kannst den Zugriff jederzeit in den Einstellungen des
-          jeweiligen Dienstes widerrufen.
+          {t(
+            "Your data is transmitted in encrypted form. You can revoke access at any time in the settings for the respective service."
+          )}
         </AppText>
       </View>
     </ScreenWrapper>
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.lg
-  },
-  subtitle: {
-    marginTop: Spacing.xs,
-    color: MyTheme.muted
-  },
-  section: {
-    marginBottom: Spacing.md
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md
-  },
-  serviceCard: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    gap: Spacing.md
-  },
-  cardMain: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  iconBox: {
-    width: 54,
-    height: 54,
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  infoContainer: {
-    flex: 1
-  },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-    marginBottom: 2
-  },
-  privacyNote: {
-    flexDirection: "row",
-    backgroundColor: MyTheme.primary,
-    padding: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    gap: Spacing.sm,
-    marginBottom: Spacing.xl
-  },
-  privacyText: {
-    flex: 1,
-    color: MyTheme.muted,
-    lineHeight: 16
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    section: {
+      marginBottom: Spacing.md
+    },
+    sectionTitle: {
+      marginBottom: Spacing.md
+    },
+    serviceCard: {
+      backgroundColor: theme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: theme.secondary,
+      gap: Spacing.md
+    },
+    cardMain: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    iconBox: {
+      width: 54,
+      height: 54,
+      borderRadius: 14,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    infoContainer: {
+      flex: 1
+    },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
+      marginBottom: 2
+    },
+    privacyNote: {
+      flexDirection: "row",
+      backgroundColor: theme.primary,
+      padding: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      gap: Spacing.sm,
+      marginBottom: Spacing.xl
+    },
+    privacyText: {
+      flex: 1,
+      color: theme.muted,
+      lineHeight: 16
+    }
+  });

@@ -2,10 +2,12 @@ import { StyleSheet, View } from "react-native";
 import AppText from "../ui/AppText";
 import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import SectionHeader from "../ui/SectionHeader";
 
 const LpChart = () => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const lp = 2450;
   return (
     <View>
@@ -30,35 +32,36 @@ const LpChart = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  chartCard: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.lg,
-    minHeight: 200
-  },
-  chartContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "stretch",
-    justifyContent: "space-between",
-    marginTop: Spacing.md
-  },
-  chartColumnWrapper: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end"
-  },
-  chartBar: {
-    width: "70%",
-    backgroundColor: MyTheme.primaryAccent,
-    borderTopLeftRadius: Spacing.borderRadius.sm,
-    borderTopRightRadius: Spacing.borderRadius.sm
-  },
-  chartDay: {
-    fontSize: 9,
-    marginTop: Spacing.sm
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    chartCard: {
+      backgroundColor: theme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.lg,
+      minHeight: 200
+    },
+    chartContainer: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "stretch",
+      justifyContent: "space-between",
+      marginTop: Spacing.md
+    },
+    chartColumnWrapper: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "flex-end"
+    },
+    chartBar: {
+      width: "70%",
+      backgroundColor: theme.primaryAccent,
+      borderTopLeftRadius: Spacing.borderRadius.sm,
+      borderTopRightRadius: Spacing.borderRadius.sm
+    },
+    chartDay: {
+      fontSize: 9,
+      marginTop: Spacing.sm
+    }
+  });
 
 export default LpChart;

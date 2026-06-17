@@ -2,8 +2,10 @@ import React from "react";
 import { StyleSheet, View, Image, Pressable } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
 
 const EventHero = ({ imageSource, isLoading, onPress }) => {
+  const isDarkMode = useStore((state) => state.isDarkMode);
   return (
     <Pressable onPress={onPress}>
       <View style={styles.heroSection}>
@@ -11,7 +13,7 @@ const EventHero = ({ imageSource, isLoading, onPress }) => {
         {isLoading && (
           <View style={StyleSheet.absoluteFillObject}>
             <Skeleton
-              colorMode="dark"
+              colorMode={isDarkMode ? "dark" : "light"}
               width="100%"
               height="100%"
               radius={Spacing.borderRadius.lg}

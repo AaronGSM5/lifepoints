@@ -5,18 +5,22 @@ import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "../ui/BaseCard";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>
-        <Skeleton colorMode="dark" width={44} height={44} radius={Spacing.borderRadius.md} />
+        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={44} height={44} radius={Spacing.borderRadius.md} />
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Skeleton colorMode="dark" width={100} height={16} />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={100} height={16} />
           <View style={{ height: Spacing.xs }} />
-          <Skeleton colorMode="dark" width={60} height={12} />
+          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={60} height={12} />
         </View>
       </BaseCard>
     );
@@ -69,52 +73,52 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  communityCard: {
-    width: 160,
-    height: 140,
-    marginRight: Spacing.md,
-    padding: Spacing.md,
-    justifyContent: "space-between"
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start"
-  },
-  iconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: Spacing.borderRadius.md,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative"
-  },
-  notificationDot: {
-    position: "absolute",
-    top: -2,
-    right: -2,
-    width: 12,
-    height: 12,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.warning,
-    borderWidth: 2,
-    borderColor: MyTheme.primary
-  },
-  bottomContent: {
-    gap: 4
-  },
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4
-  },
-  onlineIndicator: {
-    width: 6,
-    height: 6,
-    borderRadius: Spacing.borderRadius.full,
-    backgroundColor: MyTheme.primaryAccent
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    communityCard: {
+      width: 160,
+      height: 140,
+      padding: Spacing.md,
+      justifyContent: "space-between"
+    },
+    headerRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start"
+    },
+    iconBox: {
+      width: 44,
+      height: 44,
+      borderRadius: Spacing.borderRadius.md,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative"
+    },
+    notificationDot: {
+      position: "absolute",
+      top: -2,
+      right: -2,
+      width: 12,
+      height: 12,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.warning,
+      borderWidth: 2,
+      borderColor: theme.primary
+    },
+    bottomContent: {
+      gap: 4
+    },
+    statusRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4
+    },
+    onlineIndicator: {
+      width: 6,
+      height: 6,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.primaryAccent
+    }
+  });
 
 export default MyCommunityCard;
