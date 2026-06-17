@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "../ui/BaseCard";
 import { tasksCatalog } from "@/constants/TasksCatalog";
+import { useTranslation } from "react-i18next";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -14,6 +15,7 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
+  const { t } = useTranslation("tasks");
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -26,8 +28,7 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
     toggleExpand();
   };
 
-  const selectedTask = tasksCatalog.find((t) => t.id === selectedTaskId);
-
+  const selectedTask = tasksCatalog.find((entry) => entry.id === selectedTaskId);
   return (
     <BaseCard padding={0}>
       <TouchableOpacity style={styles.header} onPress={toggleExpand} activeOpacity={0.7}>
@@ -42,9 +43,9 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
             />
           </View>
           <View>
-            <AppText type="caption">Zugehörige Aufgabe</AppText>
+            <AppText type="caption">{t("Related task")}</AppText>
             <AppText bold style={{ fontSize: 16, marginTop: 2 }}>
-              {selectedTask ? selectedTask.title : "Aufgabe auswählen"}
+              {selectedTask ? t(selectedTask.title) : t("Select task")}
             </AppText>
           </View>
         </View>
@@ -67,7 +68,7 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
                   <View style={styles.taskItemLeft}>
                     <Icon name={task.icon} size={20} color={isSelected ? MyTheme.primaryAccent : MyTheme.text} />
                     <AppText bold style={[styles.taskTitle, isSelected && { color: MyTheme.primaryAccent }]}>
-                      {task.title}
+                      {t(task.title)}
                     </AppText>
                   </View>
                   {isSelected && <Icon name="checkmark" size={20} color={MyTheme.primaryAccent} />}

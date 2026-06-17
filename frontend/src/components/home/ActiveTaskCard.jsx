@@ -9,10 +9,12 @@ import { Icon } from "@/components/icons/Icon";
 import BaseCard from "@/components/ui/BaseCard";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
+import { useTranslation } from "react-i18next";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
+  const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
@@ -28,7 +30,7 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <AppText bold type="title">
-            {title}
+            {t(title)}
           </AppText>
         </View>
       </View>

@@ -23,11 +23,13 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import TaskSelector from "@/components/post/TaskSelector";
 import useStore from "@/store/useStore";
 import AppButton from "@/components/ui/AppButton";
+import { useTranslation } from "react-i18next";
 
 export default function CreatePost() {
   const router = useRouter();
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
+  const { t } = useTranslation("post");
   const [isPublic, setIsPublic] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [caption, setCaption] = useState("");
@@ -57,7 +59,7 @@ export default function CreatePost() {
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert("Wir brauchen Zugriff auf deine Galerie, damit du Bilder posten kannst!");
+      alert(t("We need access to your gallery so you can post pictures!"));
       return;
     }
 
@@ -86,7 +88,7 @@ export default function CreatePost() {
             <Icon name="back" color={MyTheme.text} />
           </TouchableOpacity>
           <AppText style={styles.headerTitle} bold>
-            Beitrag erstellen
+            {t("Create Post")}
           </AppText>
           <TouchableOpacity
             onPress={handlePost}
@@ -94,7 +96,7 @@ export default function CreatePost() {
             style={[styles.postButton, !isPostButtonEnabled && styles.postButtonDisabled]}
           >
             <AppText bold style={{ color: isPostButtonEnabled ? MyTheme.primaryAccent : MyTheme.muted }}>
-              Posten
+              {t("Post")}
             </AppText>
           </TouchableOpacity>
         </View>
@@ -102,9 +104,9 @@ export default function CreatePost() {
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <BaseCard style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <View>
-              <AppText bold>Öffentlich teilen</AppText>
+              <AppText bold>{t("Share publicly")}</AppText>
               <AppText type="caption" style={{ color: MyTheme.muted, marginTop: Spacing.xs }}>
-                {isPublic ? "Für alle Nutzer sichtbar" : "Nur als Fortschritt für deine Freunde"}
+                {isPublic ? t("Visible to all users") : t("Only as progress for your friends")}
               </AppText>
             </View>
             <Switch
@@ -116,7 +118,7 @@ export default function CreatePost() {
           </BaseCard>
 
           <View>
-            <SectionHeader title={"Task auswählen"} />
+            <SectionHeader title={t("Select task")} />
             {availableTaskIds && availableTaskIds.length !== 0 ? (
               <TaskSelector
                 taskIds={availableTaskIds}
@@ -125,16 +127,16 @@ export default function CreatePost() {
               />
             ) : (
               <BaseCard style={{ flexDirection: "column", alignItems: "center", gap: Spacing.md }}>
-                <AppText type="title">Keine verfügbaren Tasks</AppText>
-                <AppButton title={"Task erledigen"} variant="outline" size="md" onPress={() => router.push("/tasks")} />
+                <AppText type="title">{t("No available tasks")}</AppText>
+                <AppButton title={t("Do a task")} variant="outline" size="md" onPress={() => router.push("/tasks")} />
               </BaseCard>
             )}
           </View>
 
           <View>
-            <SectionHeader title={"Beschreibung"} />
+            <SectionHeader title={t("Description")} />
             <AppInput
-              placeholder={"Was hast du heute erreicht?"}
+              placeholder={t("What did you achieve today?")}
               multiline
               bottomMargin={false}
               value={caption}
@@ -143,7 +145,7 @@ export default function CreatePost() {
           </View>
 
           <View>
-            <SectionHeader title={"Bild hochladen"} />
+            <SectionHeader title={t("Upload image")} />
             <TouchableOpacity
               style={[styles.imageContainer, !image && styles.imagePlaceholder]}
               onPress={pickImage}
@@ -155,7 +157,7 @@ export default function CreatePost() {
                 <View style={styles.placeholderContent}>
                   <Icon name="camera" size={32} color={MyTheme.muted} />
                   <AppText style={{ color: MyTheme.muted, marginTop: Spacing.sm }}>
-                    {isPublic ? "Bild hochladen (Pflicht)" : "Bild hochladen (Optional)"}
+                    {isPublic ? t("Upload image (Required)") : t("Upload image (Optional)")}
                   </AppText>
                 </View>
               )}

@@ -74,5 +74,8 @@
   "reps": "Wiederholungen",
   "accounts": "Accounts",
   "apps": "Apps",
-  "eingeben...": "eingeben..."
+  "eingeben...": "eingeben...",
+  // TaskSelector
+  "Related task": "Zugehörige Aufgabe",
+  "Select task": "Aufgabe auswählen"
 }

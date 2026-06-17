@@ -74,5 +74,8 @@
   "reps": "reps",
   "accounts": "accounts",
   "apps": "apps",
-  "eingeben...": ""
+  "eingeben...": "",
+  // TaskSelector
+  "Related task": "Related task",
+  "Select task": "Select task"
 }
