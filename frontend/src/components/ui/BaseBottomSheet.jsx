@@ -34,8 +34,10 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
 
   const panResponder = useRef(
     PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        return gestureState.dy > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
+        return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
       },
 
       onPanResponderMove: (_, gestureState) => {
@@ -99,7 +101,11 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.overlay}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.overlay}
+        keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
+      >
         <AnimatedPressable
           onPress={() => {
             Keyboard.dismiss();
@@ -122,6 +128,13 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
             </View>
           </View>
 
+          {/* <ScrollView 
+    style={styles.content} 
+    contentContainerStyle={{ paddingBottom: 40 }} // Extra Puffer am Ende
+    keyboardShouldPersistTaps="handled" // WICHTIG: Damit Klicks auf Buttons trotz offener Tastatur registriert werden
+  >
+    {children}
+  </ScrollView> */}
           <View style={styles.content}>{children}</View>
         </Animated.View>
       </KeyboardAvoidingView>
@@ -149,7 +162,9 @@ const getStyles = (theme) =>
       flex: 1
     },
     panResponderArea: {
-      backgroundColor: "transparent"
+      backgroundColor: theme.background,
+      borderTopLeftRadius: Spacing.borderRadius.lg,
+      borderTopRightRadius: Spacing.borderRadius.lg
     },
     dragHandleContainer: {
       alignItems: "center",
