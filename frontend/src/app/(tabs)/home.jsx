@@ -20,15 +20,14 @@ import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 import { globalScrollY } from "@/utils/scrollState";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
   const MyTheme = useAppTheme();
-  const insets = useSafeAreaInsets();
-  const toolbarHeight = 56 + insets.top;
+  const toolbarHeight = useToolbarPadding();
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);

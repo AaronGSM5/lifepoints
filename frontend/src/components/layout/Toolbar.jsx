@@ -8,11 +8,12 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import NotificationIcon from "../ui/NotificationsIcon";
 import { globalScrollY } from "@/utils/scrollState";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const toolbarHeight = 56 + insets.top;
+  const toolbarHeight = useToolbarPadding();
   const LP = useStore((state) => state.profile.profileLp);
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
