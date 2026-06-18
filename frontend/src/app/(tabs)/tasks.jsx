@@ -5,8 +5,8 @@ import TaskItem from "@/components/tasks/TaskItem";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, { useMemo, useRef, useState } from "react";
+import { StyleSheet, View, ScrollView, Animated } from "react-native";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -25,6 +25,7 @@ const TasksScreen = () => {
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [taskToTrack, setTaskToTrack] = useState(null);
   const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
   const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
   const isDarkMode = useStore((state) => state.isDarkMode);
@@ -152,8 +153,9 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <AnimatedScreenList
+        scrollY={scrollY}
         data={listData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
