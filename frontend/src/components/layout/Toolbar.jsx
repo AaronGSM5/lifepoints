@@ -8,10 +8,9 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import NotificationIcon from "../ui/NotificationsIcon";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
-import { useEffect } from "react";
-import { getScrollState } from "@/utils/scrollState";
+import React, { memo, useMemo } from "react";
 
-export default function Toolbar() {
+export default memo(function Toolbar({ scrollY }) {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
   const toolbarHeight = useToolbarPadding();
@@ -20,13 +19,24 @@ export default function Toolbar() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
 
-  const { scrollY, translateY } = getScrollState(pathname, toolbarHeight);
+  const fallbackScrollY = useMemo(() => new Animated.Value(0), []);
+  const activeScrollY = scrollY || fallbackScrollY;
 
-  useEffect(() => {
-    if (scrollY && typeof scrollY.__getValue === "function") {
-      scrollY.setValue(scrollY.__getValue());
-    }
-  }, [pathname, scrollY]);
+  const translateY = useMemo(() => {
+    const safeScrollY = activeScrollY.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+      extrapolateLeft: "clamp"
+    });
+
+    const clamped = Animated.diffClamp(safeScrollY, 0, toolbarHeight);
+
+    return clamped.interpolate({
+      inputRange: [0, toolbarHeight],
+      outputRange: [0, -toolbarHeight],
+      extrapolate: "clamp"
+    });
+  }, [activeScrollY, toolbarHeight]);
 
   const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
@@ -108,7 +118,7 @@ export default function Toolbar() {
       </View>
     </Animated.View>
   );
-}
+});
 
 const getStyles = (theme) => {
   return StyleSheet.create({
