@@ -1,5 +1,4 @@
-// components/layout/AnimatedScreenList.js
-import React from "react";
+import React, { useRef } from "react";
 import { Animated } from "react-native";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
@@ -10,7 +9,32 @@ export default function AnimatedScreenList({ contentContainerStyle, onScroll, ..
   const topPadding = useToolbarPadding();
   const bottomPadding = useFloatingNavbarPadding();
   const pathname = usePathname();
-  const { scrollY } = getScrollState(pathname, topPadding);
+  const { scrollY, getClampedValue } = getScrollState(pathname, topPadding);
+
+  const flatListRef = useRef(null);
+
+  const handleSnap = (event) => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const clamped = getClampedValue();
+
+    if (clamped > 0 && clamped < topPadding) {
+      const isMoreThanHalf = clamped > topPadding / 2;
+      let snapOffset = currentOffset;
+
+      if (isMoreThanHalf) {
+        snapOffset = currentOffset + (topPadding - clamped);
+      } else {
+        snapOffset = currentOffset - clamped;
+      }
+
+      if (snapOffset >= 0 && flatListRef.current) {
+        flatListRef.current.scrollToOffset({
+          offset: snapOffset,
+          animated: true
+        });
+      }
+    }
+  };
 
   return (
     <Animated.FlatList
@@ -28,6 +52,13 @@ export default function AnimatedScreenList({ contentContainerStyle, onScroll, ..
         useNativeDriver: true,
         listener: onScroll
       })}
+      onMomentumScrollEnd={(e) => handleSnap(e)}
+      onScrollEndDrag={(e) => {
+        const velocity = e.nativeEvent.velocity?.y || 0;
+        if (Math.abs(velocity) < 0.2) {
+          handleSnap(e);
+        }
+      }}
     />
   );
 }
