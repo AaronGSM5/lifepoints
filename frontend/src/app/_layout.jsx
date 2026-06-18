@@ -66,6 +66,7 @@ export default function RootLayout() {
           screenOptions={{
             header: renderHeader,
             headerShown: true,
+            headerTransparent: true,
             gestureEnabled: true,
             gestureDirection: "horizontal",
             animation: Platform.OS === "ios" ? "default" : "slide_from_right"

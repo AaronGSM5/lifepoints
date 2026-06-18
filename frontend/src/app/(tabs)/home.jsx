@@ -1,4 +1,4 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Animated } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
@@ -19,12 +19,16 @@ import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
+import { globalScrollY } from "@/utils/scrollState";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
   const MyTheme = useAppTheme();
+  const insets = useSafeAreaInsets();
+  const toolbarHeight = 56 + insets.top;
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);
@@ -137,7 +141,7 @@ export default function HomeScreen() {
 
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
-      <FlatList
+      <Animated.FlatList
         data={isLoading ? SKELETON_ITEMS : displayedItems}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : String(item.id))}
         ListHeaderComponent={renderHeader}
@@ -147,9 +151,14 @@ export default function HomeScreen() {
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
+        contentContainerStyle={{
+          paddingBottom: bottomPadding,
+          paddingTop: toolbarHeight
+        }}
         onRefresh={refreshHomeData}
         refreshing={isRefreshing}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: globalScrollY } } }], { useNativeDriver: true })}
+        scrollEventThrottle={16}
         renderItem={({ item }) => {
           const isItemVisible = item?.id ? visibleItemIds.includes(String(item.id)) : false;
           return (

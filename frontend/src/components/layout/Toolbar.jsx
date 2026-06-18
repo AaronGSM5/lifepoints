@@ -1,4 +1,4 @@
-import { View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
+import { Animated, View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router, usePathname } from "expo-router";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -7,10 +7,12 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import NotificationIcon from "../ui/NotificationsIcon";
+import { globalScrollY } from "@/utils/scrollState";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
+  const toolbarHeight = 56 + insets.top;
   const LP = useStore((state) => state.profile.profileLp);
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
@@ -28,15 +30,35 @@ export default function Toolbar() {
     resetProfile();
   };
 
+  const safeScrollY = globalScrollY.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+    extrapolateLeft: "clamp"
+  });
+
+  const clampedScrollY = Animated.diffClamp(safeScrollY, 0, toolbarHeight);
+
+  const translateY = clampedScrollY.interpolate({
+    inputRange: [0, toolbarHeight],
+    outputRange: [0, -toolbarHeight],
+    extrapolate: "clamp"
+  });
+
   return (
-    <View
+    <Animated.View
       style={[
         styles.container,
         {
-          height: 56 + insets.top,
+          height: toolbarHeight,
           paddingTop: insets.top,
           paddingLeft: Math.max(Spacing.md, insets.left),
-          paddingRight: Math.max(Spacing.md, insets.right)
+          paddingRight: Math.max(Spacing.md, insets.right),
+          transform: [{ translateY: translateY }],
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100
         }
       ]}
     >
@@ -88,7 +110,7 @@ export default function Toolbar() {
           <View style={{ width: 40 }} />
         )}
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
