@@ -28,7 +28,9 @@ const TaskItem = ({
   isLoading,
   requiresInput,
   isExpanded,
-  onToggleExpand
+  onToggleExpand,
+  isFavorite = false,
+  onToggleFavorite
 }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
@@ -114,12 +116,16 @@ const TaskItem = ({
               value={inputValue}
               onChangeText={setInputValue}
               keyboardType="numeric"
+              bottomMargin={false}
             />
           )}
 
           <View style={styles.actionRow}>
             <AppButton title={t("View details")} variant="ghost" onPress={onNavigate} size="sm" />
             <View style={styles.trackingRow}>
+              <TouchableOpacity hitSlop={15} onPress={onToggleFavorite} style={styles.heartButton}>
+                <Icon name={"heart"} outline={!isFavorite} color={isFavorite ? "red" : MyTheme.muted} size={24} />
+              </TouchableOpacity>
               <AppButton
                 variant="ghost"
                 icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
@@ -177,19 +183,24 @@ const getStyles = (theme) =>
       marginTop: Spacing.md,
       paddingTop: Spacing.md,
       borderTopWidth: 1,
-      borderTopColor: theme.secondary
+      borderTopColor: theme.separator,
+      gap: Spacing.md
     },
     actionRow: {
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center",
-      marginTop: Spacing.sm
+      alignItems: "center"
     },
     trackingRow: {
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
       gap: Spacing.sm
+    },
+    heartButton: {
+      padding: Spacing.xs,
+      justifyContent: "center",
+      alignItems: "center"
     }
   });
 
