@@ -147,7 +147,7 @@ export default function FeedItem({
                 <AppText bold style={styles.username}>
                   {username}
                 </AppText>
-                <StatusBadge id={badge} size={18} />
+                <StatusBadge id={badge} />
               </View>
             ) : (
               <AppText bold style={styles.username}>
