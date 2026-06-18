@@ -11,7 +11,6 @@ const simulateFetch = (dataArray, page, pageSize) => {
     setTimeout(() => {
       const startIndex = (page - 1) * pageSize;
       const paginatedData = dataArray.slice(startIndex, startIndex + pageSize);
-      console.log(`Mock API: Geladen Seite ${page} (Größe ${pageSize}), ${paginatedData.length} Elemente`);
       resolve(paginatedData);
     }, 1500);
   });
@@ -33,8 +32,6 @@ export const useCommunities = () => {
   }, []);
 
   const fetchCommunitiesForCategory = useCallback(async (categoryKey, page) => {
-    console.log(`Hook: Lade Seite ${page} für horizontale Kategorie: ${categoryKey}`);
-
     let dataToPaginate = [];
     if (categoryKey === "recommended_you") {
       dataToPaginate = recommendedCommunities;
@@ -47,8 +44,6 @@ export const useCommunities = () => {
   }, []);
 
   const fetchMoreSections = useCallback(async (page) => {
-    console.log(`Hook: Lade neue vertikale Sektionen, Seite ${page}`);
-
     return new Promise((resolve) => {
       setTimeout(async () => {
         const newSectionsWithData = [];

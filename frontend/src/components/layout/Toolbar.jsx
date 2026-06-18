@@ -7,8 +7,9 @@ import { Spacing } from "@/constants/Spacing";
 import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import NotificationIcon from "../ui/NotificationsIcon";
-import { globalScrollY } from "@/utils/scrollState";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import { useMemo } from "react";
+import { getScrollState } from "@/utils/scrollState";
 
 export default function Toolbar() {
   const insets = useSafeAreaInsets();
@@ -18,6 +19,8 @@ export default function Toolbar() {
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
+
+  const { translateY } = getScrollState(pathname, toolbarHeight);
 
   const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
@@ -30,20 +33,6 @@ export default function Toolbar() {
   const handleResetProfile = () => {
     resetProfile();
   };
-
-  const safeScrollY = globalScrollY.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
-    extrapolateLeft: "clamp"
-  });
-
-  const clampedScrollY = Animated.diffClamp(safeScrollY, 0, toolbarHeight);
-
-  const translateY = clampedScrollY.interpolate({
-    inputRange: [0, toolbarHeight],
-    outputRange: [0, -toolbarHeight],
-    extrapolate: "clamp"
-  });
 
   return (
     <Animated.View

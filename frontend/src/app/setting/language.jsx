@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 
 export default function LanguageScreen() {
   const MyTheme = useAppTheme();
@@ -16,7 +17,7 @@ export default function LanguageScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
+    <ScreenWrapper>
       <ScreenTitle
         title={t("Language & Region")}
         subtitle={t("Select the language in which you want LifePoints to be displayed.")}
@@ -53,16 +54,12 @@ export default function LanguageScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const getStyles = () =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 24
-    },
     cardContainer: {
       flexDirection: "row",
       justifyContent: "space-between",

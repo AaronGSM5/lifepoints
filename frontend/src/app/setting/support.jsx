@@ -43,7 +43,7 @@ export default function SupportScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable withPaddingTop={false}>
+    <ScreenWrapper scrollable>
       <View style={styles.header}>
         <AppText type="h1">{t("How can we help?")}</AppText>
         <AppText style={styles.subtitle}>{t("Search our FAQs or contact us directly.")}</AppText>

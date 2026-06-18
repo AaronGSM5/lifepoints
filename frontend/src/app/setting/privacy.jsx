@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 export default function PrivacyScreen() {
   const { t } = useTranslation("settings");
   return (
-    <ScreenWrapper withPaddingTop={false}>
+    <ScreenWrapper>
       <View style={{ alignItems: "center", justifyContent: "center", gap: 10 }}>
         <Text style={styles.emoji}>🚧</Text>
         <AppText type="title">Privacy Work in Progress</AppText>

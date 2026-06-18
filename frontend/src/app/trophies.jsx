@@ -24,7 +24,7 @@ export default function TrophiesScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingTop={false}>
+    <ScreenWrapper scrollable={false}>
       <View style={styles.container}>
         <FlatList
           data={trophiesCatalog}

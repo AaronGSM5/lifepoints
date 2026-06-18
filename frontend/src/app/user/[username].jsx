@@ -31,7 +31,7 @@ export default function PublicProfileScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable withPaddingTop={false}>
+    <ScreenWrapper scrollable>
       <ProfileHeader
         skeletonProps={skeletonProps}
         isLoading={isLoading}

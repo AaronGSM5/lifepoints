@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");
   return (
-    <ScreenWrapper scrollable={false} withPaddingTop={false}>
+    <ScreenWrapper scrollable={false}>
       <ScreenTitle title={t("Announcements")} />
 
       <FlatList
