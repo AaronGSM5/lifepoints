@@ -34,7 +34,6 @@ export default function CreatePost() {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState(null);
-  const activeTaskIds = useStore((state) => state.activeTaskIds);
   const activities = useStore((state) => state.activities);
 
   const oneDayInMs = 24 * 60 * 60 * 1000;
@@ -50,7 +49,7 @@ export default function CreatePost() {
       return entry.taskId;
     });
 
-  const availableTaskIds = [...new Set([...activeTaskIds, ...todayActivities])];
+  const availableTaskIds = [...new Set([...todayActivities])];
 
   const isPostButtonEnabled = isPublic
     ? image !== null && caption.trim().length > 0 && selectedTaskId !== null

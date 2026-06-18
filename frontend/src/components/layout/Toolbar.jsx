@@ -8,7 +8,7 @@ import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
 import NotificationIcon from "../ui/NotificationsIcon";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { getScrollState } from "@/utils/scrollState";
 
 export default function Toolbar() {
@@ -20,7 +20,13 @@ export default function Toolbar() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
 
-  const { translateY } = getScrollState(pathname, toolbarHeight);
+  const { scrollY, translateY } = getScrollState(pathname, toolbarHeight);
+
+  useEffect(() => {
+    if (scrollY && typeof scrollY.__getValue === "function") {
+      scrollY.setValue(scrollY.__getValue());
+    }
+  }, [pathname, scrollY]);
 
   const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
