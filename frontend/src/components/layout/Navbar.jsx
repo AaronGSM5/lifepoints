@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { LinearGradient } from "expo-linear-gradient";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
@@ -70,6 +71,35 @@ export default function Navbar({ state, descriptors, navigation }) {
     >
       <BlurView intensity={80} tint={isDarkMode ? "systemChromeMaterialDark" : "light"} style={styles.blurBackground} />
 
+      <LinearGradient
+        colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)", "rgba(255,255,255,0.05)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.gradientOverlay}
+      />
+
+      <LinearGradient
+        colors={["rgba(255,255,255,0.05)", "transparent", "transparent", "rgba(0,0,0,0.08)"]}
+        locations={[0, 0.1, 0.9, 1]}
+        style={styles.innerVignette}
+      />
+
+      <LinearGradient
+        colors={["rgba(0,0,0,0.1)", "transparent"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.sideShadowLeft}
+      />
+
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.1)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.sideShadowRight}
+      />
+
+      <View style={styles.borderOverlay} />
+
       {/* Button Wrapper */}
       <View style={styles.buttonContainer}>
         {orderedRoutes.map((route) => {
@@ -132,5 +162,41 @@ const getStyles = (isDarkMode) =>
       width: 8,
       height: 8,
       borderRadius: Spacing.borderRadius.full
+    },
+    innerVignette: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 35
+    },
+    borderOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 35,
+      borderWidth: 1,
+      borderTopColor: "rgba(255, 255, 255, 0.1)",
+      borderLeftColor: "rgba(255, 255, 255, 0.075)",
+      borderRightColor: "rgba(255, 255, 255, 0.075)",
+      borderBottomColor: "rgba(255, 255, 255, 0.04)"
+    },
+    gradientOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 35,
+      opacity: 0.5
+    },
+    sideShadowLeft: {
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
+      width: 30,
+      borderTopLeftRadius: 35,
+      borderBottomLeftRadius: 35
+    },
+    sideShadowRight: {
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      right: 0,
+      width: 30,
+      borderTopRightRadius: 35,
+      borderBottomRightRadius: 35
     }
   });
