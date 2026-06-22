@@ -7,6 +7,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
 import ColorThemePicker from "@/components/settings/ColorThemePicker";
 import AppIconPicker from "@/components/settings/AppIconPicker";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 
 export default function AppearanceScreen() {
   const MyTheme = useAppTheme();
@@ -16,7 +17,7 @@ export default function AppearanceScreen() {
   const { t } = useTranslation("settings");
 
   return (
-    <View style={[styles.container, { backgroundColor: MyTheme.background }]}>
+    <ScreenWrapper scrollable>
       <ScreenTitle title={t("Appearance")} subtitle={t("Customize the app's design to suit your preferences.")} />
 
       <View style={styles.cardContainer}>
@@ -53,16 +54,12 @@ export default function AppearanceScreen() {
 
       <ColorThemePicker />
       <AppIconPicker />
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const getStyles = () =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 24
-    },
     cardContainer: {
       flexDirection: "row",
       justifyContent: "space-between",

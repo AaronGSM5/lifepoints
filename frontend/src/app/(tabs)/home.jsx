@@ -1,5 +1,5 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import { View, ActivityIndicator } from "react-native";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import FeedItem from "@/components/home/FeedItem";
@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -34,7 +35,6 @@ export default function HomeScreen() {
   const [isBatchLoading, setIsBatchLoading] = useState(false);
   const [visibleItemIds, setVisibleItemIds] = useState([]);
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 70 }).current;
-  const bottomPadding = useFloatingNavbarPadding();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
   const completeTask = useStore((state) => state.completeTask);
@@ -137,7 +137,7 @@ export default function HomeScreen() {
 
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
-      <FlatList
+      <AnimatedScreenList
         data={isLoading ? SKELETON_ITEMS : displayedItems}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : String(item.id))}
         ListHeaderComponent={renderHeader}
@@ -146,8 +146,6 @@ export default function HomeScreen() {
         viewabilityConfig={viewConfig}
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={refreshHomeData}
         refreshing={isRefreshing}
         renderItem={({ item }) => {

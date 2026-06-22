@@ -5,7 +5,6 @@ import AppText from "@/components/ui/AppText";
 import { settingsSections } from "@/constants/SettingsConfig";
 import { useRouter } from "expo-router";
 import BaseCard from "@/components/ui/BaseCard";
-import ScreenTitle from "@/components/ui/ScreenTitle";
 import SettingsRow from "@/components/settings/SettingsRow";
 import { useTranslation } from "react-i18next";
 
@@ -37,9 +36,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable withPaddingTop={false}>
-      <ScreenTitle title={t("Settings")} />
-
+    <ScreenWrapper scrollable>
       {settingsSections.map((cat) => (
         <View key={cat.title} style={styles.section}>
           <AppText type="caption" style={styles.sectionHeader}>

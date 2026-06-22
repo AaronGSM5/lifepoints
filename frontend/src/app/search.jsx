@@ -33,7 +33,7 @@ export default function SearchScreen() {
   }, [debouncedQuery]);
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingTop={false}>
+    <ScreenWrapper scrollable={false}>
       <View style={styles.inputContainer}>
         <AppInput
           autoFocus={true}

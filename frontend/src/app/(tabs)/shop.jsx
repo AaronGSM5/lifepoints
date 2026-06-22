@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import CategoryButtons from "@/components/ui/CategoryButtons";
@@ -13,6 +13,7 @@ import { useShop } from "@/hooks/useShop";
 import EmptyState from "@/components/shop/EmptyState";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -21,7 +22,6 @@ export default function ShopScreen() {
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("shop");
   const router = useRouter();
-  const bottomPadding = useFloatingNavbarPadding();
   const {
     rewards,
     activeCat,
@@ -92,12 +92,10 @@ export default function ShopScreen() {
 
   return (
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
-      <FlatList
+      <AnimatedScreenList
         data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
         columnWrapperStyle={[styles.rowGap, styles.paddedContent]}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={!isLoading ? renderEmptyState : null}

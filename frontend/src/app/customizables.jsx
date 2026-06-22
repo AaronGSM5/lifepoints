@@ -58,7 +58,7 @@ export default function CustomizablesScreen() {
   ];
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingTop={false}>
+    <ScreenWrapper scrollable={false}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

@@ -3,6 +3,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 export const useFloatingNavbarPadding = () => {
   const insets = useSafeAreaInsets();
@@ -26,10 +27,11 @@ export default function ScreenWrapper({
   const styles = getStyles(MyTheme);
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
+  const toolbarTopPadding = useToolbarPadding();
   const contentStyles = [
     {
       paddingHorizontal: withPaddingSides ? Spacing.md : 0,
-      paddingTop: withOffset ? insets.top + Spacing.md : withPaddingTop ? Spacing.md : insets.top,
+      paddingTop: withPaddingTop ? toolbarTopPadding + (withOffset ? Spacing.md : 0) : insets.top,
       paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
     },
     style

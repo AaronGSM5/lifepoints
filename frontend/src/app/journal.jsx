@@ -75,7 +75,7 @@ const JournalPage = () => {
   );
 
   return (
-    <ScreenWrapper style={styles.wrapper} withPaddingBottom={false} withPaddingTop={false}>
+    <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>
       <ScreenTitle title={t("My Impact Journal")} />
       <SectionList
         sections={groupedActivities}

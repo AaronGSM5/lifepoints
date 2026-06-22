@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator } from "react-native";
 import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
@@ -13,6 +13,7 @@ import CreateCommunityForm from "@/components/forms/community/CreateCommunityFor
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -22,7 +23,6 @@ export default function CommunitiesScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
-  const bottomPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   const [dynamicSections, setDynamicSections] = useState([]);
@@ -39,7 +39,6 @@ export default function CommunitiesScreen() {
 
     setIsMoreSectionsLoading(true);
     const nextPage = verticalPage + 1;
-    console.log(`Screen: Lade weitere vertikale Sektionen, Seite ${nextPage}`);
 
     try {
       const newSections = await fetchMoreSections(nextPage);
@@ -91,7 +90,7 @@ export default function CommunitiesScreen() {
 
         case "search":
           return (
-            <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
+            <View style={styles.paddedContent}>
               <Pressable onPress={() => router.push("/search")}>
                 <View pointerEvents="none">
                   <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
@@ -190,14 +189,11 @@ export default function CommunitiesScreen() {
 
   return (
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
-      <FlatList
+      <AnimatedScreenList
         data={listData}
         extraData={[myCommunities, isLoading]}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        stickyHeaderIndices={[1]}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
         onEndReached={loadMoreSections}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderMainFooter}
@@ -213,10 +209,6 @@ export default function CommunitiesScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
-    stickySearchWrapper: {
-      paddingTop: Spacing.sm,
-      zIndex: 10
-    },
     myCommunitiesSection: {
       marginTop: Spacing.md,
       marginBottom: Spacing.md

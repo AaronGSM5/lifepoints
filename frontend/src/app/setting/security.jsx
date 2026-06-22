@@ -35,7 +35,7 @@ export default function SecurityScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable withPaddingTop={false}>
+    <ScreenWrapper scrollable>
       <ScreenTitle title={t("Security & Login")} />
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>

@@ -24,7 +24,7 @@ export default function NotificationsScreen() {
   };
 
   return (
-    <ScreenWrapper withPaddingTop={false}>
+    <ScreenWrapper>
       <ScreenTitle title={t("Notifications")} />
       <View style={styles.row}>
         <AppText>{t("Push Notifications")}</AppText>

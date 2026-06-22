@@ -24,7 +24,7 @@ export default function TrophyScreen() {
   if (!trophy) return null;
 
   return (
-    <ScreenWrapper withPaddingTop={false}>
+    <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconShowcase}>
           <Animated.Image

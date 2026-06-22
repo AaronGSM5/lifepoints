@@ -1,14 +1,12 @@
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import FYTaskItem from "@/components/tasks/FYTaskItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
-import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList, Pressable } from "react-native";
-import { Skeleton } from "moti/skeleton";
+import { StyleSheet, View, ScrollView } from "react-native";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -16,6 +14,7 @@ import useStore from "@/store/useStore";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 const SKELETON_FY_TASKS = [1, 2, 3];
@@ -23,7 +22,6 @@ const SKELETON_FY_TASKS = [1, 2, 3];
 const TasksScreen = () => {
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
-  const bottomPadding = useFloatingNavbarPadding();
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [taskToTrack, setTaskToTrack] = useState(null);
   const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
@@ -57,7 +55,6 @@ const TasksScreen = () => {
 
   const listData = useMemo(() => {
     const topElements = [
-      { id: "search", type: "search" },
       { id: "for_you", type: "for_you" },
       { id: "categories", type: "categories" }
     ];
@@ -71,19 +68,6 @@ const TasksScreen = () => {
 
   const renderItem = ({ item }) => {
     switch (item.type) {
-      case "search":
-        return (
-          <View style={[styles.paddedContent, styles.stickySearchWrapper]}>
-            <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-              <Pressable onPress={() => router.push("/search")}>
-                <View pointerEvents="none">
-                  <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
-                </View>
-              </Pressable>
-            </Skeleton>
-          </View>
-        );
-
       case "for_you":
         return (
           <View style={styles.sectionMargin}>
@@ -169,14 +153,11 @@ const TasksScreen = () => {
 
   return (
     <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
-      <FlatList
+      <AnimatedScreenList
         data={listData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        stickyHeaderIndices={[0]}
         ListFooterComponent={!isLoading ? renderFooter() : null}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
       />
@@ -191,10 +172,6 @@ const TasksScreen = () => {
 
 const getStyles = () =>
   StyleSheet.create({
-    stickySearchWrapper: {
-      zIndex: 10,
-      paddingTop: Spacing.sm
-    },
     sectionMargin: {
       marginTop: Spacing.md
     },

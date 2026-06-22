@@ -34,7 +34,6 @@ export default function CreatePost() {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState(null);
-  const activeTaskIds = useStore((state) => state.activeTaskIds);
   const activities = useStore((state) => state.activities);
 
   const oneDayInMs = 24 * 60 * 60 * 1000;
@@ -50,7 +49,7 @@ export default function CreatePost() {
       return entry.taskId;
     });
 
-  const availableTaskIds = [...new Set([...activeTaskIds, ...todayActivities])];
+  const availableTaskIds = [...new Set([...todayActivities])];
 
   const isPostButtonEnabled = isPublic
     ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
@@ -81,7 +80,7 @@ export default function CreatePost() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withPaddingTop={false}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={10}>

@@ -41,7 +41,7 @@ export default function SubscriptionScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable withPaddingTop={false}>
+    <ScreenWrapper scrollable>
       <View style={styles.header}>
         <AppText type="h1" style={{ textAlign: "center" }}>
           {t("Reach the next level")}
