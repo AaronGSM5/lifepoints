@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
@@ -11,6 +11,7 @@ import * as NavigationBar from "expo-navigation-bar";
 import "@/utils/i18n";
 import TrophyPopup from "@/components/ui/TrophyPopup";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +23,27 @@ const initialMetrics = {
   frame: { x: 0, y: 0, width: 0, height: 0 },
   insets: { top: 0, left: 0, right: 0, bottom: 0 }
 };
+
+function TopNotchMask() {
+  const insets = useSafeAreaInsets();
+  const MyTheme = useAppTheme();
+
+  if (insets.top === 0) return null;
+
+  return (
+    <View
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: insets.top,
+        backgroundColor: MyTheme.background,
+        zIndex: 9999
+      }}
+    />
+  );
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -59,6 +81,8 @@ export default function RootLayout() {
     <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
         <StatusBar style={"auto"} translucent backgroundColor="transparent" />
+
+        <TopNotchMask />
 
         <TrophyPopup />
 
