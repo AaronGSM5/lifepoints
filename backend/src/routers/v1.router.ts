@@ -3,6 +3,7 @@ import TaskController from "../controllers/task.controller.js";
 import UserController from "../controllers/user.controller.js";
 import PageController from "@/controllers/page.controller.js";
 import NotificationController from "@/controllers/notification.controller.js";
+import EventController from "@/controllers/event.controller.js";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get("/pages/settings", (req, res) => res.send("must be implemented"));
 
 router.get("/notifications", (req, res) => NotificationController.getNotifications);
 
-router.get("/bootstrap", (req, res) => NotificationController.getNotifications);
+router.get("/bootstrap", (req, res) => EventController.getBootstrap);
 
 // router.get("/user-tasks/active", UserTasksController.getUsersActiveTasks);
 // router.get("/user-tasks/history", UserTasksController.getUsersTaskHistory);
