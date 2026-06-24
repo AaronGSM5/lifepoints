@@ -28,6 +28,8 @@ router.get("/pages/settings", (req, res) => res.send("must be implemented"));
 
 router.get("/notifications", (req, res) => NotificationController.getNotifications);
 
+router.get("/bootstrap", (req, res) => NotificationController.getNotifications);
+
 // router.get("/user-tasks/active", UserTasksController.getUsersActiveTasks);
 // router.get("/user-tasks/history", UserTasksController.getUsersTaskHistory);
 // router.post("/user-tasks/start", (req, res) => res.send("must be implemented"));
