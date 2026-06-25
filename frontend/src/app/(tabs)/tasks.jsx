@@ -16,6 +16,7 @@ import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import EventHero from "@/components/home/EventHero";
 import AppInput from "@/components/ui/AppInput";
 import NavigationRow from "@/components/tasks/NavigationRow";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
 // const SKELETON_FY_TASKS = [1, 2, 3];
@@ -33,6 +34,7 @@ const TasksScreen = () => {
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { tasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } = useTasks();
+  const toolbarHeight = useToolbarPadding();
 
   const styles = getStyles();
   const skeletonProps = {
@@ -72,7 +74,7 @@ const TasksScreen = () => {
     switch (item.type) {
       case "event_banner":
         return (
-          <View style={[styles.paddedContent, { marginVertical: Spacing.md }]}>
+          <View style={[styles.paddedContent, { marginTop: Spacing.md + 44 + Spacing.md }]}>
             <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
           </View>
         );
@@ -141,7 +143,6 @@ const TasksScreen = () => {
 
   return (
     <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false}>
-      <NavigationRow />
       <AnimatedScreenList
         scrollY={scrollY}
         data={listData}
@@ -152,6 +153,18 @@ const TasksScreen = () => {
         refreshing={isRefreshing}
         withTopPadding={false}
       />
+      <View
+        style={{
+          position: "absolute",
+          top: toolbarHeight,
+          left: 0,
+          right: 0,
+          zIndex: 10
+        }}
+        pointerEvents="box-none"
+      >
+        <NavigationRow />
+      </View>
       <InstaTrackingModal
         visible={instaTrackingModalVisible}
         onClose={() => setInstaTrackingModalVisible(false)}

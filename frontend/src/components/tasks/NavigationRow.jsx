@@ -103,7 +103,21 @@ const NavigationRow = () => {
         })}
       </View>
 
-      <AppButton variant="outline" title={"i"} size="sm" style={{ width: 37 }} />
+      <TouchableOpacity
+        style={{
+          width: 44,
+          height: 44,
+          backgroundColor: MyTheme.background,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: Spacing.borderRadius.full,
+          borderWidth: 1,
+          borderColor: MyTheme.primary
+        }}
+        activeOpacity={0.9}
+      >
+        <Icon name={"recycle"} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -116,6 +130,7 @@ const getStyles = (theme) =>
       justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: Spacing.lg,
+      marginTop: Spacing.sm,
       gap: Spacing.sm
     },
     segmentedControl: {
@@ -125,7 +140,8 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderColor: theme.primary,
       borderRadius: Spacing.borderRadius.full,
-      padding: 2
+      padding: 2,
+      backgroundColor: theme.background
     },
     slider: {
       position: "absolute",
