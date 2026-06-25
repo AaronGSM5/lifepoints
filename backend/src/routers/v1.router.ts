@@ -19,17 +19,17 @@ router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));
 
 // -- PAGES --
 router.get("/pages/home", PageController.getHomePage);
-router.get("/pages/user", (req, res) => res.send("must be implemented"));
-router.get("/pages/communities", (req, res) => res.send("must be implemented"));
+router.get("/pages/user", PageController.getProfilePage);
+router.get("/pages/communities", PageController.getCommunitiesPage);
 router.get("/pages/tasks", (req, res) => res.send("must be implemented"));
 router.get("/pages/shop", (req, res) => res.send("must be implemented"));
 router.get("/pages/trophies", (req, res) => res.send("must be implemented"));
 router.get("/pages/customizables", (req, res) => res.send("must be implemented"));
 router.get("/pages/settings", (req, res) => res.send("must be implemented"));
 
-router.get("/notifications", (req, res) => NotificationController.getNotifications);
+router.get("/notifications", NotificationController.getNotifications);
 
-router.get("/bootstrap", (req, res) => EventController.getBootstrap);
+router.get("/bootstrap", EventController.getBootstrap);
 
 // router.get("/user-tasks/active", UserTasksController.getUsersActiveTasks);
 // router.get("/user-tasks/history", UserTasksController.getUsersTaskHistory);

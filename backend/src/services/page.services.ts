@@ -11,8 +11,6 @@ const getHomePage = async () => {
   return data;
 };
 
-export default { getHomePage };
-
 const getProfilePage = async () => {
   const data = {
     user: {
@@ -104,3 +102,5 @@ const getProfilePage = async () => {
 
   return data;
 };
+
+export default { getProfilePage, getHomePage };

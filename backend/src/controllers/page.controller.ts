@@ -1,4 +1,5 @@
 import PageServices from "../services/page.services.js";
+import CommunityService from "../services/community.services.js";
 
 const getHomePage = async (req, res) => {
   const data = await PageServices.getHomePage();
@@ -21,4 +22,19 @@ const getTaskPage = async (req, res) => {
   res.status(200).json(data);
 };
 
-export default { getHomePage, getTaskPage };
+const getProfilePage = async (req, res) => {
+  const data = await PageServices.getProfilePage();
+
+  res.status(200).json(data);
+};
+
+const getCommunitiesPage = async (req, res) => {
+  try {
+    const data = await CommunityService.getCommunities(req.query);
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to render layout" });
+  }
+};
+
+export default { getHomePage, getTaskPage, getProfilePage, getCommunitiesPage };
