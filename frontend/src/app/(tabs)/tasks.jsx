@@ -5,7 +5,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, Animated } from "react-native";
+import { StyleSheet, View, Animated } from "react-native";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
 import useStore from "@/store/useStore";
@@ -72,7 +72,7 @@ const TasksScreen = () => {
     switch (item.type) {
       case "event_banner":
         return (
-          <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
+          <View style={[styles.paddedContent, { marginVertical: Spacing.md }]}>
             <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
           </View>
         );
@@ -140,7 +140,8 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false}>
+      <NavigationRow />
       <AnimatedScreenList
         scrollY={scrollY}
         data={listData}
@@ -149,6 +150,7 @@ const TasksScreen = () => {
         ListFooterComponent={!isLoading ? renderFooter() : null}
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
+        withTopPadding={false}
       />
       <InstaTrackingModal
         visible={instaTrackingModalVisible}

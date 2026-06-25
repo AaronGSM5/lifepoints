@@ -3,8 +3,14 @@ import { Animated } from "react-native";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 
-export default function AnimatedScreenList({ scrollY, contentContainerStyle, onScroll, ...props }) {
-  const topPadding = useToolbarPadding();
+export default function AnimatedScreenList({
+  scrollY,
+  contentContainerStyle,
+  onScroll,
+  withTopPadding = true,
+  ...props
+}) {
+  const topPadding = withTopPadding ? useToolbarPadding() : 0;
   const bottomPadding = useFloatingNavbarPadding();
   const flatListRef = useRef(null);
 
