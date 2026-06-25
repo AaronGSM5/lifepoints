@@ -49,7 +49,7 @@ export default function Toolbar() {
           paddingTop: insets.top,
           paddingLeft: Math.max(Spacing.md, insets.left),
           paddingRight: Math.max(Spacing.md, insets.right),
-          transform: [{ translateY: pathname === "/profile" ? 0 : translateY }],
+          transform: [{ translateY: pathname === "/profile" || pathname === "/tasks" ? 0 : translateY }],
           position: "absolute",
           top: 0,
           left: 0,

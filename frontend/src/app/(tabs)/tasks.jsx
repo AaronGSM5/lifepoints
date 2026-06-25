@@ -1,23 +1,24 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import FYTaskItem from "@/components/tasks/FYTaskItem";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import CategoryButtons from "@/components/ui/CategoryButtons";
 import { useTasks } from "@/hooks/useTasks";
-import SectionHeader from "@/components/ui/SectionHeader";
 import useStore from "@/store/useStore";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import { useTranslation } from "react-i18next";
 import { triggerHaptic } from "@/utils/haptics";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import EventHero from "@/components/home/EventHero";
+import AppInput from "@/components/ui/AppInput";
+import NavigationRow from "@/components/tasks/NavigationRow";
 
 const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-const SKELETON_FY_TASKS = [1, 2, 3];
+// const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
   const router = useRouter();
@@ -30,8 +31,7 @@ const TasksScreen = () => {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
-  const { tasks, recommendedTasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } =
-    useTasks();
+  const { tasks, categories, activeCat, setActiveCat, isLoading, isRefreshing, refreshTasks } = useTasks();
 
   const styles = getStyles();
   const skeletonProps = {
@@ -55,7 +55,8 @@ const TasksScreen = () => {
 
   const listData = useMemo(() => {
     const topElements = [
-      { id: "for_you", type: "for_you" },
+      { id: "event_banner", type: "event_banner" },
+      { id: "search_bar", type: "search_bar" },
       { id: "categories", type: "categories" }
     ];
 
@@ -68,41 +69,17 @@ const TasksScreen = () => {
 
   const renderItem = ({ item }) => {
     switch (item.type) {
-      case "for_you":
+      case "event_banner":
         return (
-          <View style={styles.sectionMargin}>
-            <View style={styles.paddedContent}>
-              <SectionHeader title={t("For You")} />
-            </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.carouselContainer}
-            >
-              {isLoading
-                ? SKELETON_FY_TASKS.map((i) => <FYTaskItem key={i} isLoading={true} />)
-                : recommendedTasks.map((task, index) => (
-                    <FYTaskItem key={task.id || index} {...task} isLoading={false} />
-                  ))}
-            </ScrollView>
+          <View style={[styles.paddedContent, { marginBottom: Spacing.md }]}>
+            <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
           </View>
         );
 
-      case "categories":
+      case "search_bar":
         return (
-          <View style={styles.sectionMargin}>
-            <View style={styles.paddedContent}>
-              <SectionHeader
-                title={activeCat === "all" ? t("All Tasks") : `${t(`categories.${activeCat}`)} ${t("Tasks")}`}
-              />
-            </View>
-            <CategoryButtons
-              categories={categories}
-              activeCat={activeCat}
-              setActiveCat={setActiveCat}
-              skeletonProps={skeletonProps}
-              isLoading={isLoading}
-            />
+          <View style={styles.paddedContent}>
+            <AppInput placeholder={"Search..."} />
           </View>
         );
 
@@ -137,6 +114,16 @@ const TasksScreen = () => {
           </View>
         );
 
+      case "categories":
+        return (
+          <CategoryButtons
+            categories={categories}
+            activeCat={activeCat}
+            setActiveCat={setActiveCat}
+            skeletonProps={skeletonProps}
+            isLoading={isLoading}
+          />
+        );
       default:
         return null;
     }
@@ -152,7 +139,8 @@ const TasksScreen = () => {
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper scrollable={false} withPaddingSides={false}>
+      <NavigationRow />
       <AnimatedScreenList
         data={listData}
         keyExtractor={(item) => item.id.toString()}
@@ -172,14 +160,6 @@ const TasksScreen = () => {
 
 const getStyles = () =>
   StyleSheet.create({
-    sectionMargin: {
-      marginTop: Spacing.md
-    },
-    carouselContainer: {
-      paddingHorizontal: Spacing.md,
-      gap: Spacing.md,
-      marginBottom: Spacing.lg
-    },
     paddedContent: {
       paddingHorizontal: Spacing.md
     }
