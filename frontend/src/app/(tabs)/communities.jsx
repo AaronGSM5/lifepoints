@@ -80,7 +80,7 @@ export default function CommunitiesScreen() {
       switch (item.type) {
         case "hero":
           return (
-            <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
+            <View style={styles.paddedContent}>
               <EventHero
                 imageSource={require("../../../public/assets/createCommunityBanner.png")}
                 isLoading={isLoading}
