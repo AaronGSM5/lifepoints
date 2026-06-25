@@ -75,7 +75,7 @@ const TasksScreen = () => {
       case "event_banner":
         return (
           <View style={[styles.paddedContent, { marginTop: Spacing.md + 44 + Spacing.md }]}>
-            <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
+            <EventHero imageSource={require("../../../public/assets/events/sportevent.png")} isLoading={isLoading} />
           </View>
         );
 

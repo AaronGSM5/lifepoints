@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { View, Animated, PanResponder, TouchableOpacity, StyleSheet } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import AppButton from "@/components/ui/AppButton";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import LayeredIcon from "../icons/LayeredIcons";
 
 const TABS = [
   { id: "catalog", icon: "book" },
@@ -116,7 +116,7 @@ const NavigationRow = () => {
         }}
         activeOpacity={0.9}
       >
-        <Icon name={"recycle"} />
+        <LayeredIcon bottomIcon={"recycle"} topIcon={"add"} color1={MyTheme.text} color2={MyTheme.text} />
       </TouchableOpacity>
     </View>
   );
