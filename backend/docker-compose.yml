@@ -21,6 +21,8 @@ services:
       - notused:/usr/src/app/node_modules
     env_file:
       - ./.env
+    networks:
+      - lifepoints
 
   mongo:
     image: mongo:latest
@@ -30,7 +32,12 @@ services:
     volumes:
       - mongo_data:/data/db
     command: mongod --logpath=/dev/null -quiet
+    networks:
+      - lifepoints
 
 volumes:
   mongo_data:
   notused:
+
+networks:
+  lifepoints:

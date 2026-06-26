@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
   app.use(express.urlencoded({ limit: "12mb", extended: true }));
 
   try {
-    await mongoose.connect("mongodb://localhost:27030/lifepoints");
+    await mongoose.connect("mongodb://mongo:27017/lifepoints");
     console.log("✅ Connected to MongoDB");
 
     app.use("/api/v1", v1Router);
