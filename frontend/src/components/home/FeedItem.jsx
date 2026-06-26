@@ -4,7 +4,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "@/components/icons/Icon";
-import { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
@@ -13,7 +13,7 @@ import StatusBadge from "../ui/StatusBadge";
 import { APP_EVENTS } from "@/constants/Events";
 import { LootGameTrigger } from "./LootGameTrigger";
 
-export default function FeedItem({
+export default memo(function FeedItem({
   username,
   badge,
   avatar,
@@ -216,7 +216,7 @@ export default function FeedItem({
       </View>
     </View>
   );
-}
+});
 
 const getStyles = (theme) =>
   StyleSheet.create({

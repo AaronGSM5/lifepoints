@@ -1,10 +1,9 @@
 import { Stack } from "expo-router";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
-import Toolbar from "@/components/layout/Toolbar";
 import { Platform, View } from "react-native";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import * as NavigationBar from "expo-navigation-bar";
@@ -71,8 +70,6 @@ export default function RootLayout() {
 
   usePushNotifications();
 
-  const renderHeader = useCallback((props) => <Toolbar {...props} />, []);
-
   if (!loaded && !error) {
     return null;
   }
@@ -88,36 +85,18 @@ export default function RootLayout() {
 
         <Stack
           screenOptions={{
-            header: renderHeader,
-            headerShown: true,
-            headerTransparent: true,
+            headerShown: false,
             gestureEnabled: true,
             gestureDirection: "horizontal",
             animation: Platform.OS === "ios" ? "default" : "slide_from_right"
           }}
         >
-          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-
+          <Stack.Screen name="(onboarding)" />
           <Stack.Screen name="(tabs)" />
-
-          <Stack.Screen name="auth" options={{ headerShown: false }} />
-
-          <Stack.Screen name="post/create" options={{ headerShown: false }} />
-
-          <Stack.Screen
-            name="notifications"
-            options={{
-              animation: "slide_from_right"
-            }}
-          />
-
-          <Stack.Screen
-            name="settings"
-            options={{
-              animation: "slide_from_right"
-            }}
-          />
-
+          <Stack.Screen name="auth" />
+          <Stack.Screen name="post/create" />
+          <Stack.Screen name="notifications" />
+          <Stack.Screen name="settings" />
           <Stack.Screen name="journal" />
         </Stack>
       </SafeAreaProvider>

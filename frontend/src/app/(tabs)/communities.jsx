@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator } from "react-native";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator, Animated } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
@@ -23,6 +23,7 @@ export default function CommunitiesScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   const [dynamicSections, setDynamicSections] = useState([]);
@@ -79,7 +80,7 @@ export default function CommunitiesScreen() {
       switch (item.type) {
         case "hero":
           return (
-            <View style={[styles.paddedContent, { paddingTop: Spacing.md }]}>
+            <View style={styles.paddedContent}>
               <EventHero
                 imageSource={require("../../../public/assets/createCommunityBanner.png")}
                 isLoading={isLoading}
@@ -188,8 +189,9 @@ export default function CommunitiesScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <AnimatedScreenList
+        scrollY={scrollY}
         data={listData}
         extraData={[myCommunities, isLoading]}
         keyExtractor={(item) => item.id}

@@ -2,32 +2,26 @@ import React, { useRef } from "react";
 import { Animated } from "react-native";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
-import { getScrollState } from "@/utils/scrollState";
-import { usePathname } from "expo-router";
 
-export default function AnimatedScreenList({ contentContainerStyle, onScroll, ...props }) {
-  const topPadding = useToolbarPadding();
+export default function AnimatedScreenList({
+  scrollY,
+  contentContainerStyle,
+  onScroll,
+  withTopPadding = true,
+  ...props
+}) {
+  const topPadding = withTopPadding ? useToolbarPadding() : 0;
   const bottomPadding = useFloatingNavbarPadding();
-  const pathname = usePathname();
-  const { scrollY, getClampedValue } = getScrollState(pathname, topPadding);
-
   const flatListRef = useRef(null);
 
   const handleSnap = (event) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const clamped = getClampedValue();
 
-    if (clamped > 0 && clamped < topPadding) {
-      const isMoreThanHalf = clamped > topPadding / 2;
-      let snapOffset = currentOffset;
+    if (currentOffset > 0 && currentOffset < topPadding) {
+      const isMoreThanHalf = currentOffset > topPadding / 2;
+      let snapOffset = isMoreThanHalf ? topPadding : 0;
 
-      if (isMoreThanHalf) {
-        snapOffset = currentOffset + (topPadding - clamped);
-      } else {
-        snapOffset = currentOffset - clamped;
-      }
-
-      if (snapOffset >= 0 && flatListRef.current) {
+      if (flatListRef.current) {
         flatListRef.current.scrollToOffset({
           offset: snapOffset,
           animated: true
@@ -38,6 +32,7 @@ export default function AnimatedScreenList({ contentContainerStyle, onScroll, ..
 
   return (
     <Animated.FlatList
+      ref={flatListRef}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
       {...props}

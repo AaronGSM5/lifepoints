@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import React, { useMemo, useRef } from "react";
+import { StyleSheet, View, ActivityIndicator, Animated } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -33,6 +33,7 @@ export default function ShopScreen() {
     fetchMore,
     isFetchingMore
   } = useShop();
+  const scrollY = useRef(new Animated.Value(0)).current;
   const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
 
@@ -91,8 +92,9 @@ export default function ShopScreen() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
       <AnimatedScreenList
+        scrollY={scrollY}
         data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2}

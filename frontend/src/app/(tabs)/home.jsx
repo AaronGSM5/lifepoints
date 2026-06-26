@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Animated } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
@@ -35,6 +35,7 @@ export default function HomeScreen() {
   const [isBatchLoading, setIsBatchLoading] = useState(false);
   const [visibleItemIds, setVisibleItemIds] = useState([]);
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 70 }).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
   const completeTask = useStore((state) => state.completeTask);
@@ -126,6 +127,23 @@ export default function HomeScreen() {
     [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t]
   );
 
+  const renderItem = useCallback(
+    ({ item }) => {
+      const isItemVisible = item?.id ? visibleItemIds.includes(String(item.id)) : false;
+      return (
+        <FeedItem
+          {...item}
+          isLoading={isLoading}
+          skeletonProps={skeletonProps}
+          onOpenComments={(id) => setSelectedPostId(id)}
+          onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
+          isReady={isItemVisible}
+        />
+      );
+    },
+    [isLoading, skeletonProps, visibleItemIds]
+  );
+
   const renderFooter = () =>
     isBatchLoading ? (
       <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
@@ -136,8 +154,15 @@ export default function HomeScreen() {
     );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper
+      scrollY={scrollY}
+      scrollable={false}
+      withPaddingBottom={false}
+      withPaddingSides={false}
+      withPaddingTop={false}
+    >
       <AnimatedScreenList
+        scrollY={scrollY}
         data={isLoading ? SKELETON_ITEMS : displayedItems}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : String(item.id))}
         ListHeaderComponent={renderHeader}
@@ -148,19 +173,7 @@ export default function HomeScreen() {
         onEndReachedThreshold={0.5}
         onRefresh={refreshHomeData}
         refreshing={isRefreshing}
-        renderItem={({ item }) => {
-          const isItemVisible = item?.id ? visibleItemIds.includes(String(item.id)) : false;
-          return (
-            <FeedItem
-              {...item}
-              isLoading={isLoading}
-              skeletonProps={skeletonProps}
-              onOpenComments={(id) => setSelectedPostId(id)}
-              onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
-              isReady={isItemVisible}
-            />
-          );
-        }}
+        renderItem={renderItem}
       />
       <CommentSheet
         isVisible={selectedPostId !== null}
