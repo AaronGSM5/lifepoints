@@ -94,6 +94,7 @@ const TasksScreen = () => {
           id={item.id}
           isLoading={isLoading}
           title={item.title}
+          description={item.description}
           lp={item.lp}
           progress={item.progress}
           status={item.limit}
