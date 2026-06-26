@@ -4,6 +4,7 @@ import UserController from "../controllers/user.controller.js";
 import PageController from "@/controllers/page.controller.js";
 import NotificationController from "@/controllers/notification.controller.js";
 import EventController from "@/controllers/event.controller.js";
+import CommunityController from "@/controllers/community.controller.js";
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));
 // -- PAGES --
 router.get("/pages/home", PageController.getHomePage);
 router.get("/pages/user", PageController.getProfilePage);
-router.get("/pages/communities", PageController.getCommunitiesPage);
+// router.get("/pages/communities", PageController.getCommunitiesPage);
 router.get("/pages/tasks", (req, res) => res.send("must be implemented"));
 router.get("/pages/shop", (req, res) => res.send("must be implemented"));
 router.get("/pages/trophies", (req, res) => res.send("must be implemented"));
@@ -30,6 +31,9 @@ router.get("/pages/settings", (req, res) => res.send("must be implemented"));
 router.get("/notifications", NotificationController.getNotifications);
 
 router.get("/bootstrap", EventController.getBootstrap);
+
+router.get("/communities/rails", CommunityController.getPaginatedCommunityRails);
+router.get("/communities/categories", CommunityController.getCommunityCategories);
 
 // router.get("/user-tasks/active", UserTasksController.getUsersActiveTasks);
 // router.get("/user-tasks/history", UserTasksController.getUsersTaskHistory);
