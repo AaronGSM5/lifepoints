@@ -87,7 +87,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
               {item.title}
             </AppText>
             <AppText type="caption" style={styles.description} numberOfLines={2}>
-              {item.desc}
+              {item.description}
             </AppText>
           </View>
 
@@ -113,7 +113,7 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
               )}
 
               <AppText type="caption" style={styles.memberText}>
-                {item.members} {t("Members")}
+                {item.memberCount} {t("Members")}
               </AppText>
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -158,7 +158,8 @@ const getStyles = (theme) =>
       marginBottom: 4
     },
     description: {
-      lineHeight: 20
+      lineHeight: 20,
+      height: 40
     },
     footerRow: {
       flexDirection: "row",

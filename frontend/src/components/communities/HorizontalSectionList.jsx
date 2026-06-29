@@ -11,7 +11,7 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalCommunityRail(categoryKey);
-  console.log(data);
+
   const flatData = useMemo(() => {
     if (data?.pages && data.pages.length > 0 && data.pages[0].data) {
       return data.pages.flatMap((page) => page.data || []);

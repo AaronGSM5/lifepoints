@@ -155,7 +155,7 @@ export default function CommunitiesScreen() {
               title={item.title}
               initialData={validSectionData}
               categoryKey={item.categoryKey}
-              onPressItem={(community) => router.push(`/community/${community.id}`)}
+              onPressItem={(community) => router.push(`/community/${extractId(community)}`)}
             />
           );
 
