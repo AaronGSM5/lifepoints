@@ -1,8 +1,11 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, StyleSheet, Animated } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import React, { memo, useRef } from "react";
+import Toolbar from "./Toolbar";
 
 export const useFloatingNavbarPadding = () => {
   const insets = useSafeAreaInsets();
@@ -12,21 +15,28 @@ export const useFloatingNavbarPadding = () => {
   return navbarBottomSpace + navbarHeight + extraClearance;
 };
 
-export default function ScreenWrapper({
+export default memo(function ScreenWrapper({
   children,
+  scrollY: externalScrollY,
   scrollable = true,
   withOffset = false,
   withPaddingBottom = true,
   withPaddingSides = true,
   useGradient = true,
+  withPaddingTop = true,
   style
 }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
+  const toolbarTopPadding = useToolbarPadding();
+  const internalScrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = externalScrollY || internalScrollY;
   const contentStyles = [
     {
       paddingHorizontal: withPaddingSides ? Spacing.md : 0,
-      paddingTop: withOffset ? insets.top + Spacing.md : Spacing.md,
+      paddingTop: withPaddingTop ? toolbarTopPadding + (withOffset ? Spacing.md : 0) : insets.top,
       paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
     },
     style
@@ -34,26 +44,32 @@ export default function ScreenWrapper({
 
   return (
     <View style={styles.wrapper}>
-      {useGradient && <LinearGradient colors={[MyTheme.background, "#121212"]} style={StyleSheet.absoluteFillObject} />}
+      {useGradient && (
+        <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={StyleSheet.absoluteFillObject} />
+      )}
+      <Toolbar scrollY={scrollY} />
       {scrollable ? (
-        <ScrollView
+        <Animated.ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={[contentStyles, { flexGrow: 1 }]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+          scrollEventThrottle={16}
         >
           {children}
-        </ScrollView>
+        </Animated.ScrollView>
       ) : (
         <View style={[{ flex: 1 }, contentStyles]}>{children}</View>
       )}
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: MyTheme.background // backgroundColor if useGradient = false
-  }
 });
+
+const getStyles = (theme) =>
+  StyleSheet.create({
+    wrapper: {
+      flex: 1,
+      backgroundColor: theme.background
+    }
+  });

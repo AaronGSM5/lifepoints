@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import React, { useMemo, useRef } from "react";
+import { StyleSheet, View, ActivityIndicator, Animated } from "react-native";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import CategoryButtons from "@/components/ui/CategoryButtons";
@@ -11,16 +11,34 @@ import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { useShop } from "@/hooks/useShop";
 import EmptyState from "@/components/shop/EmptyState";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
 export default function ShopScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("shop");
   const router = useRouter();
-  const bottomPadding = useFloatingNavbarPadding();
-  const { rewards, activeCat, setActiveCat, categories, isLoading, isRefreshing, refreshShop } = useShop();
+  const {
+    rewards,
+    activeCat,
+    setActiveCat,
+    categories,
+    isLoading,
+    isRefreshing,
+    refreshShop,
+    fetchMore,
+    isFetchingMore
+  } = useShop();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const userLevel = useStore((state) => state.profile.level);
 
   const skeletonProps = {
-    colorMode: "dark",
+    colorMode: isDarkMode ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };
@@ -28,9 +46,10 @@ export default function ShopScreen() {
   const renderHeader = useMemo(
     () => (
       <View>
-        <WalletCard points={100} targetPoints={1000} skeletonProps={skeletonProps} isLoading={isLoading} />
-
-        {isLoading && <View style={{ marginTop: Spacing.md }} />}
+        <View style={styles.paddedContent}>
+          <WalletCard skeletonProps={skeletonProps} isLoading={isLoading} />
+          {isLoading && <View style={{ marginTop: Spacing.md }} />}
+        </View>
         <CategoryButtons
           categories={categories}
           activeCat={activeCat}
@@ -39,35 +58,52 @@ export default function ShopScreen() {
           isLoading={isLoading}
         />
 
-        <SectionHeader title={"Featured Reward"} isLoading={isLoading} />
-        <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
+        <View style={styles.paddedContent}>
+          <SectionHeader title={t("Featured Reward")} isLoading={isLoading} />
+          <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
 
-        <SectionHeader
-          title={
-            activeCat.toLowerCase() === "all"
-              ? "For You"
-              : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Rewards`
-          }
-          isLoading={isLoading}
-        />
+          <SectionHeader
+            title={
+              activeCat.toLowerCase() === "all"
+                ? t("For You")
+                : `${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`
+            }
+            isLoading={isLoading}
+          />
+        </View>
       </View>
     ),
     [activeCat, isLoading, categories]
   );
 
-  const renderEmptyState = () => <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />;
+  const renderEmptyState = () => (
+    <View style={styles.paddedContent}>
+      <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />
+    </View>
+  );
+
+  const renderFooter = () => {
+    if (!isFetchingMore) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+      </View>
+    );
+  };
 
   return (
-    <ScreenWrapper scrollable={false}>
-      <FlatList
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+      <AnimatedScreenList
+        scrollY={scrollY}
         data={isLoading ? SKELETON_REWARDS : rewards}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         numColumns={2}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
-        columnWrapperStyle={styles.rowGap}
+        columnWrapperStyle={[styles.rowGap, styles.paddedContent]}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={!isLoading ? renderEmptyState : null}
+        onEndReached={fetchMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
         refreshing={isRefreshing}
         onRefresh={refreshShop}
         tintColor={MyTheme.primaryAccent}
@@ -75,14 +111,16 @@ export default function ShopScreen() {
         renderItem={({ item }) => (
           <View style={{ flex: 1 }}>
             <RewardCard
+              id={item.id}
               isLoading={isLoading}
               image={item.image}
               brand={item.brand}
               title={item.title}
               points={item.points}
               icon={item.icon}
-              isLocked={item.isLocked}
+              isLocked={userLevel < item.requiredLevel}
               onPress={() => router.push(`/reward/${item.id}`)}
+              skeletonProps={skeletonProps}
             />
           </View>
         )}
@@ -91,31 +129,19 @@ export default function ShopScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  // Tabs
-  tabsContainer: {
-    marginBottom: Spacing.lg,
-    marginHorizontal: -Spacing.lg
-  },
-  activeTabGradient: {
-    paddingVertical: Spacing.sm + 2,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  inactiveTab: {
-    paddingVertical: Spacing.sm + 2,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.full,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.08)",
-    backgroundColor: "rgba(255, 255, 255, 0.06)"
-  },
-  // Grid
-  rowGap: {
-    gap: Spacing.md,
-    marginBottom: Spacing.md,
-    justifyContent: "space-between"
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    rowGap: {
+      gap: Spacing.md,
+      marginBottom: Spacing.md,
+      justifyContent: "space-between"
+    },
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    },
+    footerLoader: {
+      paddingVertical: Spacing.lg,
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  });

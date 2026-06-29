@@ -1,56 +1,48 @@
 import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import TrophyCard from "@/components/trophies/TrophyCard";
-import { useState } from "react";
-import { mockTrophies } from "@/constants/MockData";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
 
 export default function TrophiesScreen() {
-  const [trophies, setTrophies] = useState(mockTrophies);
+  const { t } = useTranslation("trophies");
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
+  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
+  const justUnlockedTrophies = useStore((state) => state.profile.justUnlockedTrophies || []);
+  const clearJustUnlockedTrophy = useStore((state) => state.clearJustUnlockedTrophy);
 
   const containerWidth = Math.min(width, 480) - 32;
-
   const totalGapSpace = 32;
-
   const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
 
   const handleAnimationFinished = (id) => {
-    const trophyIndex = mockTrophies.findIndex((trophy) => trophy.id === id);
-    if (trophyIndex !== -1) {
-      mockTrophies[trophyIndex].justUnlocked = false;
-    }
-    setTrophies((currentTrophies) =>
-      currentTrophies.map((trophy) => (trophy.id === id ? { ...trophy, justUnlocked: false } : trophy))
-    );
+    clearJustUnlockedTrophy(id);
   };
 
   return (
     <ScreenWrapper scrollable={false}>
       <View style={styles.container}>
         <FlatList
-          data={trophies}
+          data={trophiesCatalog}
           keyExtractor={(item) => item.id.toString()}
           numColumns={3}
           contentContainerStyle={[styles.flatListContent, { paddingBottom: bottomPadding }]}
           columnWrapperStyle={{ gap: 16, marginBottom: Spacing.lg }}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <View style={styles.header}>
-              <AppText type="h1">Trophies</AppText>
-            </View>
-          }
+          ListHeaderComponent={<ScreenTitle title={t("Trophies")} />}
           renderItem={({ item }) => (
             <View style={{ width: exactCardWidth }}>
               <TrophyCard
                 id={item.id}
                 title={item.title}
                 icon={item.icon}
-                unlocked={item.unlocked}
-                justUnlocked={item.justUnlocked}
-                onAnimationComplete={handleAnimationFinished}
+                unlocked={unlockedTrophies.includes(item.id)}
+                justUnlocked={justUnlockedTrophies.includes(item.id)}
+                onAnimationComplete={() => handleAnimationFinished(item.id)}
                 cardWidth={exactCardWidth}
               />
             </View>
@@ -69,9 +61,5 @@ const styles = StyleSheet.create({
   flatListContent: {
     width: "100%",
     maxWidth: 480
-  },
-  header: {
-    marginTop: Spacing.md,
-    marginBottom: Spacing.lg
   }
 });

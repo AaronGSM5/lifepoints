@@ -1,33 +1,52 @@
-const { View, ScrollView } = require("react-native");
-const { default: SectionHeader } = require("../ui/SectionHeader");
-const { Spacing } = require("@/constants/Spacing");
-const { MyTheme } = require("@/constants/Colors");
-const { router } = require("expo-router");
-const { Skeleton } = require("moti/skeleton");
-const { default: TrophyCard } = require("../trophies/TrophyCard");
+import { useTranslation } from "react-i18next";
+import { View, ScrollView } from "react-native";
+import SectionHeader from "../ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+import TrophyCard from "../trophies/TrophyCard";
+import useStore from "@/store/useStore";
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
+  const MyTheme = useAppTheme();
+  const { t } = useTranslation("trophies");
+  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
       <SectionHeader
-        title={"Trophies"}
+        title={t("Trophies")}
         icon={"trophy"}
         iconColor={MyTheme.gold}
-        rightLabel={"See all"}
+        rightLabel={t("See all")}
         rightLabelColor={MyTheme.gold}
         onRightPress={() => router.push("/trophies")}
         isLoading={isLoading}
       />
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
-        {isLoading
-          ? [1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
-            ))
-          : trophies.map((t, i) => (
-              <View key={i} style={{ width: 80 }}>
-                <TrophyCard key={i} id={t.id} title={t.title} icon={t.icon} unlocked={t.unlocked} />
-              </View>
-            ))}
+        {isLoading &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton
+              key={`skel-trophy-${i}`}
+              {...skeletonProps}
+              width={80}
+              height={80}
+              radius={Spacing.borderRadius.lg}
+            />
+          ))}
+        {!isLoading &&
+          trophies?.map((t, i) => (
+            <View key={`trophy-${t?.id || i}`} style={{ width: 80 }}>
+              <TrophyCard
+                key={t.id}
+                id={t.id}
+                title={t.title}
+                icon={t.icon}
+                unlocked={unlockedTrophies.includes(t.id)}
+                justUnlocked={false}
+              />
+            </View>
+          ))}
       </ScrollView>
     </View>
   );

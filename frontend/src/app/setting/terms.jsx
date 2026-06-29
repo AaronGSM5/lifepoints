@@ -1,13 +1,16 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function TermsScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const router = useRouter();
 
   const legalItems = [
@@ -53,7 +56,7 @@ export default function TermsScreen() {
             style={styles.listItem}
             onPress={() => router.push(`/setting/legal-detail?type=${item.id}`)}
           >
-            <View style={styles.iconBackground}>
+            <View style={[styles.iconBackground, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
               <Icon name={item.icon} size={22} color={MyTheme.primaryAccent} />
             </View>
 
@@ -81,45 +84,45 @@ export default function TermsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: Spacing.lg
-  },
-  subtitle: {
-    marginTop: Spacing.sm
-  },
-  listContainer: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  listItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: MyTheme.secondary
-  },
-  iconBackground: {
-    width: 40,
-    height: 40,
-    borderRadius: Spacing.borderRadius.md,
-    backgroundColor: "rgba(47, 196, 146, 0.1)",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  textContainer: {
-    flex: 1
-  },
-  footer: {
-    marginTop: Spacing.xl,
-    alignItems: "center",
-    gap: 4
-  },
-  footerText: {
-    color: MyTheme.muted
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    header: {
+      paddingVertical: Spacing.lg
+    },
+    subtitle: {
+      marginTop: Spacing.sm
+    },
+    listContainer: {
+      backgroundColor: theme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: theme.secondary
+    },
+    listItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: Spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.secondary
+    },
+    iconBackground: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    textContainer: {
+      flex: 1
+    },
+    footer: {
+      marginTop: Spacing.xl,
+      alignItems: "center",
+      gap: 4
+    },
+    footerText: {
+      color: theme.muted
+    }
+  });

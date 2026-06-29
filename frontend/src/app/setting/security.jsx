@@ -5,10 +5,15 @@ import AppText from "@/components/ui/AppText";
 import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function SecurityScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("settings");
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(true);
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 
@@ -31,13 +36,14 @@ export default function SecurityScreen() {
 
   return (
     <ScreenWrapper scrollable>
+      <ScreenTitle title={t("Security & Login")} />
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Passwort ändern
+          {t("Change Password")}
         </AppText>
         <View style={styles.card}>
           <AppInput
-            label="Aktuelles Passwort"
+            label={t("Current Password")}
             placeholder="••••••••"
             secureTextEntry
             value={passwords.current}
@@ -45,7 +51,7 @@ export default function SecurityScreen() {
           />
           <View style={{ height: Spacing.md }} />
           <AppInput
-            label="Neues Passwort"
+            label={t("New Password")}
             placeholder="••••••••"
             secureTextEntry
             value={passwords.new}
@@ -53,14 +59,14 @@ export default function SecurityScreen() {
           />
           <View style={{ height: Spacing.md }} />
           <AppInput
-            label="Passwort bestätigen"
+            label={t("Confirm Password")}
             placeholder="••••••••"
             secureTextEntry
             value={passwords.confirm}
             onChangeText={(txt) => setPasswords({ ...passwords, confirm: txt })}
           />
           <AppButton
-            title="Passwort aktualisieren"
+            title={t("Update Password")}
             onPress={handlePasswordChange}
             style={{ marginTop: Spacing.lg }}
             disabled={!passwords.new || passwords.new !== passwords.confirm}
@@ -70,14 +76,14 @@ export default function SecurityScreen() {
 
       <View style={styles.section}>
         <AppText type="title" style={styles.sectionTitle}>
-          Sicherheit & Zugriff
+          {t("Security & Access")}
         </AppText>
         <View style={styles.card}>
           <View style={styles.row}>
             <View style={styles.rowContent}>
-              <AppText bold>FaceID / Fingerabdruck</AppText>
+              <AppText bold>{t("FaceID / Fingerprint")}</AppText>
               <AppText type="caption" style={{ color: MyTheme.muted }}>
-                Schnellerer Login
+                {t("Faster Login")}
               </AppText>
             </View>
             <Switch
@@ -89,9 +95,9 @@ export default function SecurityScreen() {
 
           <View style={[styles.row, { borderTopWidth: 1, borderTopColor: "#f2f2f7" }]}>
             <View style={styles.rowContent}>
-              <AppText bold>Zwei-Faktor-Authentifizierung</AppText>
+              <AppText bold>{t("Two-factor authentication")}</AppText>
               <AppText type="caption" style={{ color: MyTheme.muted }}>
-                Zusätzlicher Schutz per E-Mail
+                {t("Additional protection via email")}
               </AppText>
             </View>
             <Switch
@@ -104,13 +110,10 @@ export default function SecurityScreen() {
       </View>
 
       <View style={styles.section}>
-        <AppText type="title" style={[styles.sectionTitle, { color: MyTheme.warning }]}>
-          Gefahrenbereich
-        </AppText>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
           <Icon name="trash" size={20} color={MyTheme.warning} />
           <AppText bold style={{ color: MyTheme.warning, marginLeft: Spacing.sm }}>
-            Konto dauerhaft löschen
+            {t("Permanently delete account")}
           </AppText>
         </TouchableOpacity>
       </View>
@@ -118,37 +121,38 @@ export default function SecurityScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: Spacing.xl
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md
-  },
-  card: {
-    backgroundColor: MyTheme.primary,
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: Spacing.md
-  },
-  rowContent: {
-    flex: 1
-  },
-  deleteButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: Spacing.md,
-    backgroundColor: "white",
-    borderRadius: Spacing.borderRadius.lg,
-    borderWidth: 1,
-    borderColor: MyTheme.warning
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    section: {
+      marginBottom: Spacing.xl
+    },
+    sectionTitle: {
+      marginBottom: Spacing.md
+    },
+    card: {
+      backgroundColor: theme.primary,
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      borderWidth: 1,
+      borderColor: theme.secondary
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: Spacing.md
+    },
+    rowContent: {
+      flex: 1
+    },
+    deleteButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: Spacing.md,
+      backgroundColor: "white",
+      borderRadius: Spacing.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: theme.warning
+    }
+  });

@@ -1,14 +1,15 @@
 import { Tabs } from "expo-router";
 import Navbar from "@/components/layout/Navbar.jsx";
-import { MyTheme } from "@/constants/Colors";
+import { useCallback } from "react";
 
 export default function TabsLayout() {
+  const renderTabBar = useCallback((props) => <Navbar {...props} />, []);
+
   return (
     <Tabs
-      tabBar={(props) => <Navbar {...props} />}
+      tabBar={renderTabBar}
       screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: MyTheme.background }
+        headerShown: false
       }}
     >
       <Tabs.Screen name="home" options={{ title: "Home" }} />

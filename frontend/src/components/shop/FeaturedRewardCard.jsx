@@ -6,8 +6,15 @@ import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
+import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
+import { featuredRewards } from "@/constants/FeaturedRewards";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
+  const { t } = useTranslation("shop");
+  const redeemReward = useStore((state) => state.redeemReward);
+  const selectedReward = featuredRewards?.[0];
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
@@ -25,29 +32,38 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         style={styles.featuredCard}
       >
         <View style={styles.featuredIconContainer}>
-          <Icon name="music" size={20} />
+          <Icon name={selectedReward?.icon} size={20} />
         </View>
 
         <View style={styles.featuredContent}>
-          <View style={styles.bestValueBadge}>
-            <AppText bold type="caption" style={{ color: "#00FF7F" }}>
-              BEST VALUE
-            </AppText>
-          </View>
+          <AppBadge label={t("BEST VALUE")} variant="secondary" />
 
-          <AppText type="h2">Free Month Premium</AppText>
+          <AppText type="h2">{t(selectedReward?.title)}</AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
-            Spotify Individual Plan
+            {t(selectedReward?.description)}
           </AppText>
 
           <View style={styles.featuredFooter}>
-            <View>
-              <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                2.500 PTS
-              </AppText>
-              <AppText type="title">2.000 PTS</AppText>
-            </View>
-            <AppButton variant="primary" title={"Redeem"} size="md" textStyle={{ color: "#E94057" }} bgColor="white" />
+            {selectedReward?.discount ? (
+              <View>
+                <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
+                  {selectedReward?.discount?.oldPrice} LP
+                </AppText>
+                <AppText type="title">{selectedReward?.discount?.newPrice} LP</AppText>
+              </View>
+            ) : (
+              <View>
+                <AppText type="title">{selectedReward?.price} LP</AppText>
+              </View>
+            )}
+            <AppButton
+              variant="primary"
+              title={t("Redeem")}
+              size="md"
+              textStyle={{ color: "#E94057" }}
+              bgColor="white"
+              onPress={() => redeemReward(selectedReward.id)}
+            />
           </View>
         </View>
       </LinearGradient>
@@ -58,10 +74,7 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
 const styles = StyleSheet.create({
   featuredWrapper: {
     borderRadius: Spacing.borderRadius.lg,
-    shadowColor: "#E94057",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.7,
-    shadowRadius: 25,
+    boxShadow: `0px 4px 25px rgba(233, 64, 87, 0.7)`,
     elevation: 10
   },
   featuredCard: {
@@ -82,16 +95,6 @@ const styles = StyleSheet.create({
   featuredContent: {
     marginTop: Spacing.md,
     gap: Spacing.xs
-  },
-  bestValueBadge: {
-    backgroundColor: "rgba(0, 255, 127, 0.2)",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-    borderRadius: Spacing.borderRadius.sm,
-    alignSelf: "flex-start",
-    marginBottom: Spacing.xs,
-    borderWidth: 1,
-    borderColor: "rgba(0, 255, 127, 0.8)"
   },
   featuredSubtitle: {
     color: "rgba(255,255,255,0.7)",

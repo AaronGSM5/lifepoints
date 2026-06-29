@@ -1,66 +1,77 @@
 import React, { useState, useRef, memo, useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  Modal,
-  Pressable,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  FlatList,
-  Image,
-  Dimensions
-} from "react-native";
+import { View, StyleSheet, Pressable, TextInput, Platform, FlatList, Image, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { Icon } from "@/components/icons/Icon";
-import { mockComments } from "@/constants/MockData";
+import { postComments } from "@/mocks/PostComments";
 import { router } from "expo-router";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
+import { useTranslation } from "react-i18next";
+import StatusBadge from "../ui/StatusBadge";
+import useStore from "@/store/useStore";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("home");
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
-      <Pressable onPress={() => onNavigate(item.username)}>
-        <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
-      </Pressable>
+      <View style={styles.avatarColumn}>
+        <Pressable onPress={() => onNavigate(item.username)}>
+          <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
+        </Pressable>
+      </View>
+
       <View style={styles.commentContent}>
-        <AppText style={styles.commentText}>
-          <AppText bold onPress={() => onNavigate(item.username)}>
-            {item.username}{" "}
+        {item.badge ? (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
+            <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+              {item.username}
+            </AppText>
+            <StatusBadge id={item.badge} size={16} />
+          </View>
+        ) : (
+          <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+            {item.username}
           </AppText>
-          {item.text}
-        </AppText>
+        )}
+
+        <View style={styles.textAndLikeRow}>
+          <AppText style={styles.commentText}>{item.text}</AppText>
+
+          {!isReply && (
+            <Pressable hitSlop={10} style={styles.likeButton} onPress={() => onLike(item.id)}>
+              <Icon name={"heart"} outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
+            </Pressable>
+          )}
+        </View>
 
         <View style={styles.commentFooter}>
           <AppText style={styles.commentTime}>{item.time}</AppText>
           <Pressable onPress={onReply} hitSlop={10}>
-            <AppText style={styles.replyButton}>Antworten</AppText>
+            <AppText style={styles.replyButton}>{t("Reply")}</AppText>
           </Pressable>
         </View>
       </View>
-
-      {!isReply && (
-        <Pressable hitSlop={10} style={{ paddingLeft: 10 }} onPress={() => onLike(item.id)}>
-          <Icon name="heart" outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
-        </Pressable>
-      )}
     </View>
   );
 });
 
 export default function CommentSheet({ isVisible, onClose, postId }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(mockComments);
+  const [comments, setComments] = useState(postComments);
   const [replyingTo, setReplyingTo] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge);
 
-  // Ref to focus textInput onReply
   const inputRef = useRef(null);
 
   const handleNavigate = useCallback(
@@ -88,12 +99,14 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
 
   const handlePostComment = () => {
     if (commentText.trim().length === 0) return;
+    console.log(activeStatusBadge);
     const newCommentData = {
       id: Date.now().toString(),
-      username: "Du",
+      username: t("You"),
+      badge: activeStatusBadge,
       avatar: "https://i.pravatar.cc/150?u=du",
       text: commentText,
-      time: "Gerade eben"
+      time: t("Just now")
     };
 
     if (replyingTo) {
@@ -148,19 +161,20 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
         )}
       </View>
     ),
-    [handleReply, handleLikeComment, handleNavigate]
+    [handleReply, handleLikeComment, handleNavigate, styles]
   );
 
   const renderEmptySection = () => (
     <View style={{ alignItems: "center", marginTop: 40 }}>
       <Icon name="chat" size={40} color={MyTheme.muted} />
-      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>Noch keine Kommentare. Schreib den ersten!</AppText>
+      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>
+        {t("No comments yet. Be the first to leave one!")}
+      </AppText>
     </View>
   );
 
   return (
-    <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={"Kommentare"}>
-      {/* Kommentar-Liste */}
+    <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={t("Comments")}>
       <View style={{ flex: 1 }}>
         <FlatList
           data={comments}
@@ -175,11 +189,10 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
         />
-        {/* Eingabefeld (Sticky at bottom) */}
         {replyingTo && (
           <View style={styles.replyBar}>
             <AppText style={styles.replyBarText}>
-              Antwort an{" "}
+              {t("Reply to")}{" "}
               <AppText bold style={{ fontSize: 14 }}>
                 @{replyingTo.username}
               </AppText>
@@ -196,7 +209,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
             <TextInput
               ref={inputRef}
               style={styles.textInput}
-              placeholder="Kommentieren..."
+              placeholder={t("Leave a comment...")}
               placeholderTextColor={MyTheme.muted}
               value={commentText}
               onChangeText={setCommentText}
@@ -210,7 +223,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
               disabled={commentText.trim().length === 0}
             >
               <AppText bold style={{ color: MyTheme.primaryAccent }}>
-                Posten
+                {t("Post")}
               </AppText>
             </Pressable>
           </View>
@@ -220,119 +233,141 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   );
 }
 
-const styles = StyleSheet.create({
-  listContent: {
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.xl
-  },
-  commentRow: {
-    flexDirection: "row",
-    paddingVertical: Spacing.sm
-  },
-  replyRow: {
-    marginBottom: Spacing.md
-  },
-  commentAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    marginRight: 12,
-    backgroundColor: "#F0F0F0"
-  },
-  replyAvatar: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    marginRight: 10
-  },
-  repliesContainer: {
-    marginLeft: 44,
-    borderLeftWidth: 1,
-    borderLeftColor: "rgba(255,255,255,0.05)",
-    paddingLeft: 12,
-    marginTop: -Spacing.sm,
-    marginBottom: Spacing.sm
-  },
-  replyBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.15)",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: MyTheme.separator
-  },
-  replyBarText: {
-    fontSize: 13,
-    color: MyTheme.muted
-  },
-  commentContainer: {
-    marginBottom: Spacing.sm
-  },
-  commentContent: {
-    flex: 1
-  },
-  commentText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: MyTheme.text
-  },
-  commentTime: {
-    fontSize: 12,
-    color: MyTheme.muted
-  },
-  commentFooter: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 4,
-    gap: Spacing.md
-  },
-  replyButton: {
-    fontSize: 12,
-    color: MyTheme.muted
-  },
-  inputSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: MyTheme.separator,
-    backgroundColor: MyTheme.background
-  },
-  inputAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: Spacing.borderRadius.full,
-    marginRight: 12,
-    marginBottom: 2
-  },
-  inputBubble: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: Spacing.borderRadius.lg,
-    paddingHorizontal: Spacing.md,
-    minHeight: 36,
-    maxHeight: 120
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 14,
-    color: MyTheme.text,
-    padding: 0,
-    includeFontPadding: false,
-    textAlignVertical: "center",
-    lineHeight: 18,
-    paddingTop: Platform.OS === "ios" ? 9 : 8,
-    paddingBottom: Platform.OS === "ios" ? 9 : 8,
-    outlineStyle: "none"
-  },
-  postButton: {
-    height: 36,
-    justifyContent: "center"
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    listContent: {
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.lg,
+      paddingBottom: Spacing.xl
+    },
+    commentRow: {
+      flexDirection: "row",
+      paddingVertical: Spacing.sm,
+      width: "100%"
+    },
+    replyRow: {
+      marginBottom: Spacing.sm
+    },
+    commentAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: "#F0F0F0"
+    },
+    replyAvatar: {
+      width: 28,
+      height: 28,
+      borderRadius: 14
+    },
+    repliesContainer: {
+      marginLeft: 44,
+      borderLeftWidth: 1,
+      borderLeftColor: theme.glas,
+      paddingLeft: 12,
+      marginTop: -Spacing.sm,
+      marginBottom: Spacing.sm
+    },
+    replyBar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.15)",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: 8,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: theme.separator
+    },
+    replyBarText: {
+      fontSize: 13,
+      color: theme.muted
+    },
+    commentContainer: {
+      marginBottom: Spacing.sm
+    },
+    commentContent: {
+      flex: 1
+    },
+    commentText: {
+      flex: 1,
+      fontSize: 14,
+      lineHeight: 20,
+      color: theme.text
+    },
+    commentTime: {
+      fontSize: 12,
+      color: theme.muted
+    },
+    commentFooter: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 6,
+      gap: Spacing.md
+    },
+    replyButton: {
+      fontSize: 12,
+      color: theme.muted
+    },
+    inputSection: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.sm,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: theme.separator,
+      backgroundColor: theme.background
+    },
+    inputAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: Spacing.borderRadius.full,
+      marginRight: 12,
+      marginBottom: 2
+    },
+    inputBubble: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: theme.glas,
+      borderRadius: Spacing.borderRadius.lg,
+      paddingHorizontal: Spacing.md,
+      minHeight: 36,
+      maxHeight: 120
+    },
+    textInput: {
+      flex: 1,
+      fontSize: 14,
+      color: theme.text,
+      padding: 0,
+      includeFontPadding: false,
+      textAlignVertical: "center",
+      lineHeight: 18,
+      paddingTop: Platform.OS === "ios" ? 9 : 8,
+      paddingBottom: Platform.OS === "ios" ? 9 : 8,
+      outlineStyle: "none"
+    },
+    postButton: {
+      height: 36,
+      justifyContent: "center"
+    },
+    avatarColumn: {
+      marginRight: 12
+    },
+    likeColumn: {
+      paddingLeft: 10,
+      alignItems: "flex-end",
+      justifyContent: "flex-start",
+      paddingTop: 2
+    },
+    usernameText: {
+      marginBottom: 2
+    },
+    textAndLikeRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start"
+    },
+    likeButton: {
+      paddingLeft: 12,
+      paddingTop: 2
+    }
+  });

@@ -1,8 +1,7 @@
 import { View, StyleSheet, Pressable, KeyboardAvoidingView, Platform, Dimensions, Image, Alert } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
@@ -11,10 +10,16 @@ import AppInput from "@/components/ui/AppInput";
 
 // Import your Appwrite account instance
 import { account } from "@/lib/appwrite";
+import PasswordInput from "@/components/auth/PasswordInput";
+import AuthHeader from "@/components/auth/AuthHeader";
+import AuthFooter from "@/components/auth/AuthFooter";
+import BaseCard from "@/components/ui/BaseCard";
+import { useTranslation } from "react-i18next";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
-  const screenWidth = Dimensions.get("window").width;
+  const MyTheme = useAppTheme();
+  const { t } = useTranslation("auth");
   const router = useRouter(); // For navigation after successful login
 
   const [emailInput, setEmailInput] = useState("");
@@ -49,25 +54,17 @@ export default function LoginScreen() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
         <ScreenWrapper scrollable>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.appIcon}>
-              <Image
-                source={require("@/../public/assets/adaptive-icon.png")}
-                style={{ width: logoWidth, height: logoHeight }}
-                resizeMode="contain"
-              />
-            </View>
-            <AppText type="h1" style={styles.headerText}>
-              Welcome back
-            </AppText>
-            <AppText type="caption" style={styles.subtitle}>
-              Log in to continue
-            </AppText>
-          </View>
+          <AuthHeader showImageLogo={true} subtitle={t("Log in to continue")} />
 
-          {/* Main */}
-          <View style={styles.card}>
+          <BaseCard
+            style={{
+              backgroundColor: MyTheme.glas,
+              borderWidth: 0,
+              marginHorizontal: Spacing.lg,
+              paddingVertical: Spacing.xl,
+              gap: Spacing.md
+            }}
+          >
             <AppInput
               value={emailInput}
               onChangeText={setEmailInput}
@@ -114,37 +111,3 @@ export default function LoginScreen() {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    marginVertical: Spacing.xl,
-    alignItems: "center"
-  },
-  appIcon: {
-    marginTop: Spacing.lg
-  },
-  headerText: {
-    marginTop: Spacing.xs
-  },
-  subtitle: {
-    marginTop: Spacing.sm,
-    opacity: 0.7
-  },
-  card: {
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    paddingVertical: Spacing.xl,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Spacing.borderRadius.lg,
-    marginHorizontal: Spacing.lg,
-    gap: Spacing.md
-  },
-  forgotPassword: {
-    alignItems: "center",
-    marginTop: Spacing.md
-  },
-  footer: {
-    marginTop: "auto",
-    alignItems: "center",
-    marginBottom: Spacing.lg
-  }
-});

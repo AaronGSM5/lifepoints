@@ -1,13 +1,17 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { useTranslation } from "react-i18next";
 
 export default function LegalDetailScreen() {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const { type } = useLocalSearchParams();
+  const { t } = useTranslation("settings");
 
   const LEGAL_CONTENT = {
     impressum: {
@@ -106,29 +110,30 @@ export default function LegalDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: Spacing.xl
-  },
-  header: {
-    marginBottom: Spacing.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: MyTheme.text,
-    paddingBottom: Spacing.md
-  },
-  dateText: {
-    marginTop: Spacing.xs
-  },
-  section: {
-    marginBottom: Spacing.lg
-  },
-  heading: {
-    marginBottom: Spacing.sm
-  },
-  bodyText: {
-    fontSize: 14
-  },
-  spacer: {
-    height: Spacing.xl * 2
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: Spacing.xl
+    },
+    header: {
+      marginBottom: Spacing.xl,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.text,
+      paddingBottom: Spacing.md
+    },
+    dateText: {
+      marginTop: Spacing.xs
+    },
+    section: {
+      marginBottom: Spacing.lg
+    },
+    heading: {
+      marginBottom: Spacing.sm
+    },
+    bodyText: {
+      fontSize: 14
+    },
+    spacer: {
+      height: Spacing.xl * 2
+    }
+  });

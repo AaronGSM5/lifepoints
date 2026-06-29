@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Pressable, StyleSheet, Animated, ActivityIndicator, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "./AppText";
 
@@ -20,13 +20,14 @@ export default function AppButton({
   borderStyle,
   bgColor
 }) {
-  // Animation für den physikalischen "Druck"-Effekt
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
       toValue: 0.95,
-      speed: 20,
+      speed: 500,
       bounciness: 10,
       useNativeDriver: true
     }).start();
@@ -67,7 +68,6 @@ export default function AppButton({
           (disabled || loading) && styles.disabled
         ]}
       >
-        {/* Hintergrund: Gradient nur bei der Primary-Variante */}
         {isPrimary && !disabled && !loading && !bgColor && (
           <LinearGradient
             colors={[MyTheme.secondary, MyTheme.primary]}
@@ -115,44 +115,43 @@ export default function AppButton({
   );
 }
 
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: Spacing.borderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    position: "relative"
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1,
-    elevation: 1
-  },
-  // Größen-Definitionen
-  sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
-  md: { paddingVertical: Spacing.sm + 4, paddingHorizontal: Spacing.lg },
-  lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
+const getStyles = (theme) =>
+  StyleSheet.create({
+    base: {
+      borderRadius: Spacing.borderRadius.full,
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
+      position: "relative"
+    },
+    content: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 1,
+      elevation: 1
+    },
+    sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
+    md: { paddingVertical: Spacing.sm + 4, paddingHorizontal: Spacing.lg },
+    lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
 
-  // Varianten-Styles
-  secondary: {
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    backgroundColor: "rgba(255,255,255,0.08)"
-  },
-  outline: {
-    borderWidth: 1,
-    borderColor: MyTheme.primaryAccent
-  },
-  ghost: {
-    backgroundColor: "transparent"
-  },
-  disabled: {
-    backgroundColor: "#2A2A2A",
-    opacity: 0.5
-  },
-  iconWrapper: {
-    marginRight: Spacing.sm
-  }
-});
+    secondary: {
+      borderWidth: 1,
+      borderColor: "rgba(255,255,255,0.05)",
+      backgroundColor: "rgba(255, 255, 255, 0.08)"
+    },
+    outline: {
+      borderWidth: 1,
+      borderColor: theme.primaryAccent
+    },
+    ghost: {
+      backgroundColor: "transparent"
+    },
+    disabled: {
+      backgroundColor: "#2A2A2A",
+      opacity: 0.5
+    },
+    iconWrapper: {
+      marginRight: Spacing.sm
+    }
+  });

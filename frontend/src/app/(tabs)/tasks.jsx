@@ -1,125 +1,225 @@
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
-import FYTaskItem from "@/components/tasks/FYTaskItem";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
-import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useRouter } from "expo-router";
-import React, { useMemo } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
-import { Skeleton } from "moti/skeleton";
-import CategoryButtons from "@/components/ui/CategoryButtons";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { StyleSheet, View, Animated, FlatList } from "react-native";
 import { useTasks } from "@/hooks/useTasks";
+import useStore from "@/store/useStore";
+import InstaTrackingModal from "@/components/home/InstaTrackingModal";
+import { useTranslation } from "react-i18next";
+import { triggerHaptic } from "@/utils/haptics";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import EventHero from "@/components/home/EventHero";
+import AppInput from "@/components/ui/AppInput";
+import NavigationRow from "@/components/tasks/NavigationRow";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import SectionHeader from "@/components/ui/SectionHeader";
 
-const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-const SKELETON_FY_TASKS = [1, 2, 3];
+// const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
+// const SKELETON_FY_TASKS = [1, 2, 3];
 
 const TasksScreen = () => {
   const router = useRouter();
-  const bottomPadding = useFloatingNavbarPadding();
-  const {
-    tasks,
-    recommendedTasks,
-    categories,
-    activeCat,
-    setActiveCat,
-    searchQuery,
-    setSearchQuery,
-    isLoading,
-    isRefreshing,
-    refreshTasks
-  } = useTasks();
+  const { t } = useTranslation(["tasks", "common"]);
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [taskToTrack, setTaskToTrack] = useState(null);
+  const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
+  const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
+  // const isDarkMode = useStore((state) => state.isDarkMode);
+  const trackTask = useStore((state) => state.trackTask);
+  const completeTask = useStore((state) => state.completeTask);
+  const { tasks, categories, isLoading, isRefreshing, refreshTasks } = useTasks();
+  const toolbarHeight = useToolbarPadding();
 
-  const skeletonProps = {
-    colorMode: "dark",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
+  const styles = getStyles();
+  // const skeletonProps = {
+  //   colorMode: isDarkMode ? "dark" : "light",
+  //   transition: { type: "timing", duration: 1500 },
+  //   show: isLoading
+  // };
+
+  const handleInstaTrackingConfirm = (dontShowAgain) => {
+    setInstaTrackingModalVisible(false);
+
+    if (dontShowAgain) {
+      disableInstaTrackingModal();
+    }
+
+    if (taskToTrack) {
+      completeTask(taskToTrack);
+      setTaskToTrack(null);
+    }
   };
 
-  const renderHeader = useMemo(
-    () => (
-      <View>
-        <Skeleton {...skeletonProps} width="100%" radius={Spacing.borderRadius.lg}>
-          <AppInput icon="search" placeholder="Search tasks..." value={searchQuery} onChangeText={setSearchQuery} />
-        </Skeleton>
+  const listData = useMemo(() => {
+    const topElements = [
+      { id: "event_banner", type: "event_banner" },
+      { id: "search_bar", type: "search_bar" }
+    ];
 
-        <SectionHeader title={"For You"} rightLabel={"See more"} onRightPress={() => {}} isLoading={isLoading} />
+    // if (isLoading) {
+    //   const skeletonRows = [1, 2, 3].map((i) => ({
+    //     id: `skeleton_row_${i}`,
+    //     type: "category_row",
+    //     title: "Lade..",
+    //     data: SKELETON_TASKS
+    //   }));
+    //   return [...topElements, ...skeletonRows];
+    // }
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselContainer}>
-          {isLoading
-            ? SKELETON_FY_TASKS.map((item, index) => <FYTaskItem key={item.id || index} isLoading={isLoading} />)
-            : recommendedTasks.map((task, index) => (
-                <FYTaskItem key={task.id || index} {...task} isLoading={isLoading} />
-              ))}
-        </ScrollView>
+    const groupedCategories = categories
+      .map((cat) => {
+        const categoryTasks = tasks.filter((task) => task.category === cat.id);
+        return {
+          id: `cat_row_${cat.id}`,
+          type: "category_row",
+          title: cat.label,
+          data: categoryTasks
+        };
+      })
+      .filter((cat) => cat.data.length > 0);
 
-        <SectionHeader
-          title={
-            activeCat.toLowerCase() === "all"
-              ? "All Tasks"
-              : `${activeCat.charAt(0).toUpperCase() + activeCat.slice(1)} Tasks`
-          }
+    return [...topElements, ...groupedCategories];
+  }, [isLoading, tasks, categories]);
+
+  const renderHorizontalTaskItem = useCallback(
+    ({ item }) => (
+      <View style={styles.horizontalTaskContainer}>
+        <TaskItem
+          id={item.id}
           isLoading={isLoading}
-        />
-
-        <CategoryButtons
-          categories={categories}
-          activeCat={activeCat}
-          setActiveCat={setActiveCat}
-          skeletonProps={skeletonProps}
-          isLoading={isLoading}
+          title={item.title}
+          description={item.description}
+          lp={item.lp}
+          progress={item.progress}
+          status={item.limit}
+          icon={item.icon}
+          requiresInput={item.requiresInput}
+          onTrack={() => trackTask(item.id)}
+          onInstaTrack={() => {
+            if (showInstaTrackingModal) {
+              setTaskToTrack(item.id);
+              setInstaTrackingModalVisible(true);
+            } else {
+              triggerHaptic();
+              completeTask(item.id);
+            }
+          }}
+          onNavigate={() => router.push(`task/${item.id}`)}
+          isExpanded={expandedTaskId === item.id}
+          onToggleExpand={() => setExpandedTaskId(expandedTaskId === item.id ? null : item.id)}
         />
       </View>
     ),
-    [isLoading, activeCat, categories, recommendedTasks, searchQuery]
+    [isLoading, expandedTaskId, showInstaTrackingModal, trackTask, completeTask, router]
+  );
+
+  const renderItem = useCallback(
+    ({ item }) => {
+      switch (item.type) {
+        case "event_banner":
+          return (
+            <View style={[styles.paddedContent, { marginTop: Spacing.md + 44 + Spacing.md }]}>
+              <EventHero imageSource={require("../../../public/assets/events/sportevent.png")} isLoading={isLoading} />
+            </View>
+          );
+
+        case "search_bar":
+          return (
+            <View style={styles.paddedContent}>
+              <AppInput placeholder={"Search..."} />
+            </View>
+          );
+
+        case "category_row":
+          return (
+            <View style={styles.categoryRow}>
+              <SectionHeader title={item.title} isLoading={isLoading} style={styles.paddedContent} />
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={item.data}
+                keyExtractor={(t) => t.id.toString()}
+                renderItem={renderHorizontalTaskItem}
+                contentContainerStyle={styles.horizontalListPadding}
+              />
+            </View>
+          );
+
+        default:
+          return null;
+      }
+    },
+    [isLoading, renderHorizontalTaskItem, t]
   );
 
   const renderFooter = () => (
-    <View style={{ marginTop: Spacing.md }}>
+    <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
       <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
-        Can't find what you're searching for?
+        {t("Can't find what you're searching for?")}
       </AppText>
       <SuggestTaskInput />
     </View>
   );
 
   return (
-    <ScreenWrapper scrollable={false}>
-      <FlatList
-        data={isLoading ? SKELETON_TASKS : tasks}
-        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item.id.toString())}
-        ListHeaderComponent={renderHeader}
+    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false}>
+      <AnimatedScreenList
+        scrollY={scrollY}
+        data={listData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
         ListFooterComponent={!isLoading ? renderFooter() : null}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottomPadding }}
-        ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
         onRefresh={refreshTasks}
         refreshing={isRefreshing}
-        renderItem={({ item }) => {
-          return (
-            <TaskItem
-              isLoading={isLoading}
-              title={item.title}
-              lp={item.lp}
-              progress={item.progress}
-              status={item.limit}
-              icon={item.icon}
-              onPress={() => router.push(`task/${item.id}`)}
-            />
-          );
+        withTopPadding={false}
+      />
+      <View
+        style={{
+          position: "absolute",
+          top: toolbarHeight,
+          left: 0,
+          right: 0,
+          zIndex: 10
         }}
+        pointerEvents="box-none"
+      >
+        <NavigationRow />
+      </View>
+      <InstaTrackingModal
+        visible={instaTrackingModalVisible}
+        onClose={() => setInstaTrackingModalVisible(false)}
+        onConfirm={handleInstaTrackingConfirm}
       />
     </ScreenWrapper>
   );
 };
 
-const styles = StyleSheet.create({
-  carouselContainer: {
-    gap: Spacing.md,
-    marginBottom: Spacing.lg
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    paddedContent: {
+      paddingHorizontal: Spacing.md
+    },
+    categoryRow: {
+      marginBottom: Spacing.lg
+    },
+    categoryTitle: {
+      paddingHorizontal: Spacing.md,
+      marginBottom: Spacing.sm,
+      fontWeight: "bold"
+    },
+    horizontalListPadding: {
+      paddingHorizontal: Spacing.md
+    },
+    horizontalTaskContainer: {
+      width: 280,
+      marginRight: Spacing.md
+    }
+  });
 
 export default TasksScreen;

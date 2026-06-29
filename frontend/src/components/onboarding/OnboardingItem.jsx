@@ -7,7 +7,7 @@ const OnboardingItem = ({ item }) => {
   return (
     <View style={[styles.slide, { width }]}>
       <View style={styles.imageContainer}>
-        <AppText type="h1" style={{ fontSize: 80 }}>
+        <AppText type="h1" style={{ fontSize: 80, lineHeight: 100 }}>
           {item.icon}
         </AppText>
       </View>

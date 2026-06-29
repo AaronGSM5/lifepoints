@@ -2,40 +2,62 @@ import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import BaseCard from "@/components/ui/BaseCard";
 import { Skeleton } from "moti/skeleton";
+import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
-const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
+const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("tasks");
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const completeTask = useStore((state) => state.completeTask);
   if (isLoading) {
     return (
       <BaseCard style={styles.card} padding={0}>
         {/* Image */}
-        <Skeleton
-          colorMode="dark"
-          width="100%"
-          height={120}
-          radius={0}
-          transition={{ type: "timing", duration: 1500 }}
-        />
+        <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width="100%"
+            height={"100%"}
+            radius={0}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
 
         <View style={styles.cardContent}>
           <View style={styles.cardInfoRow}>
             <View style={{ flex: 1, paddingRight: Spacing.sm }}>
-              <View style={{ marginBottom: 8 }}>
-                <Skeleton colorMode="dark" width="80%" height={20} transition={{ type: "timing", duration: 1500 }} />
-              </View>
               <View style={{ marginBottom: 4 }}>
-                <Skeleton colorMode="dark" width="100%" height={14} transition={{ type: "timing", duration: 1500 }} />
+                <Skeleton
+                  colorMode={isDarkMode ? "dark" : "light"}
+                  width="80%"
+                  height={20}
+                  transition={{ type: "timing", duration: 1500 }}
+                />
               </View>
-              <Skeleton colorMode="dark" width="60%" height={14} transition={{ type: "timing", duration: 1500 }} />
+              <Skeleton
+                colorMode={isDarkMode ? "dark" : "light"}
+                width="80%"
+                height={14}
+                transition={{ type: "timing", duration: 1500 }}
+              />
             </View>
-            <Skeleton colorMode="dark" width={40} height={20} transition={{ type: "timing", duration: 1500 }} />
+            <Skeleton
+              colorMode={isDarkMode ? "dark" : "light"}
+              width={60}
+              height={22}
+              transition={{ type: "timing", duration: 1500 }}
+            />
           </View>
           {/* Button */}
           <Skeleton
-            colorMode="dark"
+            colorMode={isDarkMode ? "dark" : "light"}
             width="100%"
             height={44}
             radius={Spacing.borderRadius.lg}
@@ -49,11 +71,12 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
   const renderBadge = () => {
     if (!badge) return null;
     return (
-      <View style={styles.badgeHot}>
-        <AppText bold type="caption" style={{ color: MyTheme.text }}>
-          {badge}
-        </AppText>
-      </View>
+      <AppBadge
+        variant={"primary"}
+        label={t(badge)}
+        textStyle={{ color: MyTheme.text }}
+        style={{ position: "absolute", right: Spacing.sm, top: Spacing.sm }}
+      />
     );
   };
 
@@ -83,42 +106,37 @@ const FYTaskItem = ({ title, description, lp, badge, image, isLoading }) => {
           </AppText>
         </View>
 
-        <AppButton title={"Activate"} bgColor={MyTheme.primaryAccent} />
+        <AppButton title={t("Activate")} bgColor={MyTheme.primaryAccent} onPress={() => completeTask(id)} />
       </View>
     </BaseCard>
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    width: 280,
-    height: 280
-  },
-  cardImage: {
-    height: 120,
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    padding: Spacing.sm
-  },
-  badgeHot: {
-    backgroundColor: MyTheme.primaryAccent,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    borderRadius: Spacing.borderRadius.md
-  },
-  cardContent: {
-    flex: 1,
-    padding: Spacing.md,
-    justifyContent: "space-between"
-  },
-  cardInfoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  lpText: {
-    color: MyTheme.primaryAccent
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    card: {
+      width: 280,
+      height: 280
+    },
+    cardImage: {
+      height: 120,
+      width: "100%",
+      justifyContent: "flex-start",
+      alignItems: "flex-end",
+      padding: Spacing.sm
+    },
+    cardContent: {
+      flex: 1,
+      padding: Spacing.md,
+      justifyContent: "space-between"
+    },
+    cardInfoRow: {
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    lpText: {
+      color: theme.primaryAccent
+    }
+  });
 
 export default FYTaskItem;

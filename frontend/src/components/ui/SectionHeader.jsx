@@ -4,8 +4,9 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Skeleton } from "moti/skeleton";
+import useStore from "@/store/useStore";
 
 const SectionHeader = ({
   title,
@@ -15,17 +16,20 @@ const SectionHeader = ({
   rightLabel,
   rightIcon,
   onRightPress,
-  rightLabelColor = MyTheme.primaryAccent,
+  rightLabelColor = "rgb(47, 196, 146)",
   style,
   isLoading
 }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <View style={[styles.container, style]}>
         <View style={styles.leftGroup}>
           {icon && (
             <Skeleton
-              colorMode="dark"
+              colorMode={isDarkMode ? "dark" : "light"}
               width={24}
               height={24}
               radius="round"
@@ -33,7 +37,7 @@ const SectionHeader = ({
             />
           )}
           <Skeleton
-            colorMode="dark"
+            colorMode={isDarkMode ? "dark" : "light"}
             width={140}
             height={24}
             radius={4}
@@ -43,7 +47,7 @@ const SectionHeader = ({
 
         {rightLabel && (
           <Skeleton
-            colorMode="dark"
+            colorMode={isDarkMode ? "dark" : "light"}
             width={60}
             height={24}
             radius={4}
@@ -75,18 +79,19 @@ const SectionHeader = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.md
-  },
-  leftGroup: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm
-  }
-});
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: Spacing.md
+    },
+    leftGroup: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm
+    }
+  });
 
 export default SectionHeader;

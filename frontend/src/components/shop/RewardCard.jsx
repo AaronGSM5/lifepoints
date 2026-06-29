@@ -1,13 +1,21 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
 import { Skeleton } from "moti/skeleton";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
 import { Icon } from "../icons/Icon";
 import BaseCard from "../ui/BaseCard";
+import AppBadge from "../ui/AppBadge";
+import useStore from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 
-const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("shop");
+  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.gridCard} padding={0}>
@@ -25,12 +33,18 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
   }
 
   return (
-    <BaseCard style={styles.gridCard} padding={0} onPress={onPress}>
+    <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
-        <Image source={{ uri: image }} style={styles.cardImage} />
-        <View style={styles.cardIconBadge}>
-          <Icon name={icon} size={14} color={MyTheme.text} />
-        </View>
+        <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
+        <AppBadge
+          iconNode={<Icon name={icon} size={14} color={!isDarkMode && "rgb(0, 0, 0)"} />}
+          style={{
+            position: "absolute",
+            bottom: Spacing.sm,
+            right: Spacing.sm,
+            backgroundColor: MyTheme.glas
+          }}
+        />
       </View>
 
       <View style={styles.cardContent}>
@@ -43,19 +57,23 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
 
         <View style={styles.cardFooter}>
           <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
-            {points} PTS
+            {points} LP
           </AppText>
 
           {isLocked ? (
-            <View style={styles.lockedBadge}>
-              <AppText bold type="caption" style={{ fontSize: 10 }}>
-                Locked
-              </AppText>
-            </View>
+            <AppBadge
+              label={t("Locked")}
+              textStyle={{ fontSize: 10, color: MyTheme.text }}
+              style={{ backgroundColor: MyTheme.muted }}
+            />
           ) : (
-            <View style={styles.miniFab}>
-              <Icon name="shopping" size={16} color={MyTheme.primaryAccent} />
-            </View>
+            <AppBadge
+              iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
+              style={{
+                backgroundColor: MyTheme.background,
+                borderColor: isDarkMode ? MyTheme.secondary : MyTheme.separator
+              }}
+            />
           )}
         </View>
       </View>
@@ -65,68 +83,42 @@ const RewardCard = ({ image, brand, title, points, icon, isLocked, onPress, skel
   );
 };
 
-const styles = StyleSheet.create({
-  gridCard: {
-    flex: 1
-  },
-  cardImageContainer: {
-    height: 100,
-    backgroundColor: "#333"
-  },
-  cardImage: {
-    width: "100%",
-    height: "100%"
-  },
-  cardIconBadge: {
-    position: "absolute",
-    bottom: Spacing.sm,
-    right: Spacing.sm,
-    width: 28,
-    height: 28,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  cardContent: {
-    padding: Spacing.sm,
-    gap: 2
-  },
-  cardBrand: {
-    color: MyTheme.primaryAccent,
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.5
-  },
-  titleText: {
-    minHeight: 40
-  },
-  cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: Spacing.xs
-  },
-  miniFab: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: MyTheme.background,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: MyTheme.secondary
-  },
-  lockedBadge: {
-    backgroundColor: "#2A2A2A",
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-    borderRadius: 4
-  },
-  lockedOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(18, 18, 18, 0.6)"
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    gridCard: {
+      flex: 1
+    },
+    cardImageContainer: {
+      height: 100,
+      backgroundColor: "#333"
+    },
+    cardImage: {
+      width: "100%",
+      height: "100%"
+    },
+    cardContent: {
+      padding: Spacing.sm,
+      gap: 2
+    },
+    cardBrand: {
+      color: theme.primaryAccent,
+      fontSize: 10,
+      textTransform: "uppercase",
+      letterSpacing: 0.5
+    },
+    titleText: {
+      minHeight: 40
+    },
+    cardFooter: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: Spacing.xs
+    },
+    lockedOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(18, 18, 18, 0.6)"
+    }
+  });
 
 export default RewardCard;

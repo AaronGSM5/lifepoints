@@ -1,8 +1,9 @@
 import { Animated, Text } from "react-native";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Typography } from "@/constants/Typography";
 
 const AppText = ({ children, type = "body", bold = false, animated = false, style, ...props }) => {
+  const MyTheme = useAppTheme();
   const getFontFamily = () => {
     if (bold) return "Inter-Bold";
 

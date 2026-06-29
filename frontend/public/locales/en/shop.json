@@ -1,0 +1,25 @@
+{
+  // WalletCard
+  "YOUR POINTS": "YOUR POINTS",
+  "LP until Gold Tier": "LP until Gold Tier",
+  "Featured Reward": "Featured Reward",
+  "categories": {
+    "all": "All",
+    "fashion": "Fashion",
+    "food": "Food",
+    "tech": "Tech",
+    "entertainment": "Entertainment",
+    "rewards": "Rewards"
+  },
+  // FeaturedRewardCard
+  "BEST VALUE": "BEST VALUE",
+  "$10 Gift Card": "$10 Gift Card",
+  "Spotify Individual Plan": "Spotify Individual Plan",
+  "Redeem": "Redeem",
+  // Catalog
+  "For You": "For You",
+  "Rewards": "Rewards",
+  "Locked": "Locked",
+  "Description": "Description",
+  "Redeem Now": "Redeem Now"
+}

@@ -1,19 +1,19 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import NotificationEntry from "@/components/notifications/NotificationEntry";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { mockNotifications } from "@/constants/MockData";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { notificationItems } from "@/mocks/NotificationData";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationsScreen() {
+  const { t } = useTranslation("common");
   return (
     <ScreenWrapper scrollable={false}>
-      <View style={styles.header}>
-        <AppText type="h1">Mitteilungen</AppText>
-      </View>
+      <ScreenTitle title={t("Announcements")} />
 
       <FlatList
-        data={mockNotifications}
+        data={notificationItems}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         renderItem={({ item }) => <NotificationEntry notification={item} />}
         contentContainerStyle={styles.listContainer}
@@ -24,9 +24,6 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    marginBottom: Spacing.lg
-  },
   listContainer: {
     paddingBottom: Spacing.xl,
     gap: Spacing.md

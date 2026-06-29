@@ -1,14 +1,18 @@
 import { View, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import { MyTheme } from "@/constants/Colors";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationEntry({ notification }) {
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+  const { t } = useTranslation("common");
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.containerPressed]}
-      onPress={() => console.log("Notification clicked:", notification.title)}
+      onPress={() => console.log("Notification clicked:", t(notification.title))}
     >
       <View style={styles.iconContainer}>
         <AppText type="body">✨</AppText>
@@ -17,47 +21,48 @@ export default function NotificationEntry({ notification }) {
       <View style={{ flex: 1 }}>
         <View style={styles.titleRow}>
           <AppText type="body" bold style={{ flex: 1 }}>
-            {notification.title}
+            {t(notification.title)}
           </AppText>
-          <AppText type="caption">Vor 2h</AppText>
+          <AppText type="caption">{notification.timestamp}</AppText>
         </View>
 
         <AppText type="caption" numberOfLines={2}>
-          {notification.message}
+          {t(notification.message)}
         </AppText>
       </View>
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: MyTheme.primary,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: Spacing.borderRadius.md,
-    borderWidth: 1,
-    borderColor: MyTheme.secondary,
-    alignItems: "center"
-  },
-  containerPressed: {
-    opacity: 0.7,
-    transform: [{ scale: 0.98 }]
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: MyTheme.secondary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.md
-  },
-  titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 4
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      backgroundColor: theme.primary,
+      paddingVertical: Spacing.sm,
+      paddingHorizontal: Spacing.md,
+      borderRadius: Spacing.borderRadius.md,
+      borderWidth: 1,
+      borderColor: theme.secondary,
+      alignItems: "center"
+    },
+    containerPressed: {
+      opacity: 0.7,
+      transform: [{ scale: 0.98 }]
+    },
+    iconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: theme.secondary,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: Spacing.md
+    },
+    titleRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 4
+    }
+  });
