@@ -41,7 +41,7 @@ export default function LoginScreen() {
     try {
       await account.createEmailPasswordSession(emailInput, passwordInput);
 
-      router.replace("/");
+      router.replace("/home");
     } catch (error) {
       console.error("Login failed:", error);
       Alert.alert("Login Failed", error.message || "Something went wrong. Please try again.");
