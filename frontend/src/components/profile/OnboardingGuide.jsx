@@ -11,6 +11,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import useStore from "@/store/useStore";
 import { checkQuestCompletion } from "@/utils/onboardingGuideHelpers";
 import { useTranslation } from "react-i18next";
+import AppButton from "../ui/AppButton";
 
 const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
@@ -19,6 +20,8 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
   const profile = useStore((state) => state.profile);
   const activities = useStore((state) => state.activities);
   const claimOnboardingReward = useStore((state) => state.claimOnboardingReward);
+  const setHasCompletedOnboarding = useStore((state) => state.setHasCompletedOnboarding);
+  const hasCompletedOnboarding = useStore((state) => state.hasCompletedOnboarding);
   const tutorialSteps = onboardingGuideSteps.map((quest) => ({
     ...quest,
     completed: checkQuestCompletion(quest.id, profile, activities)
@@ -39,9 +42,8 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
     });
   }, [completedCount, profile.claimedQuests]);
 
-  if (isAllCompleted && !isLoading) {
-    return null;
-  }
+  if (isAllCompleted && !isLoading) return null;
+  if (hasCompletedOnboarding === true) return null;
 
   if (isLoading) {
     return (
@@ -81,13 +83,24 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
     <BaseCard style={{ marginTop: Spacing.xl }}>
       <View style={styles.guideHeader}>
         <AppText type="h2">{t("Your Guide")}</AppText>
-        <AppText type="caption">
-          {completedCount} {t("of")} {tutorialSteps.length} {t("done")}
-        </AppText>
+        <AppButton
+          variant="ghost"
+          icon={<Icon name={"close"} />}
+          iconPosition="center"
+          size="sm"
+          style={{ width: Spacing.lg }}
+          onPress={() => setHasCompletedOnboarding(true)}
+        />
       </View>
 
       <View style={styles.progressBar}>
         <View style={[styles.progressInner, { width: `${progress * 100}%` }]} />
+      </View>
+
+      <View style={styles.progressTextContainer}>
+        <AppText type="caption">
+          {completedCount} {t("of")} {tutorialSteps.length} {t("done")}
+        </AppText>
       </View>
 
       <View style={styles.questList}>
@@ -146,12 +159,15 @@ const getStyles = (theme) =>
       height: 8,
       backgroundColor: "#eee",
       borderRadius: Spacing.borderRadius.sm,
-      marginBottom: Spacing.lg,
+      marginBottom: Spacing.sm,
       overflow: "hidden"
     },
     progressInner: {
       height: "100%",
       backgroundColor: theme.primaryAccent
+    },
+    progressTextContainer: {
+      alignItems: "flex-end"
     },
     questList: {
       gap: Spacing.sm
