@@ -11,6 +11,7 @@ import "@/utils/i18n";
 import TrophyPopup from "@/components/ui/TrophyPopup";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,6 +44,8 @@ function TopNotchMask() {
     />
   );
 }
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -77,28 +80,30 @@ export default function RootLayout() {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
-        <StatusBar style={"auto"} translucent backgroundColor="transparent" />
+        <QueryClientProvider client={queryClient}>
+          <StatusBar style={"auto"} translucent backgroundColor="transparent" />
 
-        <TopNotchMask />
+          <TopNotchMask />
 
-        <TrophyPopup />
+          <TrophyPopup />
 
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            gestureEnabled: true,
-            gestureDirection: "horizontal",
-            animation: Platform.OS === "ios" ? "default" : "slide_from_right"
-          }}
-        >
-          <Stack.Screen name="(onboarding)" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="auth" />
-          <Stack.Screen name="post/create" />
-          <Stack.Screen name="notifications" />
-          <Stack.Screen name="settings" />
-          <Stack.Screen name="journal" />
-        </Stack>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              gestureEnabled: true,
+              gestureDirection: "horizontal",
+              animation: Platform.OS === "ios" ? "default" : "slide_from_right"
+            }}
+          >
+            <Stack.Screen name="(onboarding)" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="auth" />
+            <Stack.Screen name="post/create" />
+            <Stack.Screen name="notifications" />
+            <Stack.Screen name="settings" />
+            <Stack.Screen name="journal" />
+          </Stack>
+        </QueryClientProvider>
       </SafeAreaProvider>
     </View>
   );
