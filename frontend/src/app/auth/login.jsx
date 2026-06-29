@@ -93,7 +93,7 @@ export default function LoginScreen() {
                 Forgot password?
               </AppText>
             </Pressable>
-          </View>
+          </BaseCard>
 
           {/* Footer */}
           <View style={styles.footer}>
