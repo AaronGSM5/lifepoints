@@ -66,7 +66,7 @@ const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) =
         <AppText type="body" bold style={styles.title} numberOfLines={1}>
           {t(title)}
         </AppText>
-        <AppText type="caption" style={styles.description} numberOfLines={1}>
+        <AppText type="caption" style={styles.description} numberOfLines={2}>
           {t(description)}
         </AppText>
       </View>
@@ -106,7 +106,12 @@ const getStyles = (theme) =>
       justifyContent: "center"
     },
     title: {
+      fontSize: 18,
       marginBottom: Spacing.xs
+    },
+    description: {
+      lineHeight: 20,
+      height: 40
     },
     lpText: {
       color: theme.primaryAccent
