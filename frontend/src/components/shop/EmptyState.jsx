@@ -4,6 +4,7 @@ import AppText from "../ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppButton from "../ui/AppButton";
+import { capitalize } from "@/utils/helpers";
 
 const EmptyState = ({ activeCat, setActiveCat }) => {
   const MyTheme = useAppTheme();
@@ -17,7 +18,7 @@ const EmptyState = ({ activeCat, setActiveCat }) => {
         No Rewards Found
       </AppText>
       <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
-        We don't have any deals for "{activeCat.charAt(0).toUpperCase() + activeCat.slice(1)}" right now.
+        We don't have any deals for "{capitalize(activeCat)}" right now.
       </AppText>
       <View style={{ marginTop: Spacing.sm }}>
         <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />

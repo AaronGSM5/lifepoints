@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { rewardsCatalog } from "@/constants/RewardsCatalog";
 import { useTranslation } from "react-i18next";
+import { capitalize } from "@/utils/helpers";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -52,7 +53,7 @@ export const useShop = () => {
       { id: "all", label: t("categories.all", "Alle") },
       ...uniqueCategories.map((c) => ({
         id: c,
-        label: t(`categories.${c}`, c.charAt(0).toUpperCase() + c.slice(1))
+        label: t(`categories.${c}`, capitalize(c))
       }))
     ];
   }, [rewards, t]);

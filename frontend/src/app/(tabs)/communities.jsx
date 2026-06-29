@@ -15,6 +15,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import { useVerticalCommunityRails } from "@/hooks/useCommunities";
+import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -38,15 +39,17 @@ export default function CommunitiesScreen() {
 
   const loadedSections = useMemo(() => {
     if (!railsData) return [];
-    // Geht durch alle geladenen Seiten und sammelt die "sections" Arrays ein
     return railsData.pages
       .flatMap((page) => page.sections || [])
       .map((section) => ({
-        id: section.category, // Backend liefert "category" als Namen
-        title: section.category.charAt(0).toUpperCase() + section.category.slice(1),
+        id: section.category,
+        title: capitalize(section.category),
         type: "section",
         categoryKey: section.category,
-        data: section.items // Die initialen Cards aus dem Backend
+        data: section.items.map((item) => ({
+          ...item,
+          id: extractId(item)
+        }))
       }));
   }, [railsData]);
 
@@ -120,9 +123,9 @@ export default function CommunitiesScreen() {
                       .filter((c) => c !== null && c !== undefined)
                       .map((c, index) => (
                         <MyCommunityCard
-                          key={c.id || index}
-                          item={c}
-                          onPress={() => router.push(`/mycommunity/${c.id}`)}
+                          key={extractId(c) || index}
+                          item={{ ...c, id: extractId(c) }}
+                          onPress={() => router.push(`/mycommunity/${extractId(c)}`)}
                         />
                       ))}
               </ScrollView>

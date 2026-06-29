@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { recommendedTasks } from "@/mocks/FeaturedTasks";
+import { capitalize } from "@/utils/helpers";
 
 export const useTasks = () => {
   const { t } = useTranslation("tasks");
@@ -35,7 +36,7 @@ export const useTasks = () => {
       { id: "all", label: t("categories.all", "Alle") },
       ...uniqueCategories.map((c) => ({
         id: c,
-        label: t(`categories.${c}`, c.charAt(0).toUpperCase() + c.slice(1))
+        label: t(`categories.${c}`, capitalize(c))
       }))
     ];
   }, [t]);
