@@ -1,18 +1,16 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
+#workaround for dts cert issues
+RUN npm config set strict-ssl false
+
 RUN npm install
 
-# Copy application code
 COPY . .
 
-# Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "app.js"]
+CMD ["npx", "nodemon", "--exec", "npx", "tsx", "src/app.ts"]
