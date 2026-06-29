@@ -80,7 +80,13 @@ export default function CreatePost() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withPaddingTop={false}>
+    <ScreenWrapper
+      scrollable={false}
+      withPaddingSides={false}
+      withPaddingBottom={false}
+      withPaddingTop={false}
+      withToolbar={false}
+    >
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={10}>

@@ -94,33 +94,29 @@ export default function MyCommunityChatScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
-      <Stack.Screen
-        options={{
-          header: () => (
-            <View style={[styles.customHeader, { paddingTop: insets.top }]}>
-              <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
-                <Icon name="back" />
-              </TouchableOpacity>
+      <Stack.Screen options={{ headerShown: false }} />
 
-              <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-                  <View style={[styles.iconBox, { backgroundColor: community.color }]}>
-                    <MaterialIcons name={community.icon} size={20} color="#fff" />
-                  </View>
-                  <AppText bold>{community?.title || "Community Chat"}</AppText>
-                </View>
-                <AppText type="caption" style={styles.headerSubtitleText}>
-                  {t("Tap for more info")}
-                </AppText>
-              </TouchableOpacity>
+      <View style={[styles.customHeader, { paddingTop: insets.top }]}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
+          <Icon name="back" />
+        </TouchableOpacity>
 
-              <View style={styles.headerIcon} />
+        <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
+            <View style={[styles.iconBox, { backgroundColor: community.color }]}>
+              <MaterialIcons name={community.icon} size={20} color="#fff" />
             </View>
-          )
-        }}
-      />
+            <AppText bold>{community?.title || "Community Chat"}</AppText>
+          </View>
+          <AppText type="caption" style={styles.headerSubtitleText}>
+            {t("Tap for more info")}
+          </AppText>
+        </TouchableOpacity>
 
-      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false}>
+        <View style={styles.headerIcon} />
+      </View>
+
+      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
         <FlatList
           ref={flatListRef}
           data={messages}

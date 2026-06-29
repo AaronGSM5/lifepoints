@@ -24,6 +24,7 @@ export default memo(function ScreenWrapper({
   withPaddingSides = true,
   useGradient = true,
   withPaddingTop = true,
+  withToolbar = true,
   style
 }) {
   const MyTheme = useAppTheme();
@@ -36,7 +37,9 @@ export default memo(function ScreenWrapper({
   const contentStyles = [
     {
       paddingHorizontal: withPaddingSides ? Spacing.md : 0,
-      paddingTop: withPaddingTop ? toolbarTopPadding + (withOffset ? Spacing.md : 0) : insets.top,
+      paddingTop: withPaddingTop
+        ? (withToolbar ? toolbarTopPadding : insets.top) + (withOffset ? Spacing.md : 0)
+        : insets.top,
       paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
     },
     style
@@ -47,7 +50,7 @@ export default memo(function ScreenWrapper({
       {useGradient && (
         <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={StyleSheet.absoluteFillObject} />
       )}
-      <Toolbar scrollY={scrollY} />
+      {withToolbar && <Toolbar scrollY={scrollY} />}
       {scrollable ? (
         <Animated.ScrollView
           style={{ flex: 1 }}
