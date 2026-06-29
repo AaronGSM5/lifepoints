@@ -154,7 +154,7 @@ export default function CommunitiesScreen() {
             <HorizontalSectionList
               title={item.title}
               initialData={validSectionData}
-              onLoadMore={() => console.log("Lade mehr horizontal für", item.categoryKey)}
+              categoryKey={item.categoryKey}
               onPressItem={(community) => router.push(`/community/${community.id}`)}
             />
           );

@@ -1,44 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useHorizontalCommunityRail } from "@/hooks/useCommunities";
+import { extractId } from "@/utils/helpers";
 
-const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) => {
+const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const [data, setData] = useState(initialData || []);
-  const [page, setPage] = useState(1);
-  const [localLoading, setLocalLoading] = useState(false);
-  const [allLoaded, setAllLoaded] = useState(false);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalCommunityRail(categoryKey);
+  console.log(data);
+  const flatData = useMemo(() => {
+    if (data?.pages && data.pages.length > 0 && data.pages[0].data) {
+      return data.pages.flatMap((page) => page.data || []);
+    }
+    return initialData || [];
+  }, [data, initialData]);
 
   const CARD_WIDTH = 260;
   const SNAP_INTERVAL = CARD_WIDTH + Spacing.md;
 
-  useEffect(() => {
-    setData(initialData || []);
-  }, [initialData]);
-
-  const handleEndReached = async () => {
-    if (localLoading || allLoaded || !onLoadMore) return;
-
-    setLocalLoading(true);
-    const nextPage = page + 1;
-    console.log(`Loading page ${nextPage} for horizontal list: ${title}`);
-
-    try {
-      const newData = await onLoadMore(nextPage);
-      if (newData && newData.length > 0) {
-        setData((prev) => [...prev, ...newData]);
-        setPage(nextPage);
-      } else {
-        setAllLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error loading more horizontal data", error);
-    } finally {
-      setLocalLoading(false);
+  const handleEndReached = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
   };
 
@@ -49,7 +35,7 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
   );
 
   const renderFooter = () => {
-    if (localLoading) {
+    if (isFetchingNextPage) {
       return (
         <View style={styles.horizontalLoader}>
           <ActivityIndicator size="small" color={MyTheme.primaryAccent} />
@@ -66,9 +52,9 @@ const HorizontalSectionList = ({ title, initialData, onLoadMore, onPressItem }) 
       </View>
       <FlatList
         horizontal
-        data={data}
+        data={flatData}
         renderItem={renderHorizontalItem}
-        keyExtractor={(item, index) => item.id?.toString() || index.toString()}
+        keyExtractor={(item) => extractId(item)}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.horizontalScrollContentContainer}
         snapToInterval={SNAP_INTERVAL}
