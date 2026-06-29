@@ -30,9 +30,9 @@ export default function RegisterScreen() {
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const maxLogoWidth = 330;
-  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  const logoHeight = logoWidth / 3.75;
+  // const maxLogoWidth = 330;
+  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  // const logoHeight = logoWidth / 3.75;
 
   const handleRegister = async () => {
     setIsLoading(true);

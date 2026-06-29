@@ -29,9 +29,9 @@ export default function LoginScreen() {
 
   const isLoginDisabled = !emailInput || !passwordInput || isLoading;
 
-  const maxLogoWidth = 330;
-  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  const logoHeight = logoWidth / 3.75;
+  // const maxLogoWidth = 330;
+  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  // const logoHeight = logoWidth / 3.75;
 
   // Appwrite Login Logic
   const handleLogin = async () => {
