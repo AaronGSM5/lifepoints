@@ -14,11 +14,12 @@ import HorizontalSectionList from "@/components/communities/HorizontalSectionLis
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import { useVerticalCommunityRails } from "@/hooks/useCommunities";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
+  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections } =
     useCommunities();
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
@@ -31,31 +32,33 @@ export default function CommunitiesScreen() {
   const [isMoreSectionsLoading, setIsMoreSectionsLoading] = useState(false);
   const [allSectionsLoaded, setAllSectionsLoaded] = useState(false);
 
+  const {
+    data: railsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isLoadingRails
+  } = useVerticalCommunityRails();
+
+  const isLoading = isLoadingRails;
+
+  const loadedSections = useMemo(() => {
+    if (!railsData) return [];
+    // Geht durch alle geladenen Seiten und sammelt die "sections" Arrays ein
+    return railsData.pages
+      .flatMap((page) => page.sections || [])
+      .map((section) => ({
+        id: section.category, // Backend liefert "category" als Namen
+        title: section.category,
+        type: "section",
+        categoryKey: section.category,
+        data: section.items // Die initialen Cards aus dem Backend
+      }));
+  }, [railsData]);
+
   const handleCreateCommunity = (data) => {
     createCommunity(data);
   };
-
-  const loadMoreSections = useCallback(async () => {
-    if (isMoreSectionsLoading || allSectionsLoaded || isLoading) return;
-
-    setIsMoreSectionsLoading(true);
-    const nextPage = verticalPage + 1;
-
-    try {
-      const newSections = await fetchMoreSections(nextPage);
-
-      if (newSections && newSections.length > 0) {
-        setDynamicSections((prev) => [...prev, ...newSections]);
-        setVerticalPage(nextPage);
-      } else {
-        setAllSectionsLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error loading more vertical sections", error);
-    } finally {
-      setIsMoreSectionsLoading(false);
-    }
-  }, [verticalPage, isMoreSectionsLoading, allSectionsLoaded, isLoading, fetchMoreSections]);
 
   const listData = useMemo(() => {
     const topElements = [
@@ -64,16 +67,15 @@ export default function CommunitiesScreen() {
       { id: "my_communities", type: "my_communities" }
     ];
 
-    const staticSections = [
-      { id: "recommended", categoryKey: "recommended_you", title: t("Recommended for you"), data: recommended },
-      { id: "lifestyle", categoryKey: "lifestyle_food", title: t("Lifestyle & Food"), data: recommended },
-      { id: "trending", categoryKey: "trending_now", title: t("Trending Right Now"), data: recommended }
-    ].map((section) => ({ ...section, type: "section" }));
+    return [...topElements, ...loadedSections];
+  }, [loadedSections, myCommunities, isLoading]);
 
-    const loadedSections = dynamicSections.map((section) => ({ ...section, type: "section" }));
-
-    return [...topElements, ...staticSections, ...loadedSections];
-  }, [recommended, dynamicSections, myCommunities, isLoading]);
+  const loadMoreSections = () => {
+    // Wenn wir nicht gerade laden und es eine weitere Seite gibt: Hole sie!
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -135,10 +137,8 @@ export default function CommunitiesScreen() {
           );
 
         case "section":
-          const validSectionData = item.data?.filter((c) => c !== null && c !== undefined) || [];
-          if (validSectionData.length === 0 && !isLoading) {
-            return null;
-          }
+          const validSectionData = item.data?.filter((c) => c !== null) || [];
+          if (validSectionData.length === 0 && !isLoading) return null;
           if (isLoading) {
             return (
               <View style={styles.sectionContainer}>
@@ -158,7 +158,7 @@ export default function CommunitiesScreen() {
             <HorizontalSectionList
               title={item.title}
               initialData={validSectionData}
-              onLoadMore={(page) => fetchCommunitiesForCategory(item.categoryKey || item.id, page)}
+              onLoadMore={() => console.log("Lade mehr horizontal für", item.categoryKey)}
               onPressItem={(community) => router.push(`/community/${community.id}`)}
             />
           );
@@ -167,7 +167,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible, MyTheme]
+    [isLoading, myCommunities, isCreateModalVisible, MyTheme, t]
   );
 
   const renderMainFooter = () => {
@@ -178,7 +178,7 @@ export default function CommunitiesScreen() {
         </View>
       );
     }
-    if (allSectionsLoaded && listData.length > 5) {
+    if (!hasNextPage && loadedSections.length > 0) {
       return (
         <View style={styles.endOfList}>
           <SectionHeader title={t("Thats all for now!")} center />
