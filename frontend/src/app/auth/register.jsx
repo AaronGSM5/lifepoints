@@ -17,27 +17,22 @@ import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import { useRouter } from "expo-router";
 
 export default function RegisterScreen() {
-  const insets = useSafeAreaInsets();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { t } = useTranslation("auth");
   const MyTheme = useAppTheme();
-
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
-  const [passwordIsShown, setPasswordIsShown] = useState(true);
-  const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isRepeatValid, setIsRepeatValid] = useState(false);
 
   // const maxLogoWidth = 330;
   // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   // const logoHeight = logoWidth / 3.75;
 
-  const myAppTheme = useAppTheme();
-
   const handleRegister = async () => {
-    setIsLoading(true);
     try {
       await account.create(ID.unique(), emailInput, passwordInput, nameInput);
 
@@ -46,8 +41,6 @@ export default function RegisterScreen() {
       router.replace("/home");
     } catch (error) {
       console.log("register error ", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -86,13 +79,7 @@ export default function RegisterScreen() {
 
   const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
   const isSubmitDisabled =
-    !nameInput ||
-    !emailInput ||
-    !isPasswordValid ||
-    !isRepeatValid ||
-    !isEmailValidFlag ||
-    !isNameValidFlag ||
-    isLoading;
+    !nameInput || !emailInput || !isPasswordValid || !isRepeatValid || !isEmailValidFlag || !isNameValidFlag;
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -147,34 +134,25 @@ export default function RegisterScreen() {
             />
 
             {/* Overlay */}
-            {isRuleOverlayVisible && (
+            {/* {isRuleOverlayVisible && (
               <PasswordRulesModal
                 visible={isRuleOverlayVisible}
                 onClose={() => setIsRuleOverlayVisible(false)}
                 passwordRules={passwordRules}
                 passwordRuleStatus={passwordRuleStatus}
               />
-            )}
+            )} */}
 
             <AppButton
-              title={isLoading ? "Creating Account..." : "Register"}
-              bgColor={myAppTheme.baseTheme}
-              disabled={isSubmitDisabled}
+              title={t("Register")}
+              textStyle={{ color: isSubmitDisabled && "white" }}
+              bgColor={MyTheme.primaryAccent}
               onPress={handleRegister} // Hooked up function
             />
           </BaseCard>
 
           {/* Footer */}
-          <View style={myAppTheme.baseTheme}>
-            <AppText type="caption">
-              Already have an account?{" "}
-              <Link href="/auth/login">
-                <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
-                  Log in
-                </AppText>
-              </Link>
-            </AppText>
-          </View>
+          <AuthFooter text={t("Already have an account?")} linkText={t("Log in")} href="/auth/login" />
         </ScreenWrapper>
       </View>
     </KeyboardAvoidingView>

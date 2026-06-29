@@ -88,24 +88,16 @@ export default function LoginScreen() {
               bgColor={MyTheme.primaryAccent}
               onPress={handleLogin} // Attach the logic here
             />
-            <Pressable style={styles.forgotPassword}>
-              <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
-                Forgot password?
-              </AppText>
-            </Pressable>
+            <AppButton
+              title={t("Forgot password?")}
+              variant="ghost"
+              size="sm"
+              textStyle={{ color: MyTheme.primaryAccent }}
+            />
           </BaseCard>
 
           {/* Footer */}
-          <View style={styles.footer}>
-            <AppText type="caption">
-              Don't have an account?{" "}
-              <Link href="auth/register">
-                <AppText type="caption" style={{ color: MyTheme.primaryAccent }}>
-                  Register
-                </AppText>
-              </Link>
-            </AppText>
-          </View>
+          <AuthFooter text={t("Don't have an account?")} linkText={t("Register")} href="/auth/register" />
         </ScreenWrapper>
       </View>
     </KeyboardAvoidingView>
