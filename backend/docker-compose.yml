@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+        - DEBUG=*:*
+    container_name: lifepoints_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/lifepoints
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
+      - notused:/usr/src/app/node_modules
+    env_file:
+      - ./.env
+    networks:
+      - lifepoints
+
+  mongo:
+    image: mongo:latest
+    container_name: lifepoints_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    command: mongod --logpath=/dev/null -quiet
+    networks:
+      - lifepoints
+
+volumes:
+  mongo_data:
+  notused:
+
+networks:
+  lifepoints:
