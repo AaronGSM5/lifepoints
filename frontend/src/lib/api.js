@@ -13,8 +13,6 @@ export async function apiRequest(endpoint, options = {}) {
       ...options.headers
     };
 
-    console.log(jwt);
-
     const response = await fetch(`${BACKEND_URL}${endpoint}`, {
       ...options,
       headers
