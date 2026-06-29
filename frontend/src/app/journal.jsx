@@ -8,6 +8,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { groupDataByDate } from "@/utils/helpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();
@@ -17,37 +18,8 @@ const JournalPage = () => {
   const groupedActivities = useMemo(() => {
     if (!activities || activities.length === 0) return [];
 
-    const groups = {};
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    activities.forEach((activity) => {
-      const activityDate = new Date(activity.time);
-      const activityDay = new Date(activityDate);
-      activityDay.setHours(0, 0, 0, 0);
-
-      let sectionTitle = activityDate.toLocaleDateString();
-
-      if (activityDay.getTime() === today.getTime()) {
-        sectionTitle = t("Today", "Heute");
-      } else if (activityDay.getTime() === yesterday.getTime()) {
-        sectionTitle = t("Yesterday", "Gestern");
-      }
-
-      if (!groups[sectionTitle]) {
-        groups[sectionTitle] = [];
-      }
-      groups[sectionTitle].push(activity);
-    });
-
-    return Object.keys(groups).map((title) => ({
-      title,
-      data: groups[title]
-    }));
+    const sorted = [...activities].sort((a, b) => new Date(b.time) - new Date(a.time));
+    return groupDataByDate(sorted, "time", t);
   }, [activities, t]);
 
   const renderItem = ({ item }) => (

@@ -1,31 +1,70 @@
-import { StyleSheet, FlatList } from "react-native";
+import { StyleSheet, SectionList, ActivityIndicator, View } from "react-native";
 import NotificationEntry from "@/components/notifications/NotificationEntry";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import { notificationItems } from "@/mocks/NotificationData";
 import { useTranslation } from "react-i18next";
+import { useNotifications } from "@/hooks/useNotifications";
+import { useMemo } from "react";
+import { groupDataByDate } from "@/utils/helpers";
+import AppText from "@/components/ui/AppText";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");
+  const MyTheme = useAppTheme();
+  const styles = getStyles(MyTheme);
+
+  const { data: rawNotifications, isLoading } = useNotifications();
+
+  const sections = useMemo(() => {
+    if (!rawNotifications) return [];
+    const sorted = [...rawNotifications].sort((a, b) => new Date(b.date) - new Date(a.date));
+    return groupDataByDate(sorted, "date", t);
+  }, [rawNotifications, t]);
+
+  const renderSectionHeader = ({ section: { title } }) => (
+    <View style={styles.sectionHeader}>
+      <AppText type="body" bold style={{ color: MyTheme.muted }}>
+        {title}
+      </AppText>
+    </View>
+  );
+
   return (
     <ScreenWrapper scrollable={false}>
       <ScreenTitle title={t("Announcements")} />
-
-      <FlatList
-        data={notificationItems}
-        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-        renderItem={({ item }) => <NotificationEntry notification={item} />}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+      ) : (
+        <SectionList
+          sections={sections}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => (
+            <NotificationEntry
+              notification={{
+                ...item,
+                message: item.description,
+                timestamp: new Date(item.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+              }}
+            />
+          )}
+          renderSectionHeader={renderSectionHeader}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </ScreenWrapper>
   );
 }
 
-const styles = StyleSheet.create({
-  listContainer: {
-    paddingBottom: Spacing.xl,
-    gap: Spacing.md
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    listContainer: {
+      paddingBottom: Spacing.xl
+    },
+    sectionHeader: {
+      paddingBottom: Spacing.sm,
+      backgroundColor: "transparent"
+    }
+  });

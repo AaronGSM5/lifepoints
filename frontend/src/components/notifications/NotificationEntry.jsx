@@ -26,9 +26,7 @@ export default function NotificationEntry({ notification }) {
           <AppText type="caption">{notification.timestamp}</AppText>
         </View>
 
-        <AppText type="caption" numberOfLines={2}>
-          {t(notification.message)}
-        </AppText>
+        <AppText type="caption">{t(notification.message)}</AppText>
       </View>
     </Pressable>
   );
@@ -38,13 +36,13 @@ const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
+      alignItems: "center",
       backgroundColor: theme.primary,
-      paddingVertical: Spacing.sm,
-      paddingHorizontal: Spacing.md,
+      padding: Spacing.md,
       borderRadius: Spacing.borderRadius.md,
       borderWidth: 1,
       borderColor: theme.secondary,
-      alignItems: "center"
+      marginBottom: Spacing.sm
     },
     containerPressed: {
       opacity: 0.7,
