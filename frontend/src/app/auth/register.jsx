@@ -34,6 +34,8 @@ export default function RegisterScreen() {
   // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   // const logoHeight = logoWidth / 3.75;
 
+  const myAppTheme = useAppTheme();
+
   const handleRegister = async () => {
     setIsLoading(true);
     try {
@@ -156,14 +158,14 @@ export default function RegisterScreen() {
 
             <AppButton
               title={isLoading ? "Creating Account..." : "Register"}
-              bgColor={MyTheme.primaryAccent}
+              bgColor={myAppTheme.baseTheme}
               disabled={isSubmitDisabled}
               onPress={handleRegister} // Hooked up function
             />
           </BaseCard>
 
           {/* Footer */}
-          <View style={styles.footer}>
+          <View style={myAppTheme.baseTheme}>
             <AppText type="caption">
               Already have an account?{" "}
               <Link href="/auth/login">
