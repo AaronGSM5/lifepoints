@@ -10,35 +10,20 @@ export const communityKeys = {
   horizontalRail: (category) => [...communityKeys.all, "horizontalRail", category]
 };
 
-// export const useMyCommunities = () => {
-//   return useQuery({
-//     queryKey: communityKeys.my(),
-//     queryFn: async () => {
-//       const res = await fetch(`${apiBaseUrl}/healthcheck`);
-//       return res.json();
-//     }
-//   });
-// };
-
-// export const useRecommendedCommunities = () => {
-//   return useQuery({
-//     queryKey: communityKeys.recommended(),
-//     queryFn: async () => {
-//       const res = await fetch(`${apiBaseUrl}/healthcheck`);
-//       return res.json();
-//     }
-//   });
-// };
-
-// export const useCommunityCategories = () => {
-//   return useQuery({
-//     queryKey: communityKeys.category(),
-//     queryFn: async () => {
-//       const res = await fetch(`${apiBaseUrl}/communities/categories`);
-//       return res.json();
-//     }
-//   });
-// };
+export const useMyCommunities = () => {
+  return useQuery({
+    queryKey: communityKeys.my(),
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/communities/my`);
+        if (!res.ok) return [];
+        return res.json();
+      } catch {
+        return [];
+      }
+    }
+  });
+};
 
 // export const useCreateCommunity = () => {
 //   const queryClient = useQueryClient();
@@ -61,24 +46,21 @@ export const useVerticalCommunityRails = () => {
   return useInfiniteQuery({
     queryKey: communityKeys.verticalRails(),
     queryFn: async ({ pageParam = null }) => {
-      // Wenn wir einen Cursor haben, hängen wir ihn als Parameter an die URL
       const url = new URL(`${apiBaseUrl}/communities/rails`);
       if (pageParam) url.searchParams.append("rowCursor", pageParam);
 
       const res = await fetch(url.toString());
       if (!res.ok) throw new Error("Fehler beim Laden der Community-Rails");
-      console.log("BACKEND ANTWORT FÜR RAILS:", res.json());
-      return res.json();
+
+      const data = await res.json();
+      return data;
     },
-    // TanStack Query fragt hier: "Was ist der Cursor für den NÄCHSTEN Fetch?"
-    // Wir lesen einfach dein exzellentes Backend-Response-Objekt aus!
     getNextPageParam: (lastPage) => {
-      return lastPage.verticalPagination?.hasNextRowPage ? lastPage.verticalPagination.nextRowCursor : undefined; // undefined signalisiert TanStack Query, dass wir am Ende sind
+      return lastPage.verticalPagination?.hasNextRowPage ? lastPage.verticalPagination.nextRowCursor : undefined;
     }
   });
 };
 
-// 2. Horizontales Scrollen (Lädt mehr Cards für EINE spezifische Kategorie)
 export const useHorizontalCommunityRail = (category) => {
   return useInfiniteQuery({
     queryKey: communityKeys.horizontalRail(category),
@@ -94,7 +76,7 @@ export const useHorizontalCommunityRail = (category) => {
     getNextPageParam: (lastPage) => {
       return lastPage.pagination?.hasNextCardPage ? lastPage.pagination.nextCardCursor : undefined;
     },
-    enabled: !!category // Fetch nur ausführen, wenn wir eine Kategorie haben
+    enabled: !!category
   });
 };
 

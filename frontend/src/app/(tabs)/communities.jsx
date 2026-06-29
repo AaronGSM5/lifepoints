@@ -19,18 +19,12 @@ import { useVerticalCommunityRails } from "@/hooks/useCommunities";
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections } =
-    useCommunities();
+  const { myCommunities, createCommunity } = useCommunities();
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-
-  const [dynamicSections, setDynamicSections] = useState([]);
-  const [verticalPage, setVerticalPage] = useState(1);
-  const [isMoreSectionsLoading, setIsMoreSectionsLoading] = useState(false);
-  const [allSectionsLoaded, setAllSectionsLoaded] = useState(false);
 
   const {
     data: railsData,
@@ -49,7 +43,7 @@ export default function CommunitiesScreen() {
       .flatMap((page) => page.sections || [])
       .map((section) => ({
         id: section.category, // Backend liefert "category" als Namen
-        title: section.category,
+        title: section.category.charAt(0).toUpperCase() + section.category.slice(1),
         type: "section",
         categoryKey: section.category,
         data: section.items // Die initialen Cards aus dem Backend
@@ -71,7 +65,6 @@ export default function CommunitiesScreen() {
   }, [loadedSections, myCommunities, isLoading]);
 
   const loadMoreSections = () => {
-    // Wenn wir nicht gerade laden und es eine weitere Seite gibt: Hole sie!
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
@@ -171,7 +164,7 @@ export default function CommunitiesScreen() {
   );
 
   const renderMainFooter = () => {
-    if (isMoreSectionsLoading) {
+    if (isFetchingNextPage) {
       return (
         <View style={styles.mainListLoader}>
           <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
