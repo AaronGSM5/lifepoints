@@ -13,6 +13,8 @@ import BaseCard from "@/components/ui/BaseCard";
 import { useTranslation } from "react-i18next";
 import { account } from "@/lib/appwrite";
 import { ID } from "react-native-appwrite";
+import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
+import { useRouter } from "expo-router";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
@@ -158,7 +160,7 @@ export default function RegisterScreen() {
               disabled={isSubmitDisabled}
               onPress={handleRegister} // Hooked up function
             />
-          </View>
+          </BaseCard>
 
           {/* Footer */}
           <View style={styles.footer}>
