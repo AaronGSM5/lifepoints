@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+const apiBaseUrl = "http://localhost:3000/api/v1";
+
 export const communityKeys = {
   all: ["communities"],
   my: () => [...communityKeys.all, "my"],
@@ -7,34 +9,33 @@ export const communityKeys = {
   category: (categoryId) => [...communityKeys.all, "category", categoryId]
 };
 
-export const useMyCommunities = () => {
-  return useQuery({
-    queryKey: communityKeys.my(),
-    queryFn: async () => {
-      const res = await fetch("/placeholder/api");
-      return res;
-    }
-  });
-};
+// export const useMyCommunities = () => {
+//   return useQuery({
+//     queryKey: communityKeys.my(),
+//     queryFn: async () => {
+//       const res = await fetch(`${apiBaseUrl}/healthcheck`);
+//       return res.json();
+//     }
+//   });
+// };
 
 export const useRecommendedCommunities = () => {
   return useQuery({
     queryKey: communityKeys.recommended(),
     queryFn: async () => {
-      const res = await fetch("/placeholder/api");
-      return res;
+      const res = await fetch(`${apiBaseUrl}/healthcheck`);
+      return res.json();
     }
   });
 };
 
-export const useCommunityCategories = (categoryId) => {
+export const useCommunityCategories = () => {
   return useQuery({
-    queryKey: communityKeys.category(categoryId),
+    queryKey: communityKeys.category(),
     queryFn: async () => {
-      const res = await fetch("/placeholder/api");
-      return res;
-    },
-    enabled: !!categoryId
+      const res = await fetch(`${apiBaseUrl}/communities/categories`);
+      return res.json();
+    }
   });
 };
 
@@ -43,7 +44,7 @@ export const useCreateCommunity = () => {
 
   return useMutation({
     mutationFn: async (newCommunityData) => {
-      const res = await fetch("/placeholder/api", {
+      const res = await fetch(`${apiBaseUrl}/healthcheck`, {
         method: "POST",
         body: JSON.stringify(newCommunityData)
       });
