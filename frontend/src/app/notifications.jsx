@@ -15,7 +15,7 @@ export default function NotificationsScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
 
-  const { data: rawNotifications, isLoading } = useNotifications();
+  const { data: rawNotifications, isLoading, isError, error } = useNotifications();
 
   const sections = useMemo(() => {
     if (!rawNotifications) return [];
@@ -36,6 +36,10 @@ export default function NotificationsScreen() {
       <ScreenTitle title={t("Announcements")} />
       {isLoading ? (
         <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+      ) : isError ? (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <AppText>Fehler beim Laden: {error.message}</AppText>
+        </View>
       ) : (
         <SectionList
           sections={sections}

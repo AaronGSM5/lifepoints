@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
-import { apiBaseUrl } from "./useProfileMutations";
+import { apiBaseUrl } from "./useProfileQueries";
 
 export const communityKeys = {
   all: ["communities"],

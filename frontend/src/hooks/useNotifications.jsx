@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiBaseUrl } from "./useProfileMutations";
+import { apiBaseUrl } from "./useProfileQueries";
 
 export const useNotifications = () => {
   return useQuery({
