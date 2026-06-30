@@ -116,6 +116,9 @@ export default function CommunitiesScreen() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.horizontalScrollContentContainer}
+                snapToInterval={160 + Spacing.md}
+                snapToAlignment="start"
+                decelerationRate="fast"
               >
                 {isLoading
                   ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
@@ -146,6 +149,9 @@ export default function CommunitiesScreen() {
                   data={SKELETON_DATA}
                   contentContainerStyle={styles.horizontalScrollContentContainer}
                   renderItem={() => <RecommendedCommunity isLoading={true} />}
+                  snapToInterval={260 + Spacing.md}
+                  snapToAlignment="start"
+                  decelerationRate="fast"
                 />
               </View>
             );

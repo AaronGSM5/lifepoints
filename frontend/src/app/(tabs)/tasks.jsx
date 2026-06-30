@@ -147,6 +147,9 @@ const TasksScreen = () => {
                 keyExtractor={(t) => t.id.toString()}
                 renderItem={renderHorizontalTaskItem}
                 contentContainerStyle={styles.horizontalListPadding}
+                snapToInterval={280 + Spacing.md}
+                snapToAlignment="start"
+                decelerationRate="fast"
               />
             </View>
           );
