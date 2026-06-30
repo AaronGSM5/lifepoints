@@ -2,7 +2,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import JournalPreview from "@/components/journal/JournalPreview";
 import OnboardingGuide from "@/components/profile/OnboardingGuide";
 import ProfileHeader from "@/components/profile/ProfileHeader";
-import { useMyProfile } from "@/hooks/useProfile";
+import { useMyProfile } from "@/hooks/useProfileQueries";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
 import InviteFriendCard from "@/components/profile/InviteFriendCard";

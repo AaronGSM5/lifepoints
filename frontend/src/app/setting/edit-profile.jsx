@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   StyleSheet,
   View,
@@ -20,46 +20,53 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import useStore from "@/store/useStore";
-import { useMyProfile } from "@/hooks/useProfile";
+import { useMyProfile } from "@/hooks/useProfileQueries";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { triggerHaptic } from "@/utils/haptics";
+import { useUpdateProfile } from "@/hooks/useProfileMutations";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const router = useRouter();
   const { t } = useTranslation("settings");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const { data: profileData } = useMyProfile();
-  const updateProfile = useStore((state) => state.updateProfile);
+  const { data: profileData, isLoading } = useMyProfile();
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const updateLocalStore = useStore((state) => state.updateProfile);
 
-  const initialData = {
-    name: profileData.name,
-    username: profileData.name.toLowerCase().replace(" ", ""),
-    description: profileData.description,
-    avatar: profileData.avatar
-  };
+  const initialData = useMemo(
+    () => ({
+      name: profileData?.name || "",
+      username: profileData?.username || "",
+      description: profileData?.description || "",
+      avatar: profileData?.avatar || null
+    }),
+    [profileData]
+  );
 
   const [formData, setFormData] = useState(initialData);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (profileData) {
+      setFormData(initialData);
+    }
+  }, [profileData]);
 
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
 
   const handleSave = () => {
-    setIsSaving(true);
     triggerHaptic();
-    setTimeout(() => {
-      updateProfile(formData);
-      setIsSaving(false);
-      router.back();
-    }, 1000);
+    updateProfile(formData, {
+      onSuccess: () => {
+        router.back();
+      },
+      onError: (err) => {
+        Alert.alert(t("Error"), t("Failed to save profile."));
+        console.error(err);
+      }
+    });
   };
 
   const handleChangeAvatar = async () => {
@@ -84,8 +91,8 @@ export default function EditProfileScreen() {
 
   const avatarSource = formData.avatar
     ? { uri: formData.avatar }
-    : profileData.avatar
-      ? { uri: profileData.avatar }
+    : profileData?.avatar
+      ? { uri: profileData?.avatar }
       : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
@@ -168,9 +175,9 @@ export default function EditProfileScreen() {
 
         <View style={styles.footer}>
           <AppButton
-            title={isSaving ? t("Saving...") : t("Save changes")}
+            title={isPending ? t("Saving...") : t("Save changes")}
             onPress={handleSave}
-            disabled={!hasChanges || isSaving || isLoading}
+            disabled={!hasChanges || isPending || isLoading}
             variant="primary"
             bgColor={MyTheme.primaryAccent}
           />

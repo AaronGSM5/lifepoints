@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-
-const apiBaseUrl = "http://localhost:3000/api/v1";
+import { apiBaseUrl } from "./useProfileMutations";
 
 export const useNotifications = () => {
   return useQuery({

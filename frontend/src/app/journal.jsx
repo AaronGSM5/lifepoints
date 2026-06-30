@@ -8,7 +8,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
 import { useTranslation } from "react-i18next";
 import { groupDataByDate } from "@/utils/helpers";
-import { useMyProfile } from "@/hooks/useProfile";
+import { useMyProfile } from "@/hooks/useProfileQueries";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();

@@ -6,7 +6,7 @@ import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
 import useStore from "@/store/useStore";
-import { useMyProfile } from "@/hooks/useProfile";
+import { useMyProfile } from "@/hooks/useProfileQueries";
 import { useMemo } from "react";
 
 export default function TrophiesScreen() {
