@@ -5,7 +5,7 @@ import { Spacing } from "@/constants/Spacing";
 import StatCard from "../ui/StatCard";
 import { useTranslation } from "react-i18next";
 
-const ProfileStats = ({ isLoading }) => {
+const ProfileStats = ({ stats = [], isLoading }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("profile");
   return (
@@ -17,24 +17,16 @@ const ProfileStats = ({ isLoading }) => {
         isLoading={isLoading}
       />
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: Spacing.md }}>
-        <StatCard
-          isLoading={isLoading}
-          label={t("DAY STREAK")}
-          value="45"
-          icon="fire"
-          color="#FF5733"
-          badge="Best: 52"
-        />
-        <StatCard
-          isLoading={isLoading}
-          label={t("TOTAL POINTS")}
-          value="12.4k"
-          icon="gem"
-          color="#007ec7"
-          badge="Top 5%"
-        />
-        <StatCard isLoading={isLoading} label={t("HABITS AVOIDED")} value="120" icon="ban" color="#900C3F" blurred />
-        <StatCard isLoading={isLoading} label={t("MEMBER SINCE")} value="2023" icon="calendar" color="#581845" />
+        {stats?.map((entry, index) => (
+          <StatCard
+            key={`stat-${index}`}
+            isLoading={isLoading}
+            label={t(entry.label)}
+            value={entry.value}
+            icon={entry.icon}
+            color={entry.color}
+          />
+        ))}
       </View>
     </View>
   );

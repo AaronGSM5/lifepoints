@@ -6,15 +6,16 @@ import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import HistoryCard from "@/components/ui/HistoryCard";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import { groupDataByDate } from "@/utils/helpers";
+import { useMyProfile } from "@/hooks/useProfile";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
-  const activities = useStore((state) => state.activities);
+  const { data: profileData, isLoading } = useMyProfile();
+  const activities = profileData?.activities;
   const groupedActivities = useMemo(() => {
     if (!activities || activities.length === 0) return [];
 
@@ -45,6 +46,19 @@ const JournalPage = () => {
       </AppText>
     </View>
   );
+
+  if (!isLoading && (!activities || activities.length === 0)) {
+    return (
+      <ScreenWrapper style={styles.wrapper}>
+        <ScreenTitle title={t("My Impact Journal")} />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: Spacing.xl }}>
+          <AppText type="body" style={{ textAlign: "center", color: MyTheme.muted }}>
+            {t("No activities yet. Start completing tasks to see your impact here!")}
+          </AppText>
+        </View>
+      </ScreenWrapper>
+    );
+  }
 
   return (
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>

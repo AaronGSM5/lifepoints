@@ -6,18 +6,26 @@ import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
 import useStore from "@/store/useStore";
+import { useMyProfile } from "@/hooks/useProfile";
+import { useMemo } from "react";
 
 export default function TrophiesScreen() {
   const { t } = useTranslation("trophies");
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
-  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
+  const { data: profileData, isLoading } = useMyProfile();
   const justUnlockedTrophies = useStore((state) => state.profile.justUnlockedTrophies || []);
   const clearJustUnlockedTrophy = useStore((state) => state.clearJustUnlockedTrophy);
 
   const containerWidth = Math.min(width, 480) - 32;
-  const totalGapSpace = 32;
-  const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
+  const exactCardWidth = Math.floor((containerWidth - 32) / 3);
+
+  const trophiesMap = useMemo(() => {
+    return trophiesCatalog.reduce((acc, curr) => {
+      acc[curr.id] = curr;
+      return acc;
+    }, {});
+  }, []);
 
   const handleAnimationFinished = (id) => {
     clearJustUnlockedTrophy(id);
@@ -34,19 +42,24 @@ export default function TrophiesScreen() {
           columnWrapperStyle={{ gap: 16, marginBottom: Spacing.lg }}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={<ScreenTitle title={t("Trophies")} />}
-          renderItem={({ item }) => (
-            <View style={{ width: exactCardWidth }}>
-              <TrophyCard
-                id={item.id}
-                title={item.title}
-                icon={item.icon}
-                unlocked={unlockedTrophies.includes(item.id)}
-                justUnlocked={justUnlockedTrophies.includes(item.id)}
-                onAnimationComplete={() => handleAnimationFinished(item.id)}
-                cardWidth={exactCardWidth}
-              />
-            </View>
-          )}
+          renderItem={({ item }) => {
+            const catalogTrophy = trophiesMap[item.id];
+            const userTrophy = profileData?.trophies?.find((t) => t.id === item.id);
+            const isUnlocked = userTrophy?.unlocked || false;
+            return (
+              <View style={{ width: exactCardWidth }}>
+                <TrophyCard
+                  id={catalogTrophy?.id}
+                  title={catalogTrophy?.title}
+                  icon={catalogTrophy?.icon}
+                  unlocked={isUnlocked}
+                  justUnlocked={justUnlockedTrophies.includes(item.id)}
+                  onAnimationComplete={() => handleAnimationFinished(item.id)}
+                  cardWidth={exactCardWidth}
+                />
+              </View>
+            );
+          }}
         />
       </View>
     </ScreenWrapper>

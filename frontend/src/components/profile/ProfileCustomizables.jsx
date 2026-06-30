@@ -12,7 +12,6 @@ import useStore from "@/store/useStore";
 const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
   const { t } = useTranslation("profile");
   const MyTheme = useAppTheme();
-  const unlockedCustomizables = useStore((state) => state.profile.unlockedCustomizables);
   const activeFrame = useStore((state) => state.profile.activeFrame);
   const activeBadge = useStore((state) => state.profile.activeBadge);
   const activeCustomizables = [activeFrame, activeBadge];
@@ -52,7 +51,7 @@ const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
                 icon={item.icon || "circle"}
                 color={item.color || MyTheme.text}
                 isActive={activeCustomizables.includes(item.id)}
-                unlocked={unlockedCustomizables.includes(item.id)}
+                unlocked={item.unlocked}
               />
             </View>
           ))}

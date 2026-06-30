@@ -8,6 +8,24 @@ export const capitalize = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+export const formatTimeOrDate = (isoString) => {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  const today = new Date();
+
+  const isToday =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  if (isToday) {
+    // Heute -> z.B. "14:30"
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+  // Älter -> z.B. "22.05.2026"
+  return date.toLocaleDateString();
+};
+
 export const groupDataByDate = (data, dateField, t) => {
   if (!data || data.length === 0) return [];
 

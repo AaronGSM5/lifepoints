@@ -20,7 +20,7 @@ import AppButton from "@/components/ui/AppButton";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import useStore from "@/store/useStore";
-import { useProfile } from "@/hooks/useProfile";
+import { useMyProfile } from "@/hooks/useProfile";
 import { useTranslation } from "react-i18next";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { triggerHaptic } from "@/utils/haptics";
@@ -33,14 +33,14 @@ export default function EditProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const { profile } = useProfile();
+  const { data: profileData } = useMyProfile();
   const updateProfile = useStore((state) => state.updateProfile);
 
   const initialData = {
-    name: profile.name,
-    username: profile.name.toLowerCase().replace(" ", ""),
-    description: profile.description,
-    avatar: profile.avatar
+    name: profileData.name,
+    username: profileData.name.toLowerCase().replace(" ", ""),
+    description: profileData.description,
+    avatar: profileData.avatar
   };
 
   const [formData, setFormData] = useState(initialData);
@@ -84,8 +84,8 @@ export default function EditProfileScreen() {
 
   const avatarSource = formData.avatar
     ? { uri: formData.avatar }
-    : profile.avatar
-      ? { uri: profile.avatar }
+    : profileData.avatar
+      ? { uri: profileData.avatar }
       : require("@/../public/assets/icon-profile.png");
 
   const skBase = {

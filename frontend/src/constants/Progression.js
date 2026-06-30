@@ -10,4 +10,4 @@ export const LEAGUE_SYSTEM = [
   { name: 'Zenith', color: '#F43F5E', ranks: ['Prodigy', 'Phenomenon', 'Myth'] }
 ];
 
-export const getLeagueData = (leagueIdx) => LEAGUE_SYSTEM[leagueIdx] || LEAGUE_SYSTEM[0];
+export const getLeagueData = (leagueName) => LEAGUE_SYSTEM.find(entry => entry.name === leagueName) || LEAGUE_SYSTEM[0];

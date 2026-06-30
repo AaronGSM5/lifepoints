@@ -2,7 +2,7 @@ import { trophyImages } from "./TrophyAssets";
 
 export const trophiesCatalog = [
   {
-    id: 1,
+    id: 'gym_rat',
     title: "Gym Rat",
     description: "You've consistently hit the gym a Week. Keep grinding!",
     icon: trophyImages['gymTrans'],
@@ -10,7 +10,7 @@ export const trophiesCatalog = [
     goal: 7
   },
   {
-    id: 2,
+    id: 'early_riser',
     title: "Early Riser",
     description: 'Early bird gets the worm - and the LP!\nA perfect start to a productive life.',
     icon: trophyImages['sleepTrans'],
@@ -18,7 +18,7 @@ export const trophiesCatalog = [
     goal: 10
   },
   {
-    id: 3,
+    id: 'reader',
     title: "Reader",
     description: "Knowledge is power.\nBy completing your monthly reading goal and sharing your key insights, you've unlocked this scholarly honor.",
     icon: trophyImages['bookTrans'],
@@ -27,7 +27,7 @@ export const trophiesCatalog = [
     triggerEvent: 'LIKE_POST'
   },
   {
-    id: 4,
+    id: 'sugar_free',
     title: "Sugar Free",
     description: "14 days without refined sugar!\nYou've mastered self-discipline and fueled your body with the good stuff. Your health is your wealth.",
     icon: trophyImages['candyTrans'],
