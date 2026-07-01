@@ -22,29 +22,45 @@ const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) =
   if (isLoading) {
     return (
       <BaseCard style={styles.container}>
-        <View style={styles.mainRow}>
-          <View style={styles.iconContainer}>
+        <View style={styles.headerRow}>
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={20}
+            height={20}
+            radius="round"
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={50}
+            height={16}
+            radius={4}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+        <View style={styles.contentRow}>
+          <View style={{ marginBottom: Spacing.xs }}>
             <Skeleton
               colorMode={isDarkMode ? "dark" : "light"}
-              width="100%"
-              height="100%"
-              radius={Spacing.borderRadius.md}
+              width="60%"
+              height={22}
+              radius={4}
               transition={{ type: "timing", duration: 1500 }}
             />
           </View>
-          <View style={styles.textContainer}>
-            <View style={{ marginBottom: 8 }}>
-              <Skeleton
-                colorMode={isDarkMode ? "dark" : "light"}
-                width="70%"
-                height={16}
-                transition={{ type: "timing", duration: 1500 }}
-              />
-            </View>
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width="100%"
+            height={14}
+            radius={4}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <View style={{ marginTop: 6 }}>
             <Skeleton
               colorMode={isDarkMode ? "dark" : "light"}
-              width="40%"
-              height={12}
+              width="80%"
+              height={14}
+              radius={4}
               transition={{ type: "timing", duration: 1500 }}
             />
           </View>

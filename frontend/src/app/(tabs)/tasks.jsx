@@ -18,9 +18,6 @@ import NavigationRow from "@/components/tasks/NavigationRow";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import SectionHeader from "@/components/ui/SectionHeader";
 
-// const SKELETON_TASKS = Array.from({ length: 4 }).map((_, i) => ({ id: `s-${i}`, isSkeleton: true }));
-// const SKELETON_FY_TASKS = [1, 2, 3];
-
 const TasksScreen = () => {
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
@@ -30,18 +27,12 @@ const TasksScreen = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
   const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
-  // const isDarkMode = useStore((state) => state.isDarkMode);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { tasks, categories, isLoading, isRefreshing, refreshTasks } = useTasks();
   const toolbarHeight = useToolbarPadding();
 
   const styles = getStyles();
-  // const skeletonProps = {
-  //   colorMode: isDarkMode ? "dark" : "light",
-  //   transition: { type: "timing", duration: 1500 },
-  //   show: isLoading
-  // };
 
   const handleInstaTrackingConfirm = (dontShowAgain) => {
     setInstaTrackingModalVisible(false);
@@ -61,16 +52,6 @@ const TasksScreen = () => {
       { id: "event_banner", type: "event_banner" },
       { id: "search_bar", type: "search_bar" }
     ];
-
-    // if (isLoading) {
-    //   const skeletonRows = [1, 2, 3].map((i) => ({
-    //     id: `skeleton_row_${i}`,
-    //     type: "category_row",
-    //     title: "Lade..",
-    //     data: SKELETON_TASKS
-    //   }));
-    //   return [...topElements, ...skeletonRows];
-    // }
 
     const groupedCategories = categories
       .map((cat) => {
@@ -132,7 +113,7 @@ const TasksScreen = () => {
         case "search_bar":
           return (
             <View style={styles.paddedContent}>
-              <AppInput placeholder={"Search..."} />
+              <AppInput icon="search" placeholder={t("Search...")} blur />
             </View>
           );
 
