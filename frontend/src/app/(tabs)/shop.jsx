@@ -6,7 +6,6 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useRouter } from "expo-router";
 import RewardCard from "@/components/shop/RewardCard";
 import CategoryButtons from "@/components/ui/CategoryButtons";
-import WalletCard from "@/components/shop/WalletCard";
 import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { useShop } from "@/hooks/useShop";
@@ -47,9 +46,8 @@ export default function ShopScreen() {
   const renderHeader = useMemo(
     () => (
       <View>
-        <View style={styles.paddedContent}>
-          <WalletCard skeletonProps={skeletonProps} isLoading={isLoading} />
-          {isLoading && <View style={{ marginTop: Spacing.md }} />}
+        <View style={styles.featuredRewardCard}>
+          <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
         </View>
         <CategoryButtons
           categories={categories}
@@ -58,11 +56,7 @@ export default function ShopScreen() {
           skeletonProps={skeletonProps}
           isLoading={isLoading}
         />
-
         <View style={styles.paddedContent}>
-          <SectionHeader title={t("Featured Reward")} isLoading={isLoading} />
-          <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
-
           <SectionHeader
             title={
               activeCat.toLowerCase() === "all"
@@ -132,6 +126,9 @@ export default function ShopScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
+    featuredRewardCard: {
+      padding: Spacing.md
+    },
     rowGap: {
       gap: Spacing.md,
       marginBottom: Spacing.md,

@@ -70,9 +70,7 @@ export default memo(function Toolbar({ scrollY }) {
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
-        {isMainTab && pathname !== "/shop" && (
-          <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ border: "none" }} />
-        )}
+        {isMainTab && <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ border: "none" }} />}
         {!isMainTab && (
           <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />
