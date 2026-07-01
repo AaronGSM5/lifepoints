@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useHorizontalCommunityRail } from "@/hooks/useCommunities";
 import { extractId } from "@/utils/helpers";
+import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
 const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
@@ -38,7 +39,7 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
     if (isFetchingNextPage) {
       return (
         <View style={styles.horizontalLoader}>
-          <ActivityIndicator size="small" color={MyTheme.primaryAccent} />
+          <AppLoadingSpinner />
         </View>
       );
     }

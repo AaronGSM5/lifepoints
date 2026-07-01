@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { StyleSheet, View, ActivityIndicator, Animated } from "react-native";
+import { StyleSheet, View, Animated } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -14,6 +14,7 @@ import EmptyState from "@/components/shop/EmptyState";
 import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -86,7 +87,7 @@ export default function ShopScreen() {
     if (!isFetchingMore) return null;
     return (
       <View style={styles.footerLoader}>
-        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+        <AppLoadingSpinner />
       </View>
     );
   };

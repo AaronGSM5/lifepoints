@@ -1,4 +1,4 @@
-import { StyleSheet, SectionList, ActivityIndicator, View } from "react-native";
+import { StyleSheet, SectionList, View } from "react-native";
 import NotificationEntry from "@/components/notifications/NotificationEntry";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import { groupDataByDate } from "@/utils/helpers";
 import AppText from "@/components/ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");
@@ -35,7 +36,7 @@ export default function NotificationsScreen() {
     <ScreenWrapper scrollable={false}>
       <ScreenTitle title={t("Announcements")} />
       {isLoading ? (
-        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+        <AppLoadingSpinner />
       ) : isError ? (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <AppText>Fehler beim Laden: {error.message}</AppText>

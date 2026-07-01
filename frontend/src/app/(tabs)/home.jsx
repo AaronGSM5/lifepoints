@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, Animated } from "react-native";
+import { View, Animated } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
@@ -20,6 +20,7 @@ import { triggerHaptic } from "@/utils/haptics";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -147,7 +148,7 @@ export default function HomeScreen() {
   const renderFooter = () =>
     isBatchLoading ? (
       <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+        <AppLoadingSpinner />
       </View>
     ) : (
       <View style={{ height: Spacing.xl }} />

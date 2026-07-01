@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator, Animated } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList, Pressable, Animated } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import { useVerticalCommunityRails } from "@/hooks/useCommunities";
 import { capitalize, extractId } from "@/utils/helpers";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -176,7 +177,7 @@ export default function CommunitiesScreen() {
     if (isFetchingNextPage) {
       return (
         <View style={styles.mainListLoader}>
-          <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+          <AppLoadingSpinner />
         </View>
       );
     }

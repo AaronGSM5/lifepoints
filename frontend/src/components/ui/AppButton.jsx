@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-import { Pressable, StyleSheet, Animated, ActivityIndicator, View } from "react-native";
+import { Pressable, StyleSheet, Animated, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import AppText from "./AppText";
+import AppLoadingSpinner from "./AppLoadingSpinner";
 
 export default function AppButton({
   title,
@@ -78,7 +79,7 @@ export default function AppButton({
         )}
 
         {loading ? (
-          <ActivityIndicator color={isPrimary ? "#fff" : MyTheme.primaryAccent} />
+          <AppLoadingSpinner size={"small"} color={isPrimary && "#fff"} />
         ) : (
           <View style={[styles.content, iconPosition === "right" && { flexDirection: "row-reverse" }]}>
             {icon && (
