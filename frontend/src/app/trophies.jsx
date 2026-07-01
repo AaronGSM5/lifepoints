@@ -1,19 +1,20 @@
-import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import TrophyCard from "@/components/trophies/TrophyCard";
-import { trophiesCatalog } from "@/constants/TrophiesCatalog";
-import ScreenTitle from "@/components/ui/ScreenTitle";
-import { useTranslation } from "react-i18next";
-import useStore from "@/store/useStore";
-import { useMyProfile } from "@/hooks/useProfileQueries";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
+
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import TrophyCard from "@/components/trophies/TrophyCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useMyProfile } from "@/hooks/useProfileQueries";
+import useStore from "@/store/useStore";
 
 export default function TrophiesScreen() {
   const { t } = useTranslation("trophies");
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
-  const { data: profileData, isLoading } = useMyProfile();
+  const { data: profileData } = useMyProfile();
   const justUnlockedTrophies = useStore((state) => state.profile.justUnlockedTrophies || []);
   const clearJustUnlockedTrophy = useStore((state) => state.clearJustUnlockedTrophy);
 

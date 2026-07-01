@@ -1,6 +1,8 @@
-import { Tabs } from "expo-router";
-import Navbar from "@/components/layout/Navbar.jsx";
 import { useCallback } from "react";
+
+import { Tabs } from "expo-router";
+
+import Navbar from "@/components/layout/Navbar.jsx";
 
 export default function TabsLayout() {
   const renderTabBar = useCallback((props) => <Navbar {...props} />, []);

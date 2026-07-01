@@ -1,12 +1,14 @@
-import React, { useState, useRef, useCallback } from "react";
-import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
+
 import { useRouter } from "expo-router";
-import { onboardingSlides } from "@/constants/OnboardingContent";
-import AppButton from "@/components/ui/AppButton";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import OnboardingItem from "@/components/onboarding/OnboardingItem";
 import SlidePaginator from "@/components/onboarding/SlidePaginator";
+import AppButton from "@/components/ui/AppButton";
+import { onboardingSlides } from "@/constants/OnboardingContent";
+import { Spacing } from "@/constants/Spacing";
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
@@ -14,13 +16,13 @@ export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const slidesRef = useRef(null);
 
-  const viewableItemsChanged = useRef(({ viewableItems }) => {
+  const viewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
     }
-  }).current;
+  }, []);
 
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+  const viewConfig = useMemo(() => ({ viewAreaCoveragePercentThreshold: 50 }), []);
 
   const getItemLayout = (_, index) => ({
     length: width,

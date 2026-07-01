@@ -1,22 +1,24 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList, Pressable, Animated } from "react-native";
-import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import AppInput from "@/components/ui/AppInput";
-import SectionHeader from "@/components/ui/SectionHeader";
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native";
+
+import { router } from "expo-router";
+
+import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-import { useCommunities } from "@/hooks/useCommunities";
-import EventHero from "@/components/home/EventHero";
-import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
-import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
+import EventHero from "@/components/home/EventHero";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from "@/components/ui/AppInput";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommunities } from "@/hooks/useCommunities";
 import { useVerticalCommunityRails } from "@/hooks/useCommunities";
 import { capitalize, extractId } from "@/utils/helpers";
-import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -25,7 +27,7 @@ export default function CommunitiesScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = useMemo(() => new Animated.Value(0), []);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   const {
@@ -66,7 +68,7 @@ export default function CommunitiesScreen() {
     ];
 
     return [...topElements, ...loadedSections];
-  }, [loadedSections, myCommunities, isLoading]);
+  }, [loadedSections]);
 
   const loadMoreSections = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -170,7 +172,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, isCreateModalVisible, MyTheme, t]
+    [isLoading, myCommunities, MyTheme, t, styles]
   );
 
   const renderMainFooter = () => {

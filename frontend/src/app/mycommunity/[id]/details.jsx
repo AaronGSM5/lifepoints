@@ -1,21 +1,23 @@
-import React, { useState, useMemo } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { router, Stack, useLocalSearchParams } from "expo-router";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
-import { useCommunities } from "@/hooks/useCommunities";
-import SectionHeader from "@/components/ui/SectionHeader";
-import AppBadge from "@/components/ui/AppBadge";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Icon } from "@/components/icons/Icon";
-import BaseCard from "@/components/ui/BaseCard";
-import AppButton from "@/components/ui/AppButton";
-import useStore from "@/store/useStore";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { triggerHaptic } from "@/utils/haptics";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { router, Stack, useLocalSearchParams } from "expo-router";
+
+import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppBadge from "@/components/ui/AppBadge";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import SectionHeader from "@/components/ui/SectionHeader";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommunities } from "@/hooks/useCommunities";
+import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 const MOCK_MEMBERS = [
   { id: "1", name: "Sarah", badge: "badge_elite", lp: 2450 },

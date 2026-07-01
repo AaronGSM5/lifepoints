@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
-import { View, StyleSheet, SectionList } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import ScreenTitle from "@/components/ui/ScreenTitle";
-import HistoryCard from "@/components/ui/HistoryCard";
 import { useTranslation } from "react-i18next";
-import { groupDataByDate } from "@/utils/helpers";
+import { SectionList, StyleSheet, View } from "react-native";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppText from "@/components/ui/AppText";
+import HistoryCard from "@/components/ui/HistoryCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useMyProfile } from "@/hooks/useProfileQueries";
+import { groupDataByDate } from "@/utils/helpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();

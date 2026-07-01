@@ -1,19 +1,21 @@
-import React, { useMemo, useRef } from "react";
-import { StyleSheet, View, Animated, FlatList } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useRouter } from "expo-router";
-import RewardCard from "@/components/shop/RewardCard";
-import CategoryButtons from "@/components/ui/CategoryButtons";
-import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { useShop } from "@/hooks/useShop";
-import EmptyState from "@/components/shop/EmptyState";
-import useStore from "@/store/useStore";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Animated, FlatList, StyleSheet, View } from "react-native";
+
+import { useRouter } from "expo-router";
+
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import EmptyState from "@/components/shop/EmptyState";
+import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
+import RewardCard from "@/components/shop/RewardCard";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import CategoryButtons from "@/components/ui/CategoryButtons";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useShop } from "@/hooks/useShop";
+import useStore from "@/store/useStore";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -33,20 +35,22 @@ export default function ShopScreen() {
     fetchMore,
     isFetchingMore
   } = useShop();
-  const scrollY = useRef(new Animated.Value(0)).current;
   const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
+  const scrollY = useMemo(() => new Animated.Value(0), []);
 
-  const skeletonProps = {
-    colorMode: isDarkMode ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
-  };
+  const skeletonProps = useMemo(
+    () => ({
+      colorMode: isDarkMode ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 },
+      show: isLoading
+    }),
+    [isDarkMode, isLoading]
+  );
 
-  const forYouRewards = rewards ? rewards.slice(0, 5) : [];
-
-  const renderHeader = useMemo(
-    () => (
+  const renderHeader = useMemo(() => {
+    const forYouRewards = rewards ? rewards.slice(0, 5) : [];
+    return (
       <View>
         <View style={styles.featuredRewardCard}>
           <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
@@ -95,9 +99,8 @@ export default function ShopScreen() {
           />
         </View>
       </View>
-    ),
-    [activeCat, isLoading, categories, rewards, t, userLevel]
-  );
+    );
+  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, skeletonProps, styles]);
 
   const renderEmptyState = () => (
     <View style={styles.paddedContent}>

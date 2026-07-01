@@ -1,20 +1,22 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import { Icon } from "@/components/icons/Icon";
-import { tasksCatalog } from "@/constants/TasksCatalog";
-import { Stack } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import HistoryCard from "@/components/ui/HistoryCard";
-import BackButton from "@/components/ui/BackButton";
-import AppBadge from "@/components/ui/AppBadge";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { LinearGradient } from "expo-linear-gradient";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack } from "expo-router";
+
+import { Icon } from "@/components/icons/Icon";
+import AppBadge from "@/components/ui/AppBadge";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BackButton from "@/components/ui/BackButton";
+import HistoryCard from "@/components/ui/HistoryCard";
+import { Spacing } from "@/constants/Spacing";
+import { tasksCatalog } from "@/constants/TasksCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 export default function TaskDetailScreen() {
   const MyTheme = useAppTheme();

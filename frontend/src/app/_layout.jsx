@@ -1,17 +1,20 @@
-import { Stack } from "expo-router";
 import { useEffect } from "react";
-import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
-import * as SplashScreen from "expo-splash-screen";
-import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
 import { Platform, View } from "react-native";
-import { ErrorFallback } from "@/components/ErrorFallback";
-import * as NavigationBar from "expo-navigation-bar";
-import "@/utils/i18n";
-import TrophyPopup from "@/components/ui/TrophyPopup";
-import { usePushNotifications } from "@/hooks/usePushNotifications";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as NavigationBar from "expo-navigation-bar";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+
+import { ErrorFallback } from "@/components/ErrorFallback";
+import TrophyPopup from "@/components/ui/TrophyPopup";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
+
+import "@/utils/i18n";
 
 SplashScreen.preventAutoHideAsync();
 

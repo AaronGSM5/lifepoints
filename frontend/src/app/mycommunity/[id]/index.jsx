@@ -1,16 +1,19 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
-import { useLocalSearchParams, useRouter, Stack } from "expo-router";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import { Spacing } from "@/constants/Spacing";
-import { useCommunities } from "@/hooks/useCommunities";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import AppInput from "@/components/ui/AppInput";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommunities } from "@/hooks/useCommunities";
 
 const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },

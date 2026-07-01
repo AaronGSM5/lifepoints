@@ -1,12 +1,14 @@
-import { View, StyleSheet, Alert } from "react-native";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { settingsSections } from "@/constants/SettingsConfig";
-import { useRouter } from "expo-router";
-import BaseCard from "@/components/ui/BaseCard";
-import SettingsRow from "@/components/settings/SettingsRow";
 import { useTranslation } from "react-i18next";
+import { Alert, StyleSheet, View } from "react-native";
+
+import { useRouter } from "expo-router";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import SettingsRow from "@/components/settings/SettingsRow";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { settingsSections } from "@/constants/SettingsConfig";
+import { Spacing } from "@/constants/Spacing";
 
 export default function SettingsScreen() {
   const router = useRouter();

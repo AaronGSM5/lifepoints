@@ -1,15 +1,16 @@
-import { StyleSheet, SectionList, View } from "react-native";
-import NotificationEntry from "@/components/notifications/NotificationEntry";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import ScreenTitle from "@/components/ui/ScreenTitle";
-import { useTranslation } from "react-i18next";
-import { useNotifications } from "@/hooks/useNotifications";
 import { useMemo } from "react";
-import { groupDataByDate } from "@/utils/helpers";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { useTranslation } from "react-i18next";
+import { SectionList, StyleSheet, View } from "react-native";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import NotificationEntry from "@/components/notifications/NotificationEntry";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import AppText from "@/components/ui/AppText";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useNotifications } from "@/hooks/useNotifications";
+import { groupDataByDate } from "@/utils/helpers";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");
@@ -63,7 +64,7 @@ export default function NotificationsScreen() {
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     listContainer: {
       paddingBottom: Spacing.xl

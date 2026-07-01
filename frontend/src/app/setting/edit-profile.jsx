@@ -1,30 +1,32 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  StyleSheet,
-  View,
+  Alert,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from "react-native";
+
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppInput from "@/components/ui/AppInput";
-import * as ImagePicker from "expo-image-picker";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import useStore from "@/store/useStore";
-import { useMyProfile } from "@/hooks/useProfileQueries";
-import { useTranslation } from "react-i18next";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import { triggerHaptic } from "@/utils/haptics";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useUpdateProfile } from "@/hooks/useProfileMutations";
+import { useMyProfile } from "@/hooks/useProfileQueries";
+import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
@@ -34,7 +36,7 @@ export default function EditProfileScreen() {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const { data: profileData, isLoading } = useMyProfile();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
-  const updateLocalStore = useStore((state) => state.updateProfile);
+  // const updateLocalStore = useStore((state) => state.updateProfile);
 
   const initialData = useMemo(
     () => ({
@@ -50,9 +52,10 @@ export default function EditProfileScreen() {
 
   useEffect(() => {
     if (profileData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData(initialData);
     }
-  }, [profileData]);
+  }, [profileData, initialData]);
 
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
 

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Switch, TouchableOpacity, Alert } from "react-native";
-import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
-import AppInput from "@/components/ui/AppInput";
-import AppButton from "@/components/ui/AppButton";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { Alert, StyleSheet, Switch, TouchableOpacity, View } from "react-native";
+
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function SecurityScreen() {
   const MyTheme = useAppTheme();

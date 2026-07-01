@@ -1,20 +1,22 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import Animated from "react-native-reanimated";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import { Icon } from "@/components/icons/Icon";
-import { rewardsCatalog } from "@/constants/RewardsCatalog";
-import { Stack } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import BackButton from "@/components/ui/BackButton";
-import AppBadge from "@/components/ui/AppBadge";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { LinearGradient } from "expo-linear-gradient";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack } from "expo-router";
+
+import { Icon } from "@/components/icons/Icon";
+import AppBadge from "@/components/ui/AppBadge";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BackButton from "@/components/ui/BackButton";
+import { rewardsCatalog } from "@/constants/RewardsCatalog";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 export default function RewardDetailScreen() {
   const MyTheme = useAppTheme();

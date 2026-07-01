@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+// import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, View } from "react-native";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
-import { useTranslation } from "react-i18next";
 
 export default function PrivacyScreen() {
-  const { t } = useTranslation("settings");
+  // const { t } = useTranslation("settings");
   return (
     <ScreenWrapper>
       <View style={{ alignItems: "center", justifyContent: "center", gap: 10 }}>

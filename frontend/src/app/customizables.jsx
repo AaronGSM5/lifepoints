@@ -1,13 +1,14 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
-import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import CustomizablesCard from "@/components/customizables/CustomizablesCard";
-import ScreenTitle from "@/components/ui/ScreenTitle";
-import AppText from "@/components/ui/AppText";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+
+import CustomizablesCard from "@/components/customizables/CustomizablesCard";
+import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
+import AppText from "@/components/ui/AppText";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
 import { mockCustomizables } from "@/mocks/Customizables";
+import useStore from "@/store/useStore";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");

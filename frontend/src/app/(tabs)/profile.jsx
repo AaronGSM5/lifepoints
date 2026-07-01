@@ -1,13 +1,13 @@
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import JournalPreview from "@/components/journal/JournalPreview";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import InviteFriendCard from "@/components/profile/InviteFriendCard";
 import OnboardingGuide from "@/components/profile/OnboardingGuide";
+import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 import ProfileHeader from "@/components/profile/ProfileHeader";
-import { useMyProfile } from "@/hooks/useProfileQueries";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
-import InviteFriendCard from "@/components/profile/InviteFriendCard";
+import { useMyProfile } from "@/hooks/useProfileQueries";
 import useStore from "@/store/useStore";
-import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 
 export default function ProfileScreen() {
   const { data: profileData, isLoading } = useMyProfile();

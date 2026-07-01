@@ -1,22 +1,24 @@
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated, FlatList, StyleSheet, View } from "react-native";
+
+import { useRouter } from "expo-router";
+
+import EventHero from "@/components/home/EventHero";
+import InstaTrackingModal from "@/components/home/InstaTrackingModal";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import NavigationRow from "@/components/tasks/NavigationRow";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
-import AppText from "@/components/ui/AppText";
-import { Spacing } from "@/constants/Spacing";
-import { useRouter } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, View, Animated, FlatList } from "react-native";
-import { useTasks } from "@/hooks/useTasks";
-import useStore from "@/store/useStore";
-import InstaTrackingModal from "@/components/home/InstaTrackingModal";
-import { useTranslation } from "react-i18next";
-import { triggerHaptic } from "@/utils/haptics";
-import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
-import EventHero from "@/components/home/EventHero";
 import AppInput from "@/components/ui/AppInput";
-import NavigationRow from "@/components/tasks/NavigationRow";
-import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useTasks } from "@/hooks/useTasks";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 const TasksScreen = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ const TasksScreen = () => {
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [taskToTrack, setTaskToTrack] = useState(null);
   const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = useMemo(() => new Animated.Value(0), []);
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
   const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
   const trackTask = useStore((state) => state.trackTask);
@@ -66,7 +68,7 @@ const TasksScreen = () => {
       .filter((cat) => cat.data.length > 0);
 
     return [...topElements, ...groupedCategories];
-  }, [isLoading, tasks, categories]);
+  }, [tasks, categories]);
 
   const renderHorizontalTaskItem = useCallback(
     ({ item }) => (
@@ -97,7 +99,7 @@ const TasksScreen = () => {
         />
       </View>
     ),
-    [isLoading, expandedTaskId, showInstaTrackingModal, trackTask, completeTask, router]
+    [isLoading, expandedTaskId, showInstaTrackingModal, trackTask, completeTask, router, styles]
   );
 
   const renderItem = useCallback(
@@ -139,7 +141,7 @@ const TasksScreen = () => {
           return null;
       }
     },
-    [isLoading, renderHorizontalTaskItem, t]
+    [isLoading, renderHorizontalTaskItem, t, styles]
   );
 
   const renderFooter = () => (

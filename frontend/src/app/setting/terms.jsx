@@ -1,11 +1,13 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
 import { useRouter } from "expo-router";
+
 import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
 export default function TermsScreen() {
