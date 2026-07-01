@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View, Animated, FlatList } from "react-native";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -43,32 +43,60 @@ export default function ShopScreen() {
     show: isLoading
   };
 
+  const forYouRewards = rewards ? rewards.slice(0, 5) : [];
+
   const renderHeader = useMemo(
     () => (
       <View>
         <View style={styles.featuredRewardCard}>
           <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
         </View>
-        <CategoryButtons
-          categories={categories}
-          activeCat={activeCat}
-          setActiveCat={setActiveCat}
-          skeletonProps={skeletonProps}
-          isLoading={isLoading}
-        />
+        <View style={styles.forYouSection}>
+          <View style={styles.paddedContent}>
+            <SectionHeader title={t("For You")} isLoading={isLoading} />
+          </View>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={isLoading ? SKELETON_REWARDS : forYouRewards}
+            keyExtractor={(item, index) => (item.id ? item.id.toString() : `fy-${index}`)}
+            contentContainerStyle={styles.horizontalListContent}
+            renderItem={({ item }) => (
+              <View style={styles.horizontalCardWrapper}>
+                <RewardCard
+                  id={item.id}
+                  isLoading={isLoading}
+                  image={item.image}
+                  brand={item.brand}
+                  title={item.title}
+                  points={item.points}
+                  icon={item.icon}
+                  isLocked={userLevel < (item.requiredLevel || 0)}
+                  onPress={() => router.push(`/reward/${item.id}`)}
+                  skeletonProps={skeletonProps}
+                />
+              </View>
+            )}
+          />
+        </View>
+        <View style={styles.categoriesSection}>
+          <CategoryButtons
+            categories={categories}
+            activeCat={activeCat}
+            setActiveCat={setActiveCat}
+            skeletonProps={skeletonProps}
+            isLoading={isLoading}
+          />
+        </View>
         <View style={styles.paddedContent}>
           <SectionHeader
-            title={
-              activeCat.toLowerCase() === "all"
-                ? t("For You")
-                : `${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`
-            }
+            title={`${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`}
             isLoading={isLoading}
           />
         </View>
       </View>
     ),
-    [activeCat, isLoading, categories]
+    [activeCat, isLoading, categories, rewards, t, userLevel]
   );
 
   const renderEmptyState = () => (
@@ -128,6 +156,20 @@ const getStyles = () =>
   StyleSheet.create({
     featuredRewardCard: {
       padding: Spacing.md
+    },
+    forYouSection: {
+      marginBottom: Spacing.md
+    },
+    horizontalListContent: {
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.xs,
+      gap: Spacing.md
+    },
+    horizontalCardWrapper: {
+      width: 240
+    },
+    categoriesSection: {
+      marginTop: Spacing.sm
     },
     rowGap: {
       gap: Spacing.md,
