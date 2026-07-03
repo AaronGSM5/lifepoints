@@ -1,9 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const userTaskSchema = new mongoose.Schema({
+const userTaskSchema = new mongoose.Schema(
+  {
     taskStarted: {
       type: String,
-      required: true,
+      required: true
     },
     taskFinished: {
       type: String,
@@ -15,7 +16,7 @@ const userTaskSchema = new mongoose.Schema({
     },
     status: {
       type: String,
-      enum: ['active', 'done']
+      enum: ["active", "done"]
     },
     task: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,10 +27,12 @@ const userTaskSchema = new mongoose.Schema({
       required: true
     },
     proof: {
-      type: mongoose.Schema.Types.Mixed,
-    },
-}, {
-  timestamps: true
-});
+      type: mongoose.Schema.Types.Mixed
+    }
+  },
+  {
+    timestamps: true
+  }
+);
 
-export default mongoose.model('userTask', userTaskSchema);
+export default mongoose.model("userTask", userTaskSchema);

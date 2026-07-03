@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
   title: {
@@ -35,4 +35,4 @@ const taskSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Tasks', taskSchema);
+module.exports = mongoose.model("Tasks", taskSchema);

@@ -1,45 +1,76 @@
-import { defineConfig } from "eslint/config";
-import eslintPluginPrettier from "eslint-plugin-prettier";
+import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import globals from "globals";
 
-export default defineConfig([
+const compat = new FlatCompat({
+  baseDirectory: import.meta.dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all
+});
+
+export default [
+  {
+    ignores: ["node_modules/", "dist/", "build/", "*.config.js"]
+  },
+  ...compat.extends("prettier"),
   {
     plugins: {
-      prettier: eslintPluginPrettier,
-      js
+      import: importPlugin,
+      "simple-import-sort": simpleImportSort
     },
-    extends: ["js/recommended"],
-
     languageOptions: {
       globals: {
-        ...globals.node,
-        describe: "readonly",
-        before: "readonly",
-        after: "readonly",
-        beforeEach: "readonly",
-        afterEach: "readonly",
-        it: "readonly",
-        assert: "readonly",
-        beforeAll: "readonly",
-        afterAll: "readonly",
-        jest: "readonly",
-        expect: "readonly",
-        test: "readonly"
+        ...globals.browser,
+        ...globals.node
       }
     },
+    settings: {
+      "import/resolver": {
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"]
+        },
+        typescript: {
+          project: "./jsconfig.json"
+        }
+      }
+    },
+
     rules: {
-      camelcase: ["warn", { properties: "never", ignoreDestructuring: true }],
-      "no-useless-catch": "off",
       "linebreak-style": ["error", "unix"],
-      "object-shorthand": "off",
-      "padding-line-between-statements": [
+      "no-restricted-imports": [
         "error",
-        { blankLine: "always", prev: "const", next: "block-like" },
-        { blankLine: "always", prev: "let", next: "block-like" },
-        { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
-        { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] }
-      ]
+        {
+          patterns: [
+            {
+              group: ["./ui/*", "../components/ui/*", "../../components/ui/*"],
+              message: "Use '@/components/ui/...' instead of relative import."
+            }
+          ]
+        }
+      ],
+      "no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true
+        }
+      ],
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            ["^react", "^react-native"],
+            ["^@?\\w"],
+            ["^@/"],
+            ["^\\./", "^\\.\\./"],
+            ["^.+\\.s?css$", "^.+\\.(png|jpg|jpeg|gif|svg)$"]
+          ]
+        }
+      ],
+      "simple-import-sort/exports": "error"
     }
   }
-]);
+];
