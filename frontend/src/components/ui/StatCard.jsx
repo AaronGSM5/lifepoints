@@ -1,16 +1,19 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import BaseCard from "@/components/ui/BaseCard";
-import AppBadge from "./AppBadge";
+
 import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
-const StatCard = ({ label, value, icon, color, badge, blurred, isLoading }) => {
+import AppBadge from "./AppBadge";
+
+const StatCard = ({ label, value, icon, color, blurred, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const isDarkMode = useStore((state) => state.isDarkMode);

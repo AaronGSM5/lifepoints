@@ -1,11 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
+import { Skeleton } from "moti/skeleton";
+
 import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { Skeleton } from "moti/skeleton";
 import useStore from "@/store/useStore";
 
 const SectionHeader = ({

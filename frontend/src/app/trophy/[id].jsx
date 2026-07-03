@@ -1,13 +1,15 @@
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import Animated from "react-native-reanimated";
-import { useLocalSearchParams } from "expo-router";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+
+import { useLocalSearchParams } from "expo-router";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 export default function TrophyScreen() {

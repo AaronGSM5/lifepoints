@@ -1,20 +1,23 @@
-import { View, Pressable, StyleSheet, Animated } from "react-native";
+import { useState } from "react";
+import { Animated, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useRef } from "react";
+
 import { BlurView } from "expo-blur";
-import { Icon } from "../icons/Icon";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { LinearGradient } from "expo-linear-gradient";
+
+import { Icon } from "../icons/Icon";
 
 const TabBarItem = ({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
   const isDarkMode = useStore((state) => state.isDarkMode);
   const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
   const styles = getStyles(isDarkMode);
-  const scale = useRef(new Animated.Value(1)).current;
+  const [scale] = useState(() => new Animated.Value(1));
 
   const activeColor = MyTheme.primaryAccent;
   const inactiveColor = MyTheme.text;
@@ -47,7 +50,7 @@ const TabBarItem = ({ route, isFocused, onPress }) => {
   );
 };
 
-export default function Navbar({ state, descriptors, navigation }) {
+export default function Navbar({ state, navigation }) {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const styles = getStyles(isDarkMode);
   const insets = useSafeAreaInsets();

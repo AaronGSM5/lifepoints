@@ -1,8 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import AppText from "@/components/ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
 import { addOpacity } from "@/utils/addOpacity";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {

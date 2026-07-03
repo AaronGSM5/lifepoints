@@ -1,6 +1,7 @@
 import { Animated, Text } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Typography } from "@/constants/Typography";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 const AppText = ({ children, type = "body", bold = false, animated = false, style, ...props }) => {
   const MyTheme = useAppTheme();

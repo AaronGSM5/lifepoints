@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, StyleSheet, FlatList, ScrollView } from "react-native";
-import AppText from "@/components/ui/AppText";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+
 import { Icon } from "@/components/icons/Icon";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppInput from "@/components/ui/AppInput";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppBadge from "@/components/ui/AppBadge";
-import { useTranslation } from "react-i18next";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");

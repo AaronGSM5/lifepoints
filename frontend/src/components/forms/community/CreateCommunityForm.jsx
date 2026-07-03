@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, View } from "react-native";
+
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
+import { communityBadges, communityIcons } from "@/constants/CommunityOptions";
+import { communityTiers } from "@/constants/CommunityPricing";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import AppInput from "../../ui/AppInput";
-import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
-import IconPicker from "./IconPicker";
+
 import BadgePicker from "./BadgePicker";
 import BannerUploader from "./BannerUploader";
+import IconPicker from "./IconPicker";
 import SizePicker from "./SizePicker";
-import { communityIcons, communityBadges } from "@/constants/CommunityOptions";
-import { communityTiers } from "@/constants/CommunityPricing";
-import { useTranslation } from "react-i18next";
+import AppInput from "../../ui/AppInput";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 

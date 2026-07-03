@@ -1,11 +1,13 @@
-import { StyleSheet, View } from "react-native";
-import { Icon } from "../icons/Icon";
-import AppText from "../ui/AppText";
-import AppInput from "../ui/AppInput";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import { Icon } from "../icons/Icon";
+import AppInput from "../ui/AppInput";
+import AppText from "../ui/AppText";
 
 const SuggestTaskInput = () => {
   const MyTheme = useAppTheme();

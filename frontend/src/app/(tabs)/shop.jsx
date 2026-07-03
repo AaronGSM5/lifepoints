@@ -1,19 +1,21 @@
-import React, { useMemo, useRef } from "react";
-import { StyleSheet, View, ActivityIndicator, Animated } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useRouter } from "expo-router";
-import RewardCard from "@/components/shop/RewardCard";
-import CategoryButtons from "@/components/ui/CategoryButtons";
-import WalletCard from "@/components/shop/WalletCard";
-import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { useShop } from "@/hooks/useShop";
-import EmptyState from "@/components/shop/EmptyState";
-import useStore from "@/store/useStore";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Animated, FlatList, StyleSheet, View } from "react-native";
+
+import { useRouter } from "expo-router";
+
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import EmptyState from "@/components/shop/EmptyState";
+import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
+import RewardCard from "@/components/shop/RewardCard";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import CategoryButtons from "@/components/ui/CategoryButtons";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useShop } from "@/hooks/useShop";
+import useStore from "@/store/useStore";
 
 const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}`, isSkeleton: true }));
 
@@ -33,48 +35,72 @@ export default function ShopScreen() {
     fetchMore,
     isFetchingMore
   } = useShop();
-  const scrollY = useRef(new Animated.Value(0)).current;
   const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
+  const scrollY = useMemo(() => new Animated.Value(0), []);
 
-  const skeletonProps = {
-    colorMode: isDarkMode ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
-  };
+  const skeletonProps = useMemo(
+    () => ({
+      colorMode: isDarkMode ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 },
+      show: isLoading
+    }),
+    [isDarkMode, isLoading]
+  );
 
-  const renderHeader = useMemo(
-    () => (
+  const renderHeader = useMemo(() => {
+    const forYouRewards = rewards ? rewards.slice(0, 5) : [];
+    return (
       <View>
-        <View style={styles.paddedContent}>
-          <WalletCard skeletonProps={skeletonProps} isLoading={isLoading} />
-          {isLoading && <View style={{ marginTop: Spacing.md }} />}
-        </View>
-        <CategoryButtons
-          categories={categories}
-          activeCat={activeCat}
-          setActiveCat={setActiveCat}
-          skeletonProps={skeletonProps}
-          isLoading={isLoading}
-        />
-
-        <View style={styles.paddedContent}>
-          <SectionHeader title={t("Featured Reward")} isLoading={isLoading} />
+        <View style={styles.featuredRewardCard}>
           <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
-
+        </View>
+        <View style={styles.forYouSection}>
+          <View style={styles.paddedContent}>
+            <SectionHeader title={t("For You")} isLoading={isLoading} />
+          </View>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={isLoading ? SKELETON_REWARDS : forYouRewards}
+            keyExtractor={(item, index) => (item.id ? item.id.toString() : `fy-${index}`)}
+            contentContainerStyle={styles.horizontalListContent}
+            renderItem={({ item }) => (
+              <View style={styles.horizontalCardWrapper}>
+                <RewardCard
+                  id={item.id}
+                  isLoading={isLoading}
+                  image={item.image}
+                  brand={item.brand}
+                  title={item.title}
+                  points={item.points}
+                  icon={item.icon}
+                  isLocked={userLevel < (item.requiredLevel || 0)}
+                  onPress={() => router.push(`/reward/${item.id}`)}
+                  skeletonProps={skeletonProps}
+                />
+              </View>
+            )}
+          />
+        </View>
+        <View style={styles.categoriesSection}>
+          <CategoryButtons
+            categories={categories}
+            activeCat={activeCat}
+            setActiveCat={setActiveCat}
+            skeletonProps={skeletonProps}
+            isLoading={isLoading}
+          />
+        </View>
+        <View style={styles.paddedContent}>
           <SectionHeader
-            title={
-              activeCat.toLowerCase() === "all"
-                ? t("For You")
-                : `${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`
-            }
+            title={`${t(`categories.${activeCat.toLowerCase()}`)} ${t("Rewards")}`}
             isLoading={isLoading}
           />
         </View>
       </View>
-    ),
-    [activeCat, isLoading, categories]
-  );
+    );
+  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, skeletonProps, styles]);
 
   const renderEmptyState = () => (
     <View style={styles.paddedContent}>
@@ -86,7 +112,7 @@ export default function ShopScreen() {
     if (!isFetchingMore) return null;
     return (
       <View style={styles.footerLoader}>
-        <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+        <AppLoadingSpinner />
       </View>
     );
   };
@@ -131,6 +157,23 @@ export default function ShopScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
+    featuredRewardCard: {
+      padding: Spacing.md
+    },
+    forYouSection: {
+      marginBottom: Spacing.md
+    },
+    horizontalListContent: {
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.xs,
+      gap: Spacing.md
+    },
+    horizontalCardWrapper: {
+      width: 240
+    },
+    categoriesSection: {
+      marginTop: Spacing.sm
+    },
     rowGap: {
       gap: Spacing.md,
       marginBottom: Spacing.md,

@@ -1,6 +1,8 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+
 import { useRouter } from "expo-router";
+
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 

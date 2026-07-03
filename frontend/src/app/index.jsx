@@ -1,11 +1,13 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+
 import { useRouter } from "expo-router";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function DevEntryScreen() {
   const router = useRouter();

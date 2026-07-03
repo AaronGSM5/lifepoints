@@ -1,16 +1,19 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
-import { useLocalSearchParams, useRouter, Stack } from "expo-router";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import { Spacing } from "@/constants/Spacing";
-import { useCommunities } from "@/hooks/useCommunities";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import AppInput from "@/components/ui/AppInput";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommunities } from "@/hooks/useCommunities";
 
 const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },
@@ -94,33 +97,29 @@ export default function MyCommunityChatScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
-      <Stack.Screen
-        options={{
-          header: () => (
-            <View style={[styles.customHeader, { paddingTop: insets.top }]}>
-              <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
-                <Icon name="back" />
-              </TouchableOpacity>
+      <Stack.Screen options={{ headerShown: false }} />
 
-              <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-                  <View style={[styles.iconBox, { backgroundColor: community.color }]}>
-                    <MaterialIcons name={community.icon} size={20} color="#fff" />
-                  </View>
-                  <AppText bold>{community?.title || "Community Chat"}</AppText>
-                </View>
-                <AppText type="caption" style={styles.headerSubtitleText}>
-                  {t("Tap for more info")}
-                </AppText>
-              </TouchableOpacity>
+      <View style={[styles.customHeader, { paddingTop: insets.top }]}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
+          <Icon name="back" />
+        </TouchableOpacity>
 
-              <View style={styles.headerIcon} />
+        <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
+            <View style={[styles.iconBox, { backgroundColor: community.color }]}>
+              <MaterialIcons name={community.icon} size={20} color="#fff" />
             </View>
-          )
-        }}
-      />
+            <AppText bold>{community?.title || "Community Chat"}</AppText>
+          </View>
+          <AppText type="caption" style={styles.headerSubtitleText}>
+            {t("Tap for more info")}
+          </AppText>
+        </TouchableOpacity>
 
-      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false}>
+        <View style={styles.headerIcon} />
+      </View>
+
+      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
         <FlatList
           ref={flatListRef}
           data={messages}

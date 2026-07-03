@@ -1,53 +1,27 @@
 import React, { useMemo } from "react";
-import { View, StyleSheet, SectionList } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import ScreenTitle from "@/components/ui/ScreenTitle";
-import HistoryCard from "@/components/ui/HistoryCard";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { SectionList, StyleSheet, View } from "react-native";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppText from "@/components/ui/AppText";
+import HistoryCard from "@/components/ui/HistoryCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useMyProfile } from "@/hooks/useProfileQueries";
+import { groupDataByDate } from "@/utils/helpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
-  const activities = useStore((state) => state.activities);
+  const { data: profileData, isLoading } = useMyProfile();
+  const activities = profileData?.activities;
   const groupedActivities = useMemo(() => {
     if (!activities || activities.length === 0) return [];
 
-    const groups = {};
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    activities.forEach((activity) => {
-      const activityDate = new Date(activity.time);
-      const activityDay = new Date(activityDate);
-      activityDay.setHours(0, 0, 0, 0);
-
-      let sectionTitle = activityDate.toLocaleDateString();
-
-      if (activityDay.getTime() === today.getTime()) {
-        sectionTitle = t("Today", "Heute");
-      } else if (activityDay.getTime() === yesterday.getTime()) {
-        sectionTitle = t("Yesterday", "Gestern");
-      }
-
-      if (!groups[sectionTitle]) {
-        groups[sectionTitle] = [];
-      }
-      groups[sectionTitle].push(activity);
-    });
-
-    return Object.keys(groups).map((title) => ({
-      title,
-      data: groups[title]
-    }));
+    const sorted = [...activities].sort((a, b) => new Date(b.time) - new Date(a.time));
+    return groupDataByDate(sorted, "time", t);
   }, [activities, t]);
 
   const renderItem = ({ item }) => (
@@ -73,6 +47,19 @@ const JournalPage = () => {
       </AppText>
     </View>
   );
+
+  if (!isLoading && (!activities || activities.length === 0)) {
+    return (
+      <ScreenWrapper style={styles.wrapper}>
+        <ScreenTitle title={t("My Impact Journal")} />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: Spacing.xl }}>
+          <AppText type="body" style={{ textAlign: "center", color: MyTheme.muted }}>
+            {t("No activities yet. Start completing tasks to see your impact here!")}
+          </AppText>
+        </View>
+      </ScreenWrapper>
+    );
+  }
 
   return (
     <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>

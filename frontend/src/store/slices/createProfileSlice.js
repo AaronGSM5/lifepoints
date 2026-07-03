@@ -1,7 +1,9 @@
 import * as Haptics from "expo-haptics";
-import { getXpThreshold } from "../../utils/xpHelpers";
-import { generateTripleLoot } from "@/utils/lootLogic";
+
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { generateTripleLoot } from "@/utils/lootLogic";
+
+import { getXpThreshold } from "../../utils/xpHelpers";
 
 const initialUserState = {
   name: "New User",

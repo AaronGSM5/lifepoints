@@ -1,13 +1,16 @@
 // src/components/home/LootGameModal.js
-import React, { useEffect, useRef, useState } from "react";
-import { Modal, View, StyleSheet, TouchableOpacity, Animated, Dimensions, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated, Dimensions, Image, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+
 import * as Haptics from "expo-haptics";
-import useStore from "@/store/useStore";
-import AppText from "../ui/AppText";
-import AppButton from "../ui/AppButton";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
+
+import AppButton from "../ui/AppButton";
+import AppText from "../ui/AppText";
 
 const { width } = Dimensions.get("window");
 const MYSTERY_COLOR = "#475569";
@@ -38,14 +41,13 @@ const LootGameModal = () => {
   const revealFinalLoot = useStore((state) => state.revealFinalLoot);
   const collectLoot = useStore((state) => state.collectLoot);
 
-  const slideLeft = useRef(new Animated.Value(-width)).current;
-  const slideRight = useRef(new Animated.Value(width)).current;
-  const fadeCenter = useRef(new Animated.Value(0)).current;
+  const [slideLeft] = useState(() => new Animated.Value(-width));
+  const [slideRight] = useState(() => new Animated.Value(width));
+  const [fadeCenter] = useState(() => new Animated.Value(0));
   const [canInteract, setCanInteract] = useState(false);
 
   useEffect(() => {
     if (isLootGameActive && currentLootSet.length > 0) {
-      setCanInteract(false);
       slideLeft.setValue(-width);
       slideRight.setValue(width);
       fadeCenter.setValue(0);
@@ -56,7 +58,7 @@ const LootGameModal = () => {
         Animated.timing(fadeCenter, { toValue: 1, duration: 600, useNativeDriver: true })
       ]).start(() => setCanInteract(true));
     }
-  }, [isLootGameActive]);
+  }, [isLootGameActive, currentLootSet, slideLeft, slideRight, fadeCenter]);
 
   const handlePick = (index) => {
     if (!canInteract || chosenLootIndex !== null) return;
@@ -71,6 +73,11 @@ const LootGameModal = () => {
   };
 
   if (!isLootGameActive) return null;
+
+  const handleCollect = () => {
+    setCanInteract(false);
+    collectLoot();
+  };
 
   return (
     <Modal visible={isLootGameActive} transparent animationType="fade">
@@ -135,7 +142,7 @@ const LootGameModal = () => {
                 ? t("Crazy!")
                 : t("So close!")}
             </AppText>
-            <AppButton title={t("Collect Reward")} onPress={collectLoot} variant="primary" />
+            <AppButton title={t("Collect Reward")} onPress={handleCollect} variant="primary" />
           </Animated.View>
         )}
       </View>

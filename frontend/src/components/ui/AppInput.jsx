@@ -1,13 +1,15 @@
-import React, { useState, forwardRef } from "react";
-import { StyleSheet, View, TextInput, TouchableOpacity, Platform } from "react-native";
+import React, { forwardRef, useState } from "react";
+import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+
 import { BlurView } from "expo-blur";
 
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import AppText from "@/components/ui/AppText";
-import { Icon } from "../icons/Icon";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
+
+import { Icon } from "../icons/Icon";
 
 const AppInput = forwardRef(
   (
@@ -117,6 +119,8 @@ const AppInput = forwardRef(
     );
   }
 );
+
+AppInput.displayName = "AppInput";
 
 const getStyles = (theme) => {
   return StyleSheet.create({

@@ -1,41 +1,25 @@
-import React, { useMemo } from "react";
-import { View, StyleSheet } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import AppText from "../ui/AppText";
-import { Spacing } from "@/constants/Spacing";
-import BaseCard from "../ui/BaseCard";
-import { Skeleton } from "moti/skeleton";
-import SectionHeader from "../ui/SectionHeader";
-import { router } from "expo-router";
-import HistoryCard from "../ui/HistoryCard";
-import useStore from "@/store/useStore";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
 
-const JournalPreview = ({ skeletonProps, isLoading }) => {
+import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { formatTimeOrDate } from "@/utils/helpers";
+
+import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
+import HistoryCard from "../ui/HistoryCard";
+import SectionHeader from "../ui/SectionHeader";
+
+const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
-  const activities = useStore((state) => state.activities);
 
   const previewData = activities?.slice(0, 3) || [];
-
-  const formatTimeOrDate = (isoString) => {
-    if (!isoString) return "";
-    const date = new Date(isoString);
-    const today = new Date();
-
-    const isToday =
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
-
-    if (isToday) {
-      // Heute -> z.B. "14:30"
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    }
-    // Älter -> z.B. "22.05.2026"
-    return date.toLocaleDateString();
-  };
 
   if (!isLoading && previewData.length === 0) return null;
 

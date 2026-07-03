@@ -1,20 +1,22 @@
-import React, { useCallback, useRef } from "react";
-import { StyleSheet, View, Animated, Easing } from "react-native";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated, Easing, StyleSheet, View } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
+
 import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
 
 const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const animatedWidth = useRef(new Animated.Value(0)).current;
+  const [animatedWidth] = useState(() => new Animated.Value(0));
 
   const safeMaxXp = maxXp > 0 ? maxXp : 1;
   const targetPercentage = Math.min((currentXp / safeMaxXp) * 100, 100);
@@ -47,7 +49,7 @@ const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeleto
         animation.stop();
         clearTimeout(timer);
       };
-    }, [targetPercentage, isLoading])
+    }, [targetPercentage, animatedWidth, isLoading])
   );
 
   return (

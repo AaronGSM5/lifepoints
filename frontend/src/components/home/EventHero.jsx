@@ -1,6 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Image, Pressable } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+
 import { Skeleton } from "moti/skeleton";
+
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 

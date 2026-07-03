@@ -1,19 +1,21 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Platform, UIManager, TouchableOpacity } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import BaseCard from "@/components/ui/BaseCard";
-import { Skeleton } from "moti/skeleton";
-import useStore from "@/store/useStore";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { Platform, StyleSheet, UIManager, View } from "react-native";
+
+import { Skeleton } from "moti/skeleton";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) => {
+const TaskItem = ({ title, description, lp, icon, onNavigate, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");
@@ -22,29 +24,45 @@ const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) =
   if (isLoading) {
     return (
       <BaseCard style={styles.container}>
-        <View style={styles.mainRow}>
-          <View style={styles.iconContainer}>
+        <View style={styles.headerRow}>
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={20}
+            height={20}
+            radius="round"
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width={50}
+            height={16}
+            radius={4}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+        </View>
+        <View style={styles.contentRow}>
+          <View style={{ marginBottom: Spacing.xs }}>
             <Skeleton
               colorMode={isDarkMode ? "dark" : "light"}
-              width="100%"
-              height="100%"
-              radius={Spacing.borderRadius.md}
+              width="60%"
+              height={22}
+              radius={4}
               transition={{ type: "timing", duration: 1500 }}
             />
           </View>
-          <View style={styles.textContainer}>
-            <View style={{ marginBottom: 8 }}>
-              <Skeleton
-                colorMode={isDarkMode ? "dark" : "light"}
-                width="70%"
-                height={16}
-                transition={{ type: "timing", duration: 1500 }}
-              />
-            </View>
+          <Skeleton
+            colorMode={isDarkMode ? "dark" : "light"}
+            width="100%"
+            height={14}
+            radius={4}
+            transition={{ type: "timing", duration: 1500 }}
+          />
+          <View style={{ marginTop: 6 }}>
             <Skeleton
               colorMode={isDarkMode ? "dark" : "light"}
-              width="40%"
-              height={12}
+              width="80%"
+              height={14}
+              radius={4}
               transition={{ type: "timing", duration: 1500 }}
             />
           </View>
@@ -66,7 +84,7 @@ const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) =
         <AppText type="body" bold style={styles.title} numberOfLines={1}>
           {t(title)}
         </AppText>
-        <AppText type="caption" style={styles.description} numberOfLines={1}>
+        <AppText type="caption" style={styles.description} numberOfLines={2}>
           {t(description)}
         </AppText>
       </View>
@@ -106,7 +124,12 @@ const getStyles = (theme) =>
       justifyContent: "center"
     },
     title: {
+      fontSize: 18,
       marginBottom: Spacing.xs
+    },
+    description: {
+      lineHeight: 20,
+      height: 40
     },
     lpText: {
       color: theme.primaryAccent

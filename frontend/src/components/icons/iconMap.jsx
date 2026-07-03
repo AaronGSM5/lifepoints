@@ -55,7 +55,6 @@ export const IconMap = {
   alert: ({ outline, ...props }) => <Icon name={getName("alert", outline)} {...props} />,
   mute: ({ outline, ...props }) => <Icon name={getName("volume-mute", outline)} {...props} />,
   archive: ({ outline, ...props }) => <Icon name={getName("archive-2", outline)} {...props} />,
-  history: ({ outline, ...props }) => <Icon name={getName("history", outline)} {...props} />,
   recycle: ({ outline, ...props }) => <Icon name={getName("recycle", outline)} {...props} />,
   // Placeholders
   code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,

@@ -1,14 +1,16 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import AppBadge from "../ui/AppBadge";
 
-export default function PostOptionsSheet({ isVisible, onClose, postId, isOwner }) {
+export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");

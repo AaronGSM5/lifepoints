@@ -1,4 +1,4 @@
-import { LightTheme, DarkTheme } from "@/constants/Colors";
+import { DarkTheme, LightTheme } from "@/constants/Colors";
 import useStore from "@/store/useStore";
 
 const colorThemes = {

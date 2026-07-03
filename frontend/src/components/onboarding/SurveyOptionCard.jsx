@@ -1,6 +1,7 @@
 import { Spacing } from "@/constants/Spacing";
-import AppText from "../ui/AppText";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
+import AppText from "../ui/AppText";
 
 const { Pressable, StyleSheet } = require("react-native");
 

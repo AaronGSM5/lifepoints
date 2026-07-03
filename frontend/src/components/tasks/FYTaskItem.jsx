@@ -1,14 +1,17 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import BaseCard from "@/components/ui/BaseCard";
-import { Skeleton } from "moti/skeleton";
-import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { ImageBackground, StyleSheet, View } from "react-native";
+
+import { Skeleton } from "moti/skeleton";
+
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
+
+import AppBadge from "../ui/AppBadge";
 
 const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
   const MyTheme = useAppTheme();

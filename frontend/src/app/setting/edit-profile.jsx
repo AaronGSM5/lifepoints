@@ -1,28 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  StyleSheet,
-  View,
+  Alert,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from "react-native";
+
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppInput from "@/components/ui/AppInput";
-import * as ImagePicker from "expo-image-picker";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import useStore from "@/store/useStore";
-import { useProfile } from "@/hooks/useProfile";
-import { useTranslation } from "react-i18next";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useUpdateProfile } from "@/hooks/useProfileMutations";
+import { useMyProfile } from "@/hooks/useProfileQueries";
+import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
@@ -30,36 +33,43 @@ export default function EditProfileScreen() {
   const styles = getStyles(MyTheme);
   const router = useRouter();
   const { t } = useTranslation("settings");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const { profile } = useProfile();
-  const updateProfile = useStore((state) => state.updateProfile);
+  const { data: profileData, isLoading } = useMyProfile();
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  // const updateLocalStore = useStore((state) => state.updateProfile);
 
-  const initialData = {
-    name: profile.name,
-    username: profile.name.toLowerCase().replace(" ", ""),
-    description: profile.description,
-    avatar: profile.avatar
-  };
+  const initialData = useMemo(
+    () => ({
+      name: profileData?.name || "",
+      username: profileData?.username || "",
+      description: profileData?.description || "",
+      avatar: profileData?.avatar || null
+    }),
+    [profileData]
+  );
 
   const [formData, setFormData] = useState(initialData);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (profileData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData(initialData);
+    }
+  }, [profileData, initialData]);
 
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
 
   const handleSave = () => {
-    setIsSaving(true);
     triggerHaptic();
-    setTimeout(() => {
-      updateProfile(formData);
-      setIsSaving(false);
-      router.back();
-    }, 1000);
+    updateProfile(formData, {
+      onSuccess: () => {
+        router.back();
+      },
+      onError: (err) => {
+        Alert.alert(t("Error"), t("Failed to save profile."));
+        console.error(err);
+      }
+    });
   };
 
   const handleChangeAvatar = async () => {
@@ -84,8 +94,8 @@ export default function EditProfileScreen() {
 
   const avatarSource = formData.avatar
     ? { uri: formData.avatar }
-    : profile.avatar
-      ? { uri: profile.avatar }
+    : profileData?.avatar
+      ? { uri: profileData?.avatar }
       : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
@@ -168,9 +178,9 @@ export default function EditProfileScreen() {
 
         <View style={styles.footer}>
           <AppButton
-            title={isSaving ? t("Saving...") : t("Save changes")}
+            title={isPending ? t("Saving...") : t("Save changes")}
             onPress={handleSave}
-            disabled={!hasChanges || isSaving || isLoading}
+            disabled={!hasChanges || isPending || isLoading}
             variant="primary"
             bgColor={MyTheme.primaryAccent}
           />

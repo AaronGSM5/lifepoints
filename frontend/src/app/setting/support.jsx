@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Linking } from "react-native";
-import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
-import AppInput from "@/components/ui/AppInput";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function SupportScreen() {
   const MyTheme = useAppTheme();

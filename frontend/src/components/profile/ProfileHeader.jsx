@@ -1,38 +1,38 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Image, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
-import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
-import LevelProgress from "../LevelProgress";
-import { getXpThreshold } from "@/utils/xpHelpers";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import { getLeagueData } from "@/constants/Progression";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
-import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
+
+import LevelProgress from "../LevelProgress";
+import AppBadge from "../ui/AppBadge";
 import StatusBadge from "../ui/StatusBadge";
-import Animated from "react-native-reanimated";
 
 const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const profile = isExternUser ? profileData : useStore((state) => state.profile);
+  const profile = profileData || {};
   const { getFrameById } = useAvatarFrames();
-  const activeStatusBadge = useStore((state) => state.profile.activeStatusBadge);
-  const friendList = useStore((state) => state.profile.friends);
-  const isFriend = friendList.includes(profile.id);
   const addFriend = useStore((state) => state.addFriend);
-  const maxXP = getXpThreshold(profile.level);
-  const leagueIndex = profile?.leagueIndex ?? 0;
-  const rankIndex = profile?.rankIndex ?? 0;
-  const league = getLeagueData(leagueIndex);
-  const rankName = league.ranks[rankIndex] || "Unbekannt";
+  const friendList = useStore((state) => state.profile.friends || []);
+  const isFriend = isExternUser ? friendList.includes(profile.id) : false;
+  const badgeToDisplay = isExternUser ? profile.badge : profile.activeStatusBadge;
+  const leagueName = profileData?.leagueName || "Unranked";
+  const rankName = profileData?.rankName || "Newbie";
+  const league = getLeagueData(leagueName);
   const activeFrame = getFrameById(profile.activeFrame);
 
   const avatarSource = profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png");
@@ -70,7 +70,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
             <Image source={avatarSource} style={styles.avatar} />
           </View>
         )}
-        {!isLoading && (
+        {!isLoading && profile.level && (
           <AppBadge
             label={`LVL ${profile.level}`}
             style={{
@@ -106,20 +106,16 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
       ) : (
         <>
           <AppText type="caption">@{profile.username}</AppText>
-          {activeStatusBadge || profile.badge ? (
+          {badgeToDisplay ? (
             <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
               <AppText type="h1">{profile.name}</AppText>
-              <StatusBadge
-                id={isExternUser ? profile.badge : activeStatusBadge}
-                size={28}
-                style={{ marginTop: Spacing.xs }}
-              />
+              <StatusBadge id={badgeToDisplay} size={28} style={{ marginTop: Spacing.xs }} />
             </View>
           ) : (
             <AppText type="h1">{profile.name}</AppText>
           )}
           <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
-            {t(league.name)} •{" "}
+            {t(leagueName)} •{" "}
             <AppText bold type="caption" style={{ color: league.color }}>
               {t(rankName)}
             </AppText>
@@ -131,8 +127,8 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
 
           {!isExternUser && (
             <LevelProgress
-              currentXp={profile.profileXp}
-              maxXp={maxXP}
+              currentXp={profile?.profileXp || 0}
+              maxXp={profile?.maxXp}
               isLoading={isLoading}
               style={{ marginTop: Spacing.lg }}
             />
@@ -174,7 +170,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
 const getStyles = () =>
   StyleSheet.create({
     frameWrapper: {
-      width: 110, // Etwas größer als das Bild
+      width: 110,
       height: 110,
       borderRadius: 55,
       justifyContent: "center",

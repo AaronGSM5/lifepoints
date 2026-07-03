@@ -1,47 +1,32 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { onboardingGuideSteps } from "@/constants/OnboardingGuideSteps";
+
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import { checkQuestCompletion } from "@/utils/onboardingGuideHelpers";
-import { useTranslation } from "react-i18next";
 
-const OnboardingGuide = ({ skeletonProps, isLoading }) => {
+import AppButton from "../ui/AppButton";
+
+const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("profile");
   const profile = useStore((state) => state.profile);
-  const activities = useStore((state) => state.activities);
-  const claimOnboardingReward = useStore((state) => state.claimOnboardingReward);
-  const tutorialSteps = onboardingGuideSteps.map((quest) => ({
-    ...quest,
-    completed: checkQuestCompletion(quest.id, profile, activities)
-  }));
-  const completedCount = tutorialSteps.filter((q) => q.completed).length;
-  const isAllCompleted = completedCount === tutorialSteps.length;
-  const progress = completedCount / tutorialSteps.length;
+  const setHasCompletedOnboarding = useStore((state) => state.setHasCompletedOnboarding);
+  const hasCompletedOnboarding = useStore((state) => state.hasCompletedOnboarding);
+  const completedCount = tutorialSteps?.filter((q) => q.completed).length;
+  const isAllCompleted = tutorialSteps?.length > 0 && completedCount === tutorialSteps.length;
+  const progress = tutorialSteps?.length > 0 ? completedCount / tutorialSteps.length : 0;
 
-  useEffect(() => {
-    if (isLoading) return;
-
-    tutorialSteps.forEach((quest) => {
-      const isAlreadyClaimed = profile.claimedQuests?.includes(quest.id);
-
-      if (quest.completed && !isAlreadyClaimed) {
-        claimOnboardingReward(quest.id, quest.reward);
-      }
-    });
-  }, [completedCount, profile.claimedQuests]);
-
-  if (isAllCompleted && !isLoading) {
-    return null;
-  }
+  if (isAllCompleted && !isLoading) return null;
+  if (hasCompletedOnboarding === true) return null;
 
   if (isLoading) {
     return (
@@ -56,7 +41,7 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
         </View>
 
         <View style={styles.questList}>
-          {tutorialSteps.map((item) => (
+          {tutorialSteps?.map((item) => (
             <View key={`skeleton-${item.id}`} style={styles.questItem}>
               <View style={styles.questIconContainer}>
                 <Skeleton {...skeletonProps} width={28} height={28} borderRadius={14} />
@@ -81,17 +66,28 @@ const OnboardingGuide = ({ skeletonProps, isLoading }) => {
     <BaseCard style={{ marginTop: Spacing.xl }}>
       <View style={styles.guideHeader}>
         <AppText type="h2">{t("Your Guide")}</AppText>
-        <AppText type="caption">
-          {completedCount} {t("of")} {tutorialSteps.length} {t("done")}
-        </AppText>
+        <AppButton
+          variant="ghost"
+          icon={<Icon name={"close"} />}
+          iconPosition="center"
+          size="sm"
+          style={{ width: Spacing.lg }}
+          onPress={() => setHasCompletedOnboarding(true)}
+        />
       </View>
 
       <View style={styles.progressBar}>
         <View style={[styles.progressInner, { width: `${progress * 100}%` }]} />
       </View>
 
+      <View style={styles.progressTextContainer}>
+        <AppText type="caption">
+          {completedCount} {t("of")} {tutorialSteps?.length} {t("done")}
+        </AppText>
+      </View>
+
       <View style={styles.questList}>
-        {tutorialSteps.map((quest) => {
+        {tutorialSteps?.map((quest) => {
           const isClaimed = profile.claimedQuests?.includes(quest.id);
           return (
             <Pressable
@@ -146,12 +142,15 @@ const getStyles = (theme) =>
       height: 8,
       backgroundColor: "#eee",
       borderRadius: Spacing.borderRadius.sm,
-      marginBottom: Spacing.lg,
+      marginBottom: Spacing.sm,
       overflow: "hidden"
     },
     progressInner: {
       height: "100%",
       backgroundColor: theme.primaryAccent
+    },
+    progressTextContainer: {
+      alignItems: "flex-end"
     },
     questList: {
       gap: Spacing.sm

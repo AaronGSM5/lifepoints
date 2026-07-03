@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+
+import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
-import AppButton from "@/components/ui/AppButton";
 import { Spacing } from "@/constants/Spacing";
-import BaseBottomSheet from "../ui/BaseBottomSheet";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
+
+import BaseBottomSheet from "../ui/BaseBottomSheet";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
   const MyTheme = useAppTheme();

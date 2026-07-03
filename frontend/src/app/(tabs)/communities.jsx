@@ -1,61 +1,64 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, View, ScrollView, FlatList, Pressable, ActivityIndicator, Animated } from "react-native";
-import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import AppInput from "@/components/ui/AppInput";
-import SectionHeader from "@/components/ui/SectionHeader";
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native";
+
+import { router } from "expo-router";
+
+import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-import { useCommunities } from "@/hooks/useCommunities";
-import EventHero from "@/components/home/EventHero";
-import { router } from "expo-router";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
-import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
+import EventHero from "@/components/home/EventHero";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppInput from "@/components/ui/AppInput";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommunities } from "@/hooks/useCommunities";
+import { useVerticalCommunityRails } from "@/hooks/useCommunities";
+import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, createCommunity, recommended, fetchCommunitiesForCategory, fetchMoreSections, isLoading } =
-    useCommunities();
+  const { myCommunities, createCommunity } = useCommunities();
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = useMemo(() => new Animated.Value(0), []);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
-  const [dynamicSections, setDynamicSections] = useState([]);
-  const [verticalPage, setVerticalPage] = useState(1);
-  const [isMoreSectionsLoading, setIsMoreSectionsLoading] = useState(false);
-  const [allSectionsLoaded, setAllSectionsLoaded] = useState(false);
+  const {
+    data: railsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isLoadingRails
+  } = useVerticalCommunityRails();
+
+  const isLoading = isLoadingRails;
+
+  const loadedSections = useMemo(() => {
+    if (!railsData) return [];
+    return railsData.pages
+      .flatMap((page) => page.sections || [])
+      .map((section) => ({
+        id: section.category,
+        title: capitalize(section.category),
+        type: "section",
+        categoryKey: section.category,
+        data: section.items.map((item) => ({
+          ...item,
+          id: extractId(item)
+        }))
+      }));
+  }, [railsData]);
 
   const handleCreateCommunity = (data) => {
     createCommunity(data);
   };
-
-  const loadMoreSections = useCallback(async () => {
-    if (isMoreSectionsLoading || allSectionsLoaded || isLoading) return;
-
-    setIsMoreSectionsLoading(true);
-    const nextPage = verticalPage + 1;
-
-    try {
-      const newSections = await fetchMoreSections(nextPage);
-
-      if (newSections && newSections.length > 0) {
-        setDynamicSections((prev) => [...prev, ...newSections]);
-        setVerticalPage(nextPage);
-      } else {
-        setAllSectionsLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error loading more vertical sections", error);
-    } finally {
-      setIsMoreSectionsLoading(false);
-    }
-  }, [verticalPage, isMoreSectionsLoading, allSectionsLoaded, isLoading, fetchMoreSections]);
 
   const listData = useMemo(() => {
     const topElements = [
@@ -64,16 +67,14 @@ export default function CommunitiesScreen() {
       { id: "my_communities", type: "my_communities" }
     ];
 
-    const staticSections = [
-      { id: "recommended", categoryKey: "recommended_you", title: t("Recommended for you"), data: recommended },
-      { id: "lifestyle", categoryKey: "lifestyle_food", title: t("Lifestyle & Food"), data: recommended },
-      { id: "trending", categoryKey: "trending_now", title: t("Trending Right Now"), data: recommended }
-    ].map((section) => ({ ...section, type: "section" }));
+    return [...topElements, ...loadedSections];
+  }, [loadedSections]);
 
-    const loadedSections = dynamicSections.map((section) => ({ ...section, type: "section" }));
-
-    return [...topElements, ...staticSections, ...loadedSections];
-  }, [recommended, dynamicSections, myCommunities, isLoading]);
+  const loadMoreSections = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -118,6 +119,9 @@ export default function CommunitiesScreen() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.horizontalScrollContentContainer}
+                snapToInterval={160 + Spacing.md}
+                snapToAlignment="start"
+                decelerationRate="fast"
               >
                 {isLoading
                   ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
@@ -125,9 +129,9 @@ export default function CommunitiesScreen() {
                       .filter((c) => c !== null && c !== undefined)
                       .map((c, index) => (
                         <MyCommunityCard
-                          key={c.id || index}
-                          item={c}
-                          onPress={() => router.push(`/mycommunity/${c.id}`)}
+                          key={extractId(c) || index}
+                          item={{ ...c, id: extractId(c) }}
+                          onPress={() => router.push(`/mycommunity/${extractId(c)}`)}
                         />
                       ))}
               </ScrollView>
@@ -135,10 +139,8 @@ export default function CommunitiesScreen() {
           );
 
         case "section":
-          const validSectionData = item.data?.filter((c) => c !== null && c !== undefined) || [];
-          if (validSectionData.length === 0 && !isLoading) {
-            return null;
-          }
+          const validSectionData = item.data?.filter((c) => c !== null) || [];
+          if (validSectionData.length === 0 && !isLoading) return null;
           if (isLoading) {
             return (
               <View style={styles.sectionContainer}>
@@ -150,6 +152,9 @@ export default function CommunitiesScreen() {
                   data={SKELETON_DATA}
                   contentContainerStyle={styles.horizontalScrollContentContainer}
                   renderItem={() => <RecommendedCommunity isLoading={true} />}
+                  snapToInterval={260 + Spacing.md}
+                  snapToAlignment="start"
+                  decelerationRate="fast"
                 />
               </View>
             );
@@ -158,8 +163,8 @@ export default function CommunitiesScreen() {
             <HorizontalSectionList
               title={item.title}
               initialData={validSectionData}
-              onLoadMore={(page) => fetchCommunitiesForCategory(item.categoryKey || item.id, page)}
-              onPressItem={(community) => router.push(`/community/${community.id}`)}
+              categoryKey={item.categoryKey}
+              onPressItem={(community) => router.push(`/community/${extractId(community)}`)}
             />
           );
 
@@ -167,18 +172,18 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, fetchCommunitiesForCategory, isCreateModalVisible, MyTheme]
+    [isLoading, myCommunities, MyTheme, t, styles]
   );
 
   const renderMainFooter = () => {
-    if (isMoreSectionsLoading) {
+    if (isFetchingNextPage) {
       return (
         <View style={styles.mainListLoader}>
-          <ActivityIndicator size="large" color={MyTheme.primaryAccent} />
+          <AppLoadingSpinner />
         </View>
       );
     }
-    if (allSectionsLoaded && listData.length > 5) {
+    if (!hasNextPage && loadedSections.length > 0) {
       return (
         <View style={styles.endOfList}>
           <SectionHeader title={t("Thats all for now!")} center />

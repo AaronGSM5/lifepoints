@@ -1,8 +1,10 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { Icon } from "../icons/Icon";
+
 import { mockCustomizables } from "@/mocks/Customizables";
+
+import { Icon } from "../icons/Icon";
 
 const StatusBadge = ({ size = 16, id, iconColor, style }) => {
   const points = "50,0 100,25 100,75 50,100 0,75 0,25";

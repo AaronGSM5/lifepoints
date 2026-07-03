@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+
 import { useLocalSearchParams } from "expo-router";
-import TrophyCard from "@/components/trophies/TrophyCard";
 import { Skeleton } from "moti/skeleton";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import TrophyCard from "@/components/trophies/TrophyCard";
+import { Spacing } from "@/constants/Spacing";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { publicProfiles } from "@/mocks/PublicProfile";
 import useStore from "@/store/useStore";
-import ProfileHeader from "@/components/profile/ProfileHeader";
-import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 
 export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
@@ -46,8 +48,11 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : activePublicProfile.pinnedTrophies.map((trophy) => {
-                const selectedTrophy = trophiesCatalog.find((entry) => entry.id === trophy.id);
+            : activePublicProfile?.pinnedTrophies.map((trophy) => {
+                const selectedTrophy = trophiesCatalog?.find((entry) => entry.id === trophy.id);
+                if (!selectedTrophy) {
+                  return null;
+                }
                 return (
                   <View key={selectedTrophy.id} style={{ width: 80 }}>
                     <TrophyCard

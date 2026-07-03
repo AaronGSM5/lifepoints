@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Skeleton } from "moti/skeleton";
-import AppText from "@/components/ui/AppText";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import useStore from "@/store/useStore";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { triggerHaptic } from "@/utils/haptics";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { Skeleton } from "moti/skeleton";
+
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import BillingToggle from "@/components/settings/subscription/BillingToggle";
+import { PlusCard, PremiumCard, StandardCard } from "@/components/settings/subscription/SubscriptionCards";
 import SubscriptionSkeletons from "@/components/settings/subscription/SubscriptionSkeletons";
-import { StandardCard, PlusCard, PremiumCard } from "@/components/settings/subscription/SubscriptionCards";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
   const MyTheme = useAppTheme();

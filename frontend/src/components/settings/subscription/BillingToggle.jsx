@@ -1,11 +1,12 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import AppText from "@/components/ui/AppText";
-import AppBadge from "@/components/ui/AppBadge";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
-import { triggerHaptic } from "@/utils/haptics";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import AppBadge from "@/components/ui/AppBadge";
+import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function BillingToggle({ billingCycle, onChange }) {
   const MyTheme = useAppTheme();

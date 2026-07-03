@@ -1,21 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  Modal,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
   Animated,
   Dimensions,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
   PanResponder,
+  Platform,
   Pressable,
-  Keyboard
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
+
 import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -29,43 +30,53 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   const styles = getStyles(MyTheme);
   const [showModal, setShowModal] = useState(isVisible);
 
-  const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [slideAnim] = useState(() => new Animated.Value(SCREEN_HEIGHT));
+  const [fadeAnim] = useState(() => new Animated.Value(0));
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
-      },
-
-      onPanResponderMove: (_, gestureState) => {
-        if (gestureState.dy > 0) {
-          slideAnim.setValue(gestureState.dy);
-        }
-      },
-
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > 150 || gestureState.vy > 1.5) {
-          Keyboard.dismiss();
-          onClose();
-        } else {
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (_, gestureState) => {
+          return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
+        },
+        onPanResponderMove: (_, gestureState) => {
+          if (gestureState.dy > 0) {
+            slideAnim.setValue(gestureState.dy);
+          }
+        },
+        onPanResponderTerminationRequest: () => false,
+        onShouldBlockNativeResponder: () => true,
+        onPanResponderTerminate: () => {
           Animated.spring(slideAnim, {
             toValue: 0,
             tension: 65,
             friction: 11,
             useNativeDriver: true
           }).start();
+        },
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dy > 150 || gestureState.vy > 1.5) {
+            Keyboard.dismiss();
+            onClose();
+          } else {
+            Animated.spring(slideAnim, {
+              toValue: 0,
+              tension: 65,
+              friction: 11,
+              useNativeDriver: true
+            }).start();
+          }
         }
-      }
-    })
-  ).current;
+      }),
+    [onClose, slideAnim]
+  );
 
   useEffect(() => {
     if (isVisible) {
-      setShowModal(true);
       triggerHaptic();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowModal(true);
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
@@ -95,9 +106,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
         setShowModal(false);
       });
     }
-  }, [isVisible]);
-
-  if (!showModal) return null;
+  }, [isVisible, fadeAnim, slideAnim]);
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
@@ -127,20 +136,14 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* <ScrollView 
-    style={styles.content} 
-    contentContainerStyle={{ paddingBottom: 40 }} // Extra Puffer am Ende
-    keyboardShouldPersistTaps="handled" // WICHTIG: Damit Klicks auf Buttons trotz offener Tastatur registriert werden
-  >
-    {children}
-  </ScrollView> */}
           <View style={styles.content}>{children}</View>
         </Animated.View>
       </KeyboardAvoidingView>
     </Modal>
   );
 };
+
+BaseBottomSheet.displayName = "BaseBottomSheet";
 
 const getStyles = (theme) =>
   StyleSheet.create({

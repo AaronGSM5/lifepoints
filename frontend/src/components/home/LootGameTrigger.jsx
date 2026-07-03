@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from "react";
-import { Pressable, StyleSheet, Image, Animated } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Image, Pressable, StyleSheet } from "react-native";
 
 export const LootGameTrigger = ({ isReady, onPress }) => {
-  const translateX = useRef(new Animated.Value(120)).current;
+  const [translateX] = useState(() => new Animated.Value(120));
   const hasAppeared = useRef(false);
 
   useEffect(() => {

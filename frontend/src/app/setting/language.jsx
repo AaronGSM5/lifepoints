@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import ScreenTitle from "@/components/ui/ScreenTitle";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function LanguageScreen() {
   const MyTheme = useAppTheme();

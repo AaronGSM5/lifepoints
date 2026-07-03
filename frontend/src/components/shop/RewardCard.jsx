@@ -1,15 +1,18 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
+
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
+
 import AppText from "@/components/ui/AppText";
-import { Icon } from "../icons/Icon";
-import BaseCard from "../ui/BaseCard";
-import AppBadge from "../ui/AppBadge";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
+
+import { Icon } from "../icons/Icon";
+import AppBadge from "../ui/AppBadge";
+import BaseCard from "../ui/BaseCard";
 
 const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();

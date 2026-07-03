@@ -1,6 +1,7 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { StyleSheet, View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 const SurveyProgressBar = ({ currentStep, totalSteps }) => {
   const MyTheme = useAppTheme();

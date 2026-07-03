@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
-import { View, StyleSheet, Pressable, Animated } from "react-native";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppBadge from "@/components/ui/AppBadge";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Animated, Pressable, StyleSheet, View } from "react-native";
+
+import AppBadge from "@/components/ui/AppBadge";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   const MyTheme = useAppTheme();
@@ -12,7 +13,7 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);
-  const heightAnim = useRef(new Animated.Value(30)).current;
+  const [heightAnim] = useState(() => new Animated.Value(30));
 
   const expand = () => {
     setShowAll(true);

@@ -1,29 +1,30 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Switch,
+  Image,
   KeyboardAvoidingView,
   Platform,
-  Image,
-  ScrollView
+  ScrollView,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+  View
 } from "react-native";
-import { useRouter } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
 
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
+import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
+
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import TaskSelector from "@/components/post/TaskSelector";
+import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
+import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
-import TaskSelector from "@/components/post/TaskSelector";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import AppButton from "@/components/ui/AppButton";
-import { useTranslation } from "react-i18next";
 
 export default function CreatePost() {
   const router = useRouter();
@@ -36,20 +37,21 @@ export default function CreatePost() {
   const [image, setImage] = useState(null);
   const activities = useStore((state) => state.activities);
 
-  const oneDayInMs = 24 * 60 * 60 * 1000;
-  const now = Date.now();
-  const todayActivities = activities
-    .filter((entry) => {
-      const activityTime = new Date(entry.time).getTime();
-      const timeDifference = now - activityTime;
+  const availableTaskIds = useMemo(() => {
+    const oneDayInMs = 24 * 60 * 60 * 1000;
+    // eslint-disable-next-line react-hooks/purity
+    const now = Date.now();
 
-      return timeDifference >= 0 && timeDifference <= oneDayInMs;
-    })
-    .map((entry) => {
-      return entry.taskId;
-    });
+    const todayActivityIds = activities
+      .filter((entry) => {
+        const activityTime = new Date(entry.time).getTime();
+        const timeDifference = now - activityTime;
+        return timeDifference >= 0 && timeDifference <= oneDayInMs;
+      })
+      .map((entry) => entry.taskId);
 
-  const availableTaskIds = [...new Set([...todayActivities])];
+    return [...new Set(todayActivityIds)];
+  }, [activities]);
 
   const isPostButtonEnabled = isPublic
     ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
@@ -80,7 +82,13 @@ export default function CreatePost() {
   };
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withPaddingTop={false}>
+    <ScreenWrapper
+      scrollable={false}
+      withPaddingSides={false}
+      withPaddingBottom={false}
+      withPaddingTop={false}
+      withToolbar={false}
+    >
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={10}>

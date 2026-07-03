@@ -1,26 +1,46 @@
-import { defineConfig } from 'eslint/config'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
 import { FlatCompat } from '@eslint/eslintrc'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import js from '@eslint/js'
+import importPlugin from 'eslint-plugin-import'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import globals from 'globals'
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 })
 
-export default defineConfig([
+export default [
   {
-    extends: [...compat.extends('prettier')],
-
+    ignores: [
+      "node_modules/",
+      "dist/",
+      "build/",
+      "*.config.js",
+    ],
+  },
+  ...compat.extends('expo'),
+  ...compat.extends('prettier'),
+  {
+    plugins: {
+      import: importPlugin,
+      'simple-import-sort': simpleImportSort
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
     settings: {
       'import/resolver': {
-        typescript: {},
-      },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+        },
+        typescript: {
+          project: './jsconfig.json',
+        },
+      }
     },
 
     rules: {
@@ -36,6 +56,24 @@ export default defineConfig([
           ],
         },
       ],
+      'no-unused-vars': ['warn', {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: true,
+      }],
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            ['^react', '^react-native'],
+            ['^@?\\w'],
+            ['^@/'],
+            ['^\\./', '^\\.\\./'],
+            ['^.+\\.s?css$', '^.+\\.(png|jpg|jpeg|gif|svg)$']
+          ]
+        }
+      ],
+      'simple-import-sort/exports': 'error',
     },
   },
-])
+]

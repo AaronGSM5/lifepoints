@@ -1,11 +1,14 @@
 // src/components/LevelUpModal.js
 import React from "react";
-import { Modal, View, StyleSheet } from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
+
 import LottieView from "lottie-react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import AppText from "./ui/AppText";
-import AppButton from "./ui/AppButton";
+
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "./icons/Icon";
 
 const LevelUpModal = ({ visible, level, onTransitionEnd }) => {

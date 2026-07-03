@@ -1,15 +1,17 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Stack, useLocalSearchParams } from "expo-router";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
-import { useCommunities } from "@/hooks/useCommunities";
-import SectionHeader from "@/components/ui/SectionHeader";
-import useStore from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+
+import { Stack, useLocalSearchParams } from "expo-router";
+
+import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
+import { useCommunities } from "@/hooks/useCommunities";
+import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function CommunityDetailScreen() {
@@ -22,7 +24,7 @@ export default function CommunityDetailScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ScreenWrapper scrollable withPaddingSides={false} withPaddingTop={false}>
+      <ScreenWrapper scrollable withPaddingSides={false} withPaddingTop={false} withToolbar={false}>
         <CommunityHeader community={community} />
 
         <View style={styles.contentContainer}>

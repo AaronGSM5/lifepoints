@@ -1,14 +1,17 @@
-import { Animated, View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { router, usePathname } from "expo-router";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Icon } from "../icons/Icon";
-import { Spacing } from "@/constants/Spacing";
-import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
-import NotificationIcon from "../ui/NotificationsIcon";
-import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import React, { memo, useMemo } from "react";
+import { Animated, Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { router, usePathname } from "expo-router";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import useStore from "@/store/useStore";
+
+import { Icon } from "../icons/Icon";
+import AppBadge from "../ui/AppBadge";
+import NotificationIcon from "../ui/NotificationsIcon";
 
 export default memo(function Toolbar({ scrollY }) {
   const insets = useSafeAreaInsets();
@@ -70,9 +73,7 @@ export default memo(function Toolbar({ scrollY }) {
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
-        {isMainTab && pathname !== "/shop" && (
-          <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ border: "none" }} />
-        )}
+        {isMainTab && <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ border: "none" }} />}
         {!isMainTab && (
           <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />

@@ -1,8 +1,10 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import AppText from "./AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import AppText from "./AppText";
 
 export default function AppBadge({
   label,

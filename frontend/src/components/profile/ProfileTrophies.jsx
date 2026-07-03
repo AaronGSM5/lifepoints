@@ -1,17 +1,19 @@
 import { useTranslation } from "react-i18next";
-import { View, ScrollView } from "react-native";
-import SectionHeader from "../ui/SectionHeader";
-import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { ScrollView, View } from "react-native";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
+
+import { Spacing } from "@/constants/Spacing";
+import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import TrophyCard from "../trophies/TrophyCard";
-import useStore from "@/store/useStore";
+import SectionHeader from "../ui/SectionHeader";
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
-  const unlockedTrophies = useStore((state) => state.profile.unlockedTrophies);
   return (
     <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
       <SectionHeader
@@ -35,18 +37,21 @@ const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
             />
           ))}
         {!isLoading &&
-          trophies?.map((t, i) => (
-            <View key={`trophy-${t?.id || i}`} style={{ width: 80 }}>
-              <TrophyCard
-                key={t.id}
-                id={t.id}
-                title={t.title}
-                icon={t.icon}
-                unlocked={unlockedTrophies.includes(t.id)}
-                justUnlocked={false}
-              />
-            </View>
-          ))}
+          trophies?.map((item, i) => {
+            const trophyCatalogObject = trophiesCatalog.find((entry) => entry.id === item.id);
+            return (
+              <View key={`trophy-${trophyCatalogObject?.id || i}`} style={{ width: 80 }}>
+                <TrophyCard
+                  key={trophyCatalogObject?.id}
+                  id={trophyCatalogObject?.id}
+                  title={trophyCatalogObject?.title}
+                  icon={trophyCatalogObject?.icon}
+                  unlocked={item.unlocked}
+                  justUnlocked={false}
+                />
+              </View>
+            );
+          })}
       </ScrollView>
     </View>
   );

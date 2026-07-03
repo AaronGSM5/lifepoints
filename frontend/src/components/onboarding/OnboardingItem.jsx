@@ -1,6 +1,8 @@
 import { StyleSheet, useWindowDimensions, View } from "react-native";
-import AppText from "../ui/AppText";
+
 import { Spacing } from "@/constants/Spacing";
+
+import AppText from "../ui/AppText";
 
 const OnboardingItem = ({ item }) => {
   const { width } = useWindowDimensions();

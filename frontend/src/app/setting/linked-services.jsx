@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
-import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppBadge from "@/components/ui/AppBadge";
 import { useTranslation } from "react-i18next";
+import { Alert, StyleSheet, View } from "react-native";
+
+import { Icon } from "@/components/icons/Icon";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ServiceItem from "@/components/settings/ServiceItem";
+import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import { addOpacity } from "@/utils/addOpacity";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function LinkedServicesScreen() {
   const MyTheme = useAppTheme();
@@ -40,42 +39,6 @@ export default function LinkedServicesScreen() {
     }
   };
 
-  const ServiceItem = ({ id, name, description, icon, isConnected }) => (
-    <View style={styles.serviceCard}>
-      <View style={styles.cardMain}>
-        <View style={[styles.iconBox, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
-          <Icon name={icon} size={28} color={MyTheme.primaryAccent} />
-        </View>
-
-        <View style={styles.infoContainer}>
-          <View style={styles.titleRow}>
-            <AppText type="title">{name}</AppText>
-            {isConnected && (
-              <AppBadge
-                variant="outline"
-                label={t("AKTIVE")}
-                textStyle={{ color: MyTheme.primaryAccent, fontSize: 10 }}
-                style={{
-                  paddingVertical: Spacing.xs - 2,
-                  borderColor: MyTheme.primaryAccent
-                }}
-              />
-            )}
-          </View>
-          <AppText type="caption">{description}</AppText>
-        </View>
-      </View>
-
-      <AppButton
-        title={isConnected ? t("Manage") : t("Connect")}
-        variant={isConnected ? "secondary" : "primary"}
-        size="md"
-        onPress={() => handleToggleService(id, name)}
-        bgColor={!isConnected && MyTheme.primaryAccent}
-      />
-    </View>
-  );
-
   return (
     <ScreenWrapper scrollable>
       <ScreenTitle
@@ -93,6 +56,7 @@ export default function LinkedServicesScreen() {
           description={t("Steps, Sleep, and Heart Rate")}
           icon="heart"
           isConnected={connections.appleHealth}
+          onPress={() => handleToggleService("appleHealth", "Apple Health")}
         />
         <View style={{ height: Spacing.md }} />
         <ServiceItem
@@ -101,6 +65,7 @@ export default function LinkedServicesScreen() {
           description={t("Sync running and cycling data")}
           icon="bicycle"
           isConnected={connections.strava}
+          onPress={() => handleToggleService("strava", "Strava")}
         />
       </View>
 
@@ -114,6 +79,7 @@ export default function LinkedServicesScreen() {
           description={t("Use Focus Playlists for Tasks")}
           icon="spotify"
           isConnected={connections.spotify}
+          onPress={() => handleToggleService("spotify", "Spotify")}
         />
       </View>
 
@@ -136,35 +102,6 @@ const getStyles = (theme) =>
     },
     sectionTitle: {
       marginBottom: Spacing.md
-    },
-    serviceCard: {
-      backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
-      padding: Spacing.md,
-      borderWidth: 1,
-      borderColor: theme.secondary,
-      gap: Spacing.md
-    },
-    cardMain: {
-      flexDirection: "row",
-      alignItems: "center"
-    },
-    iconBox: {
-      width: 54,
-      height: 54,
-      borderRadius: 14,
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: Spacing.md
-    },
-    infoContainer: {
-      flex: 1
-    },
-    titleRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.sm,
-      marginBottom: 2
     },
     privacyNote: {
       flexDirection: "row",

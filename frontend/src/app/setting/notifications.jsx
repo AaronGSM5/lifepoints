@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Switch } from "react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Switch, View } from "react-native";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useTranslation } from "react-i18next";
-import ScreenTitle from "@/components/ui/ScreenTitle";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function NotificationsScreen() {

@@ -1,15 +1,17 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
+
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
-import { useTranslation } from "react-i18next";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
