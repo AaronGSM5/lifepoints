@@ -48,8 +48,11 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : activePublicProfile.pinnedTrophies.map((trophy) => {
-                const selectedTrophy = trophiesCatalog.find((entry) => entry.id === trophy.id);
+            : activePublicProfile?.pinnedTrophies.map((trophy) => {
+                const selectedTrophy = trophiesCatalog?.find((entry) => entry.id === trophy.id);
+                if (!selectedTrophy) {
+                  return null;
+                }
                 return (
                   <View key={selectedTrophy.id} style={{ width: 80 }}>
                     <TrophyCard
