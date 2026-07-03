@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function HistoryCard({
   title,

@@ -1,20 +1,23 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Image, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
-import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
-import LevelProgress from "../LevelProgress";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import { getLeagueData } from "@/constants/Progression";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
-import { useTranslation } from "react-i18next";
+import useStore from "@/store/useStore";
+
+import LevelProgress from "../LevelProgress";
+import AppBadge from "../ui/AppBadge";
 import StatusBadge from "../ui/StatusBadge";
-import Animated from "react-native-reanimated";
 
 const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();

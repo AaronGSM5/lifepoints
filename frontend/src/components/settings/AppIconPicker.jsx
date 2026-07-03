@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Image, Platform, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+
+// eslint-disable-next-line import/no-unresolved
 import { Ionicons } from "@expo/vector-icons";
+
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
-import { Spacing } from "@/constants/Spacing";
+
 import SectionHeader from "../ui/SectionHeader";
 
 const ICONS = [

@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
-import useStore from "@/store/useStore";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 export default function NotificationIcon({ onPress }) {
   const MyTheme = useAppTheme();

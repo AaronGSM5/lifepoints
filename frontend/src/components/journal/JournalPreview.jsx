@@ -1,15 +1,18 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import AppText from "../ui/AppText";
-import { Spacing } from "@/constants/Spacing";
-import BaseCard from "../ui/BaseCard";
-import { Skeleton } from "moti/skeleton";
-import SectionHeader from "../ui/SectionHeader";
-import { router } from "expo-router";
-import HistoryCard from "../ui/HistoryCard";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+
+import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { formatTimeOrDate } from "@/utils/helpers";
+
+import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
+import HistoryCard from "../ui/HistoryCard";
+import SectionHeader from "../ui/SectionHeader";
 
 const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();

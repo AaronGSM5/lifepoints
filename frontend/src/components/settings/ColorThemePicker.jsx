@@ -1,11 +1,15 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+
+// eslint-disable-next-line import/no-unresolved
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Spacing } from "@/constants/Spacing";
-import { useTranslation } from "react-i18next";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+
 import SectionHeader from "../ui/SectionHeader";
 
 const THEME_OPTIONS = [

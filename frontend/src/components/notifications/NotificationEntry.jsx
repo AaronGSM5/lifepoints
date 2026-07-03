@@ -1,9 +1,10 @@
-import { View, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
 import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
+
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function NotificationEntry({ notification }) {
   const MyTheme = useAppTheme();

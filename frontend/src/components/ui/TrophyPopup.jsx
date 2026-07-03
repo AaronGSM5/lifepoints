@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+
 import { Icon } from "../icons/Icon";
-import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const TrophyPopup = () => {
   const MyTheme = useAppTheme();
@@ -28,7 +30,7 @@ const TrophyPopup = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [currentTrophyId, shiftPopupQueue]);
+  }, [currentTrophyId, shiftPopupQueue, trophy]);
 
   if (!currentTrophyId || !trophy) return null;
 

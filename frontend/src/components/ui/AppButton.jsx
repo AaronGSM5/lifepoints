@@ -1,10 +1,13 @@
-import React, { useRef } from "react";
-import { Pressable, StyleSheet, Animated, View } from "react-native";
+import React, { useState } from "react";
+import { Animated, Pressable, StyleSheet, View } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
-import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Spacing } from "@/constants/Spacing";
-import AppText from "./AppText";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import AppLoadingSpinner from "./AppLoadingSpinner";
+import AppText from "./AppText";
 
 export default function AppButton({
   title,
@@ -23,7 +26,7 @@ export default function AppButton({
 }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const [scaleAnim] = useState(() => new Animated.Value(1));
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
@@ -57,7 +60,7 @@ export default function AppButton({
         disabled={disabled || loading}
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || loading }}
-        style={({ pressed }) => [
+        style={() => [
           styles.base,
           styles[size],
           isSecondary && styles.secondary,

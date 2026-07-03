@@ -1,7 +1,9 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "../icons/Icon";
 import AppModal from "../ui/AppModal";
 

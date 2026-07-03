@@ -1,9 +1,11 @@
-import { View } from "react-native";
-import SectionHeader from "../ui/SectionHeader";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import StatCard from "../ui/StatCard";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import SectionHeader from "../ui/SectionHeader";
+import StatCard from "../ui/StatCard";
 
 const ProfileStats = ({ stats = [], isLoading }) => {
   const MyTheme = useAppTheme();

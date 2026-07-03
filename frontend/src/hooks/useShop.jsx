@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { rewardsCatalog } from "@/constants/RewardsCatalog";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { rewardsCatalog } from "@/constants/RewardsCatalog";
 import { capitalize } from "@/utils/helpers";
 
 const ITEMS_PER_PAGE = 6;
@@ -11,12 +12,11 @@ export const useShop = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const [rewards, setRewards] = useState(rewardsCatalog);
+  const [rewards] = useState(rewardsCatalog);
   const [activeCat, setActiveCat] = useState("all");
   const [page, setPage] = useState(1);
 
   const fetchShop = useCallback(async () => {
-    setIsLoading(true);
     setTimeout(() => setIsLoading(false), 1500);
   }, []);
 
@@ -39,9 +39,10 @@ export const useShop = () => {
     }, 1000);
   }, [isFetchingMore, isLoading, isRefreshing]);
 
-  useEffect(() => {
+  const handleCategoryChange = useCallback((newCat) => {
+    setActiveCat(newCat);
     setPage(1);
-  }, [activeCat]);
+  }, []);
 
   useEffect(() => {
     fetchShop();
@@ -70,7 +71,7 @@ export const useShop = () => {
   return {
     rewards: filteredRewards,
     activeCat,
-    setActiveCat,
+    setActiveCat: handleCategoryChange,
     categories,
     isLoading,
     isRefreshing,

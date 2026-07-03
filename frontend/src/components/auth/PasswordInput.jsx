@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View } from "react-native";
-import AppInput from "@/components/ui/AppInput";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "@/components/icons/Icon";
-import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+
+import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
+import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 export default function PasswordInput({
@@ -21,61 +22,65 @@ export default function PasswordInput({
   const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
-  const [ruleStatus, setRuleStatus] = useState({});
   const isDarkMode = useStore((state) => state.isDarkMode);
 
-  const passwordRules = [
-    {
-      name: "lengthRule",
-      validate: (pwInput) => pwInput.length >= 8,
-      displayMessage: t("min. length of 8 characters")
-    },
-    {
-      name: "uppercaseRule",
-      validate: (pwInput) => /[A-Z]/.test(pwInput),
-      displayMessage: t("min. 1 uppercase letter")
-    },
-    {
-      name: "numberRule",
-      validate: (pwInput) => /[0-9]/.test(pwInput),
-      displayMessage: t("min. 1 number")
-    },
-    {
-      name: "specialCharRule",
-      validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
-      displayMessage: t("min. 1 special character")
-    }
-  ];
+  const passwordRules = useMemo(
+    () => [
+      {
+        name: "lengthRule",
+        validate: (pwInput) => pwInput.length >= 8,
+        displayMessage: t("min. length of 8 characters")
+      },
+      {
+        name: "uppercaseRule",
+        validate: (pwInput) => /[A-Z]/.test(pwInput),
+        displayMessage: t("min. 1 uppercase letter")
+      },
+      {
+        name: "numberRule",
+        validate: (pwInput) => /[0-9]/.test(pwInput),
+        displayMessage: t("min. 1 number")
+      },
+      {
+        name: "specialCharRule",
+        validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
+        displayMessage: t("min. 1 special character")
+      }
+    ],
+    [t]
+  );
 
-  // Validierung je nach Variante
-  useEffect(() => {
-    let isValid = false;
+  const ruleStatus = useMemo(() => {
+    if (variant !== "new") return {};
 
+    const status = {};
+    passwordRules.forEach((rule) => {
+      status[rule.name] = rule.validate(value);
+    });
+    return status;
+  }, [value, variant, passwordRules]);
+
+  const isValid = useMemo(() => {
     if (variant === "new") {
-      const newStatus = {};
-      passwordRules.forEach((rule) => {
-        newStatus[rule.name] = rule.validate(value);
-      });
-      setRuleStatus(newStatus);
-      isValid = Object.values(newStatus).every(Boolean) && value.length > 0;
+      return Object.values(ruleStatus).every(Boolean) && value.length > 0;
     } else if (variant === "repeat") {
-      isValid = value.length > 0 && value === compareTo;
+      return value.length > 0 && value === compareTo;
     } else {
-      isValid = value.length > 0;
+      return value.length > 0;
     }
+  }, [value, variant, compareTo, ruleStatus]);
 
+  useEffect(() => {
     if (onValidationChange) {
       onValidationChange(isValid);
     }
-  }, [value, compareTo, variant]);
+  }, [isValid, onValidationChange]);
 
-  // UI-Status berechnen
+  const allRulesPassed = variant === "new" ? Object.values(ruleStatus).every(Boolean) : true;
   let hasError = false;
   let errorMessage = null;
-  let allRulesPassed = false;
 
   if (variant === "new") {
-    allRulesPassed = Object.values(ruleStatus).every(Boolean);
     hasError = !allRulesPassed && value.length > 0;
     errorMessage = hasError ? t("The password does not meet all the requirements.") : null;
   } else if (variant === "repeat") {

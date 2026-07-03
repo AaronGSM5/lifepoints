@@ -1,4 +1,5 @@
-import { StyleSheet, Modal, Pressable } from "react-native";
+import { Modal, Pressable, StyleSheet } from "react-native";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 

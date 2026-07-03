@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Switch, View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import { useTranslation } from "react-i18next";
 
 const SettingsRow = ({ setting, isLast, onPress }) => {
   const MyTheme = useAppTheme();

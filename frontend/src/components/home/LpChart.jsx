@@ -1,8 +1,10 @@
 import { StyleSheet, View } from "react-native";
-import AppText from "../ui/AppText";
-import { Icon } from "../icons/Icon";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
+import { Icon } from "../icons/Icon";
+import AppText from "../ui/AppText";
 import SectionHeader from "../ui/SectionHeader";
 
 const LpChart = () => {

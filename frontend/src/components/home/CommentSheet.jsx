@@ -1,23 +1,32 @@
-import React, { useState, useRef, memo, useCallback } from "react";
-import { View, StyleSheet, Pressable, TextInput, Platform, FlatList, Image, Dimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import { Icon } from "@/components/icons/Icon";
-import { postComments } from "@/mocks/PostComments";
-import { router } from "expo-router";
-import BaseBottomSheet from "../ui/BaseBottomSheet";
+import React, { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import StatusBadge from "../ui/StatusBadge";
+import { Dimensions, FlatList, Image, Platform, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { router } from "expo-router";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { postComments } from "@/mocks/PostComments";
 import useStore from "@/store/useStore";
+
+import BaseBottomSheet from "../ui/BaseBottomSheet";
+import StatusBadge from "../ui/StatusBadge";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }) => {
+const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, onNavigate }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
+
+  const handleReplyPress = () => {
+    const targetParentId = isReply ? parentId : item.id;
+    onReply(targetParentId, item.username);
+  };
+
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>
@@ -52,7 +61,7 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
 
         <View style={styles.commentFooter}>
           <AppText style={styles.commentTime}>{item.time}</AppText>
-          <Pressable onPress={onReply} hitSlop={10}>
+          <Pressable onPress={handleReplyPress} hitSlop={10}>
             <AppText style={styles.replyButton}>{t("Reply")}</AppText>
           </Pressable>
         </View>
@@ -61,7 +70,9 @@ const CommentItem = memo(({ item, isReply = false, onReply, onLike, onNavigate }
   );
 });
 
-export default function CommentSheet({ isVisible, onClose, postId }) {
+CommentItem.displayName = "CommentItem";
+
+export default function CommentSheet({ isVisible, onClose }) {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("home");
@@ -82,7 +93,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
         router.push(`/user/${username}`);
       }, 50);
     },
-    [onClose, router]
+    [onClose]
   );
 
   const handleLikeComment = useCallback((id) => {
@@ -91,8 +102,8 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
     );
   }, []);
 
-  const handleReply = useCallback((parentComment, targetUser) => {
-    setReplyingTo({ parentId: parentComment.id, username: targetUser });
+  const handleReply = useCallback((targetParentId, targetUser) => {
+    setReplyingTo({ parentId: targetParentId.id, username: targetUser });
     setCommentText(`@${targetUser} `);
     setTimeout(() => inputRef.current?.focus(), 100);
   }, []);
@@ -138,12 +149,7 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
   const renderComment = useCallback(
     ({ item }) => (
       <View style={styles.commentContainer}>
-        <CommentItem
-          item={item}
-          onReply={() => handleReply(item, item.username)}
-          onLike={handleLikeComment}
-          onNavigate={handleNavigate}
-        />
+        <CommentItem item={item} onReply={handleReply} onLike={handleLikeComment} onNavigate={handleNavigate} />
 
         {item.replies && item.replies.length > 0 && (
           <View style={styles.repliesContainer}>
@@ -151,8 +157,9 @@ export default function CommentSheet({ isVisible, onClose, postId }) {
               <CommentItem
                 key={reply.id}
                 item={reply}
+                parentId={item.id}
                 isReply={true}
-                onReply={() => handleReply(item, reply.username)}
+                onReply={handleReply}
                 onLike={handleLikeComment}
                 onNavigate={handleNavigate}
               />

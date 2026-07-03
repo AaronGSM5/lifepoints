@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Animated, PanResponder, TouchableOpacity, StyleSheet } from "react-native";
-import { Spacing } from "@/constants/Spacing";
+import React, { useMemo, useState } from "react";
+import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
+
 import { Icon } from "@/components/icons/Icon";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
 import LayeredIcon from "../icons/LayeredIcons";
 
 const TABS = [
@@ -18,55 +20,46 @@ const NavigationRow = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
 
-  const panX = useRef(new Animated.Value(0)).current;
-  const panXValue = useRef(0);
-
-  useEffect(() => {
-    const listener = panX.addListener(({ value }) => {
-      panXValue.current = value;
-    });
-    return () => panX.removeListener(listener);
-  }, []);
+  const [panX] = useState(() => new Animated.Value(0));
 
   const PADDING = 2;
   const BORDER_WIDTH = 1;
   const usableWidth = containerWidth - PADDING * 2 - BORDER_WIDTH * 2;
   const tabWidth = usableWidth > 0 ? usableWidth / TABS.length : 0;
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        panX.setOffset(panXValue.current);
-        panX.setValue(0);
-      },
-      onPanResponderMove: Animated.event([null, { dx: panX }], { useNativeDriver: false }),
-      onPanResponderRelease: (e, gestureState) => {
-        panX.flattenOffset();
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderGrant: () => {
+          panX.setOffset(panX._value);
+          panX.setValue(0);
+        },
+        onPanResponderMove: Animated.event([null, { dx: panX }], { useNativeDriver: false }),
+        onPanResponderRelease: () => {
+          panX.flattenOffset();
+          let newIndex = Math.round(panX._value / tabWidth);
+          if (newIndex < 0) newIndex = 0;
+          if (newIndex >= TABS.length) newIndex = TABS.length - 1;
 
-        let newIndex = Math.round(panXValue.current / tabWidth);
-
-        if (newIndex < 0) newIndex = 0;
-        if (newIndex >= TABS.length) newIndex = TABS.length - 1;
-
-        setActiveIndex(newIndex);
-
-        Animated.spring(panX, {
-          toValue: newIndex * tabWidth,
-          useNativeDriver: false,
-          bounciness: 4,
-          speed: 12
-        }).start();
-      }
-    })
-  ).current;
+          setActiveIndex(newIndex);
+          Animated.spring(panX, {
+            toValue: newIndex * tabWidth,
+            useNativeDriver: true,
+            bounciness: 4,
+            speed: 12
+          }).start();
+        }
+      }),
+    [tabWidth, panX]
+  );
 
   const handleTabPress = (index) => {
     setActiveIndex(index);
     Animated.spring(panX, {
       toValue: index * tabWidth,
-      useNativeDriver: false,
+      useNativeDriver: true,
       bounciness: 4,
       speed: 12
     }).start();

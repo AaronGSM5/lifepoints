@@ -1,15 +1,18 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { Skeleton } from "moti/skeleton";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
-import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
 import { featuredRewards } from "@/constants/FeaturedRewards";
+import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
+
+import AppBadge from "../ui/AppBadge";
 
 const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
   const { t } = useTranslation("shop");

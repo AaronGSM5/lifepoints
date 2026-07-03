@@ -1,7 +1,8 @@
 import React from "react";
+import { View } from "react-native";
+
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
-import { View } from "react-native";
 
 const ScreenTitle = ({ title, subtitle }) => {
   return (

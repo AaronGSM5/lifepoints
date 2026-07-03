@@ -1,15 +1,17 @@
 import { StyleSheet, View } from "react-native";
-import { Icon } from "../icons/Icon";
-import AppText from "../ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Spacing } from "@/constants/Spacing";
-import AppButton from "../ui/AppButton";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { capitalize } from "@/utils/helpers";
+
+import { Icon } from "../icons/Icon";
+import AppButton from "../ui/AppButton";
+import AppText from "../ui/AppText";
 
 const EmptyState = ({ activeCat, setActiveCat }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  render(
+  return (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconCircle}>
         <Icon name="search" size={32} color={MyTheme.muted} />

@@ -1,11 +1,13 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
-import { Spacing } from "@/constants/Spacing";
-import SectionHeader from "@/components/ui/SectionHeader";
+import { FlatList, StyleSheet, View } from "react-native";
+
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useHorizontalCommunityRail } from "@/hooks/useCommunities";
 import { extractId } from "@/utils/helpers";
+
 import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
 const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {

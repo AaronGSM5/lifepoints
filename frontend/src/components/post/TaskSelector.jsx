@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, ScrollView } from "react-native";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import BaseCard from "../ui/BaseCard";
-import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useTranslation } from "react-i18next";
+import { LayoutAnimation, Platform, ScrollView, StyleSheet, TouchableOpacity, UIManager, View } from "react-native";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { tasksCatalog } from "@/constants/TasksCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import BaseCard from "../ui/BaseCard";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);

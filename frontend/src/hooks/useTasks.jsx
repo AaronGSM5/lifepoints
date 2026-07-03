@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { recommendedTasks } from "@/mocks/FeaturedTasks";
 import { capitalize } from "@/utils/helpers";
@@ -13,7 +14,7 @@ export const useTasks = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchTasks = useCallback(async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     // Simulierter API Call
     setTimeout(() => {
       setIsLoading(false);

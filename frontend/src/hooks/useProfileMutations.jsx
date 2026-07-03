@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { profileKeys, apiBaseUrl } from "./useProfileQueries";
+
+import { apiBaseUrl, profileKeys } from "./useProfileQueries";
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();

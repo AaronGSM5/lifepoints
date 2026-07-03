@@ -1,8 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+
+// eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
 import BackButton from "../ui/BackButton";
 
 const CommunityHeader = ({ community }) => {

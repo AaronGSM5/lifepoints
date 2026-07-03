@@ -1,13 +1,17 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+
+// eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
-import { Spacing } from "@/constants/Spacing";
+
 import AppText from "@/components/ui/AppText";
-import BaseCard from "../ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import AppBadge from "../ui/AppBadge";
 import useStore from "@/store/useStore";
+
+import AppBadge from "../ui/AppBadge";
+import BaseCard from "../ui/BaseCard";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();

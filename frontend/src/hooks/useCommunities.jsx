@@ -1,4 +1,11 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+
+import { recommendedCommunities } from "@/mocks/RecommendedCommunities";
+import useStore from "@/store/useStore";
+
 import { apiBaseUrl } from "./useProfileQueries";
 
 export const communityKeys = {
@@ -79,11 +86,6 @@ export const useHorizontalCommunityRail = (category) => {
   });
 };
 
-import { useState, useEffect, useCallback } from "react";
-import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
-import { recommendedCommunities } from "@/mocks/RecommendedCommunities";
-
 const HORIZONTAL_PAGE_SIZE = 5;
 const VERTICAL_PAGE_SIZE = 2;
 
@@ -124,29 +126,32 @@ export const useCommunities = () => {
     return newData;
   }, []);
 
-  const fetchMoreSections = useCallback(async (page) => {
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        const newSectionsWithData = [];
+  const fetchMoreSections = useCallback(
+    async (page) => {
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          const newSectionsWithData = [];
 
-        for (let i = 0; i < VERTICAL_PAGE_SIZE; i++) {
-          const sectionIndex = (page - 1) * VERTICAL_PAGE_SIZE + i;
-          const sectionId = `dyn-sec-${sectionIndex}`;
-          const categoryKey = `topic_${sectionIndex}`;
+          for (let i = 0; i < VERTICAL_PAGE_SIZE; i++) {
+            const sectionIndex = (page - 1) * VERTICAL_PAGE_SIZE + i;
+            const sectionId = `dyn-sec-${sectionIndex}`;
+            const categoryKey = `topic_${sectionIndex}`;
 
-          const firstPageData = await simulateFetch(recommendedCommunities, 1, HORIZONTAL_PAGE_SIZE);
+            const firstPageData = await simulateFetch(recommendedCommunities, 1, HORIZONTAL_PAGE_SIZE);
 
-          newSectionsWithData.push({
-            id: sectionId,
-            title: `${t("Discover")}: ${t("Topic")} ${sectionIndex + 1}`,
-            categoryKey: categoryKey,
-            data: firstPageData
-          });
-        }
-        resolve(newSectionsWithData);
-      }, 2000);
-    });
-  }, []);
+            newSectionsWithData.push({
+              id: sectionId,
+              title: `${t("Discover")}: ${t("Topic")} ${sectionIndex + 1}`,
+              categoryKey: categoryKey,
+              data: firstPageData
+            });
+          }
+          resolve(newSectionsWithData);
+        }, 2000);
+      });
+    },
+    [t]
+  );
 
   return {
     myCommunities,

@@ -1,13 +1,16 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ScrollView, View } from "react-native";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import SectionHeader from "../ui/SectionHeader";
-import CustomizablesCard from "../customizables/CustomizablesCard";
-import { useTranslation } from "react-i18next";
 import useStore from "@/store/useStore";
+
+import CustomizablesCard from "../customizables/CustomizablesCard";
+import SectionHeader from "../ui/SectionHeader";
 
 const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
   const { t } = useTranslation("profile");

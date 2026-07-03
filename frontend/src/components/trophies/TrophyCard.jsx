@@ -1,18 +1,21 @@
-import React, { useRef, useEffect } from "react";
-import { View, Animated as RNAnimated, StyleSheet, Pressable } from "react-native";
-import Animated from "react-native-reanimated";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import { Icon } from "../icons/Icon";
-import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Animated as RNAnimated, Pressable, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+
+import { router } from "expo-router";
+
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import { Icon } from "../icons/Icon";
 
 const TrophyCard = ({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("trophies");
-  const animValue = useRef(new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0)).current;
+  const [animValue] = useState(() => new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0));
 
   useEffect(() => {
     if (justUnlocked) {

@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
-import { feedItems as mockFeedItems } from "@/mocks/FeedData";
+import { useCallback, useEffect, useState } from "react";
+
 import { questCatalog } from "@/constants/QuestCatalog";
+import { feedItems as mockFeedItems } from "@/mocks/FeedData";
 
 export const useHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [feedItems, setFeedItems] = useState(mockFeedItems);
-  const [quests, setQuests] = useState(questCatalog);
+  const [feedItems] = useState(mockFeedItems);
+  const [quests] = useState(questCatalog);
 
   const fetchHomeData = useCallback(async () => {
-    setIsLoading(true);
     setTimeout(() => setIsLoading(false), 1500);
   }, []);
 

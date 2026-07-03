@@ -1,7 +1,9 @@
 import { StyleSheet, View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+
 import SurveyOptionCard from "./SurveyOptionCard";
 import AppText from "../ui/AppText";
-import { Spacing } from "@/constants/Spacing";
 
 const SurveyQuestion = ({ question, answers, onSelect }) => {
   return (

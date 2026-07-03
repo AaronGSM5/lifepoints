@@ -1,12 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { View, ScrollView } from "react-native";
-import SectionHeader from "../ui/SectionHeader";
-import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { ScrollView, View } from "react-native";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import TrophyCard from "../trophies/TrophyCard";
+
+import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import TrophyCard from "../trophies/TrophyCard";
+import SectionHeader from "../ui/SectionHeader";
 
 const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
   const MyTheme = useAppTheme();

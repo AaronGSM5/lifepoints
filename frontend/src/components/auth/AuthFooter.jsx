@@ -1,9 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import { Link } from "expo-router";
+
 import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function AuthFooter({ text, linkText, href }) {
   const MyTheme = useAppTheme();

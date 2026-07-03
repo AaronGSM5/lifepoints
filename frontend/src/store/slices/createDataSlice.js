@@ -1,7 +1,7 @@
+import { featuredRewards } from '@/constants/FeaturedRewards';
+import { rewardsCatalog } from '@/constants/RewardsCatalog';
 import { tasksCatalog } from '@/constants/TasksCatalog';
 import { recommendedTasks } from '@/mocks/FeaturedTasks';
-import { rewardsCatalog } from '@/constants/RewardsCatalog';
-import { featuredRewards } from '@/constants/FeaturedRewards';
 
 export const createDataSlice = (set, get) => ({
   myCommunities: [],

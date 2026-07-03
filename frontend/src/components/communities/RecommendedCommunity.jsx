@@ -1,15 +1,19 @@
 import React from "react";
-import { StyleSheet, View, Image, Pressable } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+
+// eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
 import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
+
 import AppText from "@/components/ui/AppText";
-import BaseCard from "../ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
+
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
-import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
+import BaseCard from "../ui/BaseCard";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();

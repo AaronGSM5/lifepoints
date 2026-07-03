@@ -1,10 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Pressable, Image } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTranslation } from "react-i18next";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+
+import * as ImagePicker from "expo-image-picker";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
   const MyTheme = useAppTheme();

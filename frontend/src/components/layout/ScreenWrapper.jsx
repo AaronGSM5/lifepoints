@@ -1,10 +1,13 @@
-import { View, StyleSheet, Animated } from "react-native";
-import { Spacing } from "@/constants/Spacing";
+import React, { memo, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import { LinearGradient } from "expo-linear-gradient";
+
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
-import React, { memo, useRef } from "react";
+
 import Toolbar from "./Toolbar";
 
 export const useFloatingNavbarPadding = () => {
@@ -32,7 +35,7 @@ export default memo(function ScreenWrapper({
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
   const toolbarTopPadding = useToolbarPadding();
-  const internalScrollY = useRef(new Animated.Value(0)).current;
+  const [internalScrollY] = useState(() => new Animated.Value(0));
   const scrollY = externalScrollY || internalScrollY;
   const contentStyles = [
     {

@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 

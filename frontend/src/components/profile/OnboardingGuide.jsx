@@ -1,14 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
+
 import AppButton from "../ui/AppButton";
 
 const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {

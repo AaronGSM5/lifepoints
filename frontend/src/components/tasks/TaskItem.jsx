@@ -1,19 +1,21 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Platform, UIManager, TouchableOpacity } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { Icon } from "@/components/icons/Icon";
-import BaseCard from "@/components/ui/BaseCard";
-import { Skeleton } from "moti/skeleton";
-import useStore from "@/store/useStore";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { Platform, StyleSheet, UIManager, View } from "react-native";
+
+import { Skeleton } from "moti/skeleton";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const TaskItem = ({ id, title, description, lp, icon, onNavigate, isLoading }) => {
+const TaskItem = ({ title, description, lp, icon, onNavigate, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("tasks");

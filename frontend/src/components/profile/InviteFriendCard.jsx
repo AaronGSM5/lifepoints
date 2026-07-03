@@ -1,10 +1,12 @@
 import React from "react";
-import { Share, StyleSheet, View } from "react-native";
-import BaseCard from "../ui/BaseCard";
-import AppText from "../ui/AppText";
-import AppButton from "../ui/AppButton";
-import { Spacing } from "@/constants/Spacing";
 import { useTranslation } from "react-i18next";
+import { Share, StyleSheet, View } from "react-native";
+
+import { Spacing } from "@/constants/Spacing";
+
+import AppButton from "../ui/AppButton";
+import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
 
 const InviteFriendCard = ({ referralCode }) => {
   const shareInvite = async () => {

@@ -1,8 +1,11 @@
-import { Spacing } from "@/constants/Spacing";
-import AppButton from "./AppButton";
-import { Skeleton } from "moti/skeleton";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { ScrollView } from "react-native";
+
+import { Skeleton } from "moti/skeleton";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import AppButton from "./AppButton";
 
 const CategoryButtons = ({ categories, activeCat, setActiveCat, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();

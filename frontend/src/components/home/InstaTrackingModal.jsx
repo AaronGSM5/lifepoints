@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+
+import AppButton from "@/components/ui/AppButton";
 import AppModal from "@/components/ui/AppModal";
 import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
-import { Icon } from "../icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
+import { Icon } from "../icons/Icon";
 
 export default function InstaTrackingModal({ visible, onClose, onConfirm }) {
   const [dontShowAgain, setDontShowAgain] = useState(false);

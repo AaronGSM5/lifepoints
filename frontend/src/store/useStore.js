@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { createUISlice } from './slices/createUISlice';
-import { createQuestSlice } from './slices/createQuestSlice';
 import { createDataSlice } from './slices/createDataSlice';
 import { createProfileSlice } from './slices/createProfileSlice';
+import { createQuestSlice } from './slices/createQuestSlice';
+import { createUISlice } from './slices/createUISlice';
 
 const logger = (config) => (set, get, api) => config(
   (args) => {

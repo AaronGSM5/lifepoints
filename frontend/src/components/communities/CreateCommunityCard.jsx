@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
+
 import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
 // DISCLAIMER DISCLAIMER DISCLAIMER DISCLAIMER DISCLAIMER

@@ -1,17 +1,20 @@
-import { View, StyleSheet, Image, Pressable, Animated as RNAnimated, Share, TouchableOpacity } from "react-native";
-import Animated from "react-native-reanimated";
-import { Spacing } from "@/constants/Spacing";
-import AppText from "@/components/ui/AppText";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Icon } from "@/components/icons/Icon";
 import React, { memo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Animated as RNAnimated, Image, Pressable, Share, StyleSheet, View } from "react-native";
+import Animated from "react-native-reanimated";
+
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import useStore from "@/store/useStore";
-import { useTranslation } from "react-i18next";
-import StatusBadge from "../ui/StatusBadge";
+
+import { Icon } from "@/components/icons/Icon";
+import AppText from "@/components/ui/AppText";
 import { APP_EVENTS } from "@/constants/Events";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
+
 import { LootGameTrigger } from "./LootGameTrigger";
+import StatusBadge from "../ui/StatusBadge";
 
 export default memo(function FeedItem({
   username,
