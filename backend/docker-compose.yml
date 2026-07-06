@@ -7,10 +7,10 @@ services:
         - DEBUG=*:*
     container_name: lifepoints_backend
     ports:
-      - "3000:3000"
+      - "6767:6767"
     environment:
       - NODE_ENV=development
-      - PORT=3000
+      - PORT=6767
       - MONGO_URI=mongodb://mongo:27017/lifepoints
     depends_on:
       - mongo

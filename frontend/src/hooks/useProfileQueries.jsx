@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const apiBaseUrl = "http://localhost:3000/api/v1";
+export const apiBaseUrl = "http://localhost:6767/api/v1";
 
 export const profileKeys = {
   me: ["profile", "me"]
