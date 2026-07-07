@@ -1,10 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 
-import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -14,6 +13,7 @@ import FeedItemHeader from "./FeedItemHeader";
 import FeedItemActionBar from "./FeedItemActionBar";
 import FeedItemFooter from "./FeedItemFooter";
 import { useFeedItem } from "@/hooks/useFeedItem";
+import FeedItemImageContainer from "./FeedItemImageContainer";
 
 export default memo(function FeedItem({
   username,
@@ -84,25 +84,14 @@ export default memo(function FeedItem({
         onPress={navigateToProfile}
         onOpenOptions={() => onOpenOptions(id, isOwner)}
       />
-      <View style={styles.imageContainer}>
-        <Pressable style={{ flex: 1 }} onPress={handleDoubleTap}>
-          <Image source={image} style={styles.feedImage} resizeMode="cover" />
-          <Animated.View
-            style={[
-              styles.bigHeartOverlay,
-              {
-                opacity: heartOpacity,
-                transform: [{ scale: heartScale }],
-                pointerEvents: "none"
-              }
-            ]}
-          >
-            <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
-          </Animated.View>
-        </Pressable>
-      </View>
-      {hasChest && <LootGameTrigger isReady={isReady} onPress={() => startLootGame()} />}
 
+      {hasChest && <LootGameTrigger isReady={isReady} onPress={() => startLootGame()} />}
+      <FeedItemImageContainer
+        image={image}
+        heartOpacity={heartOpacity}
+        heartScale={heartScale}
+        onPress={handleDoubleTap}
+      />
       <FeedItemActionBar
         handleLike={handleLike}
         isLiked={isLiked}
@@ -129,22 +118,6 @@ const getStyles = (theme) =>
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderBottomColor: theme.separator
     },
-    imageContainer: {
-      width: "100%",
-      aspectRatio: 4 / 5,
-      backgroundColor: theme.primary,
-      position: "relative",
-      overflow: "hidden"
-    },
-    feedImage: {
-      width: "100%",
-      height: "100%"
-    },
-    bigHeartOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      justifyContent: "center",
-      alignItems: "center"
-    },
     skeletonContainer: {
       backgroundColor: theme.primary,
       borderBottomWidth: StyleSheet.hairlineWidth,
@@ -160,9 +133,5 @@ const getStyles = (theme) =>
     skeletonFooter: {
       padding: Spacing.md,
       gap: Spacing.md
-    },
-    chestIcon: {
-      width: 30,
-      height: 30
     }
   });
