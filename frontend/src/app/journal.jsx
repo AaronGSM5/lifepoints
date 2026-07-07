@@ -8,7 +8,7 @@ import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useMyProfile } from "@/hooks/useProfileQueries";
+import { useMyProfile } from "@/api/profile/useMyProfile";
 import { groupDataByDate } from "@/utils/helpers";
 
 const JournalPage = () => {

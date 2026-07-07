@@ -15,6 +15,8 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 
+import { useMyProfile } from "@/api/profile/useMyProfile";
+import { useUpdateProfile } from "@/api/profile/useUpdateProfile";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
@@ -23,8 +25,6 @@ import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useUpdateProfile } from "@/hooks/useProfileMutations";
-import { useMyProfile } from "@/hooks/useProfileQueries";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 

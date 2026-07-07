@@ -6,7 +6,7 @@ import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
-import { useMyProfile } from "@/hooks/useProfileQueries";
+import { useMyProfile } from "@/api/profile/useMyProfile";
 import useStore from "@/store/useStore";
 
 export default function ProfileScreen() {

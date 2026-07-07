@@ -7,7 +7,7 @@ import TrophyCard from "@/components/trophies/TrophyCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
-import { useMyProfile } from "@/hooks/useProfileQueries";
+import { useMyProfile } from "@/api/profile/useMyProfile";
 import useStore from "@/store/useStore";
 
 export default function TrophiesScreen() {

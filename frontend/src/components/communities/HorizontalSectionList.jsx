@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
+import { useHorizontalRail } from "@/api/communities/useHorizontalRail";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useHorizontalCommunityRail } from "@/hooks/useCommunities";
 import { extractId } from "@/utils/helpers";
 
 import AppLoadingSpinner from "../ui/AppLoadingSpinner";
@@ -13,7 +13,7 @@ import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalCommunityRail(categoryKey);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalRail(categoryKey);
 
   const flatData = useMemo(() => {
     if (data?.pages && data.pages.length > 0 && data.pages[0].data) {

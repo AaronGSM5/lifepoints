@@ -4,6 +4,8 @@ import { Animated, FlatList, Pressable, ScrollView, StyleSheet, View } from "rea
 
 import { router } from "expo-router";
 
+// import { useCommunities } from "@/api/communities/useCommunities";
+import { useVerticalRails } from "@/api/communities/useVerticalRails";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
@@ -16,14 +18,13 @@ import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useCommunities } from "@/hooks/useCommunities";
-import { useVerticalCommunityRails } from "@/hooks/useCommunities";
 import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  const { myCommunities, createCommunity } = useCommunities();
+  // const { myCommunities, createCommunity } = useCommunities();
+  const myCommunities = [];
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
@@ -36,7 +37,7 @@ export default function CommunitiesScreen() {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isLoadingRails
-  } = useVerticalCommunityRails();
+  } = useVerticalRails();
 
   const isLoading = isLoadingRails;
 
@@ -56,9 +57,9 @@ export default function CommunitiesScreen() {
       }));
   }, [railsData]);
 
-  const handleCreateCommunity = (data) => {
-    createCommunity(data);
-  };
+  // const handleCreateCommunity = (data) => {
+  //   createCommunity(data);
+  // };
 
   const listData = useMemo(() => {
     const topElements = [
@@ -172,7 +173,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, MyTheme, t, styles]
+    [isLoading, MyTheme, t, styles]
   );
 
   const renderMainFooter = () => {
@@ -208,7 +209,7 @@ export default function CommunitiesScreen() {
       <CreateCommunityForm
         visible={isCreateModalVisible}
         onClose={() => setIsCreateModalVisible(false)}
-        onCreate={handleCreateCommunity}
+        // onCreate={handleCreateCommunity}
       />
     </ScreenWrapper>
   );
