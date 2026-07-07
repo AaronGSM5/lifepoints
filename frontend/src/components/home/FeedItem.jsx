@@ -1,20 +1,19 @@
-import React, { memo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Animated as RNAnimated, Image, Pressable, Share, StyleSheet, View } from "react-native";
-import Animated from "react-native-reanimated";
+import React, { memo, useCallback, useMemo } from "react";
+import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 
 import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
-import { APP_EVENTS } from "@/constants/Events";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 import { LootGameTrigger } from "./LootGameTrigger";
-import StatusBadge from "../ui/StatusBadge";
+import FeedItemHeader from "./FeedItemHeader";
+import FeedItemActionBar from "./FeedItemActionBar";
+import FeedItemFooter from "./FeedItemFooter";
+import { useFeedItem } from "@/hooks/useFeedItem";
 
 export default memo(function FeedItem({
   username,
@@ -31,84 +30,30 @@ export default memo(function FeedItem({
   isReady
 }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [likesCount, setLikesCount] = useState(initialLikes);
-  const [lastTap, setLastTap] = useState(0);
-  const heartScale = useRef(new RNAnimated.Value(0)).current;
-  const heartOpacity = useRef(new RNAnimated.Value(0)).current;
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+
   const startLootGame = useStore((state) => state.startLootGame);
-  const trackEvent = useStore((state) => state.trackEvent);
-  const { t } = useTranslation("home");
   const myUsername = useStore((state) => state.profile.username);
   const isOwner = username === myUsername;
   const hasChest = id % 2 === 0;
-  // const hasChest = true;
+  const {
+    isLiked,
+    isSaved,
+    likesCount,
+    heartScale,
+    heartOpacity,
+    handleLike,
+    handleSave,
+    handleShare,
+    handleDoubleTap
+  } = useFeedItem({ initialLikes: initialLikes, username: username, description: description });
 
-  const navigateToProfile = () => {
+  const navigateToProfile = useCallback(() => {
     router.push({
       pathname: `/user/${username}`,
       params: { sourceId: id }
     });
-  };
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    if (!isLiked) {
-      trackEvent(APP_EVENTS.LIKE_POST);
-    }
-  };
-
-  const handleSave = () => {
-    setIsSaved(!isSaved);
-  };
-
-  const handleShare = async () => {
-    try {
-      const result = await Share.share({
-        message: `Schau dir diesen Beitrag von ${username} an: "${description}" \n\nlifepoints://profile`,
-        title: `Beitrag von ${username}`
-      });
-
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          console.log("Geteilt mit:", result.activityType);
-        } else {
-          console.log("Erfolgreich geteilt");
-        }
-      } else if (result.action === Share.dismissedAction) {
-        console.log("Teilen abgebrochen");
-      }
-    } catch (error) {
-      console.error("Fehler beim Teilen:", error.message);
-    }
-  };
-
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    const DOUBLE_PRESS_DELAY = 300;
-
-    if (now - lastTap < DOUBLE_PRESS_DELAY) {
-      if (!isLiked) {
-        setIsLiked(true);
-        setLikesCount((prev) => prev + 1);
-        trackEvent(APP_EVENTS.LIKE_POST);
-      }
-
-      RNAnimated.sequence([
-        RNAnimated.parallel([
-          RNAnimated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
-          RNAnimated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
-        ]),
-        RNAnimated.delay(400),
-        RNAnimated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-        RNAnimated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
-      ]).start();
-    } else {
-      setLastTap(now);
-    }
-  };
+  }, [username, id]);
 
   if (isLoading) {
     return (
@@ -131,42 +76,18 @@ export default memo(function FeedItem({
 
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <Pressable onPress={navigateToProfile}>
-          <View style={styles.headerUser}>
-            <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
-              {avatar ? (
-                <Image
-                  source={{ uri: avatar }}
-                  style={{ width: "100%", height: "100%", borderRadius: Spacing.borderRadius.full }}
-                  resizeMode="cover"
-                />
-              ) : (
-                <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
-              )}
-            </Animated.View>
-            {badge ? (
-              <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
-                <AppText bold style={styles.username}>
-                  {username}
-                </AppText>
-                <StatusBadge id={badge} />
-              </View>
-            ) : (
-              <AppText bold style={styles.username}>
-                {username}
-              </AppText>
-            )}
-          </View>
-        </Pressable>
-        <Pressable hitSlop={15} onPress={() => onOpenOptions(id, isOwner)}>
-          <Icon name={"dots"} size={20} color={MyTheme.muted} />
-        </Pressable>
-      </View>
+      <FeedItemHeader
+        id={id}
+        username={username}
+        avatar={avatar}
+        badge={badge}
+        onPress={navigateToProfile}
+        onOpenOptions={() => onOpenOptions(id, isOwner)}
+      />
       <View style={styles.imageContainer}>
         <Pressable style={{ flex: 1 }} onPress={handleDoubleTap}>
           <Image source={image} style={styles.feedImage} resizeMode="cover" />
-          <RNAnimated.View
+          <Animated.View
             style={[
               styles.bigHeartOverlay,
               {
@@ -177,46 +98,25 @@ export default memo(function FeedItem({
             ]}
           >
             <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
-          </RNAnimated.View>
+          </Animated.View>
         </Pressable>
       </View>
       {hasChest && <LootGameTrigger isReady={isReady} onPress={() => startLootGame()} />}
 
-      <View style={styles.actionBar}>
-        <View style={styles.actionLeft}>
-          <Pressable hitSlop={10} onPress={handleLike}>
-            <Icon outline={!isLiked} name="heart" color={isLiked ? "red" : undefined} />
-          </Pressable>
-          <Pressable hitSlop={10} onPress={() => onOpenComments(id)}>
-            <Icon name="chat" />
-          </Pressable>
-          <Pressable hitSlop={10} onPress={handleShare}>
-            <Icon name="forwardShare" />
-          </Pressable>
-        </View>
-
-        <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
-          <Pressable hitSlop={10} onPress={handleSave}>
-            <Icon outline={!isSaved} name="bookmark" />
-          </Pressable>
-        </View>
-      </View>
-
-      <View style={styles.footer}>
-        <AppText bold style={styles.likesText}>
-          {likesCount} {likesCount === 1 ? "Like" : "Likes"}
-        </AppText>
-        <AppText style={styles.descriptionText}>
-          <AppText bold onPress={navigateToProfile}>
-            {username}{" "}
-          </AppText>
-          {description}
-        </AppText>
-
-        <AppText type="caption" style={styles.timeAgo}>
-          {t("Vor")} 2 {t("Hours")}
-        </AppText>
-      </View>
+      <FeedItemActionBar
+        handleLike={handleLike}
+        isLiked={isLiked}
+        handleShare={handleShare}
+        isSaved={isSaved}
+        handleSave={handleSave}
+        onOpenComments={() => onOpenComments(id)}
+      />
+      <FeedItemFooter
+        likesCount={likesCount}
+        username={username}
+        description={description}
+        onPress={navigateToProfile}
+      />
     </View>
   );
 });
@@ -228,29 +128,6 @@ const getStyles = (theme) =>
       paddingBottom: Spacing.sm,
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderBottomColor: theme.separator
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.sm + 2
-    },
-    headerUser: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 12
-    },
-    avatar: {
-      width: 40,
-      height: 40,
-      borderRadius: Spacing.borderRadius.full,
-      backgroundColor: theme.primaryAccent,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    username: {
-      fontSize: 15
     },
     imageContainer: {
       width: "100%",
@@ -267,35 +144,6 @@ const getStyles = (theme) =>
       ...StyleSheet.absoluteFillObject,
       justifyContent: "center",
       alignItems: "center"
-    },
-    actionBar: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.sm,
-      marginTop: 2
-    },
-    actionLeft: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.lg
-    },
-    footer: {
-      paddingHorizontal: Spacing.md,
-      paddingBottom: Spacing.md
-    },
-    likesText: {
-      marginBottom: 4,
-      fontSize: 14
-    },
-    descriptionText: {
-      fontSize: 14,
-      lineHeight: 20
-    },
-    timeAgo: {
-      fontSize: 12,
-      marginTop: Spacing.xs
     },
     skeletonContainer: {
       backgroundColor: theme.primary,
