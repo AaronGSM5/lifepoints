@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StyleSheet, View } from "react-native";
 
@@ -13,9 +13,9 @@ import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
 
-const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
+const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   const isDarkMode = useStore((state) => state.isDarkMode);
   const completeTask = useStore((state) => state.completeTask);
@@ -113,7 +113,8 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
       </View>
     </BaseCard>
   );
-};
+});
+FYTaskItem.displayName = "FYTaskItem";
 
 const getStyles = (theme) =>
   StyleSheet.create({

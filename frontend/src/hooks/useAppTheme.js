@@ -19,6 +19,7 @@ export const useAppTheme = () => {
 
   return {
     ...baseTheme,
-    ...accentTheme
+    ...accentTheme,
+    isDark: isDarkMode
   };
 };

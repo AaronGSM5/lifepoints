@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -8,23 +8,27 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppInput from "../ui/AppInput";
 import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
 
-const SuggestTaskInput = () => {
+const SuggestTaskInput = memo(() => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   const [suggestionInput, setSuggestionInput] = useState("");
-  const handleSendSuggestion = () => {
-    console.log("Mock Send");
+
+  const handleSendSuggestion = useCallback(() => {
+    if (!suggestionInput.trim()) return;
+    console.log("Mock Send: ", suggestionInput);
     setSuggestionInput("");
-  };
+  }, [suggestionInput]);
+
   return (
-    <View style={styles.suggestionBox}>
+    <BaseCard>
       <View style={styles.suggestionHeader}>
         <View style={styles.bulbIcon}>
           <Icon name="bulb" size={20} />
         </View>
-        <View>
+        <View style={styles.textContainer}>
           <AppText type="title">{t("Suggest a Task")}</AppText>
           <AppText type="caption">{t("Earn LP if your idea gets added!")}</AppText>
         </View>
@@ -37,17 +41,13 @@ const SuggestTaskInput = () => {
         rightIcon="send"
         onRightIconPress={handleSendSuggestion}
       />
-    </View>
+    </BaseCard>
   );
-};
+});
+SuggestTaskInput.displayName = "SuggestTaskInput";
 
 const getStyles = (theme) =>
   StyleSheet.create({
-    suggestionBox: {
-      backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
-      padding: Spacing.lg
-    },
     suggestionHeader: {
       flexDirection: "row",
       alignItems: "center",
@@ -61,6 +61,9 @@ const getStyles = (theme) =>
       justifyContent: "center",
       alignItems: "center",
       marginRight: Spacing.sm
+    },
+    textContainer: {
+      flex: 1
     }
   });
 

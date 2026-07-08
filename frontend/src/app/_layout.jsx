@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Platform, View } from "react-native";
+import { Platform, UIManager, View } from "react-native";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
@@ -17,6 +17,10 @@ import { usePushNotifications } from "@/hooks/usePushNotifications";
 import "@/utils/i18n";
 
 SplashScreen.preventAutoHideAsync();
+
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export function ErrorBoundary({ error, retry }) {
   return <ErrorFallback error={error} resetError={retry} />;
