@@ -22,7 +22,7 @@ const AppIconItem = memo(({ icon, isSelected, onPress }) => {
       {isSelected && (
         <View style={styles.overlay}>
           <View style={styles.iconCircle}>
-            <Icon name={"checkmark"} size={20} />
+            <Icon name={"checkmark"} size={20} color={"#fff"} />
           </View>
         </View>
       )}

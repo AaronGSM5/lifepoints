@@ -29,7 +29,7 @@ const ColorThemeItem = memo(({ theme, isSelected, onPress }) => {
       {theme.isLocked && (
         <View style={styles.overlay}>
           <View style={styles.iconCircle}>
-            <Icon name={"lock"} size={20} />
+            <Icon name={"lock"} size={20} color={"#fff"} />
           </View>
         </View>
       )}
@@ -37,7 +37,7 @@ const ColorThemeItem = memo(({ theme, isSelected, onPress }) => {
       {isSelected && !theme.isLocked && (
         <View style={styles.overlay}>
           <View style={[styles.iconCircle, { backgroundColor: MyTheme.primaryAccent }]}>
-            <Icon name={"checkmark"} size={20} />
+            <Icon name={"checkmark"} size={20} color={"#fff"} />
           </View>
         </View>
       )}
