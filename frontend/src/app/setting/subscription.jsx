@@ -6,10 +6,11 @@ import { Skeleton } from "moti/skeleton";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import BillingToggle from "@/components/settings/subscription/BillingToggle";
-import { PlusCard, PremiumCard, StandardCard } from "@/components/settings/subscription/SubscriptionCards";
+import SubscriptionCard from "@/components/settings/subscription/SubscriptionCard";
 import SubscriptionSkeletons from "@/components/settings/subscription/SubscriptionSkeletons";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import { SUBSCRIPTION_PLANS } from "@/constants/SubscriptionPlans";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
@@ -63,11 +64,9 @@ export default function SubscriptionScreen() {
         {isLoading ? (
           <SubscriptionSkeletons billingCycle={billingCycle} />
         ) : (
-          <>
-            <StandardCard />
-            <PlusCard billingCycle={billingCycle} onSubscribe={handleSubscribe} />
-            <PremiumCard billingCycle={billingCycle} onSubscribe={handleSubscribe} />
-          </>
+          SUBSCRIPTION_PLANS.map((plan) => (
+            <SubscriptionCard key={plan.id} plan={plan} billingCycle={billingCycle} onSubscribe={handleSubscribe} />
+          ))
         )}
       </View>
 
