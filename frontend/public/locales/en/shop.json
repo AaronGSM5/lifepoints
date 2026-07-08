@@ -1,4 +1,5 @@
 {
+  // CategoryButtons
   "categories": {
     "all": "All",
     "fashion": "Fashion",
@@ -17,5 +18,9 @@
   "Rewards": "Rewards",
   "Locked": "Locked",
   "Description": "Description",
-  "Redeem Now": "Redeem Now"
+  "Redeem Now": "Redeem Now",
+  // Empty State
+  "No Rewards Found": "No Rewards Found",
+  "We don't have any deals for": "We don't have any deals for \"{{category}}\" right now.",
+  "Reset filter": "Reset Filter"
 }

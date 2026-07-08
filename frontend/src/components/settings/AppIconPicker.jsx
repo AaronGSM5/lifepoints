@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-
-// eslint-disable-next-line import/no-unresolved
-import { Ionicons } from "@expo/vector-icons";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
+import AppIconItem from "./AppIconItem";
 import SectionHeader from "../ui/SectionHeader";
 
 const ICONS = [
@@ -17,7 +15,7 @@ const ICONS = [
 
 export default function AppIconPicker() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [activeIcon, setActiveIcon] = useState("default_icon");
 
   const getIconModule = () => {
@@ -39,7 +37,7 @@ export default function AppIconPicker() {
     fetchCurrentIcon();
   }, []);
 
-  const handleIconChange = async (id) => {
+  const handleIconChange = useCallback(async (id) => {
     triggerHaptic("selection");
     if (Platform.OS === "web") {
       setActiveIcon(id);
@@ -52,42 +50,27 @@ export default function AppIconPicker() {
     } catch (e) {
       console.error("Fehler beim Icon-Wechsel:", e);
     }
-  };
+  }, []);
 
   return (
     <View style={styles.container}>
       <SectionHeader title={"App Icon"} />
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-        {ICONS.map((icon) => {
-          const isSelected = activeIcon === icon.id;
-          return (
-            <TouchableOpacity
-              key={icon.id}
-              activeOpacity={0.8}
-              onPress={() => handleIconChange(icon.id)}
-              style={[styles.squareContainer, isSelected && styles.selectedSquare]}
-            >
-              <View style={styles.iconBox}>
-                <Image source={icon.source} style={styles.iconPreview} />
-              </View>
-
-              {isSelected && (
-                <View style={styles.overlay}>
-                  <View style={[styles.iconCircle, { backgroundColor: MyTheme.primaryAccent }]}>
-                    <Ionicons name="checkmark-sharp" size={16} color="#FFFFFF" />
-                  </View>
-                </View>
-              )}
-            </TouchableOpacity>
-          );
-        })}
+        {ICONS.map((icon) => (
+          <AppIconItem
+            key={icon.id}
+            icon={icon}
+            isSelected={activeIcon === icon.id}
+            onPress={() => handleIconChange(icon.id)}
+          />
+        ))}
       </ScrollView>
     </View>
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       marginTop: Spacing.xl
@@ -96,39 +79,5 @@ const getStyles = (theme) =>
       gap: Spacing.md,
       paddingVertical: Spacing.xs,
       paddingLeft: Spacing.sm
-    },
-    squareContainer: {
-      width: 72,
-      height: 72,
-      borderRadius: 16,
-      borderWidth: 2,
-      borderColor: "transparent"
-    },
-    selectedSquare: {
-      borderColor: theme.primaryAccent,
-      transform: [{ scale: 1.05 }]
-    },
-    iconBox: {
-      flex: 1,
-      borderRadius: 12,
-      overflow: "hidden"
-    },
-    iconPreview: {
-      width: "100%",
-      height: "100%"
-    },
-    overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.25)",
-      borderRadius: 12,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    iconCircle: {
-      width: 24,
-      height: 24,
-      borderRadius: 16,
-      justifyContent: "center",
-      alignItems: "center"
     }
   });
