@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LayoutAnimation, Platform, ScrollView, StyleSheet, TouchableOpacity, UIManager, View } from "react-native";
 
@@ -16,21 +16,32 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 
 export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   const [expanded, setExpanded] = useState(false);
 
-  const toggleExpand = () => {
+  const availableTasks = useMemo(() => {
+    return taskIds.map((id) => tasksCatalog.find((entry) => entry.id === id)).filter(Boolean);
+  }, [taskIds]);
+
+  const selectedTask = useMemo(() => {
+    return tasksCatalog.find((entry) => entry.id === selectedTaskId);
+  }, [selectedTaskId]);
+
+  const toggleExpand = useCallback(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setExpanded(!expanded);
-  };
+    setExpanded((prev) => !prev);
+  }, []);
 
-  const handleSelect = (taskId) => {
-    onSelectTask(taskId);
-    toggleExpand();
-  };
+  const handleSelect = useCallback(
+    (taskId) => {
+      onSelectTask(taskId);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setExpanded(false);
+    },
+    [onSelectTask]
+  );
 
-  const selectedTask = tasksCatalog.find((entry) => entry.id === selectedTaskId);
   return (
     <BaseCard padding={0}>
       <TouchableOpacity style={styles.header} onPress={toggleExpand} activeOpacity={0.7}>
@@ -57,9 +68,7 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
       {expanded && (
         <View style={styles.dropdown}>
           <ScrollView style={styles.scrollArea} nestedScrollEnabled={true}>
-            {taskIds.map((id) => {
-              const task = tasksCatalog.find((entry) => entry.id === id);
-              if (!task) return null;
+            {availableTasks.map((task) => {
               const isSelected = task.id === selectedTaskId;
               return (
                 <TouchableOpacity

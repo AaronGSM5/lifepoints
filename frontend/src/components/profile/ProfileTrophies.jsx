@@ -1,5 +1,6 @@
+import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -11,50 +12,76 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import TrophyCard from "../trophies/TrophyCard";
 import SectionHeader from "../ui/SectionHeader";
 
-const ProfileTrophies = ({ isLoading, trophies, skeletonProps }) => {
+const ProfileTrophies = memo(({ isLoading, trophies = [], skeletonProps }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
+
+  const mergedTrophies = useMemo(() => {
+    return trophies
+      .map((item) => ({
+        ...item,
+        meta: trophiesCatalog.find((entry) => entry.id === item.id)
+      }))
+      .filter((item) => item.meta);
+  }, [trophies]);
+
+  const handleSeeAll = useCallback(() => {
+    router.push("/trophies");
+  }, []);
+
+  if (!isLoading && mergedTrophies.length === 0) return null;
+
   return (
-    <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.xl }}>
+    <View style={styles.container}>
       <SectionHeader
         title={t("Trophies")}
         icon={"trophy"}
         iconColor={MyTheme.gold}
         rightLabel={t("See all")}
         rightLabelColor={MyTheme.gold}
-        onRightPress={() => router.push("/trophies")}
+        onRightPress={handleSeeAll}
         isLoading={isLoading}
       />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
-        {isLoading &&
-          Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton
-              key={`skel-trophy-${i}`}
-              {...skeletonProps}
-              width={80}
-              height={80}
-              radius={Spacing.borderRadius.lg}
-            />
-          ))}
-        {!isLoading &&
-          trophies?.map((item, i) => {
-            const trophyCatalogObject = trophiesCatalog.find((entry) => entry.id === item.id);
-            return (
-              <View key={`trophy-${trophyCatalogObject?.id || i}`} style={{ width: 80 }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {isLoading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton
+                key={`skel-trophy-${i}`}
+                {...skeletonProps}
+                width={80}
+                height={80}
+                radius={Spacing.borderRadius.lg}
+              />
+            ))
+          : mergedTrophies.map((item) => (
+              <View key={`trophy-${item?.id}`} style={styles.cardWrapper}>
                 <TrophyCard
-                  key={trophyCatalogObject?.id}
-                  id={trophyCatalogObject?.id}
-                  title={trophyCatalogObject?.title}
-                  icon={trophyCatalogObject?.icon}
+                  id={item.meta.id}
+                  title={item.meta.title}
+                  icon={item.meta.icon}
                   unlocked={item.unlocked}
                   justUnlocked={false}
                 />
               </View>
-            );
-          })}
+            ))}
       </ScrollView>
     </View>
   );
-};
+});
+
+ProfileTrophies.displayName = "ProfileTrophies";
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: Spacing.xl,
+    marginBottom: Spacing.xl
+  },
+  scrollContent: {
+    gap: Spacing.md
+  },
+  cardWrapper: {
+    width: 80
+  }
+});
 
 export default ProfileTrophies;

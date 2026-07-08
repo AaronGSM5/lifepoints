@@ -1,5 +1,7 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
+
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "../icons/Icon";
 
 const FeedItemImageContainer = ({ image, heartOpacity, heartScale, onPress }) => {

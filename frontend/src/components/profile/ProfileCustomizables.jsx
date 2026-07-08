@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -12,29 +12,38 @@ import useStore from "@/store/useStore";
 import CustomizablesCard from "../customizables/CustomizablesCard";
 import SectionHeader from "../ui/SectionHeader";
 
-const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
+const CustomizablesPreview = memo(({ isLoading, customizables, skeletonProps }) => {
   const { t } = useTranslation("profile");
   const MyTheme = useAppTheme();
-  const activeFrame = useStore((state) => state.profile.activeFrame);
-  const activeBadge = useStore((state) => state.profile.activeBadge);
-  const activeCustomizables = [activeFrame, activeBadge];
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const activeFrame = useStore((state) => state.profile?.activeFrame);
+  const activeBadge = useStore((state) => state.profile?.activeBadge);
+
+  const activeCustomizables = useMemo(() => {
+    return [activeFrame, activeBadge];
+  }, [activeFrame, activeBadge]);
+
+  const handleSeeAll = useCallback(() => {
+    router.push("/customizables");
+  }, []);
+
   if (!isLoading && (!customizables || customizables.length === 0)) {
     return null;
   }
 
   return (
-    <View style={{ marginTop: Spacing.xl, marginBottom: Spacing.md }}>
+    <View style={styles.container}>
       <SectionHeader
         title={t("Customizables")}
         icon={"star"}
         iconColor={MyTheme.primaryAccent}
         rightLabel={t("See all")}
         rightLabelColor={MyTheme.primaryAccent}
-        onRightPress={() => router.push("/customizables")}
+        onRightPress={handleSeeAll}
         isLoading={isLoading}
       />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.md }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {isLoading &&
           Array.from({ length: 4 }).map((_, i) => (
             <Skeleton
@@ -46,21 +55,37 @@ const CustomizablesPreview = ({ isLoading, customizables, skeletonProps }) => {
             />
           ))}
         {!isLoading &&
-          customizables?.map((item, i) => (
-            <View key={`custom-${item?.id || i}`} style={{ width: 80 }}>
+          customizables.map((item, i) => (
+            <View key={`custom-${item?.id || i}`} style={styles.itemWrapper}>
               <CustomizablesCard
-                id={item.id}
-                name={t(item.name)}
-                icon={item.icon || "circle"}
-                color={item.color || MyTheme.text}
-                isActive={activeCustomizables.includes(item.id)}
-                unlocked={item.unlocked}
+                id={item?.id}
+                name={t(item?.name)}
+                icon={item?.icon || "circle"}
+                color={item?.color || MyTheme.text}
+                isActive={activeCustomizables.includes(item?.id)}
+                unlocked={item?.unlocked}
               />
             </View>
           ))}
       </ScrollView>
     </View>
   );
-};
+});
+
+CustomizablesPreview.displayName = "CustomizablesPreview";
+
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      marginTop: Spacing.xl,
+      marginBottom: Spacing.md
+    },
+    scrollContent: {
+      gap: Spacing.md
+    },
+    itemWrapper: {
+      width: 80
+    }
+  });
 
 export default CustomizablesPreview;
