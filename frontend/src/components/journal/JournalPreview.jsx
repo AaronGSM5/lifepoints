@@ -81,7 +81,8 @@ const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: Spacing.md
+      paddingHorizontal: Spacing.md,
+      gap: Spacing.sm
     },
     activityItem: {
       flexDirection: "row",
