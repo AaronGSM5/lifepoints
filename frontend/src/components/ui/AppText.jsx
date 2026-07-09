@@ -1,10 +1,10 @@
 import { memo, useMemo } from "react";
-import { Animated, Text } from "react-native";
+import { Animated, Pressable, Text } from "react-native";
 
 import { Typography } from "@/constants/Typography";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const AppText = memo(({ children, type = "body", bold = false, animated = false, style, ...props }) => {
+const AppText = memo(({ children, type = "body", bold = false, animated = false, style, onPress, ...props }) => {
   const MyTheme = useAppTheme();
   const fontStyle = useMemo(() => {
     let fontFamily = "Inter-Regular";
@@ -34,11 +34,21 @@ const AppText = memo(({ children, type = "body", bold = false, animated = false,
 
   const TextComponent = animated ? Animated.Text : Text;
 
-  return (
+  const content = (
     <TextComponent style={[fontStyle, style]} {...props}>
       {children}
     </TextComponent>
   );
+
+  if (onPress) {
+    return (
+      <Pressable onPress={onPress} hitSlop={15}>
+        {content}
+      </Pressable>
+    );
+  }
+
+  return content;
 });
 AppText.displayName = "AppText";
 
