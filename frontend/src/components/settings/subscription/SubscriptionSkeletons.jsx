@@ -79,9 +79,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: "relative"
   },
-  cardHeader: { marginBottom: Spacing.md },
-  featureList: { gap: Spacing.sm, marginBottom: Spacing.md },
-  featureItem: { flexDirection: "row", alignItems: "flex-start" },
+  cardHeader: {
+    marginBottom: Spacing.md
+  },
+  featureList: {
+    gap: Spacing.sm,
+    marginBottom: Spacing.md
+  },
+  featureItem: {
+    flexDirection: "row",
+    alignItems: "flex-start"
+  },
   badgeWrapper: {
     position: "absolute",
     top: -12,

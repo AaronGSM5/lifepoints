@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 
+import { useMyProfile } from "@/api/profile/useMyProfile";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
-import { useMyProfile } from "@/api/profile/useMyProfile";
 import useStore from "@/store/useStore";
 
 export default function TrophiesScreen() {

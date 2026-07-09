@@ -133,8 +133,8 @@ const AppInput = forwardRef(
 
 AppInput.displayName = "AppInput";
 
-const getStyles = (theme) => {
-  return StyleSheet.create({
+const getStyles = (theme) =>
+  StyleSheet.create({
     wrapper: {
       width: "100%"
     },
@@ -194,6 +194,5 @@ const getStyles = (theme) => {
       marginLeft: Spacing.xs
     }
   });
-};
 
 export default AppInput;

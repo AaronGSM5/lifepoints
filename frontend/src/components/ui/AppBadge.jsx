@@ -43,8 +43,8 @@ const AppBadge = memo(
 );
 AppBadge.displayName = "AppBadge";
 
-const getStyles = (theme) => {
-  return StyleSheet.create({
+const getStyles = (theme) =>
+  StyleSheet.create({
     badge: {
       flexDirection: "row",
       alignItems: "center",
@@ -102,6 +102,5 @@ const getStyles = (theme) => {
       color: theme.primaryAccent
     }
   });
-};
 
 export default AppBadge;
