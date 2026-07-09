@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
@@ -66,70 +66,66 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   const displayAvatars = item?.avatars?.slice(0, 3) || [];
 
   return (
-    <Pressable onPress={onPress}>
-      {({ pressed }) => (
-        <BaseCard style={[styles.cardContainer, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}>
-          {/* Icon & Live Badge */}
-          <View style={styles.headerRow}>
-            <View style={[styles.iconBox, { backgroundColor: item.bgColor }]}>
-              <MaterialIcons name={item.icon} size={24} color={"#fff"} />
+    <BaseCard style={styles.cardContainer} onPress={onPress}>
+      {/* Icon & Live Badge */}
+      <View style={styles.headerRow}>
+        <View style={[styles.iconBox, { backgroundColor: item.bgColor }]}>
+          <MaterialIcons name={item.icon} size={24} color={"#fff"} />
+        </View>
+
+        {item.isLive && (
+          <AppBadge
+            label={"LIVE"}
+            textStyle={{ color: "#ef4444" }}
+            style={{
+              backgroundColor: "rgba(239, 68, 68, 0.1)",
+              borderRadius: Spacing.borderRadius.sm,
+              borderColor: "rgba(239, 68, 68, 0.2)"
+            }}
+          />
+        )}
+      </View>
+
+      {/* Pitch (Name & Descr) */}
+      <View style={styles.contentArea}>
+        <AppText bold style={styles.cardTitle} numberOfLines={1}>
+          {item.title}
+        </AppText>
+        <AppText type="caption" style={styles.description} numberOfLines={2}>
+          {item.description}
+        </AppText>
+      </View>
+
+      {/* Social Proof & CTA */}
+      <View style={styles.footerRow}>
+        <View style={styles.socialProof}>
+          {/* Facepile */}
+          {displayAvatars.length > 0 && (
+            <View style={styles.facepile}>
+              {displayAvatars.map((avatar, index) => (
+                <Image
+                  key={avatar.id || index}
+                  source={{ uri: avatar.url }}
+                  style={[
+                    styles.avatar,
+                    { zIndex: index === 1 ? 3 : index === 0 ? 2 : 1 },
+                    index > 0 && { marginLeft: -10 },
+                    avatar.isFriend && { borderColor: MyTheme.primaryAccent }
+                  ]}
+                />
+              ))}
             </View>
+          )}
 
-            {item.isLive && (
-              <AppBadge
-                label={"LIVE"}
-                textStyle={{ color: "#ef4444" }}
-                style={{
-                  backgroundColor: "rgba(239, 68, 68, 0.1)",
-                  borderRadius: Spacing.borderRadius.sm,
-                  borderColor: "rgba(239, 68, 68, 0.2)"
-                }}
-              />
-            )}
-          </View>
-
-          {/* Pitch (Name & Descr) */}
-          <View style={styles.contentArea}>
-            <AppText bold style={styles.cardTitle} numberOfLines={1}>
-              {item.title}
-            </AppText>
-            <AppText type="caption" style={styles.description} numberOfLines={2}>
-              {item.description}
-            </AppText>
-          </View>
-
-          {/* Social Proof & CTA */}
-          <View style={styles.footerRow}>
-            <View style={styles.socialProof}>
-              {/* Facepile */}
-              {displayAvatars.length > 0 && (
-                <View style={styles.facepile}>
-                  {displayAvatars.map((avatar, index) => (
-                    <Image
-                      key={avatar.id || index}
-                      source={{ uri: avatar.url }}
-                      style={[
-                        styles.avatar,
-                        { zIndex: index === 1 ? 3 : index === 0 ? 2 : 1 },
-                        index > 0 && { marginLeft: -10 },
-                        avatar.isFriend && { borderColor: MyTheme.primaryAccent }
-                      ]}
-                    />
-                  ))}
-                </View>
-              )}
-
-              <AppText type="caption" style={styles.memberText}>
-                {item.memberCount} {t("Members")}
-              </AppText>
-            </View>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Icon name="right" color={MyTheme.muted} />
-            </View>
-          </View>
-        </BaseCard>
-      )}
-    </Pressable>
+          <AppText type="caption" style={styles.memberText}>
+            {item.memberCount} {t("Members")}
+          </AppText>
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Icon name="right" color={MyTheme.muted} />
+        </View>
+      </View>
+    </BaseCard>
   );
 };
 

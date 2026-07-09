@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
@@ -36,47 +36,45 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const showOnline = item.onlineCount > 0;
 
   return (
-    <Pressable onPress={onPress}>
-      <BaseCard style={styles.communityCard}>
-        <View style={styles.headerRow}>
-          <View style={[styles.iconBox, { backgroundColor: item.color }]}>
-            <MaterialIcons name={item.icon} size={24} color="#fff" />
+    <BaseCard style={styles.communityCard} onPress={onPress}>
+      <View style={styles.headerRow}>
+        <View style={[styles.iconBox, { backgroundColor: item.color }]}>
+          <MaterialIcons name={item.icon} size={24} color="#fff" />
 
-            {item.hasUnread && <View style={styles.notificationDot} />}
-          </View>
+          {item.hasUnread && <View style={styles.notificationDot} />}
+        </View>
 
-          {item.isLive && (
-            <AppBadge
-              label={"⏱"}
-              style={{ backgroundColor: "rgba(50, 211, 150, 0.05)", borderWidth: 0 }}
-              textStyle={{ fontSize: 16 }}
-            />
+        {item.isLive && (
+          <AppBadge
+            label={"⏱"}
+            style={{ backgroundColor: "rgba(50, 211, 150, 0.05)", borderWidth: 0 }}
+            textStyle={{ fontSize: 16 }}
+          />
+        )}
+      </View>
+
+      <View style={styles.bottomContent}>
+        <AppText bold numberOfLines={1}>
+          {item.title}
+        </AppText>
+
+        <View style={styles.statusRow}>
+          {showOnline ? (
+            <>
+              <View style={styles.onlineIndicator} />
+              <AppText type="caption">
+                <AppText type="caption" bold style={{ color: "#34d399" }}>
+                  {item.onlineCount}
+                </AppText>{" "}
+                online
+              </AppText>
+            </>
+          ) : (
+            <AppText type="caption">{item.members}</AppText>
           )}
         </View>
-
-        <View style={styles.bottomContent}>
-          <AppText bold numberOfLines={1}>
-            {item.title}
-          </AppText>
-
-          <View style={styles.statusRow}>
-            {showOnline ? (
-              <>
-                <View style={styles.onlineIndicator} />
-                <AppText type="caption">
-                  <AppText type="caption" bold style={{ color: "#34d399" }}>
-                    {item.onlineCount}
-                  </AppText>{" "}
-                  online
-                </AppText>
-              </>
-            ) : (
-              <AppText type="caption">{item.members}</AppText>
-            )}
-          </View>
-        </View>
-      </BaseCard>
-    </Pressable>
+      </View>
+    </BaseCard>
   );
 };
 

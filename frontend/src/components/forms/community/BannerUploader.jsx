@@ -6,6 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
@@ -37,9 +38,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       {bannerUri ? (
         <View style={styles.bannerImageWrapper}>
           <Image source={{ uri: bannerUri }} style={styles.bannerImage} resizeMode="cover" />
-          <Pressable onPress={onBannerClear} style={styles.clearImageIcon}>
-            <Icon name="close" color="#fff" size={16} />
-          </Pressable>
+          <Icon name="close" color="#fff" size={16} onPress={onBannerClear} style={styles.clearImageIcon} />
         </View>
       ) : (
         <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
@@ -56,25 +55,25 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
 const getStyles = (theme) =>
   StyleSheet.create({
     label: {
-      marginBottom: 8,
+      marginBottom: Spacing.sm,
       opacity: 0.5,
       letterSpacing: 1,
       color: theme.text
     },
     bannerPlaceholder: {
-      height: 100,
-      borderRadius: 16,
+      height: 150,
+      borderRadius: Spacing.borderRadius.md,
       backgroundColor: theme.glas,
       borderStyle: "dashed",
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.2)",
+      borderColor: theme.separator,
       alignItems: "center",
       justifyContent: "center",
-      gap: 8
+      gap: Spacing.sm
     },
     bannerImageWrapper: {
-      height: 100,
-      borderRadius: 16,
+      height: 150,
+      borderRadius: Spacing.borderRadius.md,
       overflow: "hidden",
       position: "relative"
     },
@@ -87,7 +86,7 @@ const getStyles = (theme) =>
       top: 8,
       right: 8,
       backgroundColor: "rgba(0,0,0,0.6)",
-      padding: 6,
-      borderRadius: 16
+      padding: Spacing.sm,
+      borderRadius: Spacing.borderRadius.full
     }
   });

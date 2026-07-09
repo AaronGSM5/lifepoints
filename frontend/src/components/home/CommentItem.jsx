@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
@@ -14,10 +14,17 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
 
-  const handleReplyPress = () => {
+  const handleReplyPress = useCallback(() => {
     const targetParentId = isReply ? parentId : item.id;
     onReply(targetParentId, item.username);
-  };
+  }, [isReply, item, onReply, parentId]);
+
+  const handleLike = useCallback(
+    (id) => {
+      onLike(id);
+    },
+    [onLike]
+  );
 
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
@@ -45,17 +52,22 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
           <AppText style={styles.commentText}>{item.text}</AppText>
 
           {!isReply && (
-            <Pressable hitSlop={10} style={styles.likeButton} onPress={() => onLike(item.id)}>
-              <Icon name={"heart"} outline={!item.isLiked} size={14} color={item.isLiked ? "#FF3B30" : MyTheme.muted} />
-            </Pressable>
+            <Icon
+              name={"heart"}
+              outline={!item.isLiked}
+              size={14}
+              onPress={() => handleLike(item.id)}
+              color={item.isLiked ? "#FF3B30" : MyTheme.muted}
+              style={styles.likeButton}
+            />
           )}
         </View>
 
         <View style={styles.commentFooter}>
           <AppText style={styles.commentTime}>{item.time}</AppText>
-          <Pressable onPress={handleReplyPress} hitSlop={10}>
-            <AppText style={styles.replyButton}>{t("Reply")}</AppText>
-          </Pressable>
+          <AppText onPress={handleReplyPress} style={styles.replyButton}>
+            {t("Reply")}
+          </AppText>
         </View>
       </View>
     </View>

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Platform, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Image, Platform, StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Spacing } from "@/constants/Spacing";
@@ -28,15 +28,14 @@ const CommentInputSection = ({ inputRef, commentText, setCommentText, onPost }) 
           textAlignVertical="center"
           {...{ accessibilityRole: "text" }}
         />
-        <Pressable
+        <AppText
+          bold
           onPress={onPost}
-          style={[styles.postButton, { opacity: commentText.trim().length > 0 ? 1 : 0.5 }]}
           disabled={commentText.trim().length === 0}
+          style={{ color: MyTheme.primaryAccent }}
         >
-          <AppText bold style={{ color: MyTheme.primaryAccent }}>
-            {t("Post")}
-          </AppText>
-        </Pressable>
+          {t("Post")}
+        </AppText>
       </View>
     </View>
   );
@@ -81,10 +80,6 @@ const getStyles = (theme) =>
       paddingTop: Platform.OS === "ios" ? 9 : 8,
       paddingBottom: Platform.OS === "ios" ? 9 : 8,
       outlineStyle: "none"
-    },
-    postButton: {
-      height: 36,
-      justifyContent: "center"
     }
   });
 

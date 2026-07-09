@@ -68,11 +68,9 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
 
       {!showAll && fullHeight > 62 && (
         <View style={styles.expandContainer}>
-          <Pressable onPress={expand} style={styles.moreButton}>
-            <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
-              {t("see more")}
-            </AppText>
-          </Pressable>
+          <AppText type="caption" bold onPress={expand} style={styles.moreButton}>
+            {t("see more")}
+          </AppText>
         </View>
       )}
     </View>
@@ -82,7 +80,7 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
 const getStyles = (theme) =>
   StyleSheet.create({
     label: {
-      marginBottom: 8,
+      marginBottom: Spacing.sm,
       opacity: 0.5,
       letterSpacing: 1,
       color: theme.text
@@ -91,12 +89,12 @@ const getStyles = (theme) =>
       flexDirection: "row",
       justifyContent: "center",
       flexWrap: "wrap",
-      gap: 12
+      gap: Spacing.md - 4
     },
     iconItem: {
       width: 50,
       height: 50,
-      borderRadius: 12,
+      borderRadius: Spacing.borderRadius.md,
       backgroundColor: theme.glas,
       alignItems: "center",
       justifyContent: "center",
@@ -116,8 +114,9 @@ const getStyles = (theme) =>
       alignItems: "center",
       justifyContent: "center",
       marginTop: 2,
-      gap: 4,
-      paddingVertical: 4
+      gap: Spacing.xs,
+      paddingVertical: Spacing.xs,
+      color: theme.primaryAccent
     },
     measureView: {
       position: "absolute",

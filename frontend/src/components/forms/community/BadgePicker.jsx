@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, Pressable, StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 
 import AppBadge from "@/components/ui/AppBadge";
 import AppText from "@/components/ui/AppText";
@@ -57,11 +57,9 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
 
       {!showAll && fullHeight > 40 && (
         <View style={styles.expandContainer}>
-          <Pressable onPress={expand} style={styles.moreButton}>
-            <AppText type="caption" style={{ color: MyTheme.primaryAccent }} bold>
-              {t("see more")}
-            </AppText>
-          </Pressable>
+          <AppText type="caption" bold onPress={expand} style={styles.moreButton}>
+            {t("see more")}
+          </AppText>
         </View>
       )}
     </View>
@@ -91,11 +89,11 @@ const getStyles = (theme) =>
       marginTop: Spacing.sm
     },
     moreButton: {
-      flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
       marginTop: 2,
-      paddingVertical: 4
+      paddingVertical: Spacing.xs,
+      color: theme.primaryAccent
     },
     measureView: {
       position: "absolute",

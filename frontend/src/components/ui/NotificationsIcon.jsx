@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
@@ -19,10 +19,10 @@ const NotificationIcon = memo(({ onPress }) => {
   );
 
   return (
-    <Pressable hitSlop={15} onPress={onPress}>
+    <View>
       {hasUnread && <View style={[styles.badge, badgeStyle]} />}
-      <Icon name="bell" />
-    </Pressable>
+      <Icon name="bell" onPress={onPress} />
+    </View>
   );
 });
 NotificationIcon.displayName = "NotificationIcon";

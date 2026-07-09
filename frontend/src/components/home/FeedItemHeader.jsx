@@ -41,9 +41,7 @@ const FeedItemHeader = ({ id, username, avatar, badge, onPress, onOpenOptions })
           )}
         </View>
       </Pressable>
-      <Pressable hitSlop={15} onPress={onOpenOptions}>
-        <Icon name={"dots"} size={20} color={MyTheme.muted} />
-      </Pressable>
+      <Icon name={"dots"} size={20} color={MyTheme.muted} onPress={onOpenOptions} />
     </View>
   );
 };

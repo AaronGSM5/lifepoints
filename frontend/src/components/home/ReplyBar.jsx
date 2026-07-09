@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -20,9 +20,7 @@ const ReplyBar = ({ replyingTo, onPress }) => {
           @{replyingTo.username}
         </AppText>
       </AppText>
-      <Pressable onPress={onPress}>
-        <Icon name="close" size={16} color={MyTheme.muted} />
-      </Pressable>
+      <Icon name="close" size={16} color={MyTheme.muted} onPress={onPress} />
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Animated, Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -49,9 +49,14 @@ export default memo(function Toolbar({ scrollY }) {
   const logoWidth = Math.min(screenWidth * 0.4, 180);
   const logoHeight = logoWidth / 3.75;
 
-  const handleResetProfile = () => {
+  const handleResetProfile = useCallback(() => {
     resetProfile();
-  };
+  }, [resetProfile]);
+
+  const handleToNotifications = useCallback(() => router.push("/notifications"), []);
+  const handleToSettings = useCallback(() => router.push("/settings"), []);
+  const handleToCreatePost = useCallback(() => router.push("/post/create"), []);
+  const handleToSearch = useCallback(() => router.push("/search"), []);
 
   return (
     <Animated.View
@@ -76,9 +81,7 @@ export default memo(function Toolbar({ scrollY }) {
         {isMainTab ? (
           <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ borderWidth: 0 }} />
         ) : (
-          <Pressable hitSlop={15} onPress={() => router.back()}>
-            <Icon name="back" />
-          </Pressable>
+          <Icon name="back" onPress={() => router.back()} />
         )}
       </View>
 
@@ -96,22 +99,14 @@ export default memo(function Toolbar({ scrollY }) {
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
           <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-            <Pressable hitSlop={15} onPress={handleResetProfile}>
-              <Icon name="reset" />
-            </Pressable>
-            <NotificationIcon onPress={() => router.push("/notifications")} />
-            <Pressable hitSlop={15} onPress={() => router.push("/settings")}>
-              <Icon name="settings" />
-            </Pressable>
+            <Icon name="reset" onPress={handleResetProfile} />
+            <NotificationIcon onPress={handleToNotifications} />
+            <Icon name="settings" onPress={handleToSettings} />
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
-            <Pressable hitSlop={15} onPress={() => router.push("/post/create")}>
-              <Icon name="add" />
-            </Pressable>
-            <Pressable hitSlop={15} onPress={() => router.push("/search")}>
-              <Icon name="search" />
-            </Pressable>
+            <Icon name="add" onPress={handleToCreatePost} />
+            <Icon name="search" onPress={handleToSearch} />
           </View>
         ) : (
           /* Placeholder for centered Logo */
