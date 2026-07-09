@@ -5,10 +5,10 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
-const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false }) => {
+const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false, isSelected = false }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const containerStyle = useMemo(() => [styles.card, { padding }, style], [styles.card, padding, style]);
+  const containerStyle = [styles.card, { padding }, isSelected && styles.selected, style];
 
   if (onPress) {
     return (
@@ -34,6 +34,10 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderColor: addOpacity(theme.secondary, 0.7),
       overflow: "hidden"
+    },
+    selected: {
+      borderColor: theme.primaryAccent,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
     },
     pressed: {
       opacity: 0.8,

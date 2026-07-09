@@ -1,43 +1,41 @@
-import { useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
+import { StyleSheet } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
 
-const { Pressable, StyleSheet } = require("react-native");
-
-const SurveyOptionCard = ({ option, isSelected, handleSelect }) => {
+const SurveyOptionCard = memo(({ option, isSelected, handleSelect }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const handlePress = useCallback(() => {
+    handleSelect(option.value);
+  }, [handleSelect, option.value]);
   return (
-    <Pressable
-      key={option.value}
-      style={[styles.optionCard, isSelected && styles.selectedCard]}
-      onPress={() => handleSelect(option.value)}
-    >
-      <AppText style={{ fontSize: 32, lineHeight: 40 }}>{option.icon}</AppText>
-      <AppText type="body" bold style={{ marginTop: Spacing.sm }}>
+    <BaseCard key={option.value} isSelected={isSelected} style={styles.optionCard} onPress={handlePress}>
+      <AppText style={styles.icon}>{option.icon}</AppText>
+      <AppText type="body" bold style={styles.label}>
         {option.label}
       </AppText>
-    </Pressable>
+    </BaseCard>
   );
-};
+});
+SurveyOptionCard.displayName = "SurveyOptionCard";
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     optionCard: {
       width: "47%",
-      backgroundColor: theme.primary,
-      padding: Spacing.lg,
-      borderRadius: Spacing.borderRadius.md,
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: theme.secondary
+      alignItems: "center"
     },
-    selectedCard: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: theme.primaryAccent
+    icon: {
+      fontSize: 32,
+      lineHeight: 40
+    },
+    label: {
+      marginTop: Spacing.sm
     }
   });
 

@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
 
 export default function SizePicker({ options, selectedSize, onSelectSize }) {
   const MyTheme = useAppTheme();
@@ -17,20 +18,15 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
       </AppText>
       <View style={styles.sizeGrid}>
         {options.map((opt) => (
-          <Pressable
+          <BaseCard
             key={opt.slots}
+            style={styles.sizeCard}
+            isSelected={selectedSize.slots === opt.slots}
             onPress={() => onSelectSize(opt)}
-            style={[
-              styles.sizeCard,
-              selectedSize.slots === opt.slots && {
-                borderColor: MyTheme.primaryAccent,
-                backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1)
-              }
-            ]}
           >
             <AppText bold>{opt.slots}</AppText>
             <AppText type="caption">{t(opt.price)}</AppText>
-          </Pressable>
+          </BaseCard>
         ))}
       </View>
     </View>
@@ -40,7 +36,7 @@ export default function SizePicker({ options, selectedSize, onSelectSize }) {
 const getStyles = (theme) =>
   StyleSheet.create({
     label: {
-      marginBottom: 8,
+      marginBottom: Spacing.sm,
       opacity: 0.5,
       letterSpacing: 1,
       color: theme.text
@@ -52,10 +48,7 @@ const getStyles = (theme) =>
     sizeCard: {
       flex: 1,
       padding: 12,
-      borderRadius: 16,
-      backgroundColor: theme.glas,
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: "transparent"
+      borderRadius: Spacing.borderRadius.md,
+      alignItems: "center"
     }
   });

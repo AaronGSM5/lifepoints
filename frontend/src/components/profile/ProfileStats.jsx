@@ -16,7 +16,6 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
   if (!isLoading && (!stats || stats.length === 0)) return null;
 
   const displayStats = isLoading && stats.length === 0 ? Array.from({ length: 4 }) : stats;
-
   return (
     <View style={styles.container}>
       <SectionHeader
@@ -31,7 +30,7 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
             key={entry?.id || `stat-${index}`}
             isLoading={isLoading}
             label={entry?.label ? t(entry?.label) : ""}
-            value={entry?.value}
+            value={index === 2 ? entry?.value.slice(3) : entry?.value}
             icon={entry?.icon}
             color={entry?.color}
             style={{ width: "47%" }}
