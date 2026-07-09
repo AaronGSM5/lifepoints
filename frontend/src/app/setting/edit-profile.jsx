@@ -25,7 +25,6 @@ import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
@@ -33,7 +32,6 @@ export default function EditProfileScreen() {
   const styles = getStyles(MyTheme);
   const router = useRouter();
   const { t } = useTranslation("settings");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const { data: profileData, isLoading } = useMyProfile();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
   // const updateLocalStore = useStore((state) => state.updateProfile);
@@ -99,7 +97,7 @@ export default function EditProfileScreen() {
       : require("@/../public/assets/icon-profile.png");
 
   const skBase = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 

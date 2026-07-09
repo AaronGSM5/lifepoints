@@ -8,7 +8,6 @@ import { Skeleton } from "moti/skeleton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
@@ -16,15 +15,19 @@ import BaseCard from "../ui/BaseCard";
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>
-        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={44} height={44} radius={Spacing.borderRadius.md} />
+        <Skeleton
+          colorMode={MyTheme.isDark ? "dark" : "light"}
+          width={44}
+          height={44}
+          radius={Spacing.borderRadius.md}
+        />
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={100} height={16} />
+          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={100} height={16} />
           <View style={{ height: Spacing.xs }} />
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={60} height={12} />
+          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={60} height={12} />
         </View>
       </BaseCard>
     );

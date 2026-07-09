@@ -5,7 +5,6 @@ import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 export const SkeletonFeatureItem = ({ skBase }) => (
   <View style={styles.featureItem}>
@@ -17,11 +16,10 @@ export const SkeletonFeatureItem = ({ skBase }) => (
 );
 
 export default function SubscriptionSkeletons({ billingCycle }) {
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const MyTheme = useAppTheme();
 
   const skBase = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 

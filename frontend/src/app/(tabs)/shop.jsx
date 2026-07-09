@@ -35,17 +35,16 @@ export default function ShopScreen() {
     fetchMore,
     isFetchingMore
   } = useShop();
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
   const scrollY = useMemo(() => new Animated.Value(0), []);
 
   const skeletonProps = useMemo(
     () => ({
-      colorMode: isDarkMode ? "dark" : "light",
+      colorMode: MyTheme.isDark ? "dark" : "light",
       transition: { type: "timing", duration: 1500 },
       show: isLoading
     }),
-    [isDarkMode, isLoading]
+    [MyTheme.isDark, isLoading]
   );
 
   const renderHeader = useMemo(() => {

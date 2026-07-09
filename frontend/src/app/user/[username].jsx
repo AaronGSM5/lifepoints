@@ -11,12 +11,10 @@ import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { publicProfiles } from "@/mocks/PublicProfile";
-import useStore from "@/store/useStore";
 
 export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const { username, sourceId } = useLocalSearchParams();
   const activePublicProfile = publicProfiles.find((profile) => profile.username === username);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +25,7 @@ export default function PublicProfileScreen() {
   }, []);
 
   const skeletonProps = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };

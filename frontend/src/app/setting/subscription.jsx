@@ -12,14 +12,12 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { SUBSCRIPTION_PLANS } from "@/constants/SubscriptionPlans";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("settings");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
 
@@ -29,7 +27,7 @@ export default function SubscriptionScreen() {
   }, []);
 
   const skBase = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 

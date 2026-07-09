@@ -7,13 +7,13 @@ import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
-import useStore from "@/store/useStore";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function ProfileScreen() {
   const { data: profileData, isLoading } = useMyProfile();
-  const isDarkMode = useStore((state) => state.isDarkMode);
+  const MyTheme = useAppTheme();
   const skeletonProps = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 },
     show: isLoading
   };

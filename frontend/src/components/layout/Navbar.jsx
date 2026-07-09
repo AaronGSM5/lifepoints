@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -5,14 +6,14 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Spacing } from "@/constants/Spacing";
-import useStore from "@/store/useStore";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
 import NavbarItem from "./NavbarItem";
 
 export default function Navbar({ state, navigation }) {
-  const isDarkMode = useStore((state) => state.isDarkMode);
-  const styles = getStyles(isDarkMode);
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const insets = useSafeAreaInsets();
 
   const orderedRoutes = [...state.routes].sort((a, b) => {
@@ -31,7 +32,11 @@ export default function Navbar({ state, navigation }) {
         }
       ]}
     >
-      <BlurView intensity={80} tint={isDarkMode ? "systemChromeMaterialDark" : "light"} style={styles.blurBackground} />
+      <BlurView
+        intensity={80}
+        tint={MyTheme.isDark ? "systemChromeMaterialDark" : "light"}
+        style={styles.blurBackground}
+      />
 
       <LinearGradient
         colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)", "rgba(255,255,255,0.05)"]}
@@ -87,7 +92,7 @@ export default function Navbar({ state, navigation }) {
   );
 }
 
-const getStyles = (isDarkMode) =>
+const getStyles = (theme) =>
   StyleSheet.create({
     shadowContainer: {
       position: "absolute",
@@ -95,7 +100,7 @@ const getStyles = (isDarkMode) =>
       right: 20,
       height: 65,
       borderRadius: 35,
-      boxShadow: isDarkMode ? "0px 8px 20px rgba(0, 0, 0, 0.4)" : "0px 8px 15px rgba(0, 0, 0, 0.2)",
+      boxShadow: theme.isDark ? "0px 8px 20px rgba(0, 0, 0, 0.4)" : "0px 8px 15px rgba(0, 0, 0, 0.2)",
       elevation: 10,
       backgroundColor: "transparent"
     },

@@ -23,7 +23,6 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = profileData || {};
   const { getFrameById } = useAvatarFrames();
   const addFriend = useStore((state) => state.addFriend);
@@ -142,9 +141,9 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
             <AppButton
               variant="primary"
               title={isExternUser ? t("Share Profile") : t("Share Stats")}
-              icon={<Icon name="share" size={16} color={!isDarkMode ? MyTheme.background : MyTheme.text} />}
+              icon={<Icon name="share" size={16} color={!MyTheme.isDark ? MyTheme.background : MyTheme.text} />}
               bgColor={"#2a2a2acb"}
-              textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}
+              textStyle={{ color: !MyTheme.isDark ? MyTheme.background : MyTheme.text }}
             />
           </View>
         </>

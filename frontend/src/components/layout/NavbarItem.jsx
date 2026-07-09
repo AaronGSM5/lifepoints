@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -7,26 +7,25 @@ import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 
-const NavbarItem = ({ route, isFocused, onPress }) => {
+const NavbarItem = memo(({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
-  const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
-  const styles = getStyles(isDarkMode);
   const [scale] = useState(() => new Animated.Value(1));
 
   const activeColor = MyTheme.primaryAccent;
   const inactiveColor = MyTheme.text;
 
-  const animatePop = () => {
+  const animatePop = useCallback(() => {
     Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
       Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start();
     });
-  };
+  }, [scale]);
 
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     onPress();
     animatePop();
-  };
+  }, [animatePop, onPress]);
 
   return (
     <Pressable onPress={handlePress} style={styles.tabButton}>
@@ -43,7 +42,8 @@ const NavbarItem = ({ route, isFocused, onPress }) => {
       </Animated.View>
     </Pressable>
   );
-};
+});
+NavbarItem.displayName = "NavbarItem";
 
 const getStyles = () =>
   StyleSheet.create({
