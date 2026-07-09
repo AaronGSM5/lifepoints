@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -6,67 +6,68 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function HistoryCard({
-  title,
-  points,
-  time,
-  subtitle,
-  rightSubtitle,
-  type = "earn",
-  pointsSuffix = "LP",
-  iconNode,
-  containerStyle,
-  iconContainerStyle
-}) {
-  const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const { t } = useTranslation("tasks");
-  const isSpend = type === "spend";
+import BaseCard from "./BaseCard";
 
-  const pointColor = isSpend ? "#666" : MyTheme.primaryAccent;
-  const prefix = isSpend ? "-" : "+";
+const HistoryCard = memo(
+  ({
+    title,
+    points,
+    time,
+    subtitle,
+    rightSubtitle,
+    type = "earn",
+    pointsSuffix = "LP",
+    iconNode,
+    containerStyle,
+    iconContainerStyle
+  }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const { t } = useTranslation("tasks");
 
-  const displaySubtitle = time || subtitle;
+    const isSpend = type === "spend";
+    const pointColor = isSpend ? MyTheme.muted : MyTheme.primaryAccent;
+    const prefix = isSpend ? "-" : "+";
 
-  return (
-    <View style={[styles.card, containerStyle]}>
-      <View style={[styles.iconCircle, iconContainerStyle]}>{iconNode}</View>
+    const displaySubtitle = time || subtitle;
 
-      <View style={styles.textContainer}>
-        <AppText type="body" bold numberOfLines={1}>
-          {t(title)}
-        </AppText>
-        {displaySubtitle && (
-          <AppText type="caption" numberOfLines={1} style={{ marginTop: 2 }}>
-            {displaySubtitle}
+    return (
+      <BaseCard style={[styles.card, containerStyle]}>
+        <View style={[styles.iconCircle, iconContainerStyle]}>{iconNode}</View>
+
+        <View style={styles.textContainer}>
+          <AppText type="body" bold numberOfLines={1}>
+            {t(title)}
           </AppText>
-        )}
-      </View>
+          {displaySubtitle && (
+            <AppText type="caption" numberOfLines={1} style={styles.displaySubtitle}>
+              {displaySubtitle}
+            </AppText>
+          )}
+        </View>
 
-      <View style={styles.pointsContainer}>
-        <AppText type="body" bold style={{ color: pointColor }}>
-          {prefix}
-          {points} {pointsSuffix}
-        </AppText>
-        {rightSubtitle && (
-          <AppText type="caption" style={{ fontSize: 12, marginTop: Spacing.xs }}>
-            {rightSubtitle}
+        <View style={styles.pointsContainer}>
+          <AppText type="body" bold style={{ color: pointColor }}>
+            {prefix}
+            {points} {pointsSuffix}
           </AppText>
-        )}
-      </View>
-    </View>
-  );
-}
+          {rightSubtitle && (
+            <AppText type="caption" style={styles.rightSubtitle}>
+              {rightSubtitle}
+            </AppText>
+          )}
+        </View>
+      </BaseCard>
+    );
+  }
+);
+HistoryCard.displayName = "HistoryCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
     card: {
       flexDirection: "row",
-      alignItems: "center",
-      padding: Spacing.md,
-      borderRadius: Spacing.borderRadius?.md || 8,
-      marginBottom: Spacing.sm,
-      backgroundColor: theme.primary
+      alignItems: "center"
     },
     iconCircle: {
       width: 40,
@@ -81,7 +82,16 @@ const getStyles = (theme) =>
       marginLeft: Spacing.md - 4,
       marginRight: Spacing.sm
     },
+    displaySubtitle: {
+      marginTop: 2
+    },
     pointsContainer: {
       alignItems: "flex-end"
+    },
+    rightSubtitle: {
+      fontSize: 12,
+      marginTop: Spacing.xs
     }
   });
+
+export default HistoryCard;

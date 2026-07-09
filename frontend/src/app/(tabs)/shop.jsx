@@ -110,11 +110,7 @@ export default function ShopScreen() {
 
   const renderFooter = () => {
     if (!isFetchingMore) return null;
-    return (
-      <View style={styles.footerLoader}>
-        <AppLoadingSpinner />
-      </View>
-    );
+    return <AppLoadingSpinner centered />;
   };
 
   return (
@@ -181,10 +177,5 @@ const getStyles = () =>
     },
     paddedContent: {
       paddingHorizontal: Spacing.md
-    },
-    footerLoader: {
-      paddingVertical: Spacing.lg,
-      alignItems: "center",
-      justifyContent: "center"
     }
   });

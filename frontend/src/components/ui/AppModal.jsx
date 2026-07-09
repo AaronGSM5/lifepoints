@@ -1,22 +1,24 @@
+import { memo, useMemo } from "react";
 import { Modal, Pressable, StyleSheet } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function AppModal({ visible, onClose, children }) {
+const AppModal = memo(({ visible, onClose, children, contentStyle }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.modalBackground} onPress={onClose}>
-        <Pressable style={styles.modalContent} onPress={() => {}}>
+        <Pressable style={[styles.modalContent, contentStyle]} onPress={() => {}}>
           {children}
         </Pressable>
       </Pressable>
     </Modal>
   );
-}
+});
+AppModal.displayName = "AppModal";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -35,3 +37,5 @@ const getStyles = (theme) =>
       alignItems: "center"
     }
   });
+
+export default AppModal;

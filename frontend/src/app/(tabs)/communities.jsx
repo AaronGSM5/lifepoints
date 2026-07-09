@@ -24,7 +24,6 @@ const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
   // const { myCommunities, createCommunity } = useCommunities();
-  const myCommunities = [];
   const MyTheme = useAppTheme();
   const styles = getStyles(MyTheme);
   const { t } = useTranslation("community");
@@ -40,6 +39,8 @@ export default function CommunitiesScreen() {
   } = useVerticalRails();
 
   const isLoading = isLoadingRails;
+
+  const myCommunities = useMemo(() => [], []);
 
   const loadedSections = useMemo(() => {
     if (!railsData) return [];
@@ -173,17 +174,12 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, MyTheme, t, styles]
+    [isLoading, myCommunities, MyTheme, t, styles]
   );
 
   const renderMainFooter = () => {
-    if (isFetchingNextPage) {
-      return (
-        <View style={styles.mainListLoader}>
-          <AppLoadingSpinner />
-        </View>
-      );
-    }
+    if (isFetchingNextPage) return <AppLoadingSpinner centered />;
+
     if (!hasNextPage && loadedSections.length > 0) {
       return (
         <View style={styles.endOfList}>
@@ -230,11 +226,6 @@ const getStyles = () =>
     },
     sectionContainer: {
       marginBottom: Spacing.lg
-    },
-    mainListLoader: {
-      paddingVertical: Spacing.md,
-      justifyContent: "center",
-      alignItems: "center"
     },
     endOfList: {
       paddingVertical: Spacing.xl,

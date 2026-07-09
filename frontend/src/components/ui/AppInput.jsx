@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useCallback, useMemo, useState } from "react";
 import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import { BlurView } from "expo-blur";
@@ -6,7 +6,6 @@ import { BlurView } from "expo-blur";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
 
 import { Icon } from "../icons/Icon";
@@ -29,18 +28,36 @@ const AppInput = forwardRef(
       blurIntensity = 65,
       blurTint,
       isForm = false,
+      onFocus,
+      onBlur,
       ...props
     },
     ref
   ) => {
     const MyTheme = useAppTheme();
-    const styles = getStyles(MyTheme);
-    const isDarkMode = useStore((state) => state.isDarkMode);
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
     const [isFocused, setIsFocused] = useState(false);
+    const isDarkMode = MyTheme.isDark;
 
     const isMultiline = props.multiline;
 
-    const renderInputContent = () => (
+    const handleFocus = useCallback(
+      (e) => {
+        setIsFocused(true);
+        if (onFocus) onFocus(e);
+      },
+      [onFocus]
+    );
+
+    const handleBlur = useCallback(
+      (e) => {
+        setIsFocused(false);
+        if (onBlur) onBlur(e);
+      },
+      [onBlur]
+    );
+
+    const inputContent = (
       <>
         {icon && (
           <Icon
@@ -59,16 +76,10 @@ const AppInput = forwardRef(
           underlineColorAndroid="transparent"
           cursorColor={MyTheme.primaryAccent}
           textAlignVertical={isMultiline ? "top" : "center"}
-          {...{ accessibilityRole: "text" }}
+          accessibilityRole="text"
           {...props}
-          onFocus={(e) => {
-            setIsFocused(true);
-            if (props.onFocus) props.onFocus(e);
-          }}
-          onBlur={(e) => {
-            setIsFocused(false);
-            if (props.onBlur) props.onBlur(e);
-          }}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
 
         {rightContent ? (
@@ -83,9 +94,9 @@ const AppInput = forwardRef(
 
     const containerStyles = [
       styles.container,
-      isFocused && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.08) },
+      isFocused && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
       !isDarkMode &&
-        isForm && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.08) },
+        isForm && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
       error && styles.containerError,
       isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
       isMultiline && styles.containerMultiline,
@@ -108,10 +119,10 @@ const AppInput = forwardRef(
             experimentalBlurMethod="dimezisBlurView"
             style={[{ overflow: "hidden" }, ...containerStyles]}
           >
-            {renderInputContent()}
+            {inputContent}
           </BlurView>
         ) : (
-          <View style={containerStyles}>{renderInputContent()}</View>
+          <View style={containerStyles}>{inputContent}</View>
         )}
 
         {typeof error === "string" && <AppText style={styles.errorText}>{error}</AppText>}
@@ -135,7 +146,7 @@ const getStyles = (theme) => {
     container: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      backgroundColor: theme.glas,
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
       borderColor: theme.inputBorder,
@@ -149,15 +160,15 @@ const getStyles = (theme) => {
       paddingVertical: Spacing.xs
     },
     containerError: {
-      borderColor: "rgb(239, 68, 68)",
-      backgroundColor: "rgba(239, 68, 68, 0.08)"
+      borderColor: theme.warning,
+      backgroundColor: addOpacity(theme.warning, 0.05)
     },
     input: {
       flex: 1,
       color: theme.text,
       fontSize: 16,
       height: "100%",
-      ...{ outlineStyle: "none" }
+      ...Platform.select({ web: { outlineStyle: "none" } })
     },
     inputMultiline: {
       height: "auto",
@@ -177,7 +188,7 @@ const getStyles = (theme) => {
       marginRight: -Spacing.sm
     },
     errorText: {
-      color: "#ef4444",
+      color: theme.warning,
       fontSize: 12,
       marginTop: Spacing.xs,
       marginLeft: Spacing.xs

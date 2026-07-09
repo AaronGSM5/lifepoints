@@ -145,8 +145,8 @@ export default function HomeScreen() {
 
   const renderFooter = () =>
     isBatchLoading ? (
-      <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-        <AppLoadingSpinner />
+      <View style={{ marginTop: Spacing.md }}>
+        <AppLoadingSpinner centered />
       </View>
     ) : (
       <View style={{ height: Spacing.xl }} />

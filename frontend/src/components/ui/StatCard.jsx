@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
@@ -9,36 +9,36 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 import AppBadge from "./AppBadge";
 
-const StatCard = ({ label, value, icon, color, blurred, isLoading }) => {
+const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const handleGetPlus = useCallback(() => router.push("/setting/subscription"), []);
+
+  const skeletonProps = {
+    colorMode: MyTheme.isDark ? "dark" : "light",
+    transition: { type: "timing", duration: 1500 }
+  };
+
   if (isLoading) {
     return (
-      <BaseCard style={styles.statCard}>
+      <BaseCard style={style}>
         <View style={styles.statTop}>
-          <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
-            width={50}
-            height={20}
-            transition={{ type: "timing", duration: 1500 }}
-          />
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={16} height={16} radius={4} />
+          <Skeleton {...skeletonProps} width={50} height={20} />
+          <Skeleton {...skeletonProps} width={16} height={16} radius={4} />
         </View>
-        <View style={{ height: Spacing.sm }} />
-        <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={80} height={10} />
+        <View style={{ marginTop: Spacing.sm }} />
+        <Skeleton {...skeletonProps} width={80} height={10} />
       </BaseCard>
     );
   }
 
   return (
-    <BaseCard style={styles.statCard}>
+    <BaseCard style={style}>
       <View style={styles.statTop}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
+        <View style={styles.row}>
           <View style={styles.numberContainer}>
             <AppText type="h1" style={blurred ? styles.blurredText : null}>
               {value}
@@ -49,35 +49,31 @@ const StatCard = ({ label, value, icon, color, blurred, isLoading }) => {
             <AppBadge
               variant="outline"
               label={"GET +"}
-              onPress={() => router.push("/setting/subscription")}
-              textStyle={{ color: MyTheme.gold }}
-              style={{
-                borderColor: MyTheme.gold,
-                borderRadius: Spacing.borderRadius.sm,
-                paddingHorizontal: Spacing.xs,
-                paddingVertical: 2,
-                marginLeft: Spacing.sm
-              }}
+              onPress={handleGetPlus}
+              textStyle={styles.badgeText}
+              style={styles.badge}
             />
           )}
         </View>
         <Icon name={icon} size={16} color={color} />
       </View>
-      <View></View>
       <AppText type="caption">{label}</AppText>
     </BaseCard>
   );
-};
+});
+StatCard.displayName = "StatCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
-    statCard: {
-      width: "47%"
-    },
     statTop: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center"
+    },
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.xs
     },
     numberContainer: {
       overflow: "hidden",
@@ -85,7 +81,19 @@ const getStyles = (theme) =>
     },
     blurredText: {
       color: "transparent",
-      textShadow: `0px 0px 10px ${theme.text}`
+      textShadowColor: theme.text,
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 10
+    },
+    badgeText: {
+      color: theme.gold
+    },
+    badge: {
+      borderColor: theme.gold,
+      borderRadius: Spacing.borderRadius.sm,
+      paddingHorizontal: Spacing.xs,
+      paddingVertical: 2,
+      marginLeft: Spacing.sm
     }
   });
 

@@ -1,25 +1,30 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
-const BaseCard = ({ children, onPress, style, padding = Spacing.md }) => {
+const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const baseStyles = [styles.card, { padding }, style];
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const containerStyle = useMemo(() => [styles.card, { padding }, style], [styles.card, padding, style]);
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} style={({ pressed }) => [...baseStyles, pressed && styles.pressed]}>
+      <Pressable
+        disabled={disabled}
+        onPress={onPress}
+        style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
+      >
         {children}
       </Pressable>
     );
   }
 
-  return <View style={baseStyles}>{children}</View>;
-};
+  return <View style={containerStyle}>{children}</View>;
+});
+BaseCard.displayName = "BaseCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({

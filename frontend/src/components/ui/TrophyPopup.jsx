@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -11,16 +11,18 @@ import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 
-const TrophyPopup = () => {
+const TrophyPopup = memo(() => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
   const insets = useSafeAreaInsets();
 
-  const popupQueue = useStore((state) => state.profile.popupQueue || []);
+  const currentTrophyId = useStore((state) => state.profile?.popupQueue?.[0]);
   const shiftPopupQueue = useStore((state) => state.shiftPopupQueue);
 
-  const currentTrophyId = popupQueue[0];
-  const trophy = currentTrophyId ? trophiesCatalog.find((t) => t.id === currentTrophyId) : null;
+  const trophy = useMemo(
+    () => (currentTrophyId ? trophiesCatalog.find((t) => t.id === currentTrophyId) : null),
+    [currentTrophyId]
+  );
 
   useEffect(() => {
     if (currentTrophyId && trophy) {
@@ -57,7 +59,8 @@ const TrophyPopup = () => {
       </View>
     </View>
   );
-};
+});
+TrophyPopup.displayName = "TrophyPopup";
 
 const styles = StyleSheet.create({
   popupContainer: {

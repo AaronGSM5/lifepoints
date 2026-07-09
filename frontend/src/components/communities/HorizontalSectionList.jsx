@@ -40,8 +40,8 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
   const renderFooter = () => {
     if (isFetchingNextPage) {
       return (
-        <View style={styles.horizontalLoader}>
-          <AppLoadingSpinner />
+        <View style={{ width: 100 }}>
+          <AppLoadingSpinner centered />
         </View>
       );
     }
@@ -82,11 +82,6 @@ const getStyles = () =>
     },
     horizontalScrollContentContainer: {
       paddingLeft: Spacing.md,
-      alignItems: "center"
-    },
-    horizontalLoader: {
-      width: 100,
-      justifyContent: "center",
       alignItems: "center"
     }
   });

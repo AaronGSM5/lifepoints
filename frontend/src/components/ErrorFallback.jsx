@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
@@ -11,14 +11,13 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import ScreenWrapper from "./layout/ScreenWrapper";
 
-export const ErrorFallback = ({ error, resetError }) => {
+export const ErrorFallback = memo(({ error, resetError }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const handleReload = () => {
-    resetError();
-
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const handleReload = useCallback(() => {
+    if (resetError) resetError();
     router.replace("/home");
-  };
+  }, [resetError]);
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -35,16 +34,17 @@ export const ErrorFallback = ({ error, resetError }) => {
         {__DEV__ && (
           <View style={styles.errorBox}>
             <AppText type="caption" style={styles.errorText}>
-              {error?.message?.toString()}
+              {error?.message || error?.toString() || "Unbekannter Fehler"}
             </AppText>
           </View>
         )}
 
-        <AppButton title="App neu laden" onPress={handleReload} variant="primary" style={{ marginTop: Spacing.xl }} />
+        <AppButton title="App neu laden" onPress={handleReload} style={styles.reloadButton} />
       </View>
     </ScreenWrapper>
   );
-};
+});
+ErrorFallback.displayName = "ErrorFallback";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -74,5 +74,8 @@ const getStyles = (theme) =>
     errorText: {
       color: theme.warning,
       fontFamily: "monospace"
+    },
+    reloadButton: {
+      marginTop: Spacing.xl
     }
   });

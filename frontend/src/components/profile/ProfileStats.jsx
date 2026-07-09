@@ -34,6 +34,7 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
             value={entry?.value}
             icon={entry?.icon}
             color={entry?.color}
+            style={{ width: "47%" }}
           />
         ))}
       </View>

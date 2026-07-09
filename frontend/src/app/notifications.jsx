@@ -37,7 +37,7 @@ export default function NotificationsScreen() {
     <ScreenWrapper scrollable={false}>
       <ScreenTitle title={t("Announcements")} />
       {isLoading ? (
-        <AppLoadingSpinner />
+        <AppLoadingSpinner centered />
       ) : isError ? (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <AppText>Fehler beim Laden: {error.message}</AppText>
