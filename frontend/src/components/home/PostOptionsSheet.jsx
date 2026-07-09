@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -12,7 +12,7 @@ import AppBadge from "../ui/AppBadge";
 
 export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
 
   const renderOwnerOptions = () => (

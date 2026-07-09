@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
@@ -20,7 +20,7 @@ const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673b
 
 const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

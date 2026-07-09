@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -7,7 +9,7 @@ const { Pressable, StyleSheet } = require("react-native");
 
 const SurveyOptionCard = ({ option, isSelected, handleSelect }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <Pressable
       key={option.value}

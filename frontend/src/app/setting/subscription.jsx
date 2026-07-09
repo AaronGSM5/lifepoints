@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -16,7 +16,7 @@ import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'

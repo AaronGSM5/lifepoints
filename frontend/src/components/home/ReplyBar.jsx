@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -9,7 +10,7 @@ import AppText from "../ui/AppText";
 
 const ReplyBar = ({ replyingTo, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   return (
     <View style={styles.replyBar}>

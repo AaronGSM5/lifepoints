@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -14,7 +14,7 @@ import { addOpacity } from "@/utils/addOpacity";
 
 const CreateCommunityCard = () => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
     <View

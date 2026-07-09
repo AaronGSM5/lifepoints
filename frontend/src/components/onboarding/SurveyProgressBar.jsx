@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -5,7 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 const SurveyProgressBar = ({ currentStep, totalSteps }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
   return (
     <View style={styles.progressBar}>

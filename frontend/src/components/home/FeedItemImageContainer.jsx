@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -6,7 +7,7 @@ import { Icon } from "../icons/Icon";
 
 const FeedItemImageContainer = ({ image, heartOpacity, heartScale, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.imageContainer}>
       <Pressable style={{ flex: 1 }} onPress={onPress}>

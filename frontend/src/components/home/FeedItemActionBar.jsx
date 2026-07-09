@@ -1,11 +1,14 @@
+import { useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { Icon } from "../icons/Icon";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import { Icon } from "../icons/Icon";
+
 const FeedItemActionBar = ({ handleLike, handleSave, handleShare, isLiked, isSaved, onOpenComments }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.actionBar}>
       <View style={styles.actionLeft}>
@@ -29,7 +32,7 @@ const FeedItemActionBar = ({ handleLike, handleSave, handleShare, isLiked, isSav
   );
 };
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     actionBar: {
       flexDirection: "row",

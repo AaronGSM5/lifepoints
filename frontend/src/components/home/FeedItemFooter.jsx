@@ -1,12 +1,15 @@
-import { StyleSheet, View } from "react-native";
-import AppText from "../ui/AppText";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { StyleSheet, View } from "react-native";
+
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+import AppText from "../ui/AppText";
 
 const FeedItemFooter = ({ likesCount, username, description, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   return (
     <View style={styles.footer}>
@@ -27,7 +30,7 @@ const FeedItemFooter = ({ likesCount, username, description, onPress }) => {
   );
 };
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     footer: {
       paddingHorizontal: Spacing.md,

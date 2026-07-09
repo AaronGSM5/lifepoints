@@ -15,7 +15,7 @@ import { groupDataByDate } from "@/utils/helpers";
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const { data: rawNotifications, isLoading, isError, error } = useNotifications();
 

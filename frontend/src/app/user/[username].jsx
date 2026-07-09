@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
@@ -14,7 +14,7 @@ import { publicProfiles } from "@/mocks/PublicProfile";
 
 export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { username, sourceId } = useLocalSearchParams();
   const activePublicProfile = publicProfiles.find((profile) => profile.username === username);
   const [isLoading, setIsLoading] = useState(true);

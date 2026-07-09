@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -12,7 +12,7 @@ import BaseBottomSheet from "../ui/BaseBottomSheet";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   const [activeTab, setActiveTab] = useState("today"); // "today" | "week"
   const quests = mockQuests[activeTab];

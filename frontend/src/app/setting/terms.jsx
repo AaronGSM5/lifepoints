@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -12,7 +12,7 @@ import { addOpacity } from "@/utils/addOpacity";
 
 export default function TermsScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const router = useRouter();
 
   const legalItems = [

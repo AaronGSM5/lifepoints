@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
@@ -20,7 +20,7 @@ import useStore from "@/store/useStore";
 
 export default function RewardDetailScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("shop");
   const { id } = useLocalSearchParams();
   const router = useRouter();

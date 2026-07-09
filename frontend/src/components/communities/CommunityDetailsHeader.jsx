@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
@@ -11,7 +11,7 @@ import BackButton from "../ui/BackButton";
 
 const CommunityHeader = ({ community }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const bannerImg =
     community?.banner || "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";

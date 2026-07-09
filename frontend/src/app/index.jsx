@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -12,7 +12,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 export default function DevEntryScreen() {
   const router = useRouter();
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const navLinks = [
     { title: "🏠 Main App", href: "/home" },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
@@ -14,7 +14,7 @@ import BaseCard from "../ui/BaseCard";
 
 const MyCommunityCard = ({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   if (isLoading) {
     return (
       <BaseCard style={styles.communityCard}>

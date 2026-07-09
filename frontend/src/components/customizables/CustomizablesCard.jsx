@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated as RNAnimated, Pressable, StyleSheet, View } from "react-native";
 
@@ -21,7 +21,7 @@ const CustomizablesCard = ({
   onPress
 }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
 
   const [animValue] = useState(() => new RNAnimated.Value(justUnlocked ? 0 : unlocked ? 1 : 0));

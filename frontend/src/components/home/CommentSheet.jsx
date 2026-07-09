@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
 
@@ -8,18 +8,18 @@ import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCommentLogic } from "@/hooks/useCommentLogic";
 
 import CommentInputSection from "./CommentInputSection";
 import CommentItem from "./CommentItem";
 import ReplyBar from "./ReplyBar";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
-import { useCommentLogic } from "@/hooks/useCommentLogic";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function CommentSheet({ isVisible, onClose }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   const {
     comments,

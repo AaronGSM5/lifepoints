@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Platform, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,7 +10,7 @@ import AppText from "../ui/AppText";
 
 const CommentInputSection = ({ inputRef, commentText, setCommentText, onPost }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   return (

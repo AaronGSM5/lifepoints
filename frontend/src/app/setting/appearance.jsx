@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -14,7 +14,7 @@ import useStore from "@/store/useStore";
 
 export default function AppearanceScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
   const { t } = useTranslation("settings");
 

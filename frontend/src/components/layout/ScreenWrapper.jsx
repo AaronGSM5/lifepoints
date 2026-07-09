@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -31,7 +31,7 @@ export default memo(function ScreenWrapper({
   style
 }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const insets = useSafeAreaInsets();
   const totalBottomPadding = useFloatingNavbarPadding();
   const toolbarTopPadding = useToolbarPadding();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { Link } from "expo-router";
@@ -9,7 +9,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function AuthFooter({ text, linkText, href }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
     <View style={styles.footer}>

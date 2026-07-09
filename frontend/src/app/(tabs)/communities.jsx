@@ -25,7 +25,7 @@ const SKELETON_DATA = [1, 2, 3];
 export default function CommunitiesScreen() {
   // const { myCommunities, createCommunity } = useCommunities();
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
   const scrollY = useMemo(() => new Animated.Value(0), []);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);

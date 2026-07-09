@@ -12,7 +12,7 @@ import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
 const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalRail(categoryKey);
 
   const flatData = useMemo(() => {

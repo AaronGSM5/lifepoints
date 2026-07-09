@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import AppButton from "@/components/ui/AppButton";
@@ -12,7 +12,7 @@ import { Icon } from "../icons/Icon";
 export default function InstaTrackingModal({ visible, onClose, onConfirm }) {
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const handleConfirm = () => {
     onConfirm(dontShowAgain);

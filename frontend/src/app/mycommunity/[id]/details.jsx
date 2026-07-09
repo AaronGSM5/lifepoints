@@ -32,7 +32,7 @@ const MOCK_MEMBERS = [
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
   // const { myCommunities } = useCommunities();
   const myCommunities = [];

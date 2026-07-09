@@ -20,7 +20,7 @@ export default memo(function Toolbar({ scrollY }) {
   const LP = useStore((state) => state.profile.profileLp);
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const fallbackScrollY = useMemo(() => new Animated.Value(0), []);
   const activeScrollY = scrollY || fallbackScrollY;

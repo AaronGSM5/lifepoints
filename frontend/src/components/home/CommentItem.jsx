@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
@@ -11,7 +11,7 @@ import StatusBadge from "../ui/StatusBadge";
 
 const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, onNavigate }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
 
   const handleReplyPress = () => {

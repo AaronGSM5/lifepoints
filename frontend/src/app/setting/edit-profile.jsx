@@ -29,7 +29,7 @@ import { triggerHaptic } from "@/utils/haptics";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const router = useRouter();
   const { t } = useTranslation("settings");
   const { data: profileData, isLoading } = useMyProfile();

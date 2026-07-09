@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -10,7 +11,7 @@ import StatusBadge from "../ui/StatusBadge";
 
 const FeedItemHeader = ({ id, username, avatar, badge, onPress, onOpenOptions }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.header}>
       <Pressable onPress={onPress}>

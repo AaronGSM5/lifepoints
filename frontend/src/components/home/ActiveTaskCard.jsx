@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -14,7 +14,7 @@ import { addOpacity } from "@/utils/addOpacity";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   if (isLoading) {
     return (

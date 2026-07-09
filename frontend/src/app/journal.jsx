@@ -2,18 +2,18 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionList, StyleSheet, View } from "react-native";
 
+import { useMyProfile } from "@/api/profile/useMyProfile";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useMyProfile } from "@/api/profile/useMyProfile";
 import { groupDataByDate } from "@/utils/helpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
   const { data: profileData, isLoading } = useMyProfile();
   const activities = profileData?.activities;

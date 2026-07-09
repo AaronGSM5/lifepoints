@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -16,7 +16,7 @@ import SectionHeader from "../ui/SectionHeader";
 
 const JournalPreview = ({ activities, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
 
   const previewData = activities?.slice(0, 3) || [];
