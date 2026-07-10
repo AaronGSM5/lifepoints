@@ -1,13 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Switch,
-  TouchableOpacity,
   View
 } from "react-native";
 
@@ -25,6 +23,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import ImageUploader from "@/components/post/ImageUploader";
 
 export default function CreatePost() {
   const router = useRouter();
@@ -91,21 +90,13 @@ export default function CreatePost() {
     >
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} hitSlop={10}>
-            <Icon name="back" color={MyTheme.text} />
-          </TouchableOpacity>
+            <Icon name="back" color={MyTheme.text} onPress={() => router.back()}/>
           <AppText style={styles.headerTitle} bold>
             {t("Create Post")}
           </AppText>
-          <TouchableOpacity
-            onPress={handlePost}
-            disabled={!isPostButtonEnabled}
-            style={[styles.postButton, !isPostButtonEnabled && styles.postButtonDisabled]}
-          >
-            <AppText bold style={{ color: isPostButtonEnabled ? MyTheme.primaryAccent : MyTheme.muted }}>
+            <AppText bold style={[styles.postButton, isPostButtonEnabled && { color: MyTheme.primaryAccent }]} onPress={handlePost} disabled={!isPostButtonEnabled}>
               {t("Post")}
             </AppText>
-          </TouchableOpacity>
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
@@ -153,28 +144,7 @@ export default function CreatePost() {
 
           <View>
             <SectionHeader title={t("Upload image")} />
-            <TouchableOpacity
-              style={[styles.imageContainer, !image && styles.imagePlaceholder]}
-              onPress={pickImage}
-              activeOpacity={0.8}
-            >
-              {image ? (
-                <Image source={{ uri: image }} style={styles.previewImage} />
-              ) : (
-                <View style={styles.placeholderContent}>
-                  <Icon name="camera" size={32} color={MyTheme.muted} />
-                  <AppText style={{ color: MyTheme.muted, marginTop: Spacing.sm }}>
-                    {isPublic ? t("Upload image (Required)") : t("Upload image (Optional)")}
-                  </AppText>
-                </View>
-              )}
-
-              {image && (
-                <TouchableOpacity style={styles.removeImageBtn} onPress={() => setImage(null)}>
-                  <Icon name="trash" size={16} color="#fff" />
-                </TouchableOpacity>
-              )}
-            </TouchableOpacity>
+            <ImageUploader isPublic={isPublic} image={image} setImage={setImage} pickImage={pickImage} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -201,7 +171,7 @@ const getStyles = (theme) =>
     },
     postButton: {
       paddingHorizontal: Spacing.sm,
-      paddingVertical: Spacing.xs
+      paddingVertical: Spacing.xs,
     },
     postButtonDisabled: {
       opacity: 0.5
@@ -209,38 +179,6 @@ const getStyles = (theme) =>
     scrollContent: {
       padding: Spacing.md,
       gap: Spacing.md
-    },
-    imageContainer: {
-      width: "100%",
-      aspectRatio: 4 / 5,
-      borderRadius: Spacing.borderRadius.lg,
-      overflow: "hidden",
-      marginBottom: Spacing.lg,
-      position: "relative"
-    },
-    imagePlaceholder: {
-      backgroundColor: theme.separator,
-      justifyContent: "center",
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: theme.separator,
-      borderStyle: "dashed"
-    },
-    placeholderContent: {
-      alignItems: "center"
-    },
-    previewImage: {
-      width: "100%",
-      height: "100%",
-      resizeMode: "cover"
-    },
-    removeImageBtn: {
-      position: "absolute",
-      top: Spacing.sm,
-      right: Spacing.sm,
-      backgroundColor: "rgba(0,0,0,0.6)",
-      padding: 8,
-      borderRadius: 20
     },
     inputContainer: {
       minHeight: 100

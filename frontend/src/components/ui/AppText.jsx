@@ -28,7 +28,7 @@ const AppText = memo(
 
       return {
         fontFamily,
-        color: type === "caption" ? MyTheme.muted : MyTheme.text,
+        color: type === "caption" || disabled ? MyTheme.muted : MyTheme.text,
         ...Typography[type]
       };
     }, [MyTheme, type, bold]);
