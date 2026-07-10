@@ -1,18 +1,19 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import BaseCard from "../ui/BaseCard";
 
 export default function NotificationEntry({ notification }) {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("common");
   return (
-    <Pressable
-      style={({ pressed }) => [styles.container, pressed && styles.containerPressed]}
+    <BaseCard
+      style={styles.container}
       onPress={() => console.log("Notification clicked:", t(notification.title))}
     >
       <View style={styles.iconContainer}>
@@ -29,7 +30,7 @@ export default function NotificationEntry({ notification }) {
 
         <AppText type="caption">{t(notification.message)}</AppText>
       </View>
-    </Pressable>
+    </BaseCard>
   );
 }
 
@@ -38,16 +39,7 @@ const getStyles = (theme) =>
     container: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: theme.primary,
-      padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.md,
-      borderWidth: 1,
-      borderColor: theme.secondary,
       marginBottom: Spacing.sm
-    },
-    containerPressed: {
-      opacity: 0.7,
-      transform: [{ scale: 0.98 }]
     },
     iconContainer: {
       width: 40,

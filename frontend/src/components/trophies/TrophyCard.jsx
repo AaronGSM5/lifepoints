@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated as RNAnimated, Pressable, StyleSheet } from "react-native";
+import { Animated as RNAnimated, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { router } from "expo-router";
@@ -10,6 +10,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import BaseCard from "../ui/BaseCard";
 
 const TrophyCard = memo(({ id, title, icon, unlocked, justUnlocked, onAnimationComplete }) => {
   const MyTheme = useAppTheme();
@@ -69,7 +70,7 @@ const TrophyCard = memo(({ id, title, icon, unlocked, justUnlocked, onAnimationC
   }, [id]);
 
   return (
-    <Pressable onPress={handlePress} style={styles.trophyItem}>
+    <BaseCard onPress={handlePress} style={styles.trophyItem} padding={0}>
       <RNAnimated.View style={[styles.trophyIconBox, { transform: [{ scale }] }]}>
         <RNAnimated.View style={[StyleSheet.absoluteFillObject, styles.glowLayer, { opacity: animValue }]} />
 
@@ -92,7 +93,7 @@ const TrophyCard = memo(({ id, title, icon, unlocked, justUnlocked, onAnimationC
       <AppText animated bold type="caption" numberOfLines={2} style={[styles.title, { color: textColor }]}>
         {t(title)}
       </AppText>
-    </Pressable>
+    </BaseCard>
   );
 });
 TrophyCard.displayName = "TrophyCard";
@@ -101,7 +102,8 @@ const getStyles = (theme) =>
   StyleSheet.create({
     trophyItem: {
       alignItems: "center",
-      width: "100%"
+      backgroundColor: 'transparent',
+      borderWidth: 0
     },
     trophyIconBox: {
       width: "95%",
