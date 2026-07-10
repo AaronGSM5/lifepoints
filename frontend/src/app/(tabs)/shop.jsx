@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, FlatList, StyleSheet, View } from "react-native";
 
@@ -101,16 +101,19 @@ export default function ShopScreen() {
     );
   }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, skeletonProps, styles]);
 
-  const renderEmptyState = () => (
-    <View style={styles.paddedContent}>
-      <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />
-    </View>
+  const renderEmptyState = useCallback(
+    () => (
+      <View style={styles.paddedContent}>
+        <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />
+      </View>
+    ),
+    [activeCat, setActiveCat, styles.paddedContent]
   );
 
-  const renderFooter = () => {
+  const renderFooter = useCallback(() => {
     if (!isFetchingMore) return null;
     return <AppLoadingSpinner centered />;
-  };
+  }, [isFetchingMore]);
 
   return (
     <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>

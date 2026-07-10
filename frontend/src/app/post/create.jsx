@@ -1,19 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  View
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import ImageUploader from "@/components/post/ImageUploader";
 import TaskSelector from "@/components/post/TaskSelector";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
@@ -23,7 +17,6 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-import ImageUploader from "@/components/post/ImageUploader";
 
 export default function CreatePost() {
   const router = useRouter();
@@ -52,11 +45,15 @@ export default function CreatePost() {
     return [...new Set(todayActivityIds)];
   }, [activities]);
 
-  const isPostButtonEnabled = isPublic
-    ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
-    : caption.trim().length > 0 && selectedTaskId !== null;
+  const isPostButtonEnabled = useMemo(
+    () =>
+      isPublic
+        ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
+        : caption.trim().length > 0 && selectedTaskId !== null,
+    [caption, image, isPublic, selectedTaskId]
+  );
 
-  const pickImage = async () => {
+  const pickImage = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       alert(t("We need access to your gallery so you can post pictures!"));
@@ -73,12 +70,11 @@ export default function CreatePost() {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  };
+  }, [t]);
 
-  const handlePost = () => {
-    console.log("Post bereit zum Senden:", { isPublic, selectedTaskId, caption, image });
+  const handlePost = useCallback(() => {
     router.back();
-  };
+  }, [router]);
 
   return (
     <ScreenWrapper
@@ -90,13 +86,18 @@ export default function CreatePost() {
     >
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
-            <Icon name="back" color={MyTheme.text} onPress={() => router.back()}/>
+          <Icon name="back" color={MyTheme.text} onPress={() => router.back()} />
           <AppText style={styles.headerTitle} bold>
             {t("Create Post")}
           </AppText>
-            <AppText bold style={[styles.postButton, isPostButtonEnabled && { color: MyTheme.primaryAccent }]} onPress={handlePost} disabled={!isPostButtonEnabled}>
-              {t("Post")}
-            </AppText>
+          <AppText
+            bold
+            style={[styles.postButton, isPostButtonEnabled && { color: MyTheme.primaryAccent }]}
+            onPress={handlePost}
+            disabled={!isPostButtonEnabled}
+          >
+            {t("Post")}
+          </AppText>
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
@@ -171,7 +172,7 @@ const getStyles = (theme) =>
     },
     postButton: {
       paddingHorizontal: Spacing.sm,
-      paddingVertical: Spacing.xs,
+      paddingVertical: Spacing.xs
     },
     postButtonDisabled: {
       opacity: 0.5

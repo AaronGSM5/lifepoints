@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { ID } from "react-native-appwrite";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useRouter } from "expo-router";
+
+import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
 import PasswordInput from "@/components/auth/PasswordInput";
+// import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { account } from "@/api/client/appwrite";
-import { ID } from "react-native-appwrite";
-import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
-import { useRouter } from "expo-router";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -29,11 +30,7 @@ export default function RegisterScreen() {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isRepeatValid, setIsRepeatValid] = useState(false);
 
-  // const maxLogoWidth = 330;
-  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  // const logoHeight = logoWidth / 3.75;
-
-  const handleRegister = async () => {
+  const handleRegister = useCallback(async () => {
     try {
       await account.create(ID.unique(), emailInput, passwordInput, nameInput);
 
@@ -43,17 +40,16 @@ export default function RegisterScreen() {
     } catch (error) {
       console.log("register error ", error);
     }
-  };
+  }, [emailInput, nameInput, passwordInput, router]);
 
-  const isNameValid = () => {
-    // Some database check (maybe some rules)
+  const isNameValid = useCallback(() => {
     return true;
-  };
+  }, []);
 
-  const isEmailValid = (email) => {
+  const isEmailValid = useCallback((email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
-  };
+  }, []);
 
   const isNameValidFlag = isNameValid(nameInput);
   const isEmailValidFlag = isEmailValid(emailInput);
@@ -61,27 +57,36 @@ export default function RegisterScreen() {
   const passwordsFilled = passwordInput && repeatPasswordInput;
   const passwordsMatch = passwordsFilled && passwordInput === repeatPasswordInput;
 
-  const passwordRules = [
-    { name: "lengthRule", validate: (pwInput) => pwInput.length >= 8, displayMessage: "min. length of 8 characters" },
-    { name: "uppercaseRule", validate: (pwInput) => /[A-Z]/.test(pwInput), displayMessage: "min. 1 uppercase letter" },
-    { name: "numberRule", validate: (pwInput) => /[0-9]/.test(pwInput), displayMessage: "min. 1 number" },
-    {
-      name: "specialCharRule",
-      validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
-      displayMessage: "min. 1 special character"
-    }
-  ];
+  // const passwordRules = useMemo(
+  //   () => [
+  //     { name: "lengthRule", validate: (pwInput) => pwInput.length >= 8, displayMessage: "min. length of 8 characters" },
+  //     {
+  //       name: "uppercaseRule",
+  //       validate: (pwInput) => /[A-Z]/.test(pwInput),
+  //       displayMessage: "min. 1 uppercase letter"
+  //     },
+  //     { name: "numberRule", validate: (pwInput) => /[0-9]/.test(pwInput), displayMessage: "min. 1 number" },
+  //     {
+  //       name: "specialCharRule",
+  //       validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
+  //       displayMessage: "min. 1 special character"
+  //     }
+  //   ],
+  //   []
+  // );
 
-  const [passwordRuleStatus, setPasswordRuleStatus] = useState({
-    lengthRule: false,
-    uppercaseRule: false,
-    numberRule: false,
-    specialCharRule: false
-  });
+  // const [passwordRuleStatus, setPasswordRuleStatus] = useState({
+  //   lengthRule: false,
+  //   uppercaseRule: false,
+  //   numberRule: false,
+  //   specialCharRule: false
+  // });
 
-  const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
-  const isSubmitDisabled =
-    !nameInput || !emailInput || !isPasswordValid || !isRepeatValid || !isEmailValidFlag || !isNameValidFlag;
+  // const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
+  const isSubmitDisabled = useMemo(
+    () => !nameInput || !emailInput || !isPasswordValid || !isRepeatValid || !isEmailValidFlag || !isNameValidFlag,
+    [nameInput, emailInput, isPasswordValid, isRepeatValid, isEmailValidFlag, isNameValidFlag]
+  );
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>

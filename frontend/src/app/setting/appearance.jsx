@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppIconPicker from "@/components/settings/AppIconPicker";
+import ColorModePicker from "@/components/settings/ColorModePicker";
 import ColorThemePicker from "@/components/settings/ColorThemePicker";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import ColorModePicker from "@/components/settings/ColorModePicker";
 
 export default function AppearanceScreen() {
   const { t } = useTranslation("settings");

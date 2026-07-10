@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Alert,
@@ -55,9 +55,9 @@ export default function EditProfileScreen() {
     }
   }, [profileData, initialData]);
 
-  const hasChanges = JSON.stringify(formData) !== JSON.stringify(initialData);
+  const hasChanges = useMemo(() => JSON.stringify(formData) !== JSON.stringify(initialData), [formData, initialData]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     triggerHaptic();
     updateProfile(formData, {
       onSuccess: () => {
@@ -68,9 +68,9 @@ export default function EditProfileScreen() {
         console.error(err);
       }
     });
-  };
+  }, [formData, t, router, updateProfile]);
 
-  const handleChangeAvatar = async () => {
+  const handleChangeAvatar = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== "granted") {
@@ -88,18 +88,25 @@ export default function EditProfileScreen() {
     if (!result.canceled) {
       setFormData({ ...formData, avatar: result.assets[0].uri });
     }
-  };
+  }, [formData, t]);
 
-  const avatarSource = formData.avatar
-    ? { uri: formData.avatar }
-    : profileData?.avatar
-      ? { uri: profileData?.avatar }
-      : require("@/../public/assets/icon-profile.png");
+  const avatarSource = useMemo(
+    () =>
+      formData.avatar
+        ? { uri: formData.avatar }
+        : profileData?.avatar
+          ? { uri: profileData?.avatar }
+          : require("@/../public/assets/icon-profile.png"),
+    [formData.avatar, profileData?.avatar]
+  );
 
-  const skBase = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 }
-  };
+  const skBase = useMemo(
+    () => ({
+      colorMode: MyTheme.isDark ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 }
+    }),
+    [MyTheme.isDark]
+  );
 
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false}>

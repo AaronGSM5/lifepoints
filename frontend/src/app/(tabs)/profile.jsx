@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useMyProfile } from "@/api/profile/useMyProfile";
 import JournalPreview from "@/components/journal/JournalPreview";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -12,11 +14,14 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 export default function ProfileScreen() {
   const { data: profileData, isLoading } = useMyProfile();
   const MyTheme = useAppTheme();
-  const skeletonProps = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
-  };
+  const skeletonProps = useMemo(
+    () => ({
+      colorMode: MyTheme.isDark ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 },
+      show: isLoading
+    }),
+    [MyTheme.isDark, isLoading]
+  );
 
   return (
     <ScreenWrapper scrollable>

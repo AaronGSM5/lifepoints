@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -23,12 +23,12 @@ export default function CommunityDetailScreen() {
   const myCommunities = useStore((state) => state.myCommunities);
   const joinCommunity = useStore((state) => state.joinCommunity);
 
-  const handleJoinCommunity = async () => {
+  const handleJoinCommunity = useCallback(async () => {
     triggerHaptic("medium");
     // await apiRequest(`communities/${data._id}/join`, { method: "POST" })
     joinCommunity(data);
     router.push("/communities");
-  };
+  }, [data, joinCommunity]);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />

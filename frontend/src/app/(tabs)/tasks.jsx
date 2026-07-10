@@ -36,18 +36,21 @@ const TasksScreen = () => {
 
   const styles = getStyles();
 
-  const handleInstaTrackingConfirm = (dontShowAgain) => {
-    setInstaTrackingModalVisible(false);
+  const handleInstaTrackingConfirm = useCallback(
+    (dontShowAgain) => {
+      setInstaTrackingModalVisible(false);
 
-    if (dontShowAgain) {
-      disableInstaTrackingModal();
-    }
+      if (dontShowAgain) {
+        disableInstaTrackingModal();
+      }
 
-    if (taskToTrack) {
-      completeTask(taskToTrack);
-      setTaskToTrack(null);
-    }
-  };
+      if (taskToTrack) {
+        completeTask(taskToTrack);
+        setTaskToTrack(null);
+      }
+    },
+    [completeTask, taskToTrack, disableInstaTrackingModal]
+  );
 
   const listData = useMemo(() => {
     const topElements = [

@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useRouter } from "expo-router";
 
-// Import your Appwrite account instance
 import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -17,24 +15,21 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function LoginScreen() {
-  const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
-  const router = useRouter(); // For navigation after successful login
+  const router = useRouter();
 
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordIsShown, setPasswordIsShown] = useState(true);
-  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isLoginDisabled = !emailInput || !passwordInput || isLoading;
+  const isLoginDisabled = useMemo(
+    () => !emailInput || !passwordInput || isLoading,
+    [emailInput, passwordInput, isLoading]
+  );
 
-  // const maxLogoWidth = 330;
-  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  // const logoHeight = logoWidth / 3.75;
-
-  // Appwrite Login Logic
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     if (!emailInput || !passwordInput) return;
 
     setIsLoading(true);
@@ -48,11 +43,11 @@ export default function LoginScreen() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [emailInput, passwordInput, router]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
+      <View style={{ flex: 1, pointerEvents: "box-none" }}>
         <ScreenWrapper scrollable>
           <AuthHeader showImageLogo={true} subtitle={t("Log in to continue")} />
 

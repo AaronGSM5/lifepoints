@@ -28,8 +28,8 @@ export default function RewardDetailScreen() {
   const redeemReward = useStore((state) => state.redeemReward);
   const userLevel = useStore((state) => state.profile.level);
 
-  const reward = rewardsCatalog.find((c) => String(c.id) === String(id));
-  const isLocked = userLevel < reward.requiredLevel;
+  const reward = useMemo(() => rewardsCatalog.find((c) => String(c.id) === String(id)), [id]);
+  const isLocked = useMemo(() => userLevel < reward.requiredLevel, [userLevel, reward.requiredLevel]);
 
   if (!reward) {
     return (
