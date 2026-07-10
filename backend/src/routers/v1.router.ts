@@ -34,6 +34,7 @@ router.get("/bootstrap", EventController.getBootstrap);
 
 router.get("/communities/rails", CommunityController.getPaginatedCommunityRails);
 router.get("/communities/categories", CommunityController.getCommunityCategories);
+router.get("/communities/detail/:id", CommunityController.getOneCommunity);
 
 // router.get("/user-tasks/active", UserTasksController.getUsersActiveTasks);
 // router.get("/user-tasks/history", UserTasksController.getUsersTaskHistory);
