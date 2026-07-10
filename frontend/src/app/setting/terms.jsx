@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -9,13 +9,15 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
+import BaseCard from "@/components/ui/BaseCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 
 export default function TermsScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const router = useRouter();
 
-  const legalItems = [
+  const legalItems = useMemo(() => [
     {
       id: "impressum",
       title: "Impressum",
@@ -40,26 +42,21 @@ export default function TermsScreen() {
       icon: "code",
       description: "Verwendete Bibliotheken"
     }
-  ];
+  ], [])
 
   return (
     <ScreenWrapper scrollable>
-      <View style={styles.header}>
-        <AppText type="h1">Rechtliches</AppText>
-        <AppText type="caption" style={styles.subtitle}>
-          Hier findest du alle wichtigen Informationen zu LifePoints und dem Schutz deiner Privatsphäre.
-        </AppText>
-      </View>
+        <ScreenTitle title={"Rechtliches"} subtitle={"Hier findest du alle wichtigen Informationen zu LifePoints und dem Schutz deiner Privatsphäre."} />
 
       <View style={styles.listContainer}>
         {legalItems.map((item) => (
-          <TouchableOpacity
+          <BaseCard
             key={item.id}
             style={styles.listItem}
             onPress={() => router.push(`/setting/legal-detail?type=${item.id}`)}
           >
             <View style={[styles.iconBackground, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
-              <Icon name={item.icon} size={22} color={MyTheme.primaryAccent} />
+              <Icon name={item.icon} color={MyTheme.primaryAccent} />
             </View>
 
             <View style={styles.textContainer}>
@@ -70,43 +67,33 @@ export default function TermsScreen() {
             </View>
 
             <Icon name="right" size={18} color={MyTheme.muted} />
-          </TouchableOpacity>
+          </BaseCard>
         ))}
       </View>
 
       <View style={styles.footer}>
-        <AppText type="caption" style={styles.footerText}>
+        <AppText type="caption">
           LifePoints App Version 1.0.0 (Build 42)
         </AppText>
-        <AppText type="caption" style={styles.footerText}>
-          © 2026 LifePoints GmbH. Alle Rechte vorbehalten.
+        <AppText type="caption">
+          © 2026 LifePoints GmbH. All rights reserved.
         </AppText>
       </View>
     </ScreenWrapper>
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
-    header: {
-      paddingVertical: Spacing.lg
-    },
-    subtitle: {
-      marginTop: Spacing.sm
+    contentContainer: {
+      justifyContent: 'space-between', 
     },
     listContainer: {
-      backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
-      overflow: "hidden",
-      borderWidth: 1,
-      borderColor: theme.secondary
+      gap: Spacing.md
     },
     listItem: {
       flexDirection: "row",
       alignItems: "center",
-      padding: Spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.secondary
     },
     iconBackground: {
       width: 40,
@@ -122,9 +109,6 @@ const getStyles = (theme) =>
     footer: {
       marginTop: Spacing.xl,
       alignItems: "center",
-      gap: 4
+      gap: Spacing.xs
     },
-    footerText: {
-      color: theme.muted
-    }
   });

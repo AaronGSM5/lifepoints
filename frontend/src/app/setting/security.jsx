@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, StyleSheet, Switch, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Switch, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -10,6 +10,7 @@ import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/addOpacity";
 
 export default function SecurityScreen() {
   const MyTheme = useAppTheme();
@@ -111,12 +112,7 @@ export default function SecurityScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
-          <Icon name="trash" size={20} color={MyTheme.warning} />
-          <AppText bold style={{ color: MyTheme.warning, marginLeft: Spacing.sm }}>
-            {t("Permanently delete account")}
-          </AppText>
-        </TouchableOpacity>
+        <AppButton title={t("Permanently delete account")} icon={<Icon name="trash" size={20} color={MyTheme.warning} />} onPress={handleDeleteAccount} bgColor={MyTheme.inputBorder} borderStyle={{borderWidth: 1, borderColor : addOpacity(MyTheme.warning, 0.4)}} />
       </View>
     </ScreenWrapper>
   );

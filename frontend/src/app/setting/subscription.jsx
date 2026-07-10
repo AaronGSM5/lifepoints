@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import { Skeleton } from "moti/skeleton";
 
@@ -70,11 +70,9 @@ export default function SubscriptionScreen() {
 
       {!isLoading && (
         <View style={styles.footer}>
-          <TouchableOpacity onPress={handleRestore}>
-            <AppText bold style={styles.restoreText}>
+            <AppText bold style={styles.restoreText} onPress={handleRestore}>
               {t("Käufe wiederherstellen")}
             </AppText>
-          </TouchableOpacity>
           <AppText type="caption" style={styles.legalText}>
             {t(
               "Subscriptions renew automatically unless you cancel them at least 24 hours before the current period ends. You can manage your subscription at any time in the App Store or Play Store settings."
