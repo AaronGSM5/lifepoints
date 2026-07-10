@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Animated, FlatList, Pressable, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
 import { useVerticalRails } from "@/api/communities/useVerticalRails";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
-import MyCommunityCard from "@/components/communities/MyCommunityCard";
+import MyCommunitiesSection from "@/components/communities/MyCommunitiesSection";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import EventHero from "@/components/home/EventHero";
@@ -99,34 +99,15 @@ export default function CommunitiesScreen() {
           );
 
         case "my_communities":
-          if (!myCommunities?.length && !isLoading)
+          if (!myCommunities?.length && !isLoading) {
             return <View style={{ marginTop: Spacing.md, marginBottom: Spacing.md }}></View>;
+          }
           return (
-            <View style={styles.myCommunitiesSection}>
-              <View style={styles.paddedContent}>
-                <SectionHeader title={t("My Communities")} isLoading={isLoading} />
-              </View>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.horizontalScrollContentContainer}
-                snapToInterval={160 + Spacing.md}
-                snapToAlignment="start"
-                decelerationRate="fast"
-              >
-                {isLoading
-                  ? SKELETON_DATA.map((i) => <MyCommunityCard key={`skeleton-mycom-${i}`} isLoading={true} />)
-                  : myCommunities
-                      .filter((c) => c !== null && c !== undefined)
-                      .map((c, index) => (
-                        <MyCommunityCard
-                          key={extractId(c) || index}
-                          item={{ ...c, id: extractId(c) }}
-                          onPress={() => router.push(`/mycommunity/${extractId(c)}`)}
-                        />
-                      ))}
-              </ScrollView>
-            </View>
+            <MyCommunitiesSection
+              data={myCommunities}
+              isLoading={isLoading}
+              onPress={(c) => router.push(`/mycommunity/${extractId(c)}`)}
+            />
           );
 
         case "section":
