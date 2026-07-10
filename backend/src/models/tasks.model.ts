@@ -9,6 +9,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  subSteps: [{
+    description: { type: String, required: true },
+    isCompleted: { type: Boolean, default: false }
+  }],
   lifepoints: {
     type: Number,
     default: 0
@@ -32,7 +36,12 @@ const taskSchema = new mongoose.Schema({
   custom: {
     type: Object,
     default: {}
+  },
+  estimated_time: {
+    type: Number,
   }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model("Tasks", taskSchema);
