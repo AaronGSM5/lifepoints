@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -7,13 +7,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
-// import { useCommunities } from "@/api/communities/useCommunities";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },
@@ -28,21 +28,19 @@ export default function MyCommunityChatScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  // const { recommended, myCommunities } = useCommunities();
-  const recommended = [];
-  const myCommunities = [];
+  const myCommunities = useStore((state) => state.myCommunities);
 
-  const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
+  const community = useMemo(() => myCommunities.find((c) => c._id === id) || {}, [id, myCommunities]);
 
   const [messages, setMessages] = useState(DUMMY_MESSAGES);
   const [inputText, setInputText] = useState("");
   const flatListRef = useRef(null);
 
-  const openDetails = () => {
+  const openDetails = useCallback(() => {
     router.push(`/mycommunity/${id}/details`);
-  };
+  }, [id, router]);
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (!inputText.trim()) return;
     const newMessage = {
       id: Date.now().toString(),
@@ -53,45 +51,48 @@ export default function MyCommunityChatScreen() {
     setMessages((prev) => [...prev, newMessage]);
     setInputText("");
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
-  };
+  }, [inputText]);
 
-  const renderMessage = ({ item }) => {
-    const isMe = item.senderId === "me";
-    const isSystem = item.senderId === "system";
+  const renderMessage = useCallback(
+    ({ item }) => {
+      const isMe = item.senderId === "me";
+      const isSystem = item.senderId === "system";
 
-    if (isSystem) {
-      return (
-        <View style={styles.systemMessageContainer}>
-          <AppText type="caption" bold style={styles.systemMessageText}>
-            {item.text}
-          </AppText>
-        </View>
-      );
-    }
-
-    return (
-      <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
-        {!isMe && (
-          <View style={styles.avatar}>
-            <AppText bold style={styles.avatarText}>
-              {item.senderName?.charAt(0)}
+      if (isSystem) {
+        return (
+          <View style={styles.systemMessageContainer}>
+            <AppText type="caption" bold style={styles.systemMessageText}>
+              {item.text}
             </AppText>
           </View>
-        )}
-        <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
+        );
+      }
+
+      return (
+        <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
           {!isMe && (
-            <AppText bold type="caption" style={styles.senderName}>
-              {item.senderName}
-            </AppText>
+            <View style={styles.avatar}>
+              <AppText bold style={styles.avatarText}>
+                {item.senderName?.charAt(0)}
+              </AppText>
+            </View>
           )}
-          <AppText style={{ color: isMe ? "#fff" : MyTheme.text }}>{item.text}</AppText>
-          <AppText type="caption" style={[styles.timeText, isMe && { color: "rgba(255,255,255,0.7)" }]}>
-            {item.time}
-          </AppText>
+          <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
+            {!isMe && (
+              <AppText bold type="caption" style={styles.senderName}>
+                {item.senderName}
+              </AppText>
+            )}
+            <AppText style={{ color: isMe ? "#fff" : MyTheme.text }}>{item.text}</AppText>
+            <AppText type="caption" style={[styles.timeText, isMe && { color: "rgba(255,255,255,0.7)" }]}>
+              {item.time}
+            </AppText>
+          </View>
         </View>
-      </View>
-    );
-  };
+      );
+    },
+    [MyTheme.text, styles]
+  );
 
   return (
     <KeyboardAvoidingView
@@ -108,8 +109,8 @@ export default function MyCommunityChatScreen() {
 
         <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-            <View style={[styles.iconBox, { backgroundColor: community.color }]}>
-              <MaterialIcons name={community.icon} size={20} color="#fff" />
+            <View style={[styles.iconBox, { backgroundColor: community?.color }]}>
+              <MaterialIcons name={community?.icon} size={20} color="#fff" />
             </View>
             <AppText bold>{community?.title || "Community Chat"}</AppText>
           </View>

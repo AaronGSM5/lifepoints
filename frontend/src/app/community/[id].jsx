@@ -4,6 +4,8 @@ import { StyleSheet, View } from "react-native";
 
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
+// import { apiRequest } from "@/api/client/api";
+import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
 // import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -13,22 +15,20 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
-import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
-import { apiRequest } from "@/api/client/api";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
-  const { data } = useCommunityDetail(id)
+  const { data } = useCommunityDetail(id);
   const { t } = useTranslation("community");
-  const myCommunities = useStore((state) => state.myCommunities)
+  const myCommunities = useStore((state) => state.myCommunities);
   const joinCommunity = useStore((state) => state.joinCommunity);
 
   const handleJoinCommunity = async () => {
-                triggerHaptic("medium");
-                await apiRequest(`communities/${data._id}/join`, { method: "POST" })
-                joinCommunity(data);
-                router.push("/communities")
-              }
+    triggerHaptic("medium");
+    // await apiRequest(`communities/${data._id}/join`, { method: "POST" })
+    joinCommunity(data);
+    router.push("/communities");
+  };
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -48,11 +48,7 @@ export default function CommunityDetailScreen() {
 
           {/* Action Button */}
           {!myCommunities.some((c) => c?._id === data?._id) && (
-            <AppButton
-              title={t("Join Community")}
-              style={styles.joinButton}
-              onPress={handleJoinCommunity}
-            />
+            <AppButton title={t("Join Community")} style={styles.joinButton} onPress={handleJoinCommunity} />
           )}
 
           {/* Live Section */}

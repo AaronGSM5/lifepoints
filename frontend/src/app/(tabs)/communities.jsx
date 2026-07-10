@@ -4,7 +4,6 @@ import { Animated, FlatList, Pressable, ScrollView, StyleSheet, View } from "rea
 
 import { router } from "expo-router";
 
-// import { useCommunities } from "@/api/communities/useCommunities";
 import { useVerticalRails } from "@/api/communities/useVerticalRails";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import MyCommunityCard from "@/components/communities/MyCommunityCard";
@@ -18,12 +17,12 @@ import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
 
 export default function CommunitiesScreen() {
-  // const { myCommunities, createCommunity } = useCommunities();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -40,7 +39,7 @@ export default function CommunitiesScreen() {
 
   const isLoading = isLoadingRails;
 
-  const myCommunities = useMemo(() => [], []);
+  const myCommunities = useStore((state) => state.myCommunities);
 
   const loadedSections = useMemo(() => {
     if (!railsData) return [];
@@ -57,10 +56,6 @@ export default function CommunitiesScreen() {
         }))
       }));
   }, [railsData]);
-
-  // const handleCreateCommunity = (data) => {
-  //   createCommunity(data);
-  // };
 
   const listData = useMemo(() => {
     const topElements = [
@@ -109,13 +104,7 @@ export default function CommunitiesScreen() {
           return (
             <View style={styles.myCommunitiesSection}>
               <View style={styles.paddedContent}>
-                <SectionHeader
-                  title={t("My Communities")}
-                  rightLabel={t("See all")}
-                  rightLabelColor={MyTheme.primaryAccent}
-                  onRightPress={() => console.log("mockClickReaction xD")}
-                  isLoading={isLoading}
-                />
+                <SectionHeader title={t("My Communities")} isLoading={isLoading} />
               </View>
               <ScrollView
                 horizontal
@@ -174,7 +163,7 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, MyTheme, t, styles]
+    [isLoading, myCommunities, t, styles]
   );
 
   const renderMainFooter = () => {
@@ -202,11 +191,7 @@ export default function CommunitiesScreen() {
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderMainFooter}
       />
-      <CreateCommunityForm
-        visible={isCreateModalVisible}
-        onClose={() => setIsCreateModalVisible(false)}
-        // onCreate={handleCreateCommunity}
-      />
+      <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
     </ScreenWrapper>
   );
 }

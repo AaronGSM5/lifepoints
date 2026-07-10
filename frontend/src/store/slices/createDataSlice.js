@@ -58,7 +58,7 @@ export const createDataSlice = (set, get) => ({
 
   leaveCommunity: (communityId) => set((state) => {
     return {
-      myCommunities: state.myCommunities.filter(c => c.id !== communityId)
+      myCommunities: state.myCommunities.filter(c => c._id !== communityId)
     }
   }),
 

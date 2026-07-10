@@ -18,19 +18,23 @@ export default function OnboardingScreen() {
 
   const viewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
+      const newIndex = viewableItems[0].index;
+      setCurrentIndex((prev) => (prev !== newIndex ? newIndex : prev));
     }
   }, []);
 
   const viewConfig = useMemo(() => ({ viewAreaCoveragePercentThreshold: 50 }), []);
 
-  const getItemLayout = (_, index) => ({
-    length: width,
-    offset: width * index,
-    index
-  });
+  const getItemLayout = useCallback(
+    (_, index) => ({
+      length: width,
+      offset: width * index,
+      index
+    }),
+    [width]
+  );
 
-  const scrollToNext = () => {
+  const scrollToNext = useCallback(() => {
     if (currentIndex < onboardingSlides.length - 1) {
       const nextOffset = (currentIndex + 1) * width;
 
@@ -41,7 +45,7 @@ export default function OnboardingScreen() {
     } else {
       router.push("/survey");
     }
-  };
+  }, [currentIndex, width, router]);
 
   const renderItem = useCallback(({ item }) => <OnboardingItem item={item} />, []);
 

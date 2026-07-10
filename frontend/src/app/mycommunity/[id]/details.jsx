@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
-// import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
+import LeaderboardRow from "@/components/communities/LeaderboardRow";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppBadge from "@/components/ui/AppBadge";
@@ -13,7 +13,6 @@ import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
-import StatusBadge from "@/components/ui/StatusBadge";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -34,23 +33,48 @@ export default function MyCommunityDetailScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  // const { myCommunities } = useCommunities();
-  const myCommunities = [];
-  const [isExpanded, setIsExpanded] = useState(false);
+  const myCommunities = useStore((state) => state.myCommunities);
   const leaveCommunity = useStore((state) => state.leaveCommunity);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const community = myCommunities.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
+  const community = useMemo(() => myCommunities.find((c) => c._id === id || c.id === id), [id, myCommunities]);
 
   const sortedMembers = useMemo(() => {
     return [...MOCK_MEMBERS].sort((a, b) => b.lp - a.lp);
   }, []);
 
-  const displayedMembers = isExpanded ? sortedMembers : sortedMembers.slice(0, 5);
+  const displayedMembers = useMemo(
+    () => (isExpanded ? sortedMembers : sortedMembers.slice(0, 5)),
+    [isExpanded, sortedMembers]
+  );
 
-  const handleLeaveCommunity = (community) => {
-    router.push("/communities");
-    leaveCommunity(community.id);
-  };
+  const handleExpand = useCallback(() => setIsExpanded(!isExpanded), [isExpanded]);
+
+  const handleLeaveCommunity = useCallback(() => {
+    triggerHaptic("medium");
+    router.replace("/communities");
+    leaveCommunity(id);
+  }, [id, leaveCommunity]);
+
+  if (!community) {
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <ScreenWrapper>
+          <View style={styles.errorContainer}>
+            <AppText bold type={"h2"}>
+              {t("Community not found")}
+            </AppText>
+            <AppButton
+              title={t("Go Back")}
+              onPress={() => router.replace("/communities")}
+              style={{ marginTop: Spacing.lg }}
+            />
+          </View>
+        </ScreenWrapper>
+      </>
+    );
+  }
 
   return (
     <>
@@ -62,7 +86,7 @@ export default function MyCommunityDetailScreen() {
           <View style={{ marginBottom: Spacing.lg }}>
             <AppText type="h1">{community?.title}</AppText>
             <AppText type="caption" style={styles.statsText}>
-              {community?.members} {t("Members")} • {community?.onlineCount} Online
+              {community?.memberCount} {t("Members")} • {community?.onlineCount || 0} Online
             </AppText>
           </View>
 
@@ -83,7 +107,7 @@ export default function MyCommunityDetailScreen() {
 
           <View style={styles.section}>
             <SectionHeader title={t("About")} />
-            <AppText style={styles.description}>{community?.desc}</AppText>
+            <AppText style={styles.description}>{community?.description}</AppText>
           </View>
 
           <View style={styles.section}>
@@ -96,46 +120,12 @@ export default function MyCommunityDetailScreen() {
               title={t("Leaderboard")}
               rightLabel={!isExpanded ? t("Show all") : t("Show less")}
               rightLabelColor={MyTheme.primaryAccent}
-              onRightPress={() => setIsExpanded(!isExpanded)}
+              onRightPress={handleExpand}
             />
 
             <BaseCard>
               {displayedMembers.map((member, index) => (
-                <View key={member.id} style={styles.memberRow}>
-                  <View style={{ width: 30 }}>
-                    <AppText
-                      bold
-                      style={[
-                        { color: MyTheme.muted },
-                        index === 0 && { color: "#FFD700" },
-                        index === 1 && { color: "#C0C0C0" },
-                        index === 2 && { color: "#CD7F32" }
-                      ]}
-                    >
-                      {index + 1}
-                    </AppText>
-                  </View>
-
-                  {member.badge ? (
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs, flex: 1 }}>
-                      <AppText bold>{member.name}</AppText>
-                      <StatusBadge id={member.badge} size={16} />
-                    </View>
-                  ) : (
-                    <AppText bold style={{ flex: 1 }}>
-                      {member.name}
-                    </AppText>
-                  )}
-
-                  <View style={styles.lpContainer}>
-                    <AppText bold style={{ color: MyTheme.primaryAccent }}>
-                      {member.lp}
-                    </AppText>
-                    <AppText bold type="caption" style={{ marginLeft: 4, color: MyTheme.primaryAccent }}>
-                      LP
-                    </AppText>
-                  </View>
-                </View>
+                <LeaderboardRow key={member.id} member={member} index={index} theme={MyTheme} />
               ))}
             </BaseCard>
 
@@ -149,17 +139,7 @@ export default function MyCommunityDetailScreen() {
             )}
           </View>
         </View>
-        {myCommunities.some((c) => c?.id === community?.id) && (
-          <View>
-            <AppButton
-              title={t("Leave Community")}
-              onPress={() => {
-                triggerHaptic("medium");
-                handleLeaveCommunity(community);
-              }}
-            />
-          </View>
-        )}
+        <AppButton title={t("Leave Community")} onPress={handleLeaveCommunity} />
       </ScreenWrapper>
     </>
   );
@@ -171,6 +151,11 @@ const getStyles = (theme) =>
       paddingHorizontal: Spacing.lg,
       marginTop: Spacing.md,
       paddingBottom: 40
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center"
     },
     statsText: {
       marginTop: Spacing.xs,
@@ -196,18 +181,6 @@ const getStyles = (theme) =>
       flexWrap: "wrap",
       columnGap: Spacing.xs,
       rowGap: Spacing.sm
-    },
-    memberRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: Spacing.md - 4,
-      paddingHorizontal: Spacing.sm,
-      borderBottomWidth: 1,
-      borderBottomColor: "rgba(255, 255, 255, 0.05)"
-    },
-    lpContainer: {
-      flexDirection: "row",
-      alignItems: "baseline"
     },
     expandButton: {
       flexDirection: "row",

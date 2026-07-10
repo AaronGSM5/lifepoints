@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { StyleSheet } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -14,47 +15,56 @@ export default function SurveyScreen() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
-  const currentQuestion = mockSurveyOptions[step];
+  const currentQuestion = useMemo(() => mockSurveyOptions[step], [step]);
   const totalSteps = mockSurveyOptions.length;
 
-  const hasAnsweredCurrentQuestion = currentQuestion.multiple
-    ? answers[currentQuestion.id]?.length > 0
-    : answers[currentQuestion.id] !== undefined;
+  const isCompleted = useMemo(
+    () =>
+      currentQuestion.multiple ? answers[currentQuestion.id]?.length > 0 : answers[currentQuestion.id] !== undefined,
+    [answers, currentQuestion]
+  );
 
-  const handleSelect = (value) => {
-    setAnswers((prev) => {
-      if (currentQuestion.multiple) {
-        const currentSelected = prev[currentQuestion.id] || [];
+  const handleSelect = useCallback(
+    (value) => {
+      setAnswers((prev) => {
+        const { id, multiple } = currentQuestion;
+
+        if (!multiple) {
+          return { ...prev, [id]: value };
+        }
+
+        const currentSelected = prev[id] || [];
         const newSelected = currentSelected.includes(value)
           ? currentSelected.filter((item) => item !== value)
           : [...currentSelected, value];
 
-        return { ...prev, [currentQuestion.id]: newSelected };
-      } else {
-        return { ...prev, [currentQuestion.id]: value };
-      }
-    });
-  };
+        return { ...prev, [id]: newSelected };
+      });
+    },
+    [currentQuestion]
+  );
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (step < totalSteps - 1) {
       setStep((prev) => prev + 1);
     } else {
       console.log("Umfrage beendet:", answers);
-      router.push("/auth/register");
+      router.replace("/auth/register");
     }
-  };
+  }, [answers, router, step, totalSteps]);
 
   return (
     <ScreenWrapper>
       <SurveyProgressBar currentStep={step} totalSteps={totalSteps} />
       <SurveyQuestion question={currentQuestion} answers={answers} onSelect={handleSelect} />
-      <AppButton
-        title={"Weiter"}
-        style={{ marginTop: "auto", marginBottom: Spacing.lg }}
-        disabled={!hasAnsweredCurrentQuestion}
-        onPress={handleNext}
-      />
+      <AppButton title={"Weiter"} style={styles.button} disabled={!isCompleted} onPress={handleNext} />
     </ScreenWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: "auto",
+    marginBottom: Spacing.lg
+  }
+});
