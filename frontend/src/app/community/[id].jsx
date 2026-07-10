@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-import { Stack, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 
 // import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
@@ -13,59 +13,62 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
+import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
+import { apiRequest } from "@/api/client/api";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
+  const { data } = useCommunityDetail(id)
   const { t } = useTranslation("community");
-  // const { recommended = [], myCommunities = [] } = useCommunities();
-  const recommended = [];
-  const myCommunities = [];
+  const myCommunities = useStore((state) => state.myCommunities)
   const joinCommunity = useStore((state) => state.joinCommunity);
-  const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
 
+  const handleJoinCommunity = async () => {
+                triggerHaptic("medium");
+                await apiRequest(`communities/${data._id}/join`, { method: "POST" })
+                joinCommunity(data);
+                router.push("/communities")
+              }
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <ScreenWrapper scrollable withPaddingSides={false} withPaddingTop={false} withToolbar={false}>
-        <CommunityHeader community={community} />
+        <CommunityHeader community={data} />
 
         <View style={styles.contentContainer}>
           {/* Title & Stats */}
           <View style={styles.titleSection}>
             <AppText type="h1" bold>
-              {community?.title}
+              {data?.title}
             </AppText>
             <AppText type="caption" style={styles.statsText}>
-              {community?.members} {t("Members")} • {community?.onlineCount} Online
+              {data?.memberCount} {t("Members")} • {data?.onlineCount || 0} Online
             </AppText>
           </View>
 
           {/* Action Button */}
-          {!myCommunities.some((c) => c?.id === community.id) && (
+          {!myCommunities.some((c) => c?._id === data?._id) && (
             <AppButton
               title={t("Join Community")}
               style={styles.joinButton}
-              onPress={() => {
-                triggerHaptic("medium");
-                joinCommunity(community);
-              }}
+              onPress={handleJoinCommunity}
             />
           )}
 
           {/* Live Section */}
-          {community?.isLive && (
+          {data?.isLive && (
             <View style={styles.liveContainer}>
               <AppText bold style={{ color: "#ef4444" }}>
                 🔴 {t("LIVE NOW")}
               </AppText>
-              <AppText type="caption">{community?.liveTitle || ""}</AppText>
+              <AppText type="caption">{data?.liveTitle || ""}</AppText>
             </View>
           )}
 
           {/* About Section */}
           <View style={styles.section}>
             <SectionHeader title={t("About")} />
-            <AppText style={styles.description}>{community?.desc}</AppText>
+            <AppText style={styles.description}>{data?.description}</AppText>
           </View>
 
           {/* Sneak Peek / Preview Bereich */}

@@ -7,7 +7,8 @@ export const communityKeys = {
   my: () => [...communityKeys.all, "my"],
   categories: () => [...communityKeys.all, "categories"],
   verticalRails: () => [...communityKeys.all, "verticalRails"],
-  horizontalRail: (category) => [...communityKeys.all, "horizontalRail", category]
+  horizontalRail: (category) => [...communityKeys.all, "horizontalRail", category],
+  detail: (id) => [...communityKeys.all, "detail", id]
 };
 
 export const createMyCommunitiesOptions = () => queryOptions({
@@ -35,3 +36,9 @@ export const createHorizontalRailOptions = (category) =>
     },
     enabled: !!category,
   });
+
+export const createCommunityDetailOptions = (id) => queryOptions({
+  queryKey: communityKeys.detail(id),
+  queryFn: async () => await apiRequest(`/communities/detail/${id}`),
+  enabled: !!id
+})
