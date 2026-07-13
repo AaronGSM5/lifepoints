@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -9,17 +9,24 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+const navLinks = [
+  { title: "🏠 Main App", href: "/home" },
+  { title: "🌟 Onboarding", href: "/(onboarding)" },
+  { title: "📝 Mini-Umfrage", href: "/survey" },
+  { title: "🔐 Register / Login", href: "/auth/register" }
+];
+
 export default function DevEntryScreen() {
   const router = useRouter();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-  const navLinks = [
-    { title: "🏠 Main App", href: "/home" },
-    { title: "🌟 Onboarding", href: "/(onboarding)" },
-    { title: "📝 Mini-Umfrage", href: "/survey" },
-    { title: "🔐 Register / Login", href: "/auth/register" }
-  ];
+  const handlePress = useCallback(
+    (href) => {
+      router.push(href);
+    },
+    [router]
+  );
 
   return (
     <ScreenWrapper>
@@ -32,13 +39,13 @@ export default function DevEntryScreen() {
         <View style={styles.buttonList}>
           {navLinks.map((link) => (
             <View key={link.href}>
-              <AppButton title={link.title} onPress={() => router.push(link.href)} />
+              <AppButton title={link.title} onPress={() => handlePress(link.href)} />
             </View>
           ))}
         </View>
 
         <View style={styles.footer}>
-          <AppText type="caption" style={{ textAlign: "center" }}>
+          <AppText type="caption" style={styles.footerText}>
             Hinweis: Im fertigen Release wird dieser Screen durch einen automatischen Redirect ersetzt.
           </AppText>
         </View>
@@ -75,5 +82,8 @@ const getStyles = (theme) =>
     },
     footer: {
       marginTop: Spacing.xl
+    },
+    footerText: {
+      textAlign: "center"
     }
   });

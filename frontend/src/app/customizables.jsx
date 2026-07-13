@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 
-import CustomizablesCard from "@/components/customizables/CustomizablesCard";
+import CustomizablesGridItem from "@/components/customizables/CustomizablesGridItem";
 import ScreenWrapper, { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
@@ -12,7 +12,6 @@ import useStore from "@/store/useStore";
 
 export default function CustomizablesScreen() {
   const { t } = useTranslation("profile");
-  const customizables = mockCustomizables;
   const bottomPadding = useFloatingNavbarPadding();
   const { width } = useWindowDimensions();
 
@@ -24,39 +23,46 @@ export default function CustomizablesScreen() {
   const setActiveFrame = useStore((state) => state.setActiveFrame);
   const setActiveStatusBadge = useStore((state) => state.setActiveStatusBadge);
 
-  const containerWidth = Math.min(width, 480) - 32;
-  const totalGapSpace = 32;
-  const exactCardWidth = Math.floor((containerWidth - totalGapSpace) / 3);
+  const unlockedSet = useMemo(() => new Set(unlockedCustomizables), [unlockedCustomizables]);
+  const justUnlockedSet = useMemo(() => new Set(justUnlockedCustomizables), [justUnlockedCustomizables]);
 
-  const checkIsActive = (categoryKey, itemId) => {
-    if (categoryKey === "frames") {
-      return activeFrame === itemId;
-    }
-    if (categoryKey === "badges") {
-      if (itemId === "badge_none") {
-        return activeStatusBadge === null;
+  const exactCardWidth = useMemo(() => {
+    const containerWidth = Math.min(width, 480) - 32;
+    const totalGapSpace = 32;
+    return Math.floor((containerWidth - totalGapSpace) / 3);
+  }, [width]);
+
+  const checkIsActive = useCallback(
+    (categoryKey, itemId) => {
+      if (categoryKey === "frames") {
+        return activeFrame === itemId;
       }
-      return activeStatusBadge === itemId;
-    }
-    return false;
-  };
-
-  const handleSelectItem = (categoryKey, itemId) => {
-    if (categoryKey === "frames") {
-      setActiveFrame(itemId);
-    } else if (categoryKey === "badges") {
-      if (itemId === "badge_none") {
-        setActiveStatusBadge(null);
-        return;
+      if (categoryKey === "badges") {
+        return itemId === "badge_none" ? activeStatusBadge === null : activeStatusBadge === itemId;
       }
-      setActiveStatusBadge(itemId);
-    }
-  };
+      return false;
+    },
+    [activeFrame, activeStatusBadge]
+  );
 
-  const categories = [
-    { key: "frames", title: "Frames", data: customizables.frames },
-    { key: "badges", title: "Status Badges", data: customizables.badges }
-  ];
+  const handleSelectItem = useCallback(
+    (categoryKey, itemId) => {
+      if (categoryKey === "frames") {
+        setActiveFrame(itemId);
+      } else if (categoryKey === "badges") {
+        setActiveStatusBadge(itemId === "badge_none" ? null : itemId);
+      }
+    },
+    [setActiveFrame, setActiveStatusBadge]
+  );
+
+  const categories = useMemo(
+    () => [
+      { key: "frames", title: "Frames", data: mockCustomizables.frames },
+      { key: "badges", title: "Status Badges", data: mockCustomizables.badges }
+    ],
+    []
+  );
 
   return (
     <ScreenWrapper scrollable={false}>
@@ -76,22 +82,20 @@ export default function CustomizablesScreen() {
               <View style={styles.gridContainer}>
                 {category.data.map((item) => {
                   const isActive = checkIsActive(category.key, item.id);
-                  const isUnlocked = unlockedCustomizables.includes(item.id) || item.id === "badge_none";
-                  const isJustUnlocked = justUnlockedCustomizables.includes(item.id);
+                  const isUnlocked = unlockedSet.has(item.id) || item.id === "badge_none";
+                  const isJustUnlocked = justUnlockedSet.has(item.id);
                   return (
-                    <View key={item.id} style={{ width: exactCardWidth }}>
-                      <CustomizablesCard
-                        id={item.id}
-                        name={item.name}
-                        icon={item.icon}
-                        color={item.color}
-                        isActive={isActive}
-                        unlocked={isUnlocked}
-                        justUnlocked={isJustUnlocked}
-                        onAnimationComplete={() => clearJustUnlockedCustomizable(item.id)}
-                        onPress={() => (isUnlocked ? handleSelectItem(category.key, item.id) : null)}
-                      />
-                    </View>
+                    <CustomizablesGridItem
+                      key={item.id}
+                      item={item}
+                      categoryKey={category.key}
+                      isActive={isActive}
+                      isUnlocked={isUnlocked}
+                      isJustUnlocked={isJustUnlocked}
+                      exactCardWidth={exactCardWidth}
+                      onSelect={handleSelectItem}
+                      onClearAnimation={clearJustUnlockedCustomizable}
+                    />
                   );
                 })}
               </View>

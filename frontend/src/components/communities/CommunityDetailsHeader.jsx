@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
@@ -9,12 +9,13 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import BackButton from "../ui/BackButton";
 
-const CommunityHeader = ({ community }) => {
+const DEFAULT_BANNER = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
+
+const CommunityHeader = memo(({ community }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-  const bannerImg =
-    community?.banner || "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
+  const bannerImg = community?.banner || DEFAULT_BANNER;
   const iconName = community?.icon || "groups";
   const iconColor = community?.iconColor || "#fff";
   const bgColor = community?.bgColor || MyTheme.primaryAccent;
@@ -34,7 +35,8 @@ const CommunityHeader = ({ community }) => {
       </View>
     </View>
   );
-};
+});
+CommunityHeader.displayName = "CommunityHeader";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -49,17 +51,6 @@ const getStyles = (theme) =>
       ...StyleSheet.absoluteFillObject,
       backgroundColor: "rgba(0,0,0,0.25)",
       height: 180
-    },
-    backButton: {
-      position: "absolute",
-      left: Spacing.lg,
-      backgroundColor: "rgba(0,0,0,0.35)",
-      width: 40,
-      height: 40,
-      borderRadius: Spacing.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 10
     },
     avatarWrapper: {
       paddingHorizontal: Spacing.lg,

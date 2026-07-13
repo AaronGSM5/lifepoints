@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -50,41 +50,33 @@ export default function PasswordInput({
 
   const ruleStatus = useMemo(() => {
     if (variant !== "new") return {};
-
-    const status = {};
-    passwordRules.forEach((rule) => {
-      status[rule.name] = rule.validate(value);
-    });
-    return status;
+    return passwordRules.reduce((acc, rule) => {
+      acc[rule.name] = rule.validate(value);
+      return acc;
+    }, {});
   }, [value, variant, passwordRules]);
 
-  const isValid = useMemo(() => {
-    if (variant === "new") {
-      return Object.values(ruleStatus).every(Boolean) && value.length > 0;
-    } else if (variant === "repeat") {
-      return value.length > 0 && value === compareTo;
-    } else {
-      return value.length > 0;
+  const allRulesPassed = useMemo(() => Object.values(ruleStatus).every(Boolean), [ruleStatus]);
+
+  const validation = useMemo(() => {
+    let error = null;
+    let isValid = value.length > 0;
+
+    if (variant === "new" && value.length > 0) {
+      if (!allRulesPassed) error = t("The password does not meet all the requirements.");
+      isValid = allRulesPassed;
+    } else if (variant === "repeat" && value.length > 0 && compareTo.length > 0) {
+      if (value !== compareTo) error = t("The passwords don't match.");
+      isValid = value === compareTo;
     }
-  }, [value, variant, compareTo, ruleStatus]);
+    return { hasError: !!error, errorMessage: error, isValid };
+  }, [value, variant, compareTo, allRulesPassed, t]);
 
   useEffect(() => {
-    if (onValidationChange) {
-      onValidationChange(isValid);
-    }
-  }, [isValid, onValidationChange]);
+    if (onValidationChange) onValidationChange(validation.isValid);
+  }, [validation.isValid, onValidationChange]);
 
-  const allRulesPassed = variant === "new" ? Object.values(ruleStatus).every(Boolean) : true;
-  let hasError = false;
-  let errorMessage = null;
-
-  if (variant === "new") {
-    hasError = !allRulesPassed && value.length > 0;
-    errorMessage = hasError ? t("The password does not meet all the requirements.") : null;
-  } else if (variant === "repeat") {
-    hasError = value.length > 0 && compareTo.length > 0 && value !== compareTo;
-    errorMessage = hasError ? t("The passwords don't match.") : null;
-  }
+  const toggleVisibility = useCallback(() => setIsVisible((prev) => !prev), []);
 
   return (
     <>
@@ -94,12 +86,12 @@ export default function PasswordInput({
         placeholder={placeholder || (variant === "repeat" ? t("Repeat Password") : t("Password"))}
         bottomMargin={bottomMargin}
         secureTextEntry={!isVisible}
-        isValid={!hasError && value.length > 0}
-        error={errorMessage}
+        isValid={!validation.hasError && value.length > 0}
+        error={validation.errorMessage}
         rightContent={
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <AppButton
-              onPress={() => setIsVisible(!isVisible)}
+              onPress={toggleVisibility}
               size="sm"
               variant="ghost"
               icon={

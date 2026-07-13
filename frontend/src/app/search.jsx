@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, ScrollView, StyleSheet, View } from "react-native";
 
-import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import HistoryItem from "@/components/search/HistoryItem";
 import AppBadge from "@/components/ui/AppBadge";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
@@ -32,6 +32,19 @@ export default function SearchScreen() {
       console.log("Suche jetzt nach:", debouncedQuery);
     }
   }, [debouncedQuery]);
+
+  const renderHistoryItem = useCallback(
+    ({ item }) => (
+      <HistoryItem
+        title={item}
+        onPress={() => {
+          setSearchQuery(item);
+          Keyboard.dismiss();
+        }}
+      />
+    ),
+    []
+  );
 
   return (
     <ScreenWrapper scrollable={false}>
@@ -67,16 +80,7 @@ export default function SearchScreen() {
             <AppText bold>{t("Recently Searched")}</AppText>
           </View>
 
-          <FlatList
-            data={searchHistory}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.historyItem} onPress={() => setSearchQuery(item)}>
-                <Icon name="history" size={20} color={MyTheme.muted} />
-                <AppText>{t(item)}</AppText>
-              </TouchableOpacity>
-            )}
-          />
+          <FlatList data={searchHistory} keyExtractor={(_, index) => index.toString()} renderItem={renderHistoryItem} />
         </View>
       ) : (
         <View style={styles.resultsSection}>
@@ -107,12 +111,6 @@ const getStyles = () =>
       flexDirection: "row",
       gap: Spacing.sm,
       paddingHorizontal: Spacing.md
-    },
-    historyItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.md,
-      paddingVertical: Spacing.md
     },
     resultsSection: {
       flex: 1,

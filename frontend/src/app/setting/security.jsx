@@ -12,6 +12,17 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
+const handlePasswordChange = () => {
+  Alert.alert("Erfolg", "Dein Passwort wurde erfolgreich aktualisiert.");
+};
+
+const handleDeleteAccount = () => {
+  Alert.alert("Konto löschen", "Bist du sicher? Alle deine LifePoints gehen unwiderruflich verloren.", [
+    { text: "Abbrechen", style: "cancel" },
+    { text: "Löschen", style: "destructive", onPress: () => console.log("Delete") }
+  ]);
+};
+
 export default function SecurityScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -24,17 +35,6 @@ export default function SecurityScreen() {
     new: "",
     confirm: ""
   });
-
-  const handlePasswordChange = () => {
-    Alert.alert("Erfolg", "Dein Passwort wurde erfolgreich aktualisiert.");
-  };
-
-  const handleDeleteAccount = () => {
-    Alert.alert("Konto löschen", "Bist du sicher? Alle deine LifePoints gehen unwiderruflich verloren.", [
-      { text: "Abbrechen", style: "cancel" },
-      { text: "Löschen", style: "destructive", onPress: () => console.log("Delete") }
-    ]);
-  };
 
   return (
     <ScreenWrapper scrollable>
@@ -112,7 +112,13 @@ export default function SecurityScreen() {
       </View>
 
       <View style={styles.section}>
-        <AppButton title={t("Permanently delete account")} icon={<Icon name="trash" size={20} color={MyTheme.warning} />} onPress={handleDeleteAccount} bgColor={MyTheme.inputBorder} borderStyle={{borderWidth: 1, borderColor : addOpacity(MyTheme.warning, 0.4)}} />
+        <AppButton
+          title={t("Permanently delete account")}
+          icon={<Icon name="trash" size={20} color={MyTheme.warning} />}
+          onPress={handleDeleteAccount}
+          bgColor={MyTheme.inputBorder}
+          borderStyle={{ borderWidth: 1, borderColor: addOpacity(MyTheme.warning, 0.4) }}
+        />
       </View>
     </ScreenWrapper>
   );

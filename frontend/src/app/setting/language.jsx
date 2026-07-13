@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Spacing } from "@/constants/Spacing";
 import SelectableOptionCard from "@/components/ui/SelectableOptionCard";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function LanguageScreen() {
   const MyTheme = useAppTheme();
@@ -15,9 +15,12 @@ export default function LanguageScreen() {
 
   const selectedLang = i18n.language;
 
-  const changeLanguage = useCallback((lang) => {
-    i18n.changeLanguage(lang);
-  }, [])
+  const changeLanguage = useCallback(
+    (lang) => {
+      i18n.changeLanguage(lang);
+    },
+    [i18n]
+  );
 
   return (
     <ScreenWrapper>
@@ -26,15 +29,21 @@ export default function LanguageScreen() {
         subtitle={t("Select the language in which you want LifePoints to be displayed.")}
       />
       <View style={styles.container}>
-        
-        <SelectableOptionCard label={t("German")} isSelected={selectedLang === "de"} onPress={() => changeLanguage("de")}>
+        <SelectableOptionCard
+          label={t("German")}
+          isSelected={selectedLang === "de"}
+          onPress={() => changeLanguage("de")}
+        >
           <Text style={styles.flagEmoji}>🇩🇪</Text>
         </SelectableOptionCard>
-        
-        <SelectableOptionCard label={t("English")} isSelected={selectedLang === "en"} onPress={() => changeLanguage("en")}>
+
+        <SelectableOptionCard
+          label={t("English")}
+          isSelected={selectedLang === "en"}
+          onPress={() => changeLanguage("en")}
+        >
           <Text style={styles.flagEmoji}>🇬🇧</Text>
         </SelectableOptionCard>
-      
       </View>
     </ScreenWrapper>
   );
@@ -49,5 +58,5 @@ const getStyles = () =>
     },
     flagEmoji: {
       fontSize: 36
-    },
+    }
   });

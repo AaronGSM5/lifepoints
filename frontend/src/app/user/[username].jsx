@@ -16,7 +16,6 @@ export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { username, sourceId } = useLocalSearchParams();
-  const activePublicProfile = publicProfiles.find((profile) => profile.username === username);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,11 +23,27 @@ export default function PublicProfileScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  const skeletonProps = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 },
-    show: isLoading
-  };
+  const activePublicProfile = useMemo(
+    () => publicProfiles.find((profile) => profile.username === username),
+    [username]
+  );
+
+  const pinnedTrophies = useMemo(() => {
+    if (!activePublicProfile?.pinnedTrophies) return [];
+
+    return activePublicProfile.pinnedTrophies
+      .map((trophy) => trophiesCatalog?.find((entry) => entry.id === trophy.id))
+      .filter(Boolean);
+  }, [activePublicProfile]);
+
+  const skeletonProps = useMemo(
+    () => ({
+      colorMode: MyTheme.isDark ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 },
+      show: isLoading
+    }),
+    [MyTheme.isDark, isLoading]
+  );
 
   return (
     <ScreenWrapper scrollable>
@@ -46,59 +61,19 @@ export default function PublicProfileScreen() {
                   <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
-            : activePublicProfile?.pinnedTrophies.map((trophy) => {
-                const selectedTrophy = trophiesCatalog?.find((entry) => entry.id === trophy.id);
-                if (!selectedTrophy) {
-                  return null;
-                }
-                return (
-                  <View key={selectedTrophy.id} style={{ width: 80 }}>
-                    <TrophyCard
-                      id={selectedTrophy.id}
-                      title={selectedTrophy.title}
-                      icon={selectedTrophy.icon}
-                      unlocked
-                    />
-                  </View>
-                );
-              })}
+            : pinnedTrophies.map((selectedTrophy) => (
+                <View key={selectedTrophy.id} style={styles.trophyWrapper}>
+                  <TrophyCard id={selectedTrophy.id} title={selectedTrophy.title} icon={selectedTrophy.icon} unlocked />
+                </View>
+              ))}
         </View>
       </View>
     </ScreenWrapper>
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
-    profileHeader: {
-      alignItems: "center",
-      paddingTop: Spacing.xl,
-      paddingHorizontal: Spacing.lg
-    },
-    avatarContainer: {
-      width: 110,
-      height: 110,
-      borderRadius: 55,
-      backgroundColor: theme.primaryAccent,
-      justifyContent: "center",
-      alignItems: "center",
-      position: "relative"
-    },
-    levelBadge: {
-      position: "absolute",
-      bottom: -Spacing.sm,
-      alignSelf: "center",
-      backgroundColor: theme.primaryAccent,
-      paddingVertical: 2,
-      borderWidth: 2,
-      borderColor: theme.background
-    },
-    actionButtons: {
-      flexDirection: "row",
-      gap: Spacing.md,
-      marginTop: Spacing.xl,
-      paddingHorizontal: Spacing.lg
-    },
     trophySection: {
       marginTop: Spacing.xl,
       paddingHorizontal: Spacing.lg,
@@ -107,5 +82,8 @@ const getStyles = (theme) =>
     pinnedGrid: {
       flexDirection: "row",
       justifyContent: "space-between"
+    },
+    trophyWrapper: {
+      width: 80
     }
   });

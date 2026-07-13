@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -18,7 +18,7 @@ export const useFloatingNavbarPadding = () => {
   return navbarBottomSpace + navbarHeight + extraClearance;
 };
 
-export default memo(function ScreenWrapper({
+export default function ScreenWrapper({
   children,
   scrollY: externalScrollY,
   scrollable = true,
@@ -70,7 +70,7 @@ export default memo(function ScreenWrapper({
       )}
     </View>
   );
-});
+}
 
 const getStyles = (theme) =>
   StyleSheet.create({

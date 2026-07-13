@@ -19,7 +19,7 @@ export default function AuthFooter({ text, linkText, href }) {
     <View style={styles.footer}>
       <AppText type="caption">
         {text + " "}
-        <AppText type="caption" bold onPress={handlePress} style={{ color: MyTheme.primaryAccent }}>
+        <AppText type="caption" bold onPress={handlePress} style={styles.linkText}>
           {linkText}
         </AppText>
       </AppText>
@@ -27,11 +27,14 @@ export default function AuthFooter({ text, linkText, href }) {
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     footer: {
       marginTop: "auto",
       alignItems: "center",
       marginBottom: Spacing.lg
+    },
+    linkText: {
+      color: theme.primaryAccent
     }
   });

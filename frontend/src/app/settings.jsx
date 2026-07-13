@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -14,28 +15,38 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { t } = useTranslation("settings");
 
-  const handlePress = (item) => {
-    switch (item.type) {
-      case "link":
-        if (item.route) router.push(item.route);
-        break;
-      case "action":
-        if (item.actionName === "clearCache") {
-          Alert.alert("Cache Cleared", "Temporary files have been removed.");
-        } else if (item.actionName === "deleteAccount") {
-          Alert.alert("Delete Account?", "This action cannot be undone. All your Lifepoints will be lost.", [
-            { text: "Cancel", style: "cancel" },
-            { text: "Delete", style: "destructive", onPress: () => console.log("API Call to delete user") }
-          ]);
-        }
-        break;
-      case "toggle":
-      case "info":
-        break;
-      default:
-        console.warn(`No handler defined for type: ${item.type}`);
-    }
-  };
+  const executeAction = useCallback(
+    (actionName) => {
+      if (actionName === "clearCache") {
+        Alert.alert(t("Cache Cleared"), t("Temporary files have been removed."));
+      } else if (actionName === "deleteAccount") {
+        Alert.alert(t("Delete Account?"), t("This action cannot be undone. All your Lifepoints will be lost."), [
+          { text: t("Cancel"), style: "cancel" },
+          { text: t("Delete"), style: "destructive", onPress: () => console.log("API Call to delete user") }
+        ]);
+      }
+    },
+    [t]
+  );
+
+  const handlePress = useCallback(
+    (item) => {
+      switch (item.type) {
+        case "link":
+          if (item.route) router.push(item.route);
+          break;
+        case "action":
+          executeAction(item.actionName);
+          break;
+        case "toggle":
+        case "info":
+          break;
+        default:
+          console.warn(`No handler defined for type: ${item.type}`);
+      }
+    },
+    [router, executeAction]
+  );
 
   return (
     <ScreenWrapper scrollable>

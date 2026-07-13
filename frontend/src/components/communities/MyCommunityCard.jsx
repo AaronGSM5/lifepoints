@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
@@ -12,45 +12,32 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 
-const MyCommunityCard = ({ item, isLoading, onPress }) => {
+const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   if (isLoading) {
+    const skeletonMode = MyTheme.isDark ? "dark" : "light";
     return (
       <BaseCard style={styles.communityCard}>
-        <Skeleton
-          colorMode={MyTheme.isDark ? "dark" : "light"}
-          width={44}
-          height={44}
-          radius={Spacing.borderRadius.md}
-        />
-        <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={100} height={16} />
-          <View style={{ height: Spacing.xs }} />
-          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={60} height={12} />
+        <Skeleton colorMode={skeletonMode} width={44} height={44} radius={Spacing.borderRadius.md} />
+        <View style={styles.skeletonBottomContainer}>
+          <Skeleton colorMode={skeletonMode} width={100} height={16} />
+          <View style={styles.skeletonSpacer} />
+          <Skeleton colorMode={skeletonMode} width={60} height={12} />
         </View>
       </BaseCard>
     );
   }
-
-  const showOnline = item.onlineCount > 0;
 
   return (
     <BaseCard style={styles.communityCard} onPress={onPress}>
       <View style={styles.headerRow}>
         <View style={[styles.iconBox, { backgroundColor: item.color }]}>
           <MaterialIcons name={item.icon} size={24} color="#fff" />
-
           {item.hasUnread && <View style={styles.notificationDot} />}
         </View>
 
-        {item.isLive && (
-          <AppBadge
-            label={"⏱"}
-            style={{ backgroundColor: "rgba(50, 211, 150, 0.05)", borderWidth: 0 }}
-            textStyle={{ fontSize: 16 }}
-          />
-        )}
+        {item.isLive && <AppBadge label={"⏱"} style={styles.liveBadge} textStyle={styles.liveBadgeText} />}
       </View>
 
       <View style={styles.bottomContent}>
@@ -59,11 +46,11 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
         </AppText>
 
         <View style={styles.statusRow}>
-          {showOnline ? (
+          {item.onlineCount > 0 ? (
             <>
               <View style={styles.onlineIndicator} />
               <AppText type="caption">
-                <AppText type="caption" bold style={{ color: "#34d399" }}>
+                <AppText type="caption" bold style={styles.onlineCountText}>
                   {item.onlineCount}
                 </AppText>{" "}
                 online
@@ -76,7 +63,8 @@ const MyCommunityCard = ({ item, isLoading, onPress }) => {
       </View>
     </BaseCard>
   );
-};
+});
+MyCommunityCard.displayName = "MyCommunityCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -123,6 +111,23 @@ const getStyles = (theme) =>
       height: 6,
       borderRadius: Spacing.borderRadius.full,
       backgroundColor: theme.primaryAccent
+    },
+    skeletonBottomContainer: {
+      flex: 1,
+      justifyContent: "flex-end"
+    },
+    skeletonSpacer: {
+      height: Spacing.xs
+    },
+    liveBadge: {
+      backgroundColor: "rgba(50, 211, 150, 0.05)",
+      borderWidth: 0
+    },
+    liveBadgeText: {
+      fontSize: 16
+    },
+    onlineCountText: {
+      color: "#34d399"
     }
   });
 

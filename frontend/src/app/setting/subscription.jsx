@@ -14,6 +14,16 @@ import { SUBSCRIPTION_PLANS } from "@/constants/SubscriptionPlans";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
+const handleSubscribe = (tierName) => {
+  triggerHaptic("success");
+  Alert.alert("Upgrade", `Der Kaufprozess für ${tierName} würde jetzt starten.`);
+};
+
+const handleRestore = () => {
+  triggerHaptic();
+  Alert.alert("Wiederherstellen", "Suche nach früheren Käufen...");
+};
+
 export default function SubscriptionScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -26,20 +36,13 @@ export default function SubscriptionScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  const skBase = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 }
-  };
-
-  const handleSubscribe = (tierName) => {
-    triggerHaptic("success");
-    Alert.alert("Upgrade", `Der Kaufprozess für ${tierName} würde jetzt starten.`);
-  };
-
-  const handleRestore = () => {
-    triggerHaptic();
-    Alert.alert("Wiederherstellen", "Suche nach früheren Käufen...");
-  };
+  const skBase = useMemo(
+    () => ({
+      colorMode: MyTheme.isDark ? "dark" : "light",
+      transition: { type: "timing", duration: 1500 }
+    }),
+    [MyTheme.isDark]
+  );
 
   return (
     <ScreenWrapper scrollable>
@@ -50,7 +53,7 @@ export default function SubscriptionScreen() {
         <AppText style={styles.subtitle}>{t("Unlock exclusive features and earn LifePoints even faster.")}</AppText>
 
         {isLoading ? (
-          <View style={{ alignSelf: "center", marginTop: Spacing.lg }}>
+          <View style={styles.toggleContainer}>
             <Skeleton {...skBase} width={240} height={44} radius={22} />
           </View>
         ) : (
@@ -70,9 +73,9 @@ export default function SubscriptionScreen() {
 
       {!isLoading && (
         <View style={styles.footer}>
-            <AppText bold style={styles.restoreText} onPress={handleRestore}>
-              {t("Käufe wiederherstellen")}
-            </AppText>
+          <AppText bold style={styles.restoreText} onPress={handleRestore}>
+            {t("Käufe wiederherstellen")}
+          </AppText>
           <AppText type="caption" style={styles.legalText}>
             {t(
               "Subscriptions renew automatically unless you cancel them at least 24 hours before the current period ends. You can manage your subscription at any time in the App Store or Play Store settings."
@@ -95,6 +98,10 @@ const getStyles = (theme) =>
       color: theme.muted,
       marginTop: Spacing.sm,
       paddingHorizontal: Spacing.lg
+    },
+    toggleContainer: {
+      alignSelf: "center",
+      marginTop: Spacing.lg
     },
     cardsContainer: {
       paddingBottom: Spacing.xl,

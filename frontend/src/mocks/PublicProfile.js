@@ -12,9 +12,9 @@ export const publicProfiles = [
     activeFrame: "frame_fire",
     unlockedFrames: ["frame_default", "frame_fire"],
     pinnedTrophies: [
-      { id: 1, progress: 125, goal: 125, unlocked: true, justUnlocked: false },
-      { id: 2, progress: 80, goal: 100, unlocked: false },
-      { id: 3, progress: 50, goal: 50, unlocked: true, justUnlocked: false }
+      { id: 'gym_rat', progress: 7, goal: 7, unlocked: true, justUnlocked: false },
+      { id: 'early_riser', progress: 8, goal: 10, unlocked: false },
+      { id: 'reader', progress: 3, goal: 3, unlocked: true, justUnlocked: false }
     ]
   },
   {
@@ -30,9 +30,9 @@ export const publicProfiles = [
     activeFrame: "frame_starter",
     unlockedFrames: ["frame_default", "frame_starter"],
     pinnedTrophies: [
-      { id: 1, progress: 10, goal: 125, unlocked: false },
-      { id: 2, progress: 100, goal: 100, unlocked: true, justUnlocked: true },
-      { id: 3, progress: 5, goal: 50, unlocked: false }
+      { id: 'sugar_free', progress: 2, goal: 14, unlocked: false },
+      { id: 'early_riser', progress: 10, goal: 10, unlocked: true, justUnlocked: true },
+      { id: 'gym_rat', progress: 1, goal: 7, unlocked: false }
     ]
   },
   {
@@ -48,9 +48,9 @@ export const publicProfiles = [
     activeFrame: "frame_neon",
     unlockedFrames: ["frame_default", "frame_neon", "frame_amethyst"],
     pinnedTrophies: [
-      { id: 1, progress: 125, goal: 125, unlocked: true, justUnlocked: false },
-      { id: 2, progress: 100, goal: 100, unlocked: true, justUnlocked: false },
-      { id: 3, progress: 40, goal: 50, unlocked: false }
+      { id: 'gym_rat', progress: 7, goal: 7, unlocked: true, justUnlocked: false },
+      { id: 'reader', progress: 3, goal: 3, unlocked: true, justUnlocked: false },
+      { id: 'sugar_free', progress: 5, goal: 14, unlocked: false }
     ]
   },
   {
@@ -66,9 +66,9 @@ export const publicProfiles = [
     activeFrame: "frame_default",
     unlockedFrames: ["frame_default"],
     pinnedTrophies: [
-      { id: 1, progress: 50, goal: 125, unlocked: false },
-      { id: 2, progress: 20, goal: 100, unlocked: false },
-      { id: 3, progress: 50, goal: 50, unlocked: true, justUnlocked: false }
+      { id: 'sugar_free', progress: 7, goal: 14, unlocked: false },
+      { id: 'early_riser', progress: 2, goal: 10, unlocked: false },
+      { id: 'reader', progress: 3, goal: 3, unlocked: true, justUnlocked: false }
     ]
   }
 ];

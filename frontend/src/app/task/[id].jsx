@@ -18,6 +18,19 @@ import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
+const formatHistoryDate = (isoString) => {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+
+  const dateString = date.toLocaleDateString();
+  const timeString = date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  return `${dateString} • ${timeString}`;
+};
+
 export default function TaskDetailScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -27,21 +40,11 @@ export default function TaskDetailScreen() {
   const insets = useSafeAreaInsets();
   const trackTask = useStore((state) => state.trackTask);
   const activities = useStore((state) => state.activities);
-  const task = tasksCatalog.find((t) => String(t.id) === String(id));
-  const taskTrackingHistory = activities.filter((item) => String(item.taskId) === String(id));
-
-  const formatHistoryDate = (isoString) => {
-    if (!isoString) return "";
-    const date = new Date(isoString);
-
-    const dateString = date.toLocaleDateString();
-    const timeString = date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    return `${dateString} • ${timeString}`;
-  };
+  const task = useMemo(() => tasksCatalog.find((t) => String(t.id) === String(id)), [id]);
+  const taskTrackingHistory = useMemo(
+    () => activities.filter((item) => String(item.taskId) === String(id)),
+    [activities, id]
+  );
 
   if (!task) {
     return (

@@ -17,25 +17,9 @@ const CreateCommunityCard = () => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
-    <View
-      style={[
-        styles.createCard,
-        {
-          backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1),
-          borderColor: addOpacity(MyTheme.primaryAccent, 0.25)
-        }
-      ]}
-    >
+    <View style={styles.createCard}>
       <View style={styles.createCardLeft}>
-        <View
-          style={[
-            styles.iconBox,
-            {
-              backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1),
-              borderColor: addOpacity(MyTheme.primaryAccent, 0.2)
-            }
-          ]}
-        >
+        <View style={styles.iconBox}>
           <Icon name="newFolder" color={MyTheme.primaryAccent} />
         </View>
         <View>
@@ -64,7 +48,9 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderRadius: Spacing.borderRadius.lg,
       padding: Spacing.md,
-      marginBottom: Spacing.lg
+      marginBottom: Spacing.lg,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.1),
+      borderColor: addOpacity(theme.primaryAccent, 0.25)
     },
     createCardLeft: {
       flexDirection: "row",
@@ -77,10 +63,17 @@ const getStyles = (theme) =>
       borderRadius: Spacing.borderRadius.md,
       alignItems: "center",
       justifyContent: "center",
-      borderWidth: 1
+      borderWidth: 1,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.1),
+      borderColor: addOpacity(theme.primaryAccent, 0.2)
     },
-    createCardTitle: { marginBottom: Spacing.xs },
-    createCardSubtitle: { fontSize: 12, color: theme.muted }
+    createCardTitle: {
+      marginBottom: Spacing.xs
+    },
+    createCardSubtitle: {
+      fontSize: 12,
+      color: theme.muted
+    }
   });
 
 export default CreateCommunityCard;

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { useHorizontalRail } from "@/api/communities/useHorizontalRail";
@@ -10,7 +10,10 @@ import { extractId } from "@/utils/helpers";
 
 import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
-const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
+const CARD_WIDTH = 260;
+const SNAP_INTERVAL = CARD_WIDTH + Spacing.md;
+
+const HorizontalSectionList = memo(({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalRail(categoryKey);
@@ -22,31 +25,31 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
     return initialData || [];
   }, [data, initialData]);
 
-  const CARD_WIDTH = 260;
-  const SNAP_INTERVAL = CARD_WIDTH + Spacing.md;
-
-  const handleEndReached = () => {
+  const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const renderHorizontalItem = ({ item }) => (
-    <View style={{ width: CARD_WIDTH, marginRight: Spacing.md }}>
-      <RecommendedCommunity item={item} onPress={() => onPressItem(item)} />
-    </View>
+  const renderHorizontalItem = useCallback(
+    ({ item }) => (
+      <View style={styles.cardWrapper}>
+        <RecommendedCommunity item={item} onPress={() => onPressItem(item)} />
+      </View>
+    ),
+    [styles.cardWrapper, onPressItem]
   );
 
-  const renderFooter = () => {
+  const renderFooter = useCallback(() => {
     if (isFetchingNextPage) {
       return (
-        <View style={{ width: 100 }}>
+        <View style={styles.footerLoader}>
           <AppLoadingSpinner centered />
         </View>
       );
     }
-    return <View style={{ width: Spacing.md }} />;
-  };
+    return <View style={styles.footerSpacer} />;
+  }, [isFetchingNextPage, styles.footerSpacer, styles.footerLoader]);
 
   return (
     <View style={styles.sectionContainer}>
@@ -70,7 +73,8 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
       />
     </View>
   );
-};
+});
+HorizontalSectionList.displayName = "HorizontalSectionList";
 
 const getStyles = () =>
   StyleSheet.create({
@@ -83,6 +87,16 @@ const getStyles = () =>
     horizontalScrollContentContainer: {
       paddingLeft: Spacing.md,
       alignItems: "center"
+    },
+    cardWrapper: {
+      width: CARD_WIDTH,
+      marginRight: Spacing.md
+    },
+    footerLoader: {
+      width: 100
+    },
+    footerSpacer: {
+      width: Spacing.md
     }
   });
 

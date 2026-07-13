@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -12,6 +12,14 @@ const SKELETON_DATA = [1, 2, 3];
 
 const MyCommunitiesSection = memo(({ data, isLoading, onPress }) => {
   const { t } = useTranslation("community");
+
+  const renderItem = useCallback(
+    ({ item }) => (
+      <MyCommunityCard isLoading={isLoading} item={item} onPress={isLoading ? undefined : () => onPress(item)} />
+    ),
+    [isLoading, onPress]
+  );
+
   if (!isLoading && (!data || data.length === 0)) return null;
 
   return (
@@ -23,9 +31,7 @@ const MyCommunitiesSection = memo(({ data, isLoading, onPress }) => {
         horizontal
         data={isLoading ? SKELETON_DATA : data}
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : extractId(item))}
-        renderItem={({ item }) => (
-          <MyCommunityCard isLoading={isLoading} item={item} onPress={isLoading ? undefined : () => onPress(item)} />
-        )}
+        renderItem={renderItem}
         contentContainerStyle={styles.horizontalScrollContentContainer}
         showsHorizontalScrollIndicator={false}
       />

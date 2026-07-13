@@ -9,7 +9,7 @@ export default function PrivacyScreen() {
   // const { t } = useTranslation("settings");
   return (
     <ScreenWrapper>
-      <View style={{ alignItems: "center", justifyContent: "center", gap: 10 }}>
+      <View style={styles.container}>
         <Text style={styles.emoji}>🚧</Text>
         <AppText type="title">Privacy Work in Progress</AppText>
         <AppText type="caption" style={{ textAlign: "center" }}>
@@ -21,6 +21,11 @@ export default function PrivacyScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10
+  },
   emoji: {
     fontSize: 48,
     marginBottom: 16

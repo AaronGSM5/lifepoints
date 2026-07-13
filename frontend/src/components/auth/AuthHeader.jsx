@@ -1,27 +1,35 @@
-import React from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import React, { useMemo } from "react";
+import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 
 export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
-  const screenWidth = Dimensions.get("window").width;
-  const maxLogoWidth = 330;
-  const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  const logoHeight = logoWidth / 3.75;
+  const { width } = useWindowDimensions();
+
+  const logoDimensions = useMemo(() => {
+    const maxLogoWidth = 330;
+    const logoWidth = Math.min(width * 0.75, maxLogoWidth);
+    const logoHeight = logoWidth / 3.75;
+    return { width: logoWidth, height: logoHeight };
+  }, [width]);
 
   return (
     <View style={styles.header}>
       <View style={styles.appIcon}>
         <Image
           source={require("@/../public/assets/appIcons/adaptive-icon.png")}
-          style={{ width: logoWidth, height: logoHeight }}
+          style={logoDimensions}
           resizeMode="contain"
         />
       </View>
 
       {showImageLogo ? (
-        <Image source={require("@/../public/assets/lifepointsLogo.png")} style={{ width: 200 }} resizeMode="contain" />
+        <Image
+          source={require("@/../public/assets/lifepointsLogo.png")}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
       ) : (
         <AppText type="h1" style={styles.headerText}>
           {title}
@@ -49,5 +57,8 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: Spacing.sm,
     opacity: 0.7
+  },
+  logoImage: {
+    width: 200
   }
 });

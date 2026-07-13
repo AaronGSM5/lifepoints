@@ -67,11 +67,18 @@ export default function CommunitiesScreen() {
     return [...topElements, ...loadedSections];
   }, [loadedSections]);
 
-  const loadMoreSections = () => {
+  const loadMoreSections = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const handleHeroPress = useCallback(() => setIsCreateModalVisible(true), []);
+  const handleSearchPress = useCallback(() => router.push("/search"), []);
+  const handleCommunityPress = useCallback((community) => router.push(`/community/${extractId(community)}`), []);
+  const handleMyCommunityPress = useCallback((community) => router.push(`/mycommunity/${extractId(community)}`), []);
+
+  const renderSkeletonItem = useCallback(() => <RecommendedCommunity isLoading={true} />, []);
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -82,7 +89,7 @@ export default function CommunitiesScreen() {
               <EventHero
                 imageSource={require("../../../public/assets/createCommunityBanner.png")}
                 isLoading={isLoading}
-                onPress={() => setIsCreateModalVisible(true)}
+                onPress={handleHeroPress}
               />
             </View>
           );
@@ -90,7 +97,7 @@ export default function CommunitiesScreen() {
         case "search":
           return (
             <View style={styles.paddedContent}>
-              <Pressable onPress={() => router.push("/search")}>
+              <Pressable onPress={handleSearchPress}>
                 <View pointerEvents="none">
                   <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
                 </View>
@@ -100,18 +107,12 @@ export default function CommunitiesScreen() {
 
         case "my_communities":
           if (!myCommunities?.length && !isLoading) {
-            return <View style={{ marginTop: Spacing.md, marginBottom: Spacing.md }}></View>;
+            return <View style={styles.emptyMyCommunities} />;
           }
-          return (
-            <MyCommunitiesSection
-              data={myCommunities}
-              isLoading={isLoading}
-              onPress={(c) => router.push(`/mycommunity/${extractId(c)}`)}
-            />
-          );
+          return <MyCommunitiesSection data={myCommunities} isLoading={isLoading} onPress={handleMyCommunityPress} />;
 
         case "section":
-          const validSectionData = item.data?.filter((c) => c !== null) || [];
+          const validSectionData = item.data?.filter(Boolean) || [];
           if (validSectionData.length === 0 && !isLoading) return null;
           if (isLoading) {
             return (
@@ -123,7 +124,7 @@ export default function CommunitiesScreen() {
                   horizontal
                   data={SKELETON_DATA}
                   contentContainerStyle={styles.horizontalScrollContentContainer}
-                  renderItem={() => <RecommendedCommunity isLoading={true} />}
+                  renderItem={renderSkeletonItem}
                   snapToInterval={260 + Spacing.md}
                   snapToAlignment="start"
                   decelerationRate="fast"
@@ -136,7 +137,7 @@ export default function CommunitiesScreen() {
               title={item.title}
               initialData={validSectionData}
               categoryKey={item.categoryKey}
-              onPressItem={(community) => router.push(`/community/${extractId(community)}`)}
+              onPressItem={handleCommunityPress}
             />
           );
 
@@ -144,10 +145,20 @@ export default function CommunitiesScreen() {
           return null;
       }
     },
-    [isLoading, myCommunities, t, styles]
+    [
+      isLoading,
+      handleHeroPress,
+      handleSearchPress,
+      handleMyCommunityPress,
+      handleCommunityPress,
+      renderSkeletonItem,
+      myCommunities,
+      t,
+      styles
+    ]
   );
 
-  const renderMainFooter = () => {
+  const renderMainFooter = useCallback(() => {
     if (isFetchingNextPage) return <AppLoadingSpinner centered />;
 
     if (!hasNextPage && loadedSections.length > 0) {
@@ -157,8 +168,8 @@ export default function CommunitiesScreen() {
         </View>
       );
     }
-    return <View style={{ height: Spacing.md }} />;
-  };
+    return <View style={styles.footerSpacer} />;
+  }, [hasNextPage, isFetchingNextPage, loadedSections.length, styles, t]);
 
   return (
     <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
@@ -179,10 +190,6 @@ export default function CommunitiesScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
-    myCommunitiesSection: {
-      marginTop: Spacing.md,
-      marginBottom: Spacing.md
-    },
     paddedContent: {
       paddingHorizontal: Spacing.md
     },
@@ -196,5 +203,10 @@ const getStyles = () =>
     endOfList: {
       paddingVertical: Spacing.xl,
       alignItems: "center"
-    }
+    },
+    emptyMyCommunities: {
+      marginTop: Spacing.md,
+      marginBottom: Spacing.md
+    },
+    footerSpacer: { height: Spacing.md }
   });

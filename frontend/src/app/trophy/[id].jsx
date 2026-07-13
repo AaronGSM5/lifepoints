@@ -17,11 +17,14 @@ export default function TrophyScreen() {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("trophies");
   const { id } = useLocalSearchParams();
-  const trophy = trophiesCatalog.find((t) => String(t.id) === String(id));
+  const trophy = useMemo(() => trophiesCatalog.find((t) => String(t.id) === String(id)), [id]);
   const eventStats = useStore((state) => state.profile.eventStats);
-  const currentProgress = trophy?.triggerEvent ? eventStats[trophy.triggerEvent] || 0 : 0;
-  const cappedProgress = Math.min(currentProgress, trophy?.goal || 1);
-  const progressPercentage = (cappedProgress / trophy?.goal) * 100;
+  const currentProgress = useMemo(
+    () => (trophy?.triggerEvent ? eventStats[trophy.triggerEvent] || 0 : 0),
+    [eventStats, trophy.triggerEvent]
+  );
+  const cappedProgress = useMemo(() => Math.min(currentProgress, trophy?.goal || 1), [currentProgress, trophy.goal]);
+  const progressPercentage = useMemo(() => (cappedProgress / trophy?.goal) * 100, [cappedProgress, trophy.goal]);
 
   if (!trophy) return null;
 
@@ -37,27 +40,17 @@ export default function TrophyScreen() {
           />
         </View>
 
-        <AppText type="h1" bold style={{ textAlign: "center", marginBottom: Spacing.sm }}>
+        <AppText type="h1" bold style={styles.title}>
           {t(trophy.title)}
         </AppText>
 
         <View style={styles.infoBox}>
-          <AppText style={{ textAlign: "center", lineHeight: 24, color: MyTheme.text }}>
-            {t(trophy.description)}
-          </AppText>
+          <AppText style={styles.description}>{t(trophy.description)}</AppText>
         </View>
 
         <View style={styles.progressSection}>
           <View style={styles.progressBarBg}>
-            <View
-              style={[
-                styles.progressBarFill,
-                {
-                  width: `${progressPercentage}%`,
-                  backgroundColor: MyTheme.primaryAccent
-                }
-              ]}
-            />
+            <View style={[styles.progressBarFill, { width: `${progressPercentage}%` }]} />
           </View>
           <View style={styles.progressTextRow}>
             <AppText type="caption">{t(trophy.requirement)}</AppText>
@@ -109,10 +102,20 @@ const getStyles = (theme) =>
     },
     progressBarFill: {
       height: "100%",
-      borderRadius: Spacing.borderRadius.full
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.primaryAccent
     },
     progressTextRow: {
       flexDirection: "row",
       justifyContent: "space-between"
+    },
+    description: {
+      textAlign: "center",
+      lineHeight: 24,
+      color: theme.text
+    },
+    title: {
+      textAlign: "center",
+      marginBottom: Spacing.sm
     }
   });

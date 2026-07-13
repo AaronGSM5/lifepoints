@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
 import BaseCard from "../ui/BaseCard";
 
 export default function NotificationEntry({ notification }) {
@@ -12,10 +13,7 @@ export default function NotificationEntry({ notification }) {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("common");
   return (
-    <BaseCard
-      style={styles.container}
-      onPress={() => console.log("Notification clicked:", t(notification.title))}
-    >
+    <BaseCard style={styles.container} onPress={() => console.log("Notification clicked:", t(notification.title))}>
       <View style={styles.iconContainer}>
         <AppText type="body">✨</AppText>
       </View>

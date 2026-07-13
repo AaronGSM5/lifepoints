@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -20,24 +20,27 @@ export default function LinkedServicesScreen() {
     spotify: false
   });
 
-  const handleToggleService = (id, name) => {
-    if (connections[id]) {
-      Alert.alert(
-        "Verbindung trennen",
-        `Möchtest du die Verbindung zu ${name} wirklich aufheben? Deine Daten werden dann nicht mehr automatisch synchronisiert.`,
-        [
-          { text: "Abbrechen", style: "cancel" },
-          {
-            text: "Trennen",
-            style: "destructive",
-            onPress: () => setConnections((prev) => ({ ...prev, [id]: false }))
-          }
-        ]
-      );
-    } else {
-      setConnections((prev) => ({ ...prev, [id]: true }));
-    }
-  };
+  const handleToggleService = useCallback(
+    (id, name) => {
+      if (connections[id]) {
+        Alert.alert(
+          "Verbindung trennen",
+          `Möchtest du die Verbindung zu ${name} wirklich aufheben? Deine Daten werden dann nicht mehr automatisch synchronisiert.`,
+          [
+            { text: "Abbrechen", style: "cancel" },
+            {
+              text: "Trennen",
+              style: "destructive",
+              onPress: () => setConnections((prev) => ({ ...prev, [id]: false }))
+            }
+          ]
+        );
+      } else {
+        setConnections((prev) => ({ ...prev, [id]: true }));
+      }
+    },
+    [connections]
+  );
 
   return (
     <ScreenWrapper scrollable>

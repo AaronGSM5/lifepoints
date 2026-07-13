@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { Platform, UIManager, View } from "react-native";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -31,7 +31,7 @@ const initialMetrics = {
   insets: { top: 0, left: 0, right: 0, bottom: 0 }
 };
 
-function TopNotchMask() {
+const TopNotchMask = memo(() => {
   const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
 
@@ -50,10 +50,14 @@ function TopNotchMask() {
       }}
     />
   );
-}
+});
+TopNotchMask.displayName = "TopNotchMask";
 
 const queryClient = new QueryClient();
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+
+if (typeof window !== "undefined") {
+  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -71,8 +75,12 @@ export default function RootLayout() {
   useEffect(() => {
     const hideNavigationBar = async () => {
       if (Platform.OS === "android") {
-        await NavigationBar.setVisibilityAsync("hidden");
-        await NavigationBar.setBehaviorAsync("overlay-swipe");
+        try {
+          await NavigationBar.setVisibilityAsync("hidden");
+          await NavigationBar.setBehaviorAsync("overlay-swipe");
+        } catch (e) {
+          console.warn("Konnte Android NavBar nicht verstecken", e);
+        }
       }
     };
 
@@ -92,7 +100,6 @@ export default function RootLayout() {
           <StatusBar style={"auto"} translucent backgroundColor="transparent" />
 
           <TopNotchMask />
-
           <TrophyPopup />
 
           <Stack
