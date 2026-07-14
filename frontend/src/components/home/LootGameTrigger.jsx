@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Animated, Image, Pressable, StyleSheet } from "react-native";
 
-export const LootGameTrigger = ({ isReady, onPress }) => {
+export const LootGameTrigger = memo(({ isReady, onPress }) => {
   const [translateX] = useState(() => new Animated.Value(120));
   const hasAppeared = useRef(false);
 
@@ -32,7 +32,8 @@ export const LootGameTrigger = ({ isReady, onPress }) => {
       </Pressable>
     </Animated.View>
   );
-};
+});
+LootGameTrigger.displayName = "LootGameTrigger";
 
 const styles = StyleSheet.create({
   mascotContainer: {

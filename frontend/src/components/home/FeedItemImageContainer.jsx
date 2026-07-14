@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 
-const FeedItemImageContainer = ({ image, heartOpacity, heartScale, onPress }) => {
+const FeedItemImageContainer = memo(({ image, heartOpacity, heartScale, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
@@ -27,7 +27,8 @@ const FeedItemImageContainer = ({ image, heartOpacity, heartScale, onPress }) =>
       </Pressable>
     </View>
   );
-};
+});
+FeedItemImageContainer.displayName = "FeedItemImageContainer";
 
 const getStyles = (theme) =>
   StyleSheet.create({

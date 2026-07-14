@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import AppButton from "@/components/ui/AppButton";
@@ -9,14 +9,18 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 
-export default function InstaTrackingModal({ visible, onClose, onConfirm }) {
+const InstaTrackingModal = memo(({ visible, onClose, onConfirm }) => {
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-  const handleConfirm = () => {
+  const toggleDontShowAgain = useCallback(() => {
+    setDontShowAgain((prev) => !prev);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
     onConfirm(dontShowAgain);
-  };
+  }, [dontShowAgain, onConfirm]);
 
   return (
     <AppModal visible={visible} onClose={onClose}>
@@ -27,7 +31,7 @@ export default function InstaTrackingModal({ visible, onClose, onConfirm }) {
         </AppText>
 
         {/* Checkbox Bereich */}
-        <Pressable style={styles.checkboxContainer} onPress={() => setDontShowAgain(!dontShowAgain)}>
+        <Pressable style={styles.checkboxContainer} onPress={toggleDontShowAgain}>
           <Icon
             name={dontShowAgain ? "checkmark" : "square"}
             size={24}
@@ -41,7 +45,8 @@ export default function InstaTrackingModal({ visible, onClose, onConfirm }) {
       </View>
     </AppModal>
   );
-}
+});
+InstaTrackingModal.displayName = "InstaTrackingModal";
 
 const getStyles = () =>
   StyleSheet.create({

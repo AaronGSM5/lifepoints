@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 
@@ -13,22 +13,22 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  const pickImage = async () => {
+  const pickImage = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert(t("We need access to your photos in order to upload a banner."));
+      Alert.alert(t("We need access to your photos in order to upload a banner."));
       return;
     }
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [16, 9],
-      quality: 1
+      quality: 0.8
     });
     if (!result.canceled) {
       onBannerSelect(result.assets[0].uri);
     }
-  };
+  }, [onBannerSelect, t]);
 
   return (
     <View>
@@ -43,7 +43,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       ) : (
         <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
           <Icon name="camera" color={MyTheme.muted} />
-          <AppText type="caption" style={{ textAlign: "center", marginTop: 4 }}>
+          <AppText type="caption" style={styles.placeholderText}>
             {t("Tap to select (16:9 recommended)")}
           </AppText>
         </Pressable>
@@ -88,5 +88,9 @@ const getStyles = (theme) =>
       backgroundColor: "rgba(0,0,0,0.6)",
       padding: Spacing.sm,
       borderRadius: Spacing.borderRadius.full
+    },
+    placeholderText: {
+      textAlign: "center",
+      marginTop: Spacing.xs
     }
   });

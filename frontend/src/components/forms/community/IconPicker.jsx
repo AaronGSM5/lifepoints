@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 
@@ -10,7 +10,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
-export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
+const IconPicker = memo(({ icons, selectedIcon, onSelectIcon }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -18,14 +18,14 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   const [fullHeight, setFullHeight] = useState(0);
   const [heightAnim] = useState(() => new Animated.Value(62));
 
-  const expand = () => {
+  const expand = useCallback(() => {
     setShowAll(true);
     Animated.timing(heightAnim, {
       toValue: fullHeight > 62 ? fullHeight : 200,
       duration: 300,
       useNativeDriver: false
     }).start();
-  };
+  }, [fullHeight, heightAnim]);
 
   return (
     <View>
@@ -36,6 +36,7 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
       <View
         style={[styles.iconGrid, styles.measureView]}
         onLayout={(event) => setFullHeight(event.nativeEvent.layout.height)}
+        pointerEvents="none"
       >
         {icons.map((icon, index) => (
           <View key={`measure-${icon}-${index}`} style={styles.iconItem} />
@@ -48,13 +49,7 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
             <Pressable
               key={`${icon}-${index}`}
               onPress={() => onSelectIcon(icon)}
-              style={[
-                styles.iconItem,
-                selectedIcon === icon && {
-                  borderColor: MyTheme.primaryAccent,
-                  backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1)
-                }
-              ]}
+              style={[styles.iconItem, selectedIcon === icon && styles.iconItemActive]}
             >
               <MaterialIcons
                 name={icon}
@@ -75,7 +70,8 @@ export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
       )}
     </View>
   );
-}
+});
+IconPicker.displayName = "IconPicker";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -125,5 +121,11 @@ const getStyles = (theme) =>
       left: 0,
       right: 0,
       zIndex: -1
+    },
+    iconItemActive: {
+      borderColor: theme.primaryAccent,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
     }
   });
+
+export default IconPicker;

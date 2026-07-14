@@ -1,5 +1,5 @@
 // src/components/home/LootGameModal.js
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Image, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -15,20 +15,15 @@ import AppText from "../ui/AppText";
 const { width } = Dimensions.get("window");
 const MYSTERY_COLOR = "#475569";
 
-const chestEpic = require("@/../public/assets/chests/chestPurple.png");
-const chestLegendary = require("@/../public/assets/chests/chestGold.png");
-const chestCommon = require("@/../public/assets/chests/chestBrown.png");
-const chestRare = require("@/../public/assets/chests/chestBlue.png");
-const mysteryChest = require("@/../public/assets/chests/chestBlack.png");
-
 const STATIC_CHESTS = {
-  epic: chestEpic,
-  legendary: chestLegendary,
-  common: chestCommon,
-  rare: chestRare
+  epic: require("@/../public/assets/chests/chestPurple.png"),
+  legendary: require("@/../public/assets/chests/chestGold.png"),
+  common: require("@/../public/assets/chests/chestBrown.png"),
+  rare: require("@/../public/assets/chests/chestBlue.png"),
+  mystery: require("@/../public/assets/chests/chestBlack.png")
 };
 
-const LootGameModal = () => {
+const LootGameModal = memo(() => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
@@ -60,24 +55,27 @@ const LootGameModal = () => {
     }
   }, [isLootGameActive, currentLootSet, slideLeft, slideRight, fadeCenter]);
 
-  const handlePick = (index) => {
-    if (!canInteract || chosenLootIndex !== null) return;
+  const handlePick = useCallback(
+    (index) => {
+      if (!canInteract || chosenLootIndex !== null) return;
 
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    chooseLoot(index);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      chooseLoot(index);
 
-    setTimeout(() => {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      revealFinalLoot();
-    }, 1200);
-  };
+      setTimeout(() => {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        revealFinalLoot();
+      }, 1200);
+    },
+    [canInteract, chooseLoot, chosenLootIndex, revealFinalLoot]
+  );
 
-  if (!isLootGameActive) return null;
-
-  const handleCollect = () => {
+  const handleCollect = useCallback(() => {
     setCanInteract(false);
     collectLoot();
-  };
+  }, [collectLoot]);
+
+  if (!isLootGameActive) return null;
 
   return (
     <Modal visible={isLootGameActive} transparent animationType="fade">
@@ -96,11 +94,11 @@ const LootGameModal = () => {
 
             let chestSource;
             if (isMysteryPhase) {
-              chestSource = mysteryChest; // Die graue Kiste
+              chestSource = STATIC_CHESTS.mystery; // Die graue Kiste
             } else if (shouldReveal) {
-              chestSource = STATIC_CHESTS[reward.rarity.id] || mysteryChest; // Die farbige Kiste oder Fallback
+              chestSource = STATIC_CHESTS[reward.rarity.id] || STATIC_CHESTS.mystery; // Die farbige Kiste oder Fallback
             } else {
-              chestSource = mysteryChest; // Nicht gewählte, nicht enthüllte Kiste
+              chestSource = STATIC_CHESTS.mystery; // Nicht gewählte, nicht enthüllte Kiste
             }
 
             let animatedStyle = {};
@@ -148,7 +146,8 @@ const LootGameModal = () => {
       </View>
     </Modal>
   );
-};
+});
+LootGameModal.displayName = "LootGameModal";
 
 const getStyles = (theme) =>
   StyleSheet.create({

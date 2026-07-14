@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
 
@@ -16,6 +16,14 @@ import ReplyBar from "./ReplyBar";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
+const EmptyComments = memo(({ theme, t }) => (
+  <View style={{ alignItems: "center", marginTop: 40 }}>
+    <Icon name="chat" size={40} color={theme.muted} />
+    <AppText style={{ color: theme.muted, marginTop: 12 }}>{t("No comments yet. Be the first to leave one!")}</AppText>
+  </View>
+));
+EmptyComments.displayName = "EmptyComments";
 
 export default function CommentSheet({ isVisible, onClose }) {
   const MyTheme = useAppTheme();
@@ -71,15 +79,6 @@ export default function CommentSheet({ isVisible, onClose }) {
     [handleReply, handleLikeComment, handleNavigate, styles]
   );
 
-  const renderEmptySection = () => (
-    <View style={{ alignItems: "center", marginTop: 40 }}>
-      <Icon name="chat" size={40} color={MyTheme.muted} />
-      <AppText style={{ color: MyTheme.muted, marginTop: 12 }}>
-        {t("No comments yet. Be the first to leave one!")}
-      </AppText>
-    </View>
-  );
-
   return (
     <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={t("Comments")}>
       <View style={{ flex: 1 }}>
@@ -90,7 +89,7 @@ export default function CommentSheet({ isVisible, onClose }) {
           showsVerticalScrollIndicator={true}
           onRefresh={onRefresh}
           refreshing={isRefreshing}
-          ListEmptyComponent={renderEmptySection}
+          ListEmptyComponent={<EmptyComments theme={MyTheme} t={t} />}
           contentContainerStyle={styles.listContent}
           style={Platform.OS === "web" ? { maxHeight: SCREEN_HEIGHT * 0.75 - 130, overflowY: "auto" } : { flex: 1 }}
           keyboardShouldPersistTaps="handled"

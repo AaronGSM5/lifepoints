@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import { Skeleton } from "moti/skeleton";
@@ -6,8 +6,9 @@ import { Skeleton } from "moti/skeleton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const EventHero = ({ imageSource, isLoading, onPress }) => {
+const EventHero = memo(({ imageSource, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(), []);
   return (
     <Pressable onPress={onPress}>
       <View style={styles.heroSection}>
@@ -26,20 +27,22 @@ const EventHero = ({ imageSource, isLoading, onPress }) => {
       </View>
     </Pressable>
   );
-};
-
-const styles = StyleSheet.create({
-  heroSection: {
-    width: "100%",
-    aspectRatio: 16 / 9,
-    marginBottom: Spacing.lg,
-    position: "relative"
-  },
-  heroImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: Spacing.borderRadius.lg
-  }
 });
+EventHero.displayName = "EventHero";
+
+const getStyles = () =>
+  StyleSheet.create({
+    heroSection: {
+      width: "100%",
+      aspectRatio: 16 / 9,
+      marginBottom: Spacing.lg,
+      position: "relative"
+    },
+    heroImage: {
+      width: "100%",
+      height: "100%",
+      borderRadius: Spacing.borderRadius.lg
+    }
+  });
 
 export default EventHero;

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, View } from "react-native";
 
@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
+const BadgePicker = memo(({ badges = [], selectedBadges = [], onToggleBadge }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -15,14 +15,14 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
   const [fullHeight, setFullHeight] = useState(0);
   const [heightAnim] = useState(() => new Animated.Value(30));
 
-  const expand = () => {
+  const expand = useCallback(() => {
     setShowAll(true);
     Animated.timing(heightAnim, {
       toValue: fullHeight > 40 ? fullHeight : 150,
       duration: 300,
       useNativeDriver: false
     }).start();
-  };
+  }, [fullHeight, heightAnim]);
 
   return (
     <View>
@@ -33,6 +33,7 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
       <View
         style={[styles.badgeWrapper, styles.measureView]}
         onLayout={(event) => setFullHeight(event.nativeEvent.layout.height)}
+        pointerEvents="none"
       >
         {badges.map((badge, index) => (
           <AppBadge key={`measure-badge-${index}`} label={t(badge)} variant="outline" />
@@ -64,7 +65,8 @@ export default function BadgePicker({ badges, selectedBadges, onToggleBadge }) {
       )}
     </View>
   );
-}
+});
+BadgePicker.displayName = "BadgePicker";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -104,3 +106,5 @@ const getStyles = (theme) =>
       zIndex: -1
     }
   });
+
+export default BadgePicker;

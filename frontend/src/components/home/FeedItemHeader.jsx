@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -9,7 +9,7 @@ import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
 import StatusBadge from "../ui/StatusBadge";
 
-const FeedItemHeader = ({ id, username, avatar, badge, onPress, onOpenOptions }) => {
+const FeedItemHeader = memo(({ id, username, avatar, badge, onPress, onOpenOptions }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
@@ -18,11 +18,7 @@ const FeedItemHeader = ({ id, username, avatar, badge, onPress, onOpenOptions })
         <View style={styles.headerUser}>
           <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
             {avatar ? (
-              <Image
-                source={{ uri: avatar }}
-                style={{ width: "100%", height: "100%", borderRadius: Spacing.borderRadius.full }}
-                resizeMode="cover"
-              />
+              <Image source={{ uri: avatar }} style={styles.avatarImage} resizeMode="cover" />
             ) : (
               <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
             )}
@@ -44,7 +40,8 @@ const FeedItemHeader = ({ id, username, avatar, badge, onPress, onOpenOptions })
       <Icon name={"dots"} size={20} color={MyTheme.muted} onPress={onOpenOptions} />
     </View>
   );
-};
+});
+FeedItemHeader.displayName = "FeedItemHeader";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -67,6 +64,11 @@ const getStyles = (theme) =>
       backgroundColor: theme.primaryAccent,
       justifyContent: "center",
       alignItems: "center"
+    },
+    avatarImage: {
+      width: "100%",
+      height: "100%",
+      borderRadius: Spacing.borderRadius.full
     },
     username: {
       fontSize: 15

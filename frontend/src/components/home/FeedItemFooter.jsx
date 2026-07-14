@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -7,7 +7,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
 
-const FeedItemFooter = ({ likesCount, username, description, onPress }) => {
+const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
@@ -28,7 +28,8 @@ const FeedItemFooter = ({ likesCount, username, description, onPress }) => {
       </AppText>
     </View>
   );
-};
+});
+FeedItemFooter.displayName = "FeedItemFooter";
 
 const getStyles = () =>
   StyleSheet.create({

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -10,11 +10,53 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import BaseBottomSheet from "../ui/BaseBottomSheet";
 
+const QuestItem = memo(({ quest, onStart }) => {
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getQuestItemStyles(MyTheme), [MyTheme]);
+  const current = quest.currentProgress || 0;
+  const target = quest.target || 1;
+  const progressPercent = Math.min((current / target) * 100, 100);
+
+  const getButtonTitle = () => {
+    if (quest.completed) return quest.collected ? "Done" : `+${quest.points} LP`;
+    return "Start";
+  };
+
+  return (
+    <BaseCard style={styles.questCard}>
+      <View style={{ flex: 1, paddingRight: Spacing.md }}>
+        <AppText bold>{quest.title}</AppText>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressTrack}>
+            <View
+              style={[styles.progressFill, { width: `${progressPercent}%`, backgroundColor: MyTheme.primaryAccent }]}
+            />
+          </View>
+          <AppText type="caption">
+            {current}/{target}
+          </AppText>
+        </View>
+      </View>
+
+      <AppButton
+        size="sm"
+        title={getButtonTitle()}
+        variant={quest.completed ? (quest.collected ? "primary" : "primary") : "outline"}
+        bgColor={quest.completed && !quest.collected ? MyTheme.primaryAccent : undefined}
+        disabled={quest.completed && quest.collected}
+        onPress={onStart}
+      />
+    </BaseCard>
+  );
+});
+QuestItem.displayName = "QuestItem";
+
 const QuestModal = ({ mockQuests, visible, onClose }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
-  const [activeTab, setActiveTab] = useState("today"); // "today" | "week"
+  const [activeTab, setActiveTab] = useState("today");
+
   const quests = mockQuests[activeTab];
 
   return (
@@ -23,6 +65,8 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
         <TouchableOpacity
           style={[styles.tab, activeTab === "today" && styles.activeTab]}
           onPress={() => setActiveTab("today")}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: activeTab === "today" }}
         >
           <AppText bold style={activeTab === "today" ? { color: MyTheme.text } : { color: MyTheme.muted }}>
             {t("Today")}
@@ -32,6 +76,8 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
         <TouchableOpacity
           style={[styles.tab, activeTab === "week" && styles.activeTab]}
           onPress={() => setActiveTab("week")}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: activeTab === "week" }}
         >
           <AppText bold style={activeTab === "week" ? { color: MyTheme.text } : { color: MyTheme.muted }}>
             {t("This Week")}
@@ -40,37 +86,9 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
       </View>
 
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
-        {quests.map((quest) => {
-          const current = quest.currentProgress || 0;
-          const target = quest.target || 1;
-          const progressPercent = Math.min((current / target) * 100, 100);
-          return (
-            <BaseCard key={quest.id} style={styles.questCard}>
-              <View style={{ flex: 1, paddingRight: Spacing.md }}>
-                <AppText bold style={styles.questTitle}>
-                  {quest.title}
-                </AppText>
-
-                <View style={styles.progressContainer}>
-                  <View style={styles.progressTrack}>
-                    <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
-                  </View>
-                  <AppText type="caption">
-                    {current}/{target}
-                  </AppText>
-                </View>
-              </View>
-
-              <AppButton
-                size="sm"
-                title={quest.completed ? (quest.collected ? t("Done") : `+${quest.points} LP`) : t("Start")}
-                variant={quest.completed ? quest.collected && "primary" : "outline"}
-                bgColor={quest.completed && !quest.collected && MyTheme.primaryAccent}
-                disabled={quest.completed && quest.collected}
-              />
-            </BaseCard>
-          );
-        })}
+        {quests.map((quest) => (
+          <QuestItem key={quest.id} quest={quest} onStart={() => console.log("Quest gestartet: ", quest.id)} />
+        ))}
         <View style={{ height: Spacing.xl }} />
       </ScrollView>
     </BaseBottomSheet>
@@ -101,7 +119,11 @@ const getStyles = (theme) =>
     list: {
       flex: 1,
       paddingHorizontal: Spacing.lg
-    },
+    }
+  });
+
+const getQuestItemStyles = (theme) =>
+  StyleSheet.create({
     questCard: {
       flexDirection: "row",
       alignItems: "center",

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,7 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 
-const FeedItemActionBar = ({ handleLike, handleSave, handleShare, isLiked, isSaved, onOpenComments }) => {
+const FeedItemActionBar = memo(({ handleLike, handleSave, handleShare, isLiked, isSaved, onOpenComments }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
@@ -22,7 +22,8 @@ const FeedItemActionBar = ({ handleLike, handleSave, handleShare, isLiked, isSav
       </View>
     </View>
   );
-};
+});
+FeedItemActionBar.displayName = "FeedItemActionBar";
 
 const getStyles = () =>
   StyleSheet.create({

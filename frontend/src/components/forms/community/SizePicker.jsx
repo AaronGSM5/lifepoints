@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -7,31 +7,36 @@ import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function SizePicker({ options, selectedSize, onSelectSize }) {
+const SizePicker = memo(({ options = [], selectedSize, onSelectSize }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
+  const handleSelect = useCallback(
+    (opt) => {
+      if (onSelectSize) onSelectSize(opt);
+    },
+    [onSelectSize]
+  );
   return (
     <View>
       <AppText type="caption" style={styles.label}>
         {t("COMMUNITY-SIZE")}
       </AppText>
       <View style={styles.sizeGrid}>
-        {options.map((opt) => (
-          <BaseCard
-            key={opt.slots}
-            style={styles.sizeCard}
-            isSelected={selectedSize.slots === opt.slots}
-            onPress={() => onSelectSize(opt)}
-          >
-            <AppText bold>{opt.slots}</AppText>
-            <AppText type="caption">{t(opt.price)}</AppText>
-          </BaseCard>
-        ))}
+        {options.map((opt) => {
+          const isSelected = selectedSize?.slots === opt.slots;
+          return (
+            <BaseCard key={opt.slots} style={styles.sizeCard} isSelected={isSelected} onPress={() => handleSelect(opt)}>
+              <AppText bold>{opt.slots}</AppText>
+              <AppText type="caption">{t(opt.price)}</AppText>
+            </BaseCard>
+          );
+        })}
       </View>
     </View>
   );
-}
+});
+SizePicker.displayName = "SizePicker";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -52,3 +57,5 @@ const getStyles = (theme) =>
       alignItems: "center"
     }
   });
+
+export default SizePicker;

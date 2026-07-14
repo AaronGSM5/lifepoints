@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Platform, StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,7 +8,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
 
-const CommentInputSection = ({ inputRef, commentText, setCommentText, onPost }) => {
+const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPost }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
@@ -26,7 +26,7 @@ const CommentInputSection = ({ inputRef, commentText, setCommentText, onPost }) 
           onChangeText={setCommentText}
           multiline
           textAlignVertical="center"
-          {...{ accessibilityRole: "text" }}
+          accessibilityRole="text"
         />
         <AppText
           bold
@@ -39,7 +39,8 @@ const CommentInputSection = ({ inputRef, commentText, setCommentText, onPost }) 
       </View>
     </View>
   );
-};
+});
+CommentInputSection.displayName = "CommentInputSection";
 
 const getStyles = (theme) =>
   StyleSheet.create({

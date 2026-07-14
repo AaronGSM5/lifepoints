@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -12,10 +12,11 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
-const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
+const ActiveTaskCard = memo(({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
+
   if (isLoading) {
     return (
       <Skeleton
@@ -32,15 +33,13 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
       <View style={styles.taskIconContainer}>
         <Icon name="timer" size={20} color={MyTheme.primaryAccent} />
       </View>
-      <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AppText bold type="title">
-            {t(title)}
-          </AppText>
-        </View>
+      <View style={styles.textContainer}>
+        <AppText bold type="title">
+          {t(title)}
+        </AppText>
       </View>
       <View style={styles.lpContainer}>
-        <AppText bold type="caption" style={{ color: MyTheme.primaryAccent }}>
+        <AppText bold type="caption" style={styles.lpText}>
           {points} LP
         </AppText>
       </View>
@@ -53,7 +52,8 @@ const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
       />
     </BaseCard>
   );
-};
+});
+ActiveTaskCard.displayName = "ActiveTaskCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -71,8 +71,15 @@ const getStyles = (theme) =>
       alignItems: "center",
       marginRight: Spacing.md
     },
+    textContainer: {
+      flex: 1,
+      justifyContent: "center"
+    },
     lpContainer: {
       marginRight: Spacing.md
+    },
+    lpText: {
+      color: theme.primaryAccent
     }
   });
 

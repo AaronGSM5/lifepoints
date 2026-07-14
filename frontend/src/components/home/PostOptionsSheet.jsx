@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -10,126 +10,58 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppBadge from "../ui/AppBadge";
 
+const OptionItem = memo(({ icon, label, onPress, color, badge, disabled }) => {
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getOptionStyles(MyTheme), [MyTheme]);
+  return (
+    <TouchableOpacity style={[styles.optionRow, disabled && styles.disabledRow]} onPress={onPress} disabled={disabled}>
+      <View style={styles.optionContent}>
+        <Icon name={icon} color={color || MyTheme.text} />
+        <AppText bold style={color ? { color } : {}}>
+          {label}
+        </AppText>
+      </View>
+      {badge && <AppBadge label={badge} variant="primary" />}
+    </TouchableOpacity>
+  );
+});
+OptionItem.displayName = "OptionItem";
+
 export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
 
-  const renderOwnerOptions = () => (
-    <>
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Edit-Logic */ onClose();
-        }}
-      >
-        <Icon name="pencil" color={MyTheme.text} />
-        <AppText bold>{t("Beitrag bearbeiten")}</AppText>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Archiv-Logic */ onClose();
-        }}
-      >
-        <Icon name="archive" color={MyTheme.text} />
-        <AppText bold>{t("Archivieren")}</AppText>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={[styles.optionRow, styles.disabledRow]} activeOpacity={1}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.md }}>
-          <Icon name="statsChart" color={MyTheme.muted} />
-          <AppText bold style={{ color: MyTheme.muted }}>
-            {t("Insights")}
-          </AppText>
-        </View>
-        <AppBadge label={"Coming Soon"} variant="primary" textStyle={{ color: MyTheme.text }} />
-      </TouchableOpacity>
-
-      <View style={styles.divider} />
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Delete-Logic */ onClose();
-        }}
-      >
-        <Icon name="trash" color={MyTheme.warning || "#ff4444"} />
-        <AppText bold style={{ color: MyTheme.warning || "#ff4444" }}>
-          {t("Beitrag löschen")}
-        </AppText>
-      </TouchableOpacity>
-    </>
-  );
-
-  const renderViewerOptions = () => (
-    <>
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Quest-Logic */ onClose();
-        }}
-      >
-        <Icon name="target" color={MyTheme.primaryAccent} />
-        <AppText bold style={{ color: MyTheme.primaryAccent }}>
-          {t("Zugehörige Aufgabe ansehen")}
-        </AppText>
-      </TouchableOpacity>
-
-      <View style={styles.divider} />
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Mute-Logic */ onClose();
-        }}
-      >
-        <Icon name="mute" color={MyTheme.text} />
-        <AppText bold>{t("Nutzer stummschalten")}</AppText>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Algo-Logic */ onClose();
-        }}
-      >
-        <Icon name="dislike" color={MyTheme.text} />
-        <AppText bold>{t("Interessiert mich nicht")}</AppText>
-      </TouchableOpacity>
-
-      <View style={styles.divider} />
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Report-Logic */ onClose();
-        }}
-      >
-        <Icon name="alert" color={MyTheme.warning || "#ff4444"} />
-        <AppText bold style={{ color: MyTheme.warning || "#ff4444" }}>
-          {t("Beitrag melden")}
-        </AppText>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.optionRow}
-        onPress={() => {
-          /* Block-Logic */ onClose();
-        }}
-      >
-        <Icon name="userX" color={MyTheme.warning || "#ff4444"} />
-        <AppText bold style={{ color: MyTheme.warning || "#ff4444" }}>
-          {t("Nutzer blockieren")}
-        </AppText>
-      </TouchableOpacity>
-    </>
-  );
+  const warningColor = MyTheme.warning || "#ff4444";
 
   return (
     <BaseBottomSheet isVisible={isVisible} onClose={onClose}>
-      <View style={styles.container}>{isOwner ? renderOwnerOptions() : renderViewerOptions()}</View>
+      <View style={styles.container}>
+        {isOwner ? (
+          <>
+            <OptionItem icon="pencil" label={t("Beitrag bearbeiten")} onPress={onClose} />
+            <OptionItem icon="archive" label={t("Archivieren")} onPress={onClose} />
+            <OptionItem icon="statsChart" label={t("Insights")} disabled badge={"Coming Soon"} />
+            <View style={styles.divider} />
+            <OptionItem icon="trash" label={t("Beitrag löschen")} onPress={onClose} color={warningColor} />
+          </>
+        ) : (
+          <>
+            <OptionItem
+              icon="target"
+              label={t("Zugehörige Aufgabe ansehen")}
+              onPress={onClose}
+              color={MyTheme.primaryAccent}
+            />
+            <View style={styles.divider} />
+            <OptionItem icon="mute" label={t("Nutzer stummschalten")} onPress={onClose} />
+            <OptionItem icon="dislike" label={t("Interessiert mich nicht")} onPress={onClose} />
+            <View style={styles.divider} />
+            <OptionItem icon="alert" label={t("Beitrag melden")} onPress={onClose} color={warningColor} />
+            <OptionItem icon="userX" label={t("Nutzer blockieren")} onPress={onClose} color={warningColor} />
+          </>
+        )}
+      </View>
     </BaseBottomSheet>
   );
 }
@@ -140,24 +72,27 @@ const getStyles = (theme) =>
       paddingVertical: Spacing.sm,
       paddingHorizontal: Spacing.lg
     },
-    optionRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: Spacing.md,
-      gap: Spacing.md
-    },
-    disabledRow: {
-      opacity: 0.75,
-      justifyContent: "space-between"
-    },
-    textWithBadge: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.sm
-    },
     divider: {
       height: StyleSheet.hairlineWidth,
       backgroundColor: theme.separator,
       marginVertical: Spacing.xs
+    }
+  });
+
+const getOptionStyles = () =>
+  StyleSheet.create({
+    optionRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: Spacing.md
+    },
+    optionContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md
+    },
+    disabledRow: {
+      opacity: 0.7
     }
   });

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
@@ -30,11 +30,11 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
   const [selectedSize, setSelectedSize] = useState(communityTiers[0]);
   const [resetKey, setResetKey] = useState(0);
 
-  const toggleBadge = (badge) => {
+  const toggleBadge = useCallback((badge) => {
     setSelectedBadges((prev) => (prev.includes(badge) ? prev.filter((b) => b !== badge) : [...prev, badge]));
-  };
+  }, []);
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setName("");
     setDescription("");
     setSelectedIcon("groups");
@@ -42,14 +42,19 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
     setSelectedBadges([]);
     setSelectedSize(communityTiers[0]);
     setResetKey((prev) => prev + 1);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose();
     setTimeout(resetForm, 300);
-  };
+  }, [onClose, resetForm]);
 
-  const handleCreate = () => {
+  const formValid = useMemo(
+    () => name && selectedIcon && selectedBadges.length >= 1 && selectedSize,
+    [name, selectedIcon, selectedBadges, selectedSize]
+  );
+
+  const handleCreate = useCallback(() => {
     if (!formValid) return;
     onCreate({
       name,
@@ -60,9 +65,7 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
       size: selectedSize.slots
     });
     handleClose();
-  };
-
-  const formValid = name && selectedIcon && selectedBadges.length >= 1 && selectedSize;
+  }, [formValid, name, description, selectedIcon, bannerUri, selectedBadges, selectedSize, onCreate, handleClose]);
 
   return (
     <BaseBottomSheet isVisible={visible} onClose={handleClose} title={t("New Community")}>

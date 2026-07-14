@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -8,10 +8,11 @@ import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
 import SectionHeader from "../ui/SectionHeader";
 
-const LpChart = () => {
+const WEEK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
+
+const LpChart = memo(({ lp = 0, data = [] }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const lp = 2450;
   return (
     <View>
       <SectionHeader
@@ -21,11 +22,11 @@ const LpChart = () => {
       />
       <View style={styles.chartCard}>
         <View style={styles.chartContainer}>
-          {[45, 75, 60, 90, 55, 100, 35].map((h, i) => (
+          {data.map((h, i) => (
             <View key={i} style={styles.chartColumnWrapper}>
               <View style={[styles.chartBar, { height: `${h}%`, opacity: Math.max(0.25, h / 100) }]} />
               <AppText bold type="caption" style={styles.chartDay}>
-                {["M", "T", "W", "T", "F", "S", "S"][i]}
+                {WEEK_DAYS[i]}
               </AppText>
             </View>
           ))}
@@ -33,7 +34,8 @@ const LpChart = () => {
       </View>
     </View>
   );
-};
+});
+LpChart.displayName = "LpChart";
 
 const getStyles = (theme) =>
   StyleSheet.create({
