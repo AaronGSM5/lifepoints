@@ -1,0 +1,15 @@
+.dockerignore
+.gitattributes
+.gitignore
+.prettierignore
+.prettierrc.js
+docker-compose.yml
+dockerfile
+eslint.config.mjs
+AI.md
+package-lock.json
+package.json
+tsconfig.json
+node_modules/
+dist/
+build/

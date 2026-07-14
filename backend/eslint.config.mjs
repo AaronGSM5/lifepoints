@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ["node_modules/", "dist/", "build/", "*.config.js"]
+    ignores: ["node_modules/", "dist/", "build/", "*.config.js", ".dockerignore"]
   },
   ...compat.extends("prettier"),
   {
@@ -58,19 +58,19 @@ export default [
           ignoreRestSiblings: true
         }
       ],
-      "simple-import-sort/imports": [
-        "error",
-        {
-          groups: [
-            ["^react", "^react-native"],
-            ["^@?\\w"],
-            ["^@/"],
-            ["^\\./", "^\\.\\./"],
-            ["^.+\\.s?css$", "^.+\\.(png|jpg|jpeg|gif|svg)$"]
-          ]
-        }
-      ],
-      "simple-import-sort/exports": "error"
+      // "simple-import-sort/imports": [
+      //   "error",
+      //   {
+      //     groups: [
+      //       ["^react", "^react-native"],
+      //       ["^@?\\w"],
+      //       ["^@/"],
+      //       ["^\\./", "^\\.\\./"],
+      //       ["^.+\\.s?css$", "^.+\\.(png|jpg|jpeg|gif|svg)$"]
+      //     ]
+      //   }
+      // ],
+      // "simple-import-sort/exports": "error"
     }
   }
 ];

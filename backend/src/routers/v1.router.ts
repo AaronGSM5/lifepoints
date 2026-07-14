@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/healthcheck", (req, res) => res.send("server is running"));
 
-router.get("/tasks", TaskController.getAllTasks);
+router.get("/tasks", TaskController.getTasks);
 router.get("/tasks/limited", (req, res) => res.send("must be implemented"));
 router.get("/tasks/:id", (req, res) => res.send("must be implemented"));
 router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));

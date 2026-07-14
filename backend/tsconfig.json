@@ -98,6 +98,6 @@
     "require": ["tsconfig-paths/register"],
     "files": true
   },
-  "include": ["src/**/*", "types", "declarations.d.ts"],
+  "include": ["src/**/*", "types", "declarations.d.ts", "tools/modelMap.js"],
   "exclude": ["node_modules"]
 }
