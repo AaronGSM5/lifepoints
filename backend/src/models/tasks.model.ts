@@ -12,8 +12,8 @@ const taskSchema = new Schema(
     },
     subSteps: [
       {
-        description: { type: String, required: true },
-        isCompleted: { type: Boolean, default: false }
+        title: { type: String, required: true},
+        description: { type: String },
       }
     ],
     lifepoints: {
@@ -36,13 +36,14 @@ const taskSchema = new Schema(
       type: String,
       default: ""
     },
+    estimated_time: {
+      type: Number,
+      required: true
+    },
     custom: {
       type: Object,
       default: {}
     },
-    estimated_time: {
-      type: Number
-    }
   },
   {
     timestamps: true

@@ -35,6 +35,11 @@ const activitySchema = new Schema(
       enum: ["private", "friends", "public"], // based on userSettings, might change
       default: "public"
     },
+    subSteps: [
+      {
+        isCompleted: { type: Boolean, default: false }
+      }
+    ],
     reactions: [
       {
         userId: { type: Schema.Types.ObjectId, ref: "User" },
