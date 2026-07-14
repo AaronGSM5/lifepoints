@@ -68,3 +68,5 @@ const getStyles = () =>
       fontSize: 14
     }
   });
+
+export default InstaTrackingModal;
