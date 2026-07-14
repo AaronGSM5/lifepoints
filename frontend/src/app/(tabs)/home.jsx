@@ -4,8 +4,8 @@ import { Animated, StyleSheet, View } from "react-native";
 
 import ActiveTaskCard from "@/components/home/ActiveTaskCard";
 import CommentSheet from "@/components/home/CommentSheet";
-import EventHero from "@/components/home/EventHero";
 import FeedItem from "@/components/home/FeedItem";
+import HeroCarousel from "@/components/home/HeroCarousel";
 import LootGameModal from "@/components/home/LootGameModal";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 import QuestModal from "@/components/home/QuestModal";
@@ -90,43 +90,63 @@ export default function HomeScreen() {
     [MyTheme.isDark, isLoading]
   );
 
+  const carouselData = useMemo(
+    () => [
+      {
+        id: "1",
+        image: require("@/../public/assets/events/achtsamkeit2.png"),
+        title: "Sommer Party",
+        eventLink: "/event/123"
+      },
+      {
+        id: "2",
+        image: require("@/../public/assets/events/sportevent.png"),
+        title: "Tech Meetup",
+        eventLink: "/event/456"
+      }
+    ],
+    []
+  );
+
   const renderHeader = useMemo(
     () => (
-      <View style={styles.headerContainer}>
-        <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
-        <SectionHeader
-          title={t("Active Tasks")}
-          rightIcon={<Icon name={"survey"} />}
-          onRightPress={() => setQuestModalVisible(true)}
-        />
-        {myActiveTasks.length === 0 ? (
-          <View style={styles.emptyTasksContainer}>
-            <AppText type="caption" bold>
-              {t("No Active Tasks")}
-            </AppText>
-          </View>
-        ) : (
-          <View style={styles.activeTasksList}>
-            {myActiveTasks.map((task) => (
-              <ActiveTaskCard
-                key={task.id}
-                title={task.title}
-                points={task.lp}
-                isLoading={isLoading}
-                onAction={() => {
-                  completeTask(task.id);
-                  triggerHaptic("success");
-                  notifyQuestSystem("TASK_COMPLETED", { category: task.category });
-                  addExperience(task.xp);
-                }}
-              />
-            ))}
-          </View>
-        )}
-        <SectionHeader title={"Feed"} />
-      </View>
+      <>
+        <HeroCarousel data={carouselData} isLoading={isLoading} onPressItem={() => console.log("Test")} />
+        <View style={styles.headerContainer}>
+          <SectionHeader
+            title={t("Active Tasks")}
+            rightIcon={<Icon name={"survey"} />}
+            onRightPress={() => setQuestModalVisible(true)}
+          />
+          {myActiveTasks.length === 0 ? (
+            <View style={styles.emptyTasksContainer}>
+              <AppText type="caption" bold>
+                {t("No Active Tasks")}
+              </AppText>
+            </View>
+          ) : (
+            <View style={styles.activeTasksList}>
+              {myActiveTasks.map((task) => (
+                <ActiveTaskCard
+                  key={task.id}
+                  title={task.title}
+                  points={task.lp}
+                  isLoading={isLoading}
+                  onAction={() => {
+                    completeTask(task.id);
+                    triggerHaptic("success");
+                    notifyQuestSystem("TASK_COMPLETED", { category: task.category });
+                    addExperience(task.xp);
+                  }}
+                />
+              ))}
+            </View>
+          )}
+          <SectionHeader title={"Feed"} />
+        </View>
+      </>
     ),
-    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t]
+    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t, carouselData]
   );
 
   const renderItem = useCallback(

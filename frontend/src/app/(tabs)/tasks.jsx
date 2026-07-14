@@ -4,7 +4,7 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import EventHero from "@/components/home/EventHero";
+import EventHero from "@/components/home/EventSlide";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";

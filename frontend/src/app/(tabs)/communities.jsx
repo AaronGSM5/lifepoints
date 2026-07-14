@@ -9,7 +9,7 @@ import HorizontalSectionList from "@/components/communities/HorizontalSectionLis
 import MyCommunitiesSection from "@/components/communities/MyCommunitiesSection";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
-import EventHero from "@/components/home/EventHero";
+import EventHero from "@/components/home/EventSlide";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
