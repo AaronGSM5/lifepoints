@@ -35,19 +35,19 @@ const activitySchema = new Schema(
       enum: ["private", "friends", "public"], // based on userSettings, might change
       default: "public"
     },
-    reactions: [{
-      userId: { type: Schema.Types.ObjectId, ref: "User" },
-      type: String
-    }]
+    reactions: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: "User" },
+        type: String
+      }
+    ]
   },
   { timestamps: true }
 );
 
-activitySchema.index({ userId: 1, createdAt: -1 });
+activitySchema.index({ userId: 1, createdAt: -1, communityId: 1 });
 
 export type Activity = InferSchemaType<typeof activitySchema>;
 export type ActivityDocument = HydratedDocument<Activity>;
 
-const Activity = model("Activity", activitySchema);
-
-export default Activity;
+export const Activity = model("Activity", activitySchema);

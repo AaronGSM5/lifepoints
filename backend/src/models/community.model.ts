@@ -8,9 +8,14 @@ const communitySchema = new Schema(
       trim: true
     },
     icon: {
-      type: String,
-      required: true,
-      trim: true
+      img: {
+        type: String,
+        required: true
+      },
+      color: {
+        type: String,
+        required: true
+      }
     },
     description: {
       type: String,
@@ -34,8 +39,6 @@ const communitySchema = new Schema(
 );
 
 export type Community = InferSchemaType<typeof communitySchema>;
-
 export type CommunityDocument = HydratedDocument<Community>;
 
-// 3. Create and export the Model
-export const CommunityModel = model<CommunityDocument>("Community", communitySchema);
+export const Community = model<CommunityDocument>("Community", communitySchema);
