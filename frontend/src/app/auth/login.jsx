@@ -2,8 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, View } from "react-native";
 
-import { useRouter } from "expo-router";
-
 import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -13,11 +11,11 @@ import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 export default function LoginScreen() {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
-  const router = useRouter();
 
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -35,15 +33,19 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await account.createEmailPasswordSession(emailInput, passwordInput);
-
-      router.replace("/home");
+      useStore.getState().login();
     } catch (error) {
-      console.error("Login failed:", error);
-      Alert.alert("Login Failed", error.message || "Something went wrong. Please try again.");
+      if (error.message.includes("Creation of a session is prohibited when a session is active")) {
+        console.log("Session war schon aktiv, syncen wir einfach...");
+        useStore.getState().login();
+      } else {
+        console.error("Login fehlgeschlagen:", error.message);
+        Alert.alert("Login fehlgeschlagen:", error.message);
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [emailInput, passwordInput, router]);
+  }, [emailInput, passwordInput]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>

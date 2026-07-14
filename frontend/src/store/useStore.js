@@ -39,6 +39,7 @@ const useStore = create(
           activities: state.activities,
           myCommunities: state.myCommunities,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
+          isAuthenticated: state.isAuthenticated,
           isDarkMode: state.isDarkMode,
           showInstaTrackingModal: state.showInstaTrackingModal
         }),

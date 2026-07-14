@@ -23,7 +23,7 @@ export const settingsSections = [
       { id: '9', label: 'Help & Support', icon: 'help', type: 'link', route: '/setting/support' },
       { id: '10', label: 'Privacy Policy', icon: 'shieldOff', type: 'link', route: '/setting/privacy' },
       { id: '11', label: 'Terms of Service', icon: 'fileText', type: 'link', route: '/setting/terms' },
-      { id: '12', label: 'Delete Account', icon: 'userX', type: 'action', actionName: 'deleteAccount', danger: true },
+      { id: '12', label: 'Log out', icon: 'userX', type: 'action', actionName: 'logout', danger: true },
     ],
   },
 ];

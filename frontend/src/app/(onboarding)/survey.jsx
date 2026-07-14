@@ -1,17 +1,16 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 
-import { useRouter } from "expo-router";
-
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import SurveyProgressBar from "@/components/onboarding/SurveyProgressBar";
 import SurveyQuestion from "@/components/onboarding/SurveyQuestion";
 import AppButton from "@/components/ui/AppButton";
 import { mockSurveyOptions } from "@/constants/OnboardingSurvey";
 import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
 
 export default function SurveyScreen() {
-  const router = useRouter();
+  const completeOnboarding = useStore((state) => state.setHasCompletedOnboarding);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
@@ -48,10 +47,9 @@ export default function SurveyScreen() {
     if (step < totalSteps - 1) {
       setStep((prev) => prev + 1);
     } else {
-      console.log("Umfrage beendet:", answers);
-      router.replace("/auth/register");
+      completeOnboarding(true);
     }
-  }, [answers, router, step, totalSteps]);
+  }, [step, totalSteps, completeOnboarding]);
 
   return (
     <ScreenWrapper>

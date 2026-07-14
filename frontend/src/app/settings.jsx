@@ -4,29 +4,40 @@ import { Alert, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
+import { account } from "@/api/client/appwrite";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import SettingsRow from "@/components/settings/SettingsRow";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import { settingsSections } from "@/constants/SettingsConfig";
 import { Spacing } from "@/constants/Spacing";
+import useStore from "@/store/useStore";
 
 export default function SettingsScreen() {
-  const router = useRouter();
   const { t } = useTranslation("settings");
+  const logout = useStore((state) => state.logout);
+  const router = useRouter();
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await account.deleteSession("current");
+    } catch (error) {
+      console.warn("Appwrite logout Fehler: ", error.message);
+    } finally {
+      logout();
+      router.replace("/auth/login");
+    }
+  }, [logout, router]);
 
   const executeAction = useCallback(
     (actionName) => {
       if (actionName === "clearCache") {
         Alert.alert(t("Cache Cleared"), t("Temporary files have been removed."));
-      } else if (actionName === "deleteAccount") {
-        Alert.alert(t("Delete Account?"), t("This action cannot be undone. All your Lifepoints will be lost."), [
-          { text: t("Cancel"), style: "cancel" },
-          { text: t("Delete"), style: "destructive", onPress: () => console.log("API Call to delete user") }
-        ]);
+      } else if (actionName === "logout") {
+        handleLogout();
       }
     },
-    [t]
+    [t, handleLogout]
   );
 
   const handlePress = useCallback(

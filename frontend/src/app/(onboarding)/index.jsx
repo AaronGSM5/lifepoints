@@ -43,7 +43,7 @@ export default function OnboardingScreen() {
         animated: true
       });
     } else {
-      router.push("/survey");
+      router.replace("/survey");
     }
   }, [currentIndex, width, router]);
 
