@@ -1,40 +1,42 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
-import BaseCard from "../ui/BaseCard";
+
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
-import { Spacing } from "@/constants/Spacing";
-import { useTranslation } from "react-i18next";
+import BaseCard from "../ui/BaseCard";
 
-const ImageUploader = memo(({isPublic, image, setImage, pickImage}) => {
-  const MyTheme = useAppTheme()
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme])
-  const { t } = useTranslation("post")
-  return <BaseCard
-              style={[styles.imageContainer, !image && styles.imagePlaceholder]}
-              onPress={pickImage}
-            >
-              {image ? (
-                <Image source={{ uri: image }} style={styles.previewImage} />
-              ) : (
-                <View style={styles.placeholderContent}>
-                  <Icon name="camera" size={32} color={MyTheme.muted} />
-                  <AppText style={{ color: MyTheme.muted, marginTop: Spacing.sm }}>
-                    {isPublic ? t("Upload image (Required)") : t("Upload image (Optional)")}
-                  </AppText>
-                </View>
-              )}
+const ImageUploader = memo(({ isPublic, image, setImage, pickImage }) => {
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("post");
+  return (
+    <BaseCard style={[styles.imageContainer, !image && styles.imagePlaceholder]} onPress={pickImage}>
+      {image ? (
+        <Image source={{ uri: image }} style={styles.previewImage} />
+      ) : (
+        <View style={styles.placeholderContent}>
+          <Icon name="camera" size={32} color={MyTheme.muted} />
+          <AppText style={{ color: MyTheme.muted, marginTop: Spacing.sm }}>
+            {isPublic ? t("Upload image (Required)") : t("Upload image (Optional)")}
+          </AppText>
+        </View>
+      )}
 
-              {image && (
-                  <Icon name="trash" size={16} color="#fff" onPress={() => setImage(null)} style={styles.removeImageBtn} />
-              )}
-            </BaseCard>
-})
-ImageUploader.displayName = "ImageUploader"
+      {image && (
+        <Icon name="trash" size={16} color="#fff" onPress={() => setImage(null)} style={styles.removeImageBtn} />
+      )}
+    </BaseCard>
+  );
+});
+ImageUploader.displayName = "ImageUploader";
 
-const getStyles = (theme) => StyleSheet.create({
-  imageContainer: {
+const getStyles = (theme) =>
+  StyleSheet.create({
+    imageContainer: {
       width: "100%",
       aspectRatio: 4 / 5,
       overflow: "hidden",
@@ -63,7 +65,7 @@ const getStyles = (theme) => StyleSheet.create({
       backgroundColor: "rgba(0,0,0,0.7)",
       padding: Spacing.sm,
       borderRadius: Spacing.borderRadius.full
-    },
-})
+    }
+  });
 
-export default ImageUploader
+export default ImageUploader;

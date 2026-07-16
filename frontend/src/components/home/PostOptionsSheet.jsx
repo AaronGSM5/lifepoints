@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppBadge from "../ui/AppBadge";
+import Separator from "../ui/Separator";
 
 const OptionItem = memo(({ icon, label, onPress, color, badge, disabled }) => {
   const MyTheme = useAppTheme();
@@ -42,7 +43,7 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
             <OptionItem icon="pencil" label={t("Beitrag bearbeiten")} onPress={onClose} />
             <OptionItem icon="archive" label={t("Archivieren")} onPress={onClose} />
             <OptionItem icon="statsChart" label={t("Insights")} disabled badge={"Coming Soon"} />
-            <View style={styles.divider} />
+            <Separator />
             <OptionItem icon="trash" label={t("Beitrag löschen")} onPress={onClose} color={warningColor} />
           </>
         ) : (
@@ -53,10 +54,10 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
               onPress={onClose}
               color={MyTheme.primaryAccent}
             />
-            <View style={styles.divider} />
+            <Separator />
             <OptionItem icon="mute" label={t("Nutzer stummschalten")} onPress={onClose} />
             <OptionItem icon="dislike" label={t("Interessiert mich nicht")} onPress={onClose} />
-            <View style={styles.divider} />
+            <Separator />
             <OptionItem icon="alert" label={t("Beitrag melden")} onPress={onClose} color={warningColor} />
             <OptionItem icon="userX" label={t("Nutzer blockieren")} onPress={onClose} color={warningColor} />
           </>
@@ -66,16 +67,11 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       paddingVertical: Spacing.sm,
       paddingHorizontal: Spacing.lg
-    },
-    divider: {
-      height: StyleSheet.hairlineWidth,
-      backgroundColor: theme.separator,
-      marginVertical: Spacing.xs
     }
   });
 

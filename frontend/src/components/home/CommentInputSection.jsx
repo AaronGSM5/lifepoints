@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
+import Separator from "../ui/Separator";
 
 const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPost }) => {
   const MyTheme = useAppTheme();
@@ -14,30 +15,33 @@ const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPos
   const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
   return (
-    <View style={[styles.inputSection, { paddingBottom: Math.max(insets.bottom, Spacing.md) }]}>
-      <Image source={{ uri: "https://i.pravatar.cc/150?u=du" }} style={styles.inputAvatar} />
-      <View style={styles.inputBubble}>
-        <TextInput
-          ref={inputRef}
-          style={styles.textInput}
-          placeholder={t("Leave a comment...")}
-          placeholderTextColor={MyTheme.muted}
-          value={commentText}
-          onChangeText={setCommentText}
-          multiline
-          textAlignVertical="center"
-          accessibilityRole="text"
-        />
-        <AppText
-          bold
-          onPress={onPost}
-          disabled={commentText.trim().length === 0}
-          style={{ color: MyTheme.primaryAccent }}
-        >
-          {t("Post")}
-        </AppText>
+    <>
+      <Separator />
+      <View style={[styles.inputSection, { paddingBottom: Math.max(insets.bottom, Spacing.md) }]}>
+        <Image source={{ uri: "https://i.pravatar.cc/150?u=du" }} style={styles.inputAvatar} />
+        <View style={styles.inputBubble}>
+          <TextInput
+            ref={inputRef}
+            style={styles.textInput}
+            placeholder={t("Leave a comment...")}
+            placeholderTextColor={MyTheme.muted}
+            value={commentText}
+            onChangeText={setCommentText}
+            multiline
+            textAlignVertical="center"
+            accessibilityRole="text"
+          />
+          <AppText
+            bold
+            onPress={onPost}
+            disabled={commentText.trim().length === 0}
+            style={{ color: MyTheme.primaryAccent }}
+          >
+            {t("Post")}
+          </AppText>
+        </View>
       </View>
-    </View>
+    </>
   );
 });
 CommentInputSection.displayName = "CommentInputSection";
@@ -48,10 +52,7 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: Spacing.md,
-      paddingTop: Spacing.sm,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: theme.separator,
-      backgroundColor: theme.background
+      paddingTop: Spacing.sm
     },
     inputAvatar: {
       width: 36,

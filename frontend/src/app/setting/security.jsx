@@ -10,6 +10,7 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
@@ -87,8 +88,8 @@ export default function SecurityScreen() {
             </View>
             <Switch value={isBiometricsEnabled} onValueChange={setIsBiometricsEnabled} trackColor={styles.switch} />
           </View>
-
-          <View style={[styles.row, { borderTopWidth: 1, borderTopColor: MyTheme.separator }]}>
+          <Separator />
+          <View style={styles.row}>
             <View style={styles.rowContent}>
               <AppText bold>{t("Two-factor authentication")}</AppText>
               <AppText type="caption">{t("Additional protection via email")}</AppText>
