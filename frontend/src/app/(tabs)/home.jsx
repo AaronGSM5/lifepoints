@@ -25,6 +25,21 @@ import { triggerHaptic } from "@/utils/haptics";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
+const HOME_HERO_DATA = [
+  {
+    id: "1",
+    image: require("@/../public/assets/events/achtsamkeit2.png"),
+    title: "Sommer Party",
+    eventLink: "/event/123"
+  },
+  {
+    id: "2",
+    image: require("@/../public/assets/events/sportevent.png"),
+    title: "Tech Meetup",
+    eventLink: "/event/456"
+  }
+];
+
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
   const MyTheme = useAppTheme();
@@ -90,28 +105,10 @@ export default function HomeScreen() {
     [MyTheme.isDark, isLoading]
   );
 
-  const carouselData = useMemo(
-    () => [
-      {
-        id: "1",
-        image: require("@/../public/assets/events/achtsamkeit2.png"),
-        title: "Sommer Party",
-        eventLink: "/event/123"
-      },
-      {
-        id: "2",
-        image: require("@/../public/assets/events/sportevent.png"),
-        title: "Tech Meetup",
-        eventLink: "/event/456"
-      }
-    ],
-    []
-  );
-
   const renderHeader = useMemo(
     () => (
       <>
-        <HeroCarousel data={carouselData} isLoading={isLoading} onPressItem={() => console.log("Test")} />
+        <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
         <View style={styles.headerContainer}>
           <SectionHeader
             title={t("Active Tasks")}
@@ -146,7 +143,7 @@ export default function HomeScreen() {
         </View>
       </>
     ),
-    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t, carouselData]
+    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t]
   );
 
   const renderItem = useCallback(

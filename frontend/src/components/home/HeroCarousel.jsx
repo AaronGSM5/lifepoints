@@ -27,7 +27,8 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
       style={{
         width: width,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        touchAction: "pan-y"
       }}
       data={data}
       mode="parallax"
@@ -35,9 +36,11 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
         parallaxScrollingScale: 0.85,
         parallaxScrollingOffset: 40
       }}
-      pagingEnabled={true}
+      autoPlay={true}
+      autoPlayInterval={10000}
+      pagingEnabled={false}
       snapEnabled={true}
-      scrollAnimationDuration={400}
+      scrollAnimationDuration={500}
       renderItem={({ item }) => {
         return <EventSlide imageSource={item.image} isLoading={isLoading} onPress={() => onPressItem(item)} />;
       }}
