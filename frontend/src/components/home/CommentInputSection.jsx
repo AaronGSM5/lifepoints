@@ -1,11 +1,12 @@
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Platform, StyleSheet, TextInput, View } from "react-native";
+import { Platform, StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 import Separator from "../ui/Separator";
 
@@ -18,7 +19,7 @@ const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPos
     <>
       <Separator />
       <View style={[styles.inputSection, { paddingBottom: Math.max(insets.bottom, Spacing.md) }]}>
-        <Image source={{ uri: "https://i.pravatar.cc/150?u=du" }} style={styles.inputAvatar} />
+        <AppImage source={"https://i.pravatar.cc/150?u=du"} variant={"avatarSmall"} style={styles.inputAvatar} />
         <View style={styles.inputBubble}>
           <TextInput
             ref={inputRef}

@@ -1,11 +1,12 @@
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 import BaseCard from "../ui/BaseCard";
 
@@ -14,9 +15,9 @@ const ImageUploader = memo(({ isPublic, image, setImage, pickImage }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("post");
   return (
-    <BaseCard style={[styles.imageContainer, !image && styles.imagePlaceholder]} onPress={pickImage}>
+    <BaseCard style={[styles.imageContainer, !image && styles.imagePlaceholder]} onPress={pickImage} padding={0}>
       {image ? (
-        <Image source={{ uri: image }} style={styles.previewImage} />
+        <AppImage source={image} variant={"fill"} />
       ) : (
         <View style={styles.placeholderContent}>
           <Icon name="camera" size={32} color={MyTheme.muted} />
@@ -52,11 +53,6 @@ const getStyles = (theme) =>
     },
     placeholderContent: {
       alignItems: "center"
-    },
-    previewImage: {
-      width: "100%",
-      height: "100%",
-      resizeMode: "cover"
     },
     removeImageBtn: {
       position: "absolute",

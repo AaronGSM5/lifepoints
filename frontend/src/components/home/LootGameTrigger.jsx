@@ -1,5 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Animated, Image, Pressable, StyleSheet } from "react-native";
+import { Animated, Pressable, StyleSheet } from "react-native";
+
+import AppImage from "../ui/AppImage";
 
 export const LootGameTrigger = memo(({ isReady, onPress }) => {
   const [translateX] = useState(() => new Animated.Value(120));
@@ -24,10 +26,10 @@ export const LootGameTrigger = memo(({ isReady, onPress }) => {
   return (
     <Animated.View style={[styles.mascotContainer, { transform: [{ translateX }] }]}>
       <Pressable onPress={onPress}>
-        <Image
+        <AppImage
           source={require("@/../public/assets/CapybaraFace.png")}
-          style={styles.mascotImage}
-          resizeMode="contain"
+          variant={"lootGameTrigger"}
+          contentFit="contain"
         />
       </Pressable>
     </Animated.View>
@@ -42,9 +44,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 100,
     overflow: "visible"
-  },
-  mascotImage: {
-    width: 90,
-    height: 90
   }
 });

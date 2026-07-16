@@ -1,15 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
@@ -20,6 +11,7 @@ import { useUpdateProfile } from "@/api/profile/useUpdateProfile";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
+import AppImage from "@/components/ui/AppImage";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
@@ -119,18 +111,18 @@ export default function EditProfileScreen() {
         >
           {/* Avatar Section */}
           <View style={styles.avatarSection}>
-            {isLoading ? (
-              <Skeleton {...skBase} radius="round" width={120} height={120} />
-            ) : (
-              <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
-                <Image source={avatarSource} style={styles.avatar} />
-                <View style={styles.editBadge}>
-                  <Icon name="camera" size={18} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
+              <AppImage
+                source={avatarSource}
+                variant={"avatarBig"}
+                style={{ borderWidth: 1, borderColor: MyTheme.secondary }}
+              />
+              <View style={styles.editBadge}>
+                <Icon name="camera" size={18} color="#fff" />
+              </View>
+            </TouchableOpacity>
             <AppText type="caption" style={styles.avatarHint}>
-              {isLoading ? " " : t("Tap to change")}
+              {!isLoading && t("Tap to change")}
             </AppText>
           </View>
 

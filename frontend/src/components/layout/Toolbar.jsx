@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Animated, Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { router, usePathname } from "expo-router";
@@ -12,6 +12,7 @@ import useStore from "@/store/useStore";
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import NotificationIcon from "../ui/NotificationsIcon";
+import AppImage from "../ui/AppImage";
 
 export default memo(function Toolbar({ scrollY }) {
   const insets = useSafeAreaInsets();
@@ -88,10 +89,10 @@ export default memo(function Toolbar({ scrollY }) {
       {/* Title */}
       <View style={styles.centerSection}>
         <Pressable onPress={() => router.push("/")}>
-          <Image
+          <AppImage
             source={require("@/../public/assets/appIcons/adaptive-icon.png")}
             style={{ width: logoWidth, height: logoHeight }}
-            resizeMode="contain"
+            contentFit="contain"
           />
         </Pressable>
       </View>

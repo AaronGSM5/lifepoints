@@ -1,28 +1,15 @@
 import React, { memo } from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
-
-import { Skeleton } from "moti/skeleton";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
 
-const EventSlide = memo(({ imageSource, isLoading, onPress, style }) => {
-  const MyTheme = useAppTheme();
+import AppImage from "../ui/AppImage";
 
+const EventSlide = memo(({ imageSource, onPress, style }) => {
   return (
     <Pressable onPress={onPress} style={[styles.container, style]}>
       <View style={styles.heroSection}>
-        <Image source={typeof imageSource === "string" ? { uri: imageSource } : imageSource} style={styles.heroImage} />
-        {isLoading && (
-          <View style={StyleSheet.absoluteFillObject}>
-            <Skeleton
-              colorMode={MyTheme.isDark ? "dark" : "light"}
-              width="100%"
-              height="100%"
-              radius={Spacing.borderRadius.lg}
-            />
-          </View>
-        )}
+        <AppImage source={imageSource} variant={"fill"} contentFit={"contain"} />
       </View>
     </Pressable>
   );
@@ -40,14 +27,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: Spacing.borderRadius.lg,
     overflow: "hidden",
-    position: "relative",
-    backgroundColor: "rgba(0,0,0,0.05)"
-  },
-  heroImage: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain"
+    position: "relative"
   }
 });
 

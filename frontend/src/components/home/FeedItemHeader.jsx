@@ -1,11 +1,12 @@
 import { memo, useMemo } from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 import StatusBadge from "../ui/StatusBadge";
 
@@ -18,7 +19,7 @@ const FeedItemHeader = memo(({ id, username, avatar, badge, onPress, onOpenOptio
         <View style={styles.headerUser}>
           <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
             {avatar ? (
-              <Image source={{ uri: avatar }} style={styles.avatarImage} resizeMode="cover" />
+              <AppImage source={avatar} variant={"avatarMedium"} />
             ) : (
               <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
             )}
@@ -64,11 +65,6 @@ const getStyles = (theme) =>
       backgroundColor: theme.primaryAccent,
       justifyContent: "center",
       alignItems: "center"
-    },
-    avatarImage: {
-      width: "100%",
-      height: "100%",
-      borderRadius: Spacing.borderRadius.full
     },
     username: {
       fontSize: 15

@@ -1,7 +1,7 @@
 // src/components/home/LootGameModal.js
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, Dimensions, Image, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, Dimensions, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import * as Haptics from "expo-haptics";
 
@@ -10,6 +10,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 import AppButton from "../ui/AppButton";
+import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 
 const { width } = Dimensions.get("window");
@@ -114,7 +115,7 @@ const LootGameModal = memo(() => {
                   onPress={() => handlePick(index)}
                   style={[styles.chestCard, { borderColor: borderColor }, isChosen && styles.chosenCard]}
                 >
-                  <Image source={chestSource} style={styles.chestImage} resizeMode="contain" />
+                  <AppImage source={chestSource} variant={"fill"} contentFit="contain" />
 
                   {shouldReveal && (
                     <View style={styles.rewardInfo}>
@@ -188,10 +189,6 @@ const getStyles = (theme) =>
     chosenCard: {
       transform: [{ scale: 1.1 }],
       backgroundColor: "#334155"
-    },
-    chestImage: {
-      width: "100%", // Passend skalieren
-      height: "100%"
     },
     rewardInfo: {
       position: "absolute",

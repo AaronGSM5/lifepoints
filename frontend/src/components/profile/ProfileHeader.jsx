@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { router } from "expo-router";
@@ -17,6 +17,7 @@ import useStore from "@/store/useStore";
 
 import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
+import AppImage from "../ui/AppImage";
 import StatusBadge from "../ui/StatusBadge";
 
 const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
@@ -64,7 +65,7 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
     <View style={styles.profileHeader}>
       <View style={styles.avatarContainer}>
         <AvatarWrapper {...wrapperProps} style={[styles.frameWrapper, frameStyles]}>
-          <Image source={avatarSource} style={styles.avatar} />
+          <AppImage source={avatarSource} variant={"avatarBig"} />
         </AvatarWrapper>
 
         {!isLoading && profile.level && (
@@ -171,11 +172,6 @@ const getStyles = (theme) =>
     avatarContainer: {
       position: "relative",
       marginBottom: Spacing.md
-    },
-    avatar: {
-      width: 100,
-      height: 100,
-      borderRadius: 50
     },
     actionButtons: {
       flexDirection: "row",

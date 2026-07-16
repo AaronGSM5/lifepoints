@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Image, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 
 import { Icon } from "@/components/icons/Icon";
+import AppImage from "@/components/ui/AppImage";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -37,7 +38,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       </AppText>
       {bannerUri ? (
         <View style={styles.bannerImageWrapper}>
-          <Image source={{ uri: bannerUri }} style={styles.bannerImage} resizeMode="cover" />
+          <AppImage source={bannerUri} variant={"fill"} />
           <Icon name="close" color="#fff" size={16} onPress={onBannerClear} style={styles.clearImageIcon} />
         </View>
       ) : (

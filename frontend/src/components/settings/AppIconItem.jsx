@@ -1,9 +1,10 @@
 import { memo, useMemo } from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppImage from "../ui/AppImage";
 
 const AppIconItem = memo(({ icon, isSelected, onPress }) => {
   const MyTheme = useAppTheme();
@@ -16,7 +17,7 @@ const AppIconItem = memo(({ icon, isSelected, onPress }) => {
       style={[styles.squareContainer, isSelected && styles.selectedSquare]}
     >
       <View style={styles.iconBox}>
-        <Image source={icon.source} style={styles.iconPreview} />
+        <AppImage source={icon.source} variant={"fill"} />
       </View>
 
       {isSelected && (
@@ -48,10 +49,6 @@ const getStyles = (theme) =>
       flex: 1,
       borderRadius: 12,
       overflow: "hidden"
-    },
-    iconPreview: {
-      width: "100%",
-      height: "100%"
     },
     overlay: {
       ...StyleSheet.absoluteFillObject,

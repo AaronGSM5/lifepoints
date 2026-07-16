@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,6 +10,7 @@ import { Stack } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
+import AppImage from "@/components/ui/AppImage";
 import AppText from "@/components/ui/AppText";
 import BackButton from "@/components/ui/BackButton";
 import HistoryCard from "@/components/ui/HistoryCard";
@@ -61,9 +62,10 @@ export default function TaskDetailScreen() {
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
           <View style={styles.imageContainer}>
-            <Image
-              source={task.image ? { uri: task.image } : require("@/../public/assets/appIcons/icon.png")}
-              style={styles.image}
+            <AppImage
+              source={task.image}
+              fallbackSource={require("@/../public/assets/appIcons/icon.png")}
+              variant={"fill"}
             />
 
             <BackButton />
