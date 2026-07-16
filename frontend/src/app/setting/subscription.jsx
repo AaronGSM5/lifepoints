@@ -9,6 +9,7 @@ import BillingToggle from "@/components/settings/subscription/BillingToggle";
 import SubscriptionCard from "@/components/settings/subscription/SubscriptionCard";
 import SubscriptionSkeletons from "@/components/settings/subscription/SubscriptionSkeletons";
 import AppText from "@/components/ui/AppText";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { SUBSCRIPTION_PLANS } from "@/constants/SubscriptionPlans";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -47,10 +48,11 @@ export default function SubscriptionScreen() {
   return (
     <ScreenWrapper scrollable>
       <View style={styles.header}>
-        <AppText type="h1" style={{ textAlign: "center" }}>
-          {t("Reach the next level")}
-        </AppText>
-        <AppText style={styles.subtitle}>{t("Unlock exclusive features and earn LifePoints even faster.")}</AppText>
+        <ScreenTitle
+          title={t("Reach the next level")}
+          subtitle={t("Unlock exclusive features and earn LifePoints even faster.")}
+          align="center"
+        />
 
         {isLoading ? (
           <View style={styles.toggleContainer}>
@@ -92,12 +94,6 @@ const getStyles = (theme) =>
     header: {
       paddingVertical: Spacing.lg,
       alignItems: "center"
-    },
-    subtitle: {
-      textAlign: "center",
-      color: theme.muted,
-      marginTop: Spacing.sm,
-      paddingHorizontal: Spacing.lg
     },
     toggleContainer: {
       alignSelf: "center",

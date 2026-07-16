@@ -69,8 +69,9 @@ export default function SearchScreen() {
         >
           <AppBadge variant="glas" label={t("User")} />
           <AppBadge variant="glas" label={t("Community")} />
-          <AppBadge variant="glas" label={t("Post")} />
+          <AppBadge variant="glas" label={t("Routine")} />
           <AppBadge variant="glas" label={t("Reward")} />
+          <AppBadge variant="glas" label={t("Post")} />
         </ScrollView>
       </View>
 
@@ -84,7 +85,7 @@ export default function SearchScreen() {
         </View>
       ) : (
         <View style={styles.resultsSection}>
-          <AppText style={{ textAlign: "center", marginTop: 40, opacity: 0.5 }}>
+          <AppText style={styles.searchForText}>
             {t("Search for:")} "{searchQuery}"
           </AppText>
         </View>
@@ -115,5 +116,10 @@ const getStyles = () =>
     resultsSection: {
       flex: 1,
       paddingHorizontal: Spacing.md
+    },
+    searchForText: {
+      textAlign: "center",
+      marginTop: 40,
+      opacity: 0.5
     }
   });

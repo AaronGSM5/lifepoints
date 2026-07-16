@@ -8,6 +8,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import SettingsRow from "@/components/settings/SettingsRow";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 import { settingsSections } from "@/constants/SettingsConfig";
 import { Spacing } from "@/constants/Spacing";
 
@@ -50,6 +51,7 @@ export default function SettingsScreen() {
 
   return (
     <ScreenWrapper scrollable>
+      <ScreenTitle title={t("Settings")} />
       {settingsSections.map((cat) => (
         <View key={cat.title} style={styles.section}>
           <AppText type="caption" style={styles.sectionHeader}>

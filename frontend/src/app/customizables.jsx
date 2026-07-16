@@ -109,8 +109,7 @@ export default function CustomizablesScreen() {
 
 const styles = StyleSheet.create({
   scrollContent: {
-    alignItems: "center",
-    paddingTop: Spacing.lg
+    alignItems: "center"
   },
   contentMaxWidth: {
     width: "100%",

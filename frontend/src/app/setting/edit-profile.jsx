@@ -202,7 +202,7 @@ const getStyles = (theme) =>
     },
     avatarSection: {
       alignItems: "center",
-      paddingVertical: Spacing.xl
+      paddingBottom: Spacing.xl
     },
     avatarContainer: {
       position: "relative"

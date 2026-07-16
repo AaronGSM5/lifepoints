@@ -2,11 +2,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, View } from "react-native";
 
-import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ServiceItem from "@/components/settings/ServiceItem";
-import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -50,9 +49,7 @@ export default function LinkedServicesScreen() {
       />
 
       <View style={styles.section}>
-        <AppText type="title" style={styles.sectionTitle}>
-          {t("Fitness & Health")}
-        </AppText>
+        <SectionHeader title={t("Fitness & Health")} />
         <ServiceItem
           id="appleHealth"
           name="Apple Health"
@@ -61,7 +58,7 @@ export default function LinkedServicesScreen() {
           isConnected={connections.appleHealth}
           onPress={() => handleToggleService("appleHealth", "Apple Health")}
         />
-        <View style={{ height: Spacing.md }} />
+        <View style={styles.spacer} />
         <ServiceItem
           id="strava"
           name="Strava"
@@ -73,9 +70,7 @@ export default function LinkedServicesScreen() {
       </View>
 
       <View style={styles.section}>
-        <AppText type="title" style={styles.sectionTitle}>
-          {t("Entertainment & Lifestyle")}
-        </AppText>
+        <SectionHeader title={t("Entertainment & Lifestyle")} />
         <ServiceItem
           id="spotify"
           name="Spotify"
@@ -85,20 +80,11 @@ export default function LinkedServicesScreen() {
           onPress={() => handleToggleService("spotify", "Spotify")}
         />
       </View>
-
-      <View style={styles.privacyNote}>
-        <Icon name="lock" size={16} color={MyTheme.muted} />
-        <AppText type="caption" style={styles.privacyText}>
-          {t(
-            "Your data is transmitted in encrypted form. You can revoke access at any time in the settings for the respective service."
-          )}
-        </AppText>
-      </View>
     </ScreenWrapper>
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     section: {
       marginBottom: Spacing.md
@@ -106,17 +92,7 @@ const getStyles = (theme) =>
     sectionTitle: {
       marginBottom: Spacing.md
     },
-    privacyNote: {
-      flexDirection: "row",
-      backgroundColor: theme.primary,
-      padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.md,
-      gap: Spacing.sm,
-      marginBottom: Spacing.xl
-    },
-    privacyText: {
-      flex: 1,
-      color: theme.muted,
-      lineHeight: 16
+    spacer: {
+      height: Spacing.md
     }
   });

@@ -5,9 +5,16 @@ import { StyleSheet, Switch, View } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
+
+const options = [
+  { id: "push", i18nKey: "Push Notifications" },
+  { id: "email", i18nKey: "Email" },
+  { id: "offers", i18nKey: "Offers" }
+];
 
 export default function NotificationsScreen() {
   const MyTheme = useAppTheme();
@@ -27,46 +34,37 @@ export default function NotificationsScreen() {
   return (
     <ScreenWrapper>
       <ScreenTitle title={t("Notifications")} />
-      <View style={styles.row}>
-        <AppText>{t("Push Notifications")}</AppText>
-        <Switch
-          value={settings.push}
-          onValueChange={() => toggleSwitch("push")}
-          trackColor={{ false: MyTheme.muted, true: MyTheme.primaryAccent }}
-        />
-      </View>
-      <View style={styles.row}>
-        <AppText>{t("Email")}</AppText>
-        <Switch
-          value={settings.email}
-          onValueChange={() => toggleSwitch("email")}
-          trackColor={{ false: MyTheme.muted, true: MyTheme.primaryAccent }}
-        />
-      </View>
-      <View style={styles.row}>
-        <AppText>{t("Offers")}</AppText>
-        <Switch
-          value={settings.offers}
-          onValueChange={() => toggleSwitch("offers")}
-          trackColor={{ false: MyTheme.muted, true: MyTheme.primaryAccent }}
-        />
-      </View>
+      {options.map((option, index) => {
+        const isFirst = index === 0;
+        const isLast = index === options.length - 1;
+        return (
+          <React.Fragment key={option.id}>
+            <View style={[styles.row, isFirst && { paddingTop: 0 }]}>
+              <AppText>{t(option.i18nKey)}</AppText>
+              <Switch
+                value={settings[option.id]}
+                onValueChange={() => toggleSwitch(option.id)}
+                trackColor={styles.switch}
+              />
+            </View>
+            {!isLast && <Separator />}
+          </React.Fragment>
+        );
+      })}
     </ScreenWrapper>
   );
 }
 
 const getStyles = (theme) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: Spacing.lg
-    },
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingVertical: Spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.separator
+      paddingVertical: Spacing.md
+    },
+    switch: {
+      false: theme.muted,
+      true: theme.primaryAccent
     }
   });

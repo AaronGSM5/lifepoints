@@ -10,15 +10,16 @@ import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import AppButton from "../ui/AppButton";
 import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
 
 const ServiceItem = memo(({ name, description, icon, isConnected, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
   return (
-    <View style={styles.serviceCard}>
+    <BaseCard style={styles.serviceCard}>
       <View style={styles.cardMain}>
-        <View style={[styles.iconBox, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
+        <View style={styles.iconBox}>
           <Icon name={icon} size={28} color={MyTheme.primaryAccent} />
         </View>
 
@@ -45,7 +46,7 @@ const ServiceItem = memo(({ name, description, icon, isConnected, onPress }) => 
         onPress={onPress}
         bgColor={!isConnected && MyTheme.primaryAccent}
       />
-    </View>
+    </BaseCard>
   );
 });
 ServiceItem.displayName = "ServiceItem";
@@ -53,12 +54,7 @@ ServiceItem.displayName = "ServiceItem";
 const getStyles = (theme) =>
   StyleSheet.create({
     serviceCard: {
-      backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
-      padding: Spacing.md,
-      borderWidth: 1,
-      borderColor: theme.secondary,
-      gap: Spacing.md
+      gap: Spacing.lg
     },
     cardMain: {
       flexDirection: "row",
@@ -70,16 +66,18 @@ const getStyles = (theme) =>
       borderRadius: 14,
       justifyContent: "center",
       alignItems: "center",
-      marginRight: Spacing.md
+      marginRight: Spacing.md,
+      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
     },
     infoContainer: {
       flex: 1
     },
     titleRow: {
       flexDirection: "row",
+      justifyContent: "space-between",
       alignItems: "center",
-      gap: Spacing.sm,
-      marginBottom: 2
+      gap: Spacing.md,
+      marginBottom: Spacing.xs
     },
     activeBadgeText: {
       color: theme.primaryAccent,
