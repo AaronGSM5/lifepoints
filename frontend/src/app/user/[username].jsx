@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import TrophyCard from "@/components/trophies/TrophyCard";
+import AppSkeleton from "@/components/ui/AppSkeleton";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -36,29 +36,15 @@ export default function PublicProfileScreen() {
       .filter(Boolean);
   }, [activePublicProfile]);
 
-  const skeletonProps = useMemo(
-    () => ({
-      colorMode: MyTheme.isDark ? "dark" : "light",
-      transition: { type: "timing", duration: 1500 },
-      show: isLoading
-    }),
-    [MyTheme.isDark, isLoading]
-  );
-
   return (
     <ScreenWrapper scrollable>
-      <ProfileHeader
-        skeletonProps={skeletonProps}
-        isLoading={isLoading}
-        sourceId={sourceId}
-        profileData={activePublicProfile}
-      />
+      <ProfileHeader isLoading={isLoading} sourceId={sourceId} profileData={activePublicProfile} />
       <View style={styles.trophySection}>
         <View style={styles.pinnedGrid}>
           {isLoading
             ? [1, 2, 3].map((i) => (
                 <View key={i}>
-                  <Skeleton {...skeletonProps} width={80} height={80} radius={Spacing.borderRadius.lg} />
+                  <AppSkeleton width={80} height={80} radius={Spacing.borderRadius.lg} />
                 </View>
               ))
             : pinnedTrophies.map((selectedTrophy) => (

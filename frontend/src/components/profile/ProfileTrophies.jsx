@@ -3,16 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import TrophyCard from "../trophies/TrophyCard";
+import AppSkeleton from "../ui/AppSkeleton";
 import SectionHeader from "../ui/SectionHeader";
 
-const ProfileTrophies = memo(({ isLoading, trophies = [], skeletonProps }) => {
+const ProfileTrophies = memo(({ isLoading, trophies = [] }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("trophies");
 
@@ -45,13 +45,7 @@ const ProfileTrophies = memo(({ isLoading, trophies = [], skeletonProps }) => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {isLoading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton
-                key={`skel-trophy-${i}`}
-                {...skeletonProps}
-                width={80}
-                height={80}
-                radius={Spacing.borderRadius.lg}
-              />
+              <AppSkeleton key={`skel-trophy-${i}`} width={80} height={80} radius={Spacing.borderRadius.lg} />
             ))
           : mergedTrophies.map((item) => (
               <View key={`trophy-${item?.id}`} style={styles.cardWrapper}>

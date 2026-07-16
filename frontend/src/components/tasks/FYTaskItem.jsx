@@ -2,8 +2,6 @@ import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StyleSheet, View } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
@@ -12,6 +10,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
+import AppSkeleton from "../ui/AppSkeleton";
 
 const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }) => {
   const MyTheme = useAppTheme();
@@ -23,48 +22,21 @@ const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }
       <BaseCard style={styles.card} padding={0}>
         {/* Image */}
         <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
-          <Skeleton
-            colorMode={MyTheme.isDark ? "dark" : "light"}
-            width="100%"
-            height={"100%"}
-            radius={0}
-            transition={{ type: "timing", duration: 1500 }}
-          />
+          <AppSkeleton height={"100%"} radius={0} />
         </View>
 
         <View style={styles.cardContent}>
           <View style={styles.cardInfoRow}>
             <View style={{ flex: 1, paddingRight: Spacing.sm }}>
               <View style={{ marginBottom: 4 }}>
-                <Skeleton
-                  colorMode={MyTheme.isDark ? "dark" : "light"}
-                  width="80%"
-                  height={20}
-                  transition={{ type: "timing", duration: 1500 }}
-                />
+                <AppSkeleton width="80%" height={20} />
               </View>
-              <Skeleton
-                colorMode={MyTheme.isDark ? "dark" : "light"}
-                width="80%"
-                height={14}
-                transition={{ type: "timing", duration: 1500 }}
-              />
+              <AppSkeleton width="80%" height={14} />
             </View>
-            <Skeleton
-              colorMode={MyTheme.isDark ? "dark" : "light"}
-              width={60}
-              height={22}
-              transition={{ type: "timing", duration: 1500 }}
-            />
+            <AppSkeleton width={60} height={22} />
           </View>
           {/* Button */}
-          <Skeleton
-            colorMode={MyTheme.isDark ? "dark" : "light"}
-            width="100%"
-            height={44}
-            radius={Spacing.borderRadius.lg}
-            transition={{ type: "timing", duration: 1500 }}
-          />
+          <AppSkeleton height={44} radius={Spacing.borderRadius.lg} />
         </View>
       </BaseCard>
     );

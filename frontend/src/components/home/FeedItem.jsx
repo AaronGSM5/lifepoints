@@ -2,7 +2,6 @@ import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -14,6 +13,7 @@ import FeedItemFooter from "./FeedItemFooter";
 import FeedItemHeader from "./FeedItemHeader";
 import FeedItemImageContainer from "./FeedItemImageContainer";
 import { LootGameTrigger } from "./LootGameTrigger";
+import AppSkeleton from "../ui/AppSkeleton";
 import Separator from "../ui/Separator";
 
 const FeedItem = memo(
@@ -27,7 +27,6 @@ const FeedItem = memo(
     id,
     onOpenComments,
     onOpenOptions,
-    skeletonProps,
     isLoading,
     isReady
   }) => {
@@ -62,16 +61,16 @@ const FeedItem = memo(
         <>
           <View style={styles.skeletonContainer}>
             <View style={styles.skeletonHeader}>
-              <Skeleton {...skeletonProps} radius="round" width={32} height={32} />
-              <Skeleton {...skeletonProps} width={120} height={12} />
+              <AppSkeleton radius="round" width={32} height={32} />
+              <AppSkeleton width={120} height={12} />
             </View>
-            <Skeleton {...skeletonProps} width="100%" height={350} />
+            <AppSkeleton height={350} />
             <View style={styles.skeletonFooter}>
               <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-                <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
-                <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
+                <AppSkeleton width={24} height={24} radius="round" />
+                <AppSkeleton width={24} height={24} radius="round" />
               </View>
-              <Skeleton {...skeletonProps} width="80%" height={12} />
+              <AppSkeleton width="80%" height={12} />
             </View>
           </View>
           <Separator />

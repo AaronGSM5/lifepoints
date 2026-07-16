@@ -2,12 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, View } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import BillingToggle from "@/components/settings/subscription/BillingToggle";
 import SubscriptionCard from "@/components/settings/subscription/SubscriptionCard";
 import SubscriptionSkeletons from "@/components/settings/subscription/SubscriptionSkeletons";
+import AppSkeleton from "@/components/ui/AppSkeleton";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
@@ -37,14 +36,6 @@ export default function SubscriptionScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  const skBase = useMemo(
-    () => ({
-      colorMode: MyTheme.isDark ? "dark" : "light",
-      transition: { type: "timing", duration: 1500 }
-    }),
-    [MyTheme.isDark]
-  );
-
   return (
     <ScreenWrapper scrollable>
       <View style={styles.header}>
@@ -56,7 +47,7 @@ export default function SubscriptionScreen() {
 
         {isLoading ? (
           <View style={styles.toggleContainer}>
-            <Skeleton {...skBase} width={240} height={44} radius={22} />
+            <AppSkeleton width={240} height={44} radius={22} />
           </View>
         ) : (
           <BillingToggle billingCycle={billingCycle} onChange={setBillingCycle} />

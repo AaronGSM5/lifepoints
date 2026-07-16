@@ -1,16 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
+import AppSkeleton from "@/components/ui/AppSkeleton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export const SkeletonFeatureItem = ({ skBase }) => (
+export const SkeletonFeatureItem = () => (
   <View style={styles.featureItem}>
-    <Skeleton {...skBase} width={20} height={20} radius={10} />
+    <AppSkeleton width={20} height={20} radius={10} />
     <View style={{ marginLeft: Spacing.sm, flex: 1, justifyContent: "center" }}>
-      <Skeleton {...skBase} width="80%" height={14} radius={4} />
+      <AppSkeleton width="80%" height={14} radius={4} />
     </View>
   </View>
 );
@@ -28,9 +27,9 @@ export default function SubscriptionSkeletons({ billingCycle }) {
       {/* Standard Card Skeleton */}
       <View style={[styles.card, { backgroundColor: MyTheme.primary, borderColor: MyTheme.secondary }]}>
         <View style={styles.cardHeader}>
-          <Skeleton {...skBase} width={160} height={24} radius={4} />
+          <AppSkeleton width={160} height={24} radius={4} />
           <View style={{ marginTop: 4 }}>
-            <Skeleton {...skBase} width={80} height={18} radius={4} />
+            <AppSkeleton width={80} height={18} radius={4} />
           </View>
         </View>
         <View style={styles.featureList}>
@@ -39,23 +38,23 @@ export default function SubscriptionSkeletons({ billingCycle }) {
           ))}
         </View>
         <View style={{ marginTop: Spacing.md }}>
-          <Skeleton {...skBase} width="100%" height={48} radius={Spacing.borderRadius.full} />
+          <AppSkeleton height={48} radius={Spacing.borderRadius.full} />
         </View>
       </View>
 
       {/* Plus Card Skeleton */}
       <View style={[styles.card, { backgroundColor: MyTheme.primary, borderColor: MyTheme.secondary }]}>
         <View style={styles.badgeWrapper}>
-          <Skeleton {...skBase} width={130} height={24} />
+          <AppSkeleton width={130} height={24} />
         </View>
         <View style={styles.cardHeader}>
-          <Skeleton {...skBase} width={140} height={24} radius={4} />
+          <AppSkeleton width={140} height={24} radius={4} />
           <View style={{ marginTop: 8 }}>
-            <Skeleton {...skBase} width={90} height={32} radius={4} />
+            <AppSkeleton width={90} height={32} radius={4} />
           </View>
           {billingCycle === "yearly" && (
             <View style={{ marginTop: 4 }}>
-              <Skeleton {...skBase} width={180} height={14} radius={4} />
+              <AppSkeleton width={180} height={14} radius={4} />
             </View>
           )}
         </View>
@@ -65,7 +64,7 @@ export default function SubscriptionSkeletons({ billingCycle }) {
           ))}
         </View>
         <View style={{ marginTop: Spacing.md }}>
-          <Skeleton {...skBase} width="100%" height={48} radius={Spacing.borderRadius.full} />
+          <AppSkeleton height={48} radius={Spacing.borderRadius.full} />
         </View>
       </View>
     </>

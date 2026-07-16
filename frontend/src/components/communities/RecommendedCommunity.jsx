@@ -4,7 +4,6 @@ import { Image, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
-import { Skeleton } from "moti/skeleton";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
@@ -12,6 +11,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
+import AppSkeleton from "../ui/AppSkeleton";
 import BaseCard from "../ui/BaseCard";
 
 const EMPTY_ARRAY = [];
@@ -23,20 +23,18 @@ const RecommendedCommunity = memo(({ item, isLoading, onPress }) => {
   const { t } = useTranslation("community");
 
   if (isLoading) {
-    const skeletonMode = MyTheme.isDark ? "dark" : "light";
-
     return (
       <BaseCard style={styles.cardContainer}>
         <View style={styles.headerRow}>
-          <Skeleton colorMode={skeletonMode} width={40} height={40} radius={Spacing.borderRadius.md} />
+          <AppSkeleton width={40} height={40} radius={Spacing.borderRadius.md} />
         </View>
 
         <View style={styles.contentArea}>
-          <Skeleton colorMode={skeletonMode} width="70%" height={20} />
+          <AppSkeleton width="70%" height={20} />
           <View style={styles.spacerSM} />
-          <Skeleton colorMode={skeletonMode} width="100%" height={14} />
+          <AppSkeleton height={14} />
           <View style={styles.spacerXS} />
-          <Skeleton colorMode={skeletonMode} width="80%" height={14} />
+          <AppSkeleton width="80%" height={14} />
         </View>
 
         <View style={styles.footerRow}>
@@ -52,12 +50,12 @@ const RecommendedCommunity = memo(({ item, isLoading, onPress }) => {
                     index > 0 && { marginLeft: -10 }
                   ]}
                 >
-                  <Skeleton colorMode={skeletonMode} width={20} height={20} radius={10} />
+                  <AppSkeleton width={20} height={20} radius={10} />
                 </View>
               ))}
             </View>
 
-            <Skeleton colorMode={skeletonMode} width={80} height={12} />
+            <AppSkeleton width={80} height={12} />
           </View>
         </View>
       </BaseCard>

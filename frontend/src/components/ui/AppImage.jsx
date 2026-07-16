@@ -2,11 +2,11 @@ import React, { memo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Image } from "expo-image";
-import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import AppSkeleton from "./AppSkeleton";
 import { Icon } from "../icons/Icon";
 
 const blurhash =
@@ -63,7 +63,7 @@ const AppImage = memo(
 
         {isLoading && !hasError && showSkeleton && (
           <View style={StyleSheet.absoluteFillObject}>
-            <Skeleton colorMode={theme.isDark ? "dark" : "light"} width="100%" height="100%" radius={skeletonRadius} />
+            <AppSkeleton height="100%" radius={skeletonRadius} />
           </View>
         )}
 

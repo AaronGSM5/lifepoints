@@ -4,7 +4,6 @@ import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
@@ -18,9 +17,10 @@ import useStore from "@/store/useStore";
 import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
 import AppImage from "../ui/AppImage";
+import AppSkeleton from "../ui/AppSkeleton";
 import StatusBadge from "../ui/StatusBadge";
 
-const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
+const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -76,17 +76,17 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
       {isLoading ? (
         <View style={{ alignItems: "center" }}>
           <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={80} height={14} />
+          <AppSkeleton width={80} height={14} />
           <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={180} height={24} />
+          <AppSkeleton width={180} height={24} />
           <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={120} height={14} />
+          <AppSkeleton width={120} height={14} />
           <View style={{ height: Spacing.xl }} />
-          <Skeleton {...skeletonProps} width={160} height={14} />
+          <AppSkeleton width={160} height={14} />
 
           <View style={styles.actionButtons}>
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
+            <AppSkeleton width={130} height={44} radius={Spacing.borderRadius.full} />
+            <AppSkeleton width={130} height={44} radius={Spacing.borderRadius.full} />
           </View>
         </View>
       ) : (
