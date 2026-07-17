@@ -7,30 +7,17 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import RewardCardSkeleton from "./RewardCardSkeleton";
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
-import AppSkeleton from "../ui/AppSkeleton";
 import BaseCard from "../ui/BaseCard";
 
 const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPress, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("shop");
-  if (isLoading) {
-    return (
-      <BaseCard style={styles.gridCard} padding={0}>
-        <AppSkeleton height={100} radius={0} />
-        <View style={styles.skeletonContent}>
-          <AppSkeleton width="40%" height={12} />
-          <AppSkeleton width="90%" height={16} />
-          <View style={[styles.cardFooter, { marginTop: Spacing.xs }]}>
-            <AppSkeleton width="30%" height={14} />
-            <AppSkeleton width={28} height={28} radius={14} />
-          </View>
-        </View>
-      </BaseCard>
-    );
-  }
+
+  if (isLoading) return <RewardCardSkeleton styles={styles} />;
 
   return (
     <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>

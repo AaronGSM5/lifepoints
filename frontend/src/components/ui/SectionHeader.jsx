@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import AppSkeleton from "./AppSkeleton";
+import SectionHeaderSkeleton from "./SectionHeaderSkeleton";
 
 const SectionHeader = memo(
   ({
@@ -26,17 +26,7 @@ const SectionHeader = memo(
 
     const resolvedRightLabelColor = rightLabelColor ?? MyTheme.primaryAccent;
 
-    if (isLoading) {
-      return (
-        <View style={[styles.container, style]}>
-          <View style={styles.leftGroup}>
-            {icon && <AppSkeleton width={24} height={24} radius="round" />}
-            <AppSkeleton width={140} height={24} radius={4} />
-          </View>
-          {rightLabel && <AppSkeleton width={60} height={24} radius={4} />}
-        </View>
-      );
-    }
+    if (isLoading) return <SectionHeaderSkeleton style={style} icon={icon} rightLabel={rightLabel} styles={styles} />;
 
     return (
       <View style={[styles.container, style]}>

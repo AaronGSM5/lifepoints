@@ -10,25 +10,14 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppBadge from "./AppBadge";
-import AppSkeleton from "./AppSkeleton";
+import StatCardSkeleton from "./StatCardSkeleton";
 
 const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const handleGetPlus = useCallback(() => router.push("/setting/subscription"), []);
 
-  if (isLoading) {
-    return (
-      <BaseCard style={style}>
-        <View style={styles.statTop}>
-          <AppSkeleton width={50} height={20} />
-          <AppSkeleton width={16} height={16} radius={4} />
-        </View>
-        <View style={{ marginTop: Spacing.sm }} />
-        <AppSkeleton width={80} height={10} />
-      </BaseCard>
-    );
-  }
+  if (isLoading) return <StatCardSkeleton style={style} styles={styles} />;
 
   return (
     <BaseCard style={style}>

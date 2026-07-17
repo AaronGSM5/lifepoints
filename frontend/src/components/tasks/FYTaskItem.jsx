@@ -9,38 +9,16 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
+import FYTaskItemSkeleton from "./FYTaskItemSkeleton";
 import AppBadge from "../ui/AppBadge";
-import AppSkeleton from "../ui/AppSkeleton";
 
 const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   const completeTask = useStore((state) => state.completeTask);
-  if (isLoading) {
-    return (
-      <BaseCard style={styles.card} padding={0}>
-        {/* Image */}
-        <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
-          <AppSkeleton height={"100%"} radius={0} />
-        </View>
 
-        <View style={styles.cardContent}>
-          <View style={styles.cardInfoRow}>
-            <View style={{ flex: 1, paddingRight: Spacing.sm }}>
-              <View style={{ marginBottom: 4 }}>
-                <AppSkeleton width="80%" height={20} />
-              </View>
-              <AppSkeleton width="80%" height={14} />
-            </View>
-            <AppSkeleton width={60} height={22} />
-          </View>
-          {/* Button */}
-          <AppSkeleton height={44} radius={Spacing.borderRadius.lg} />
-        </View>
-      </BaseCard>
-    );
-  }
+  if (isLoading) return <FYTaskItemSkeleton styles={styles} />;
 
   const renderBadge = () => {
     if (!badge) return null;

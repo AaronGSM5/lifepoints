@@ -12,8 +12,8 @@ import FeedItemActionBar from "./FeedItemActionBar";
 import FeedItemFooter from "./FeedItemFooter";
 import FeedItemHeader from "./FeedItemHeader";
 import FeedItemImageContainer from "./FeedItemImageContainer";
+import FeedItemSkeleton from "./FeedItemSkeleton";
 import { LootGameTrigger } from "./LootGameTrigger";
-import AppSkeleton from "../ui/AppSkeleton";
 import Separator from "../ui/Separator";
 
 const FeedItem = memo(
@@ -56,27 +56,7 @@ const FeedItem = memo(
       });
     }, [username, id]);
 
-    if (isLoading) {
-      return (
-        <>
-          <View style={styles.skeletonContainer}>
-            <View style={styles.skeletonHeader}>
-              <AppSkeleton radius="round" width={32} height={32} />
-              <AppSkeleton width={120} height={12} />
-            </View>
-            <AppSkeleton height={350} />
-            <View style={styles.skeletonFooter}>
-              <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-                <AppSkeleton width={24} height={24} radius="round" />
-                <AppSkeleton width={24} height={24} radius="round" />
-              </View>
-              <AppSkeleton width="80%" height={12} />
-            </View>
-          </View>
-          <Separator />
-        </>
-      );
-    }
+    if (isLoading) return <FeedItemSkeleton styles={styles} />;
 
     return (
       <>

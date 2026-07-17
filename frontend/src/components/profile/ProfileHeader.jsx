@@ -14,10 +14,10 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
 import useStore from "@/store/useStore";
 
+import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
 import AppImage from "../ui/AppImage";
-import AppSkeleton from "../ui/AppSkeleton";
 import StatusBadge from "../ui/StatusBadge";
 
 const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileData }) => {
@@ -74,21 +74,7 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
       </View>
 
       {isLoading ? (
-        <View style={{ alignItems: "center" }}>
-          <View style={{ height: Spacing.sm }} />
-          <AppSkeleton width={80} height={14} />
-          <View style={{ height: Spacing.sm }} />
-          <AppSkeleton width={180} height={24} />
-          <View style={{ height: Spacing.sm }} />
-          <AppSkeleton width={120} height={14} />
-          <View style={{ height: Spacing.xl }} />
-          <AppSkeleton width={160} height={14} />
-
-          <View style={styles.actionButtons}>
-            <AppSkeleton width={130} height={44} radius={Spacing.borderRadius.full} />
-            <AppSkeleton width={130} height={44} radius={Spacing.borderRadius.full} />
-          </View>
-        </View>
+        <ProfileHeaderSkeleton styles={styles} />
       ) : (
         <>
           <AppText type="caption">@{profile.username}</AppText>

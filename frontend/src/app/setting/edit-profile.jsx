@@ -12,12 +12,13 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppImage from "@/components/ui/AppImage";
 import AppInput from "@/components/ui/AppInput";
-import AppSkeleton from "@/components/ui/AppSkeleton";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
+
+import EditProfileSkeleton from "./EditProfileSkeleton";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
@@ -121,17 +122,7 @@ export default function EditProfileScreen() {
           {/* Form Section */}
           <View style={styles.formSection}>
             {isLoading ? (
-              <>
-                <View style={styles.inputSkeleton}>
-                  <AppSkeleton height={56} radius={Spacing.borderRadius.md} />
-                </View>
-                <View style={styles.inputSkeleton}>
-                  <AppSkeleton height={56} radius={Spacing.borderRadius.md} />
-                </View>
-                <View style={styles.inputSkeleton}>
-                  <AppSkeleton height={100} radius={Spacing.borderRadius.md} />
-                </View>
-              </>
+              <EditProfileSkeleton styles={styles} />
             ) : (
               <>
                 <AppInput
