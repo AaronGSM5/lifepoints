@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { useMyProfile } from "@/api/profile/useMyProfile";
 import JournalPreview from "@/components/journal/JournalPreview";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -9,42 +7,23 @@ import ProfileCustomizables from "@/components/profile/ProfileCustomizables";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileTrophies from "@/components/profile/ProfileTrophies";
-import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function ProfileScreen() {
   const { data: profileData, isLoading } = useMyProfile();
-  const MyTheme = useAppTheme();
-  const skeletonProps = useMemo(
-    () => ({
-      colorMode: MyTheme.isDark ? "dark" : "light",
-      transition: { type: "timing", duration: 1500 },
-      show: isLoading
-    }),
-    [MyTheme.isDark, isLoading]
-  );
 
   return (
     <ScreenWrapper scrollable>
-      <ProfileHeader
-        skeletonProps={skeletonProps}
-        isLoading={isLoading}
-        isExternUser={false}
-        profileData={profileData}
-      />
+      <ProfileHeader isLoading={isLoading} isExternUser={false} profileData={profileData} />
 
-      <OnboardingGuide tutorialSteps={profileData?.tutorialSteps} skeletonProps={skeletonProps} isLoading={isLoading} />
+      <OnboardingGuide tutorialSteps={profileData?.tutorialSteps} isLoading={isLoading} />
 
       <ProfileStats stats={profileData?.stats} isLoading={isLoading} />
 
-      <ProfileCustomizables
-        isLoading={isLoading}
-        customizables={profileData?.customizables}
-        skeletonProps={skeletonProps}
-      />
+      <ProfileCustomizables isLoading={isLoading} customizables={profileData?.customizables} />
 
-      <ProfileTrophies isLoading={isLoading} trophies={profileData?.trophies} skeletonProps={skeletonProps} />
+      <ProfileTrophies isLoading={isLoading} trophies={profileData?.trophies} />
 
-      <JournalPreview activities={profileData?.activities} skeletonProps={skeletonProps} isLoading={isLoading} />
+      <JournalPreview activities={profileData?.activities} isLoading={isLoading} />
 
       <InviteFriendCard referralCode={profileData?.username} />
     </ScreenWrapper>

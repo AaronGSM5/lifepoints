@@ -17,11 +17,6 @@ export const SkeletonFeatureItem = () => (
 export default function SubscriptionSkeletons({ billingCycle }) {
   const MyTheme = useAppTheme();
 
-  const skBase = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 }
-  };
-
   return (
     <>
       {/* Standard Card Skeleton */}
@@ -34,7 +29,7 @@ export default function SubscriptionSkeletons({ billingCycle }) {
         </View>
         <View style={styles.featureList}>
           {[1, 2, 3].map((i) => (
-            <SkeletonFeatureItem key={i} skBase={skBase} />
+            <SkeletonFeatureItem key={i} />
           ))}
         </View>
         <View style={{ marginTop: Spacing.md }}>
@@ -60,7 +55,7 @@ export default function SubscriptionSkeletons({ billingCycle }) {
         </View>
         <View style={styles.featureList}>
           {[1, 2, 3, 4].map((i) => (
-            <SkeletonFeatureItem key={i} skBase={skBase} />
+            <SkeletonFeatureItem key={i} />
           ))}
         </View>
         <View style={{ marginTop: Spacing.md }}>

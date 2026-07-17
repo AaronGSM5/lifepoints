@@ -18,7 +18,6 @@ import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { tasksCatalog } from "@/constants/TasksCatalog";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useHome } from "@/hooks/useHome";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
@@ -42,7 +41,6 @@ const HOME_HERO_DATA = [
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
-  const MyTheme = useAppTheme();
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);
@@ -96,15 +94,6 @@ export default function HomeScreen() {
     });
   }, []);
 
-  const skeletonProps = useMemo(
-    () => ({
-      colorMode: MyTheme.isDark ? "dark" : "light",
-      transition: { type: "timing", duration: 1500 },
-      show: isLoading
-    }),
-    [MyTheme.isDark, isLoading]
-  );
-
   const renderHeader = useMemo(
     () => (
       <>
@@ -153,14 +142,13 @@ export default function HomeScreen() {
         <FeedItem
           {...item}
           isLoading={isLoading}
-          skeletonProps={skeletonProps}
           onOpenComments={(id) => setSelectedPostId(id)}
           onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
           isReady={isItemVisible}
         />
       );
     },
-    [isLoading, skeletonProps, visibleItemIds]
+    [isLoading, visibleItemIds]
   );
 
   const renderFooter = useCallback(

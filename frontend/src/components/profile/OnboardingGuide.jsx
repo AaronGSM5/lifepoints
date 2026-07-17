@@ -13,7 +13,7 @@ import OnboardingGuideItem from "./OnboardingGuideItem";
 import OnboardingGuideSkeleton from "./OnboardingGuideSkeleton";
 import AppButton from "../ui/AppButton";
 
-const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {
+const OnboardingGuide = ({ tutorialSteps = [], isLoading }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -29,8 +29,7 @@ const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {
   if (isAllCompleted && !isLoading) return null;
   if (hasCompletedOnboarding) return null;
 
-  if (isLoading)
-    return <OnboardingGuideSkeleton stepsCount={tutorialSteps?.length || 3} skeletonProps={skeletonProps} />;
+  if (isLoading) return <OnboardingGuideSkeleton stepsCount={tutorialSteps?.length || 3} />;
 
   return (
     <BaseCard style={{ marginTop: Spacing.xl }}>

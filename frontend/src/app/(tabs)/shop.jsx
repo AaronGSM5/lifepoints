@@ -38,21 +38,12 @@ export default function ShopScreen() {
   const userLevel = useStore((state) => state.profile.level);
   const scrollY = useMemo(() => new Animated.Value(0), []);
 
-  const skeletonProps = useMemo(
-    () => ({
-      colorMode: MyTheme.isDark ? "dark" : "light",
-      transition: { type: "timing", duration: 1500 },
-      show: isLoading
-    }),
-    [MyTheme.isDark, isLoading]
-  );
-
   const renderHeader = useMemo(() => {
     const forYouRewards = rewards ? rewards.slice(0, 5) : [];
     return (
       <View>
         <View style={styles.featuredRewardCard}>
-          <FeaturedRewardCard skeletonProps={skeletonProps} isLoading={isLoading} />
+          <FeaturedRewardCard isLoading={isLoading} />
         </View>
         <View style={styles.forYouSection}>
           <View style={styles.paddedContent}>
@@ -76,7 +67,6 @@ export default function ShopScreen() {
                   icon={item.icon}
                   isLocked={userLevel < (item.requiredLevel || 0)}
                   onPress={() => router.push(`/reward/${item.id}`)}
-                  skeletonProps={skeletonProps}
                 />
               </View>
             )}
@@ -87,7 +77,6 @@ export default function ShopScreen() {
             categories={categories}
             activeCat={activeCat}
             setActiveCat={setActiveCat}
-            skeletonProps={skeletonProps}
             isLoading={isLoading}
           />
         </View>
@@ -99,7 +88,7 @@ export default function ShopScreen() {
         </View>
       </View>
     );
-  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, skeletonProps, styles]);
+  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, styles]);
 
   const renderEmptyState = useCallback(
     () => (
@@ -144,7 +133,6 @@ export default function ShopScreen() {
               icon={item.icon}
               isLocked={userLevel < item.requiredLevel}
               onPress={() => router.push(`/reward/${item.id}`)}
-              skeletonProps={skeletonProps}
             />
           </View>
         )}
