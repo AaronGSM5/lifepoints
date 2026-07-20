@@ -25,7 +25,7 @@ const FeedItemHeader = memo(({ id, username, avatar, badge, onPress, onOpenOptio
             )}
           </Animated.View>
           {badge ? (
-            <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
+            <View style={styles.badge}>
               <AppText bold style={styles.username}>
                 {username}
               </AppText>
@@ -68,6 +68,11 @@ const getStyles = (theme) =>
     },
     username: {
       fontSize: 15
+    },
+    badge: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.xs
     }
   });
 

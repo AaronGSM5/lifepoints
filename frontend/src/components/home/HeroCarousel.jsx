@@ -1,16 +1,19 @@
-import React from "react";
-import { Dimensions, View } from "react-native";
+import React, { useMemo } from "react";
+import { useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 import EventSlide from "./EventSlide";
 import AppText from "../ui/AppText";
 
-const { width } = Dimensions.get("window");
-
-const ITEM_WIDTH = width * 0.85;
-const ITEM_HEIGHT = ITEM_WIDTH * (9 / 16);
-
 export default function HeroCarousel({ data, isLoading, onPressItem }) {
+  const { width } = useWindowDimensions();
+  const itemDimensions = useMemo(
+    () => ({
+      width: width * 0.85,
+      height: width * 0.85 * (9 / 16)
+    }),
+    [width]
+  );
   if (!data || data.length === 0) {
     return (
       <View>
@@ -22,8 +25,8 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
   return (
     <Carousel
       loop
-      width={ITEM_WIDTH}
-      height={ITEM_HEIGHT}
+      width={itemDimensions.width}
+      height={itemDimensions.height}
       style={{
         width: width,
         justifyContent: "center",
