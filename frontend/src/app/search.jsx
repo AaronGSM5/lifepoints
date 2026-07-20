@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -15,7 +15,7 @@ export default function SearchScreen() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchHistory = ["Gaming", "Meditation", "Fitness Beginner", "Rewe"];
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("common");
 
   useEffect(() => {

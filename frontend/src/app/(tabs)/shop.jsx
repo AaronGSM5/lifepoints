@@ -21,7 +21,7 @@ const SKELETON_REWARDS = Array.from({ length: 4 }).map((_, i) => ({ id: `sr-${i}
 
 export default function ShopScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("shop");
   const router = useRouter();
   const {
@@ -35,17 +35,16 @@ export default function ShopScreen() {
     fetchMore,
     isFetchingMore
   } = useShop();
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const userLevel = useStore((state) => state.profile.level);
   const scrollY = useMemo(() => new Animated.Value(0), []);
 
   const skeletonProps = useMemo(
     () => ({
-      colorMode: isDarkMode ? "dark" : "light",
+      colorMode: MyTheme.isDark ? "dark" : "light",
       transition: { type: "timing", duration: 1500 },
       show: isLoading
     }),
-    [isDarkMode, isLoading]
+    [MyTheme.isDark, isLoading]
   );
 
   const renderHeader = useMemo(() => {
@@ -110,11 +109,7 @@ export default function ShopScreen() {
 
   const renderFooter = () => {
     if (!isFetchingMore) return null;
-    return (
-      <View style={styles.footerLoader}>
-        <AppLoadingSpinner />
-      </View>
-    );
+    return <AppLoadingSpinner centered />;
   };
 
   return (
@@ -181,10 +176,5 @@ const getStyles = () =>
     },
     paddedContent: {
       paddingHorizontal: Spacing.md
-    },
-    footerLoader: {
-      paddingVertical: Spacing.lg,
-      alignItems: "center",
-      justifyContent: "center"
     }
   });

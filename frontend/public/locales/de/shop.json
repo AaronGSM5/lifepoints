@@ -18,5 +18,9 @@
   "Rewards": "Coupons",
   "Locked": "Gesperrt",
   "Description": "Beschreibung",
-  "Redeem Now": "Jetzt einlösen"
+  "Redeem Now": "Jetzt einlösen",
+  // Empty State
+  "No Rewards Found": "Keine Belohnungen gefunden",
+  "We don't have any deals for": "Wir haben derzeit keine Angebote für \"{{category}}\"",
+  "Reset filter": "Filter zurücksetzen"
 }

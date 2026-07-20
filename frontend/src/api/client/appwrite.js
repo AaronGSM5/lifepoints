@@ -1,4 +1,5 @@
-import { Client, Account, Databases, Storage } from 'react-native-appwrite';
+import { Account, Client, Databases, Storage } from 'react-native-appwrite';
+
 import 'react-native-url-polyfill/auto';
 
 const client = new Client();

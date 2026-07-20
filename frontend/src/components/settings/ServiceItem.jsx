@@ -1,5 +1,6 @@
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -10,9 +11,9 @@ import AppBadge from "../ui/AppBadge";
 import AppButton from "../ui/AppButton";
 import AppText from "../ui/AppText";
 
-const ServiceItem = ({ name, description, icon, isConnected, onPress }) => {
+const ServiceItem = memo(({ name, description, icon, isConnected, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
   return (
     <View style={styles.serviceCard}>
@@ -28,11 +29,8 @@ const ServiceItem = ({ name, description, icon, isConnected, onPress }) => {
               <AppBadge
                 variant="outline"
                 label={t("AKTIVE")}
-                textStyle={{ color: MyTheme.primaryAccent, fontSize: 10 }}
-                style={{
-                  paddingVertical: Spacing.xs - 2,
-                  borderColor: MyTheme.primaryAccent
-                }}
+                textStyle={styles.activeBadgeText}
+                style={styles.activeBadge}
               />
             )}
           </View>
@@ -49,7 +47,8 @@ const ServiceItem = ({ name, description, icon, isConnected, onPress }) => {
       />
     </View>
   );
-};
+});
+ServiceItem.displayName = "ServiceItem";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -81,6 +80,14 @@ const getStyles = (theme) =>
       alignItems: "center",
       gap: Spacing.sm,
       marginBottom: 2
+    },
+    activeBadgeText: {
+      color: theme.primaryAccent,
+      fontSize: 10
+    },
+    activeBadge: {
+      paddingVertical: Spacing.xs - 2,
+      borderColor: theme.primaryAccent
     }
   });
 

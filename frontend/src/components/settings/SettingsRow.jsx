@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Switch, View } from "react-native";
 
@@ -8,25 +8,25 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
 
-const SettingsRow = ({ setting, isLast, onPress }) => {
+const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const [isToggled, setIsToggled] = useState(setting.defaultValue || false);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
+
+  const handlePress = () => {
+    if (setting.type === "toggle") {
+      onToggle?.(!value);
+    } else {
+      onPress?.(setting);
+    }
+  };
 
   return (
     <View>
       <Pressable
-        onPress={() => {
-          if (setting.type === "toggle") {
-            setIsToggled(!isToggled);
-          } else {
-            onPress(setting);
-          }
-        }}
+        onPress={handlePress}
         style={({ pressed }) => [styles.item, pressed && setting.type !== "info" && { backgroundColor: MyTheme.glas }]}
       >
-        {/* Icon & Text */}
         <View style={styles.itemLeft}>
           <Icon name={setting.icon} color={setting.danger ? MyTheme.warning : MyTheme.text} />
           <AppText type="title" style={setting.danger ? { color: MyTheme.warning } : {}}>
@@ -34,7 +34,6 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
           </AppText>
         </View>
 
-        {/* Indikators / Values / Switches */}
         <View style={styles.itemRight}>
           {setting.value && (
             <AppText type="caption" style={styles.valueText}>
@@ -44,8 +43,8 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
 
           {setting.type === "toggle" && (
             <Switch
-              value={isToggled}
-              onValueChange={setIsToggled}
+              value={!!value}
+              onValueChange={onToggle}
               trackColor={{ false: "#3f3f46", true: MyTheme.primaryAccent }}
               thumbColor={"#fff"}
             />
@@ -60,9 +59,10 @@ const SettingsRow = ({ setting, isLast, onPress }) => {
       {!isLast && <View style={styles.separator} />}
     </View>
   );
-};
+});
+SettingsRow.displayName = "SettingsRow";
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     item: {
       flexDirection: "row",
@@ -87,7 +87,7 @@ const getStyles = () =>
     },
     separator: {
       height: StyleSheet.hairlineWidth,
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      backgroundColor: theme.separator,
       marginHorizontal: Spacing.md
     }
   });

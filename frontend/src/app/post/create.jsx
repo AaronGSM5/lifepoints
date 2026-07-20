@@ -29,7 +29,7 @@ import useStore from "@/store/useStore";
 export default function CreatePost() {
   const router = useRouter();
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("post");
   const [isPublic, setIsPublic] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, StyleSheet, UIManager, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Skeleton } from "moti/skeleton";
 
@@ -9,63 +9,25 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
-if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
-const TaskItem = ({ title, description, lp, icon, onNavigate, isLoading }) => {
+const TaskItem = memo(({ title, description, lp, icon, onNavigate, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
-  const isDarkMode = useStore((state) => state.isDarkMode);
+
+  const skeletonColor = MyTheme.isDark ? "dark" : "light";
 
   if (isLoading) {
     return (
       <BaseCard style={styles.container}>
         <View style={styles.headerRow}>
-          <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
-            width={20}
-            height={20}
-            radius="round"
-            transition={{ type: "timing", duration: 1500 }}
-          />
-          <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
-            width={50}
-            height={16}
-            radius={4}
-            transition={{ type: "timing", duration: 1500 }}
-          />
+          <Skeleton colorMode={skeletonColor} width={20} height={20} radius="round" />
+          <Skeleton colorMode={skeletonColor} width={50} height={16} radius={4} />
         </View>
         <View style={styles.contentRow}>
-          <View style={{ marginBottom: Spacing.xs }}>
-            <Skeleton
-              colorMode={isDarkMode ? "dark" : "light"}
-              width="60%"
-              height={22}
-              radius={4}
-              transition={{ type: "timing", duration: 1500 }}
-            />
-          </View>
-          <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
-            width="100%"
-            height={14}
-            radius={4}
-            transition={{ type: "timing", duration: 1500 }}
-          />
-          <View style={{ marginTop: 6 }}>
-            <Skeleton
-              colorMode={isDarkMode ? "dark" : "light"}
-              width="80%"
-              height={14}
-              radius={4}
-              transition={{ type: "timing", duration: 1500 }}
-            />
-          </View>
+          <Skeleton colorMode={skeletonColor} width="60%" height={22} radius={4} />
+          <Skeleton colorMode={skeletonColor} width="100%" height={14} radius={4} />
+          <Skeleton colorMode={skeletonColor} width="80%" height={14} radius={4} />
         </View>
       </BaseCard>
     );
@@ -90,17 +52,14 @@ const TaskItem = ({ title, description, lp, icon, onNavigate, isLoading }) => {
       </View>
     </BaseCard>
   );
-};
+});
+TaskItem.displayName = "TaskItem";
 
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       padding: Spacing.md,
       gap: Spacing.lg
-    },
-    mainRow: {
-      flexDirection: "row",
-      alignItems: "center"
     },
     headerRow: {
       flexDirection: "row",
@@ -109,19 +68,6 @@ const getStyles = (theme) =>
     },
     contentRow: {
       gap: Spacing.xs
-    },
-    iconContainer: {
-      width: 48,
-      height: 48,
-      borderRadius: Spacing.borderRadius.md,
-      backgroundColor: theme.secondary,
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: Spacing.md
-    },
-    textContainer: {
-      flex: 1,
-      justifyContent: "center"
     },
     title: {
       fontSize: 18,
@@ -133,11 +79,6 @@ const getStyles = (theme) =>
     },
     lpText: {
       color: theme.primaryAccent
-    },
-    heartButton: {
-      padding: Spacing.xs,
-      justifyContent: "center",
-      alignItems: "center"
     }
   });
 

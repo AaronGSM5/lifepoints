@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
@@ -9,7 +9,6 @@ import { Skeleton } from "moti/skeleton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
@@ -17,22 +16,26 @@ import BaseCard from "../ui/BaseCard";
 
 const RecommendedCommunity = ({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.cardContainer}>
         <View style={styles.headerRow}>
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={40} height={40} radius={Spacing.borderRadius.md} />
+          <Skeleton
+            colorMode={MyTheme.isDark ? "dark" : "light"}
+            width={40}
+            height={40}
+            radius={Spacing.borderRadius.md}
+          />
         </View>
 
         <View style={styles.contentArea}>
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="70%" height={20} />
+          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width="70%" height={20} />
           <View style={{ height: Spacing.xs }} />
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="100%" height={14} />
+          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width="100%" height={14} />
           <View style={{ height: 4 }} />
-          <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="80%" height={14} />
+          <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width="80%" height={14} />
         </View>
 
         <View style={styles.footerRow}>
@@ -48,12 +51,12 @@ const RecommendedCommunity = ({ item, isLoading, onPress }) => {
                     index > 0 && { marginLeft: -10 }
                   ]}
                 >
-                  <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={20} height={20} radius={10} />
+                  <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={20} height={20} radius={10} />
                 </View>
               ))}
             </View>
 
-            <Skeleton colorMode={isDarkMode ? "dark" : "light"} width={80} height={12} />
+            <Skeleton colorMode={MyTheme.isDark ? "dark" : "light"} width={80} height={12} />
           </View>
         </View>
       </BaseCard>

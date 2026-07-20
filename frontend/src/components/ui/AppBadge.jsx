@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,42 +6,45 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "./AppText";
 
-export default function AppBadge({
-  label,
-  emoji,
-  iconNode,
-  variant = "glas", // primary, secondary, outline, glas
-  onPress,
-  style,
-  textStyle
-}) {
-  const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+const AppBadge = memo(
+  ({
+    label,
+    emoji,
+    iconNode,
+    variant = "glas", // primary, secondary, outline, glas
+    onPress,
+    style,
+    textStyle
+  }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-  const Container = onPress ? TouchableOpacity : View;
-  let leftElement = null;
+    const Container = onPress ? TouchableOpacity : View;
+    let leftElement = null;
 
-  if (iconNode) {
-    leftElement = <View style={[styles.iconContainer, label ? { marginRight: Spacing.xs } : {}]}>{iconNode}</View>;
-  } else if (emoji) {
-    leftElement = <AppText style={[styles.emoji, label ? { marginRight: 4 } : {}]}>{emoji}</AppText>;
+    if (iconNode) {
+      leftElement = <View style={[styles.iconContainer, label && { marginRight: Spacing.xs }]}>{iconNode}</View>;
+    } else if (emoji) {
+      leftElement = <AppText style={[styles.emoji, label && { marginRight: Spacing.xs }]}>{emoji}</AppText>;
+    }
+
+    return (
+      <Container onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
+        {leftElement}
+
+        {label && (
+          <AppText type="caption" bold style={[styles.text, styles[`${variant}Text`], textStyle]}>
+            {label}
+          </AppText>
+        )}
+      </Container>
+    );
   }
+);
+AppBadge.displayName = "AppBadge";
 
-  return (
-    <Container onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
-      {leftElement}
-
-      {label && (
-        <AppText type="caption" bold style={[styles.text, styles[`${variant}Text`], textStyle]}>
-          {label.toUpperCase()}
-        </AppText>
-      )}
-    </Container>
-  );
-}
-
-const getStyles = (theme) => {
-  return StyleSheet.create({
+const getStyles = (theme) =>
+  StyleSheet.create({
     badge: {
       flexDirection: "row",
       alignItems: "center",
@@ -61,7 +64,8 @@ const getStyles = (theme) => {
     },
     text: {
       fontSize: 13,
-      letterSpacing: 0.5
+      letterSpacing: 0.5,
+      textTransform: "uppercase"
     },
 
     primary: {
@@ -98,4 +102,5 @@ const getStyles = (theme) => {
       color: theme.primaryAccent
     }
   });
-};
+
+export default AppBadge;

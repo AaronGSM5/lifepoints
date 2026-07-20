@@ -12,7 +12,7 @@ import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { account } from "@/lib/appwrite";
+import { account } from "@/api/client/appwrite";
 import { ID } from "react-native-appwrite";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import { useRouter } from "expo-router";

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
@@ -9,7 +10,7 @@ import AppModal from "../ui/AppModal";
 
 export default function PasswordRulesModal({ visible, onClose, passwordRules, passwordRuleStatus }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
     <AppModal visible={visible} onClose={onClose}>

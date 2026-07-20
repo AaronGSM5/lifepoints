@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
-
-import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
+import { StyleSheet, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
@@ -12,55 +9,28 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
+import OnboardingGuideItem from "./OnboardingGuideItem";
+import OnboardingGuideSkeleton from "./OnboardingGuideSkeleton";
 import AppButton from "../ui/AppButton";
 
 const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const profile = useStore((state) => state.profile);
+  const claimedQuests = useStore((state) => state.profile?.claimedQuests);
   const setHasCompletedOnboarding = useStore((state) => state.setHasCompletedOnboarding);
   const hasCompletedOnboarding = useStore((state) => state.hasCompletedOnboarding);
-  const completedCount = tutorialSteps?.filter((q) => q.completed).length;
+  const completedCount = useMemo(() => {
+    return tutorialSteps?.filter((q) => q.completed).length;
+  }, [tutorialSteps]);
   const isAllCompleted = tutorialSteps?.length > 0 && completedCount === tutorialSteps.length;
   const progress = tutorialSteps?.length > 0 ? completedCount / tutorialSteps.length : 0;
 
   if (isAllCompleted && !isLoading) return null;
-  if (hasCompletedOnboarding === true) return null;
+  if (hasCompletedOnboarding) return null;
 
-  if (isLoading) {
-    return (
-      <BaseCard style={{ marginTop: Spacing.xl }}>
-        <View style={styles.guideHeader}>
-          <Skeleton {...skeletonProps} width={140} height={28} borderRadius={6} />
-          <Skeleton {...skeletonProps} width={80} height={16} borderRadius={4} />
-        </View>
-
-        <View style={{ marginBottom: Spacing.lg }}>
-          <Skeleton {...skeletonProps} width="100%" height={8} borderRadius={4} />
-        </View>
-
-        <View style={styles.questList}>
-          {tutorialSteps?.map((item) => (
-            <View key={`skeleton-${item.id}`} style={styles.questItem}>
-              <View style={styles.questIconContainer}>
-                <Skeleton {...skeletonProps} width={28} height={28} borderRadius={14} />
-              </View>
-
-              <View style={styles.questTextContainer}>
-                <View style={{ marginBottom: 6 }}>
-                  <Skeleton {...skeletonProps} width="60%" height={18} borderRadius={4} />
-                </View>
-                <Skeleton {...skeletonProps} width="30%" height={14} borderRadius={4} />
-              </View>
-
-              <Skeleton {...skeletonProps} width={16} height={16} borderRadius={4} />
-            </View>
-          ))}
-        </View>
-      </BaseCard>
-    );
-  }
+  if (isLoading)
+    return <OnboardingGuideSkeleton stepsCount={tutorialSteps?.length || 3} skeletonProps={skeletonProps} />;
 
   return (
     <BaseCard style={{ marginTop: Spacing.xl }}>
@@ -88,40 +58,8 @@ const OnboardingGuide = ({ tutorialSteps = [], skeletonProps, isLoading }) => {
 
       <View style={styles.questList}>
         {tutorialSteps?.map((quest) => {
-          const isClaimed = profile.claimedQuests?.includes(quest.id);
-          return (
-            <Pressable
-              key={quest.id}
-              style={({ pressed }) => [
-                styles.questItem,
-                quest.completed && styles.questItemCompleted,
-                pressed && !quest.completed && { opacity: 0.7 }
-              ]}
-              onPress={() => {
-                if (!quest.completed && quest.route) {
-                  router.push(quest.route);
-                }
-              }}
-            >
-              <View style={styles.questIconContainer}>
-                <Icon
-                  name={quest.completed ? "checkmark" : quest.icon}
-                  color={quest.completed ? MyTheme.primaryAccent : "gray"}
-                />
-              </View>
-
-              <View style={styles.questTextContainer}>
-                <AppText type="body" style={[styles.questTitle, quest.completed && styles.textStrikeThrough]}>
-                  {t(quest.title)}
-                </AppText>
-                <AppText type="caption" bold style={[styles.rewardText, isClaimed && { color: MyTheme.muted }]}>
-                  {isClaimed ? t("Received LP") : `+${quest.reward} LP`}
-                </AppText>
-              </View>
-
-              {!quest.completed && <Icon name="right" color={MyTheme.muted} size={20} />}
-            </Pressable>
-          );
+          const isClaimed = claimedQuests?.includes(quest.id);
+          return <OnboardingGuideItem key={quest.id} quest={quest} isClaimed={isClaimed} />;
         })}
       </View>
     </BaseCard>
@@ -154,31 +92,5 @@ const getStyles = (theme) =>
     },
     questList: {
       gap: Spacing.sm
-    },
-    questItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: Spacing.sm
-    },
-    questItemCompleted: {
-      opacity: 0.8
-    },
-    questIconContainer: {
-      width: 40,
-      alignItems: "center"
-    },
-    questTextContainer: {
-      flex: 1,
-      marginLeft: Spacing.sm
-    },
-    questTitle: {
-      fontSize: 16
-    },
-    textStrikeThrough: {
-      textDecorationLine: "line-through",
-      color: theme.muted
-    },
-    rewardText: {
-      color: theme.primaryAccent
     }
   });

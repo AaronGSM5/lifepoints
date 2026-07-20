@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 
@@ -11,7 +11,7 @@ import { triggerHaptic } from "@/utils/haptics";
 
 export default function NotificationsScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
   const [settings, setSettings] = useState({
     push: true,

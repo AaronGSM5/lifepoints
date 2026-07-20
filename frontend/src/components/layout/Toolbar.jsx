@@ -20,7 +20,7 @@ export default memo(function Toolbar({ scrollY }) {
   const LP = useStore((state) => state.profile.profileLp);
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   const fallbackScrollY = useMemo(() => new Animated.Value(0), []);
   const activeScrollY = scrollY || fallbackScrollY;
@@ -73,8 +73,9 @@ export default memo(function Toolbar({ scrollY }) {
     >
       {/* Back-Button */}
       <View style={styles.sideSection}>
-        {isMainTab && <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ border: "none" }} />}
-        {!isMainTab && (
+        {isMainTab ? (
+          <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ borderWidth: 0 }} />
+        ) : (
           <Pressable hitSlop={15} onPress={() => router.back()}>
             <Icon name="back" />
           </Pressable>

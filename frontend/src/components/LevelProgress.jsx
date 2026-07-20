@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 
@@ -9,17 +9,23 @@ import { Skeleton } from "moti/skeleton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
-const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
+const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const [animatedWidth] = useState(() => new Animated.Value(0));
 
   const safeMaxXp = maxXp > 0 ? maxXp : 1;
   const targetPercentage = Math.min((currentXp / safeMaxXp) * 100, 100);
+
+  const progressBarStyles = useMemo(
+    () => ({
+      backgroundColor: !MyTheme.isDark ? MyTheme.background : "#333",
+      borderWidth: !MyTheme.isDark ? 0 : 1
+    }),
+    [MyTheme.isDark, MyTheme.background]
+  );
 
   const widthInterpolation = animatedWidth.interpolate({
     inputRange: [0, 100],
@@ -55,27 +61,19 @@ const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeleto
   return (
     <View style={[styles.xpContainer, style]}>
       <View style={styles.xpHeader}>
-        <AppText bold type="caption" style={!isDarkMode && { color: MyTheme.text }}>
+        <AppText bold type="caption" style={!MyTheme.isDark && styles.text}>
           {t("XP PROGRESS")}
         </AppText>
         {isLoading ? (
           <Skeleton {...skeletonProps} width={60} height={12} />
         ) : (
-          <AppText bold type="caption" style={{ color: MyTheme.text }}>
+          <AppText bold type="caption" style={styles.text}>
             {currentXp} / {maxXp}
           </AppText>
         )}
       </View>
 
-      <View
-        style={[
-          styles.progressBarBg,
-          {
-            backgroundColor: !isDarkMode ? MyTheme.background : "#333",
-            borderWidth: !isDarkMode ? 0 : 1
-          }
-        ]}
-      >
+      <View style={[styles.progressBarBg, progressBarStyles]}>
         {isLoading ? (
           <Skeleton {...skeletonProps} width="100%" height={8} />
         ) : (
@@ -91,9 +89,10 @@ const LevelProgress = ({ currentXp = 0, maxXp = 1000, isLoading = false, skeleto
       </View>
     </View>
   );
-};
+});
+LevelProgress.displayName = "LevelProgress";
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     xpContainer: {
       width: "100%"
@@ -113,6 +112,9 @@ const getStyles = () =>
       height: "100%",
       borderRadius: Spacing.borderRadius.full,
       overflow: "hidden"
+    },
+    text: {
+      color: theme.text
     }
   });
 

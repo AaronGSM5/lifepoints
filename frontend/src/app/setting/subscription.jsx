@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -6,19 +6,18 @@ import { Skeleton } from "moti/skeleton";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import BillingToggle from "@/components/settings/subscription/BillingToggle";
-import { PlusCard, PremiumCard, StandardCard } from "@/components/settings/subscription/SubscriptionCards";
+import SubscriptionCard from "@/components/settings/subscription/SubscriptionCard";
 import SubscriptionSkeletons from "@/components/settings/subscription/SubscriptionSkeletons";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+import { SUBSCRIPTION_PLANS } from "@/constants/SubscriptionPlans";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function SubscriptionScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'yearly'
 
@@ -28,7 +27,7 @@ export default function SubscriptionScreen() {
   }, []);
 
   const skBase = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 
@@ -63,11 +62,9 @@ export default function SubscriptionScreen() {
         {isLoading ? (
           <SubscriptionSkeletons billingCycle={billingCycle} />
         ) : (
-          <>
-            <StandardCard />
-            <PlusCard billingCycle={billingCycle} onSubscribe={handleSubscribe} />
-            <PremiumCard billingCycle={billingCycle} onSubscribe={handleSubscribe} />
-          </>
+          SUBSCRIPTION_PLANS.map((plan) => (
+            <SubscriptionCard key={plan.id} plan={plan} billingCycle={billingCycle} onSubscribe={handleSubscribe} />
+          ))
         )}
       </View>
 

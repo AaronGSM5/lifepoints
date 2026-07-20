@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 
@@ -12,7 +12,7 @@ import { addOpacity } from "@/utils/addOpacity";
 
 export default function IconPicker({ icons, selectedIcon, onSelectIcon }) {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
   const [showAll, setShowAll] = useState(false);
   const [fullHeight, setFullHeight] = useState(0);

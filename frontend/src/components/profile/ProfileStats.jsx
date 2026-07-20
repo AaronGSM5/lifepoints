@@ -1,5 +1,6 @@
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -7,31 +8,52 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import SectionHeader from "../ui/SectionHeader";
 import StatCard from "../ui/StatCard";
 
-const ProfileStats = ({ stats = [], isLoading }) => {
+const ProfileStats = memo(({ stats = [], isLoading }) => {
   const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
+
+  if (!isLoading && (!stats || stats.length === 0)) return null;
+
+  const displayStats = isLoading && stats.length === 0 ? Array.from({ length: 4 }) : stats;
+
   return (
-    <View style={{ marginTop: Spacing.xl }}>
+    <View style={styles.container}>
       <SectionHeader
         title={t("Your Stats")}
         icon={"statsChart"}
         iconColor={MyTheme.primaryAccent}
         isLoading={isLoading}
       />
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: Spacing.md }}>
-        {stats?.map((entry, index) => (
+      <View style={styles.statsWrapper}>
+        {displayStats.map((entry, index) => (
           <StatCard
-            key={`stat-${index}`}
+            key={entry?.id || `stat-${index}`}
             isLoading={isLoading}
-            label={t(entry.label)}
-            value={entry.value}
-            icon={entry.icon}
-            color={entry.color}
+            label={entry?.label ? t(entry?.label) : ""}
+            value={entry?.value}
+            icon={entry?.icon}
+            color={entry?.color}
+            style={{ width: "47%" }}
           />
         ))}
       </View>
     </View>
   );
-};
+});
+
+ProfileStats.displayName = "ProfileStats";
+
+const getStyles = () =>
+  StyleSheet.create({
+    container: {
+      marginTop: Spacing.xl
+    },
+    statsWrapper: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: Spacing.md
+    }
+  });
 
 export default ProfileStats;

@@ -11,7 +11,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function LegalDetailScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { type } = useLocalSearchParams();
   // const { t } = useTranslation("settings");
 

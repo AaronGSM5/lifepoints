@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
@@ -19,71 +19,56 @@ import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
 import StatusBadge from "../ui/StatusBadge";
 
-const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
+const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const profile = profileData || {};
   const { getFrameById } = useAvatarFrames();
   const addFriend = useStore((state) => state.addFriend);
-  const friendList = useStore((state) => state.profile.friends || []);
-  const isFriend = isExternUser ? friendList.includes(profile.id) : false;
+  const friendList = useStore((state) => state.profile?.friends);
+  const isFriend = isExternUser ? friendList?.includes(profile.id) : false;
   const badgeToDisplay = isExternUser ? profile.badge : profile.activeStatusBadge;
-  const leagueName = profileData?.leagueName || "Unranked";
-  const rankName = profileData?.rankName || "Newbie";
+  const leagueName = profile?.leagueName || "Unranked";
+  const rankName = profile?.rankName || "Newbie";
   const league = getLeagueData(leagueName);
   const activeFrame = getFrameById(profile.activeFrame);
 
-  const avatarSource = profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png");
+  const avatarSource = useMemo(
+    () => (profile.avatar ? { uri: profile.avatar } : require("@/../public/assets/icon-profile.png")),
+    [profile.avatar]
+  );
 
   const transitionTag = sourceId ? `avatar-${profile.username}-${sourceId}` : `avatar-${profile.username}`;
 
+  const frameStyles = useMemo(() => {
+    if (!activeFrame) return null;
+    return {
+      borderColor: activeFrame.color,
+      borderWidth: activeFrame.borderWidth,
+      boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
+    };
+  }, [activeFrame]);
+
+  const handlePrimaryAction = useCallback(() => {
+    if (isExternUser) {
+      addFriend(profile.id);
+    } else {
+      router.push("/setting/edit-profile");
+    }
+  }, [isExternUser, addFriend, profile.id]);
+
+  const AvatarWrapper = isExternUser ? Animated.View : View;
+  const wrapperProps = isExternUser ? { sharedTransitionTag: transitionTag } : {};
   return (
     <View style={styles.profileHeader}>
       <View style={styles.avatarContainer}>
-        {isExternUser ? (
-          <Animated.View
-            sharedTransitionTag={transitionTag}
-            style={[
-              styles.frameWrapper,
-              activeFrame && {
-                borderColor: activeFrame.color,
-                borderWidth: activeFrame.borderWidth,
-                boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
-              }
-            ]}
-          >
-            <Image source={avatarSource} style={styles.avatar} />
-          </Animated.View>
-        ) : (
-          <View
-            style={[
-              styles.frameWrapper,
-              activeFrame && {
-                borderColor: activeFrame.color,
-                borderWidth: activeFrame.borderWidth,
-                boxShadow: activeFrame.glow ? `0px 0px 10px ${activeFrame.color}` : "none"
-              }
-            ]}
-          >
-            <Image source={avatarSource} style={styles.avatar} />
-          </View>
-        )}
+        <AvatarWrapper {...wrapperProps} style={[styles.frameWrapper, frameStyles]}>
+          <Image source={avatarSource} style={styles.avatar} />
+        </AvatarWrapper>
+
         {!isLoading && profile.level && (
-          <AppBadge
-            label={`LVL ${profile.level}`}
-            style={{
-              position: "absolute",
-              bottom: -Spacing.sm,
-              alignSelf: "center",
-              backgroundColor: MyTheme.primaryAccent,
-              paddingVertical: 2,
-              borderWidth: 2,
-              borderColor: MyTheme.background
-            }}
-            textStyle={{ color: MyTheme.text }}
-          />
+          <AppBadge label={`LVL ${profile.level}`} style={styles.levelBadge} textStyle={{ color: MyTheme.text }} />
         )}
       </View>
 
@@ -106,22 +91,22 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
       ) : (
         <>
           <AppText type="caption">@{profile.username}</AppText>
-          {badgeToDisplay ? (
-            <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-              <AppText type="h1">{profile.name}</AppText>
-              <StatusBadge id={badgeToDisplay} size={28} style={{ marginTop: Spacing.xs }} />
-            </View>
-          ) : (
+
+          <View style={styles.nameRow}>
             <AppText type="h1">{profile.name}</AppText>
-          )}
-          <AppText type="caption" bold style={{ marginTop: Spacing.xs }}>
+            {badgeToDisplay && <StatusBadge id={badgeToDisplay} size={28} style={styles.statusBadge} />}
+          </View>
+
+          <AppText type="caption" bold style={styles.leagueText}>
             {t(leagueName)} •{" "}
-            <AppText bold type="caption" style={{ color: league.color }}>
+            <AppText bold type="caption" style={{ color: league?.color }}>
               {t(rankName)}
             </AppText>
           </AppText>
+
           <View style={{ height: Spacing.lg }}></View>
-          <AppText type="body" style={{ color: MyTheme.text, opacity: 0.9 }}>
+
+          <AppText type="body" style={styles.descriptionText}>
             {profile.description}
           </AppText>
 
@@ -130,7 +115,7 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
               currentXp={profile?.profileXp || 0}
               maxXp={profile?.maxXp}
               isLoading={isLoading}
-              style={{ marginTop: Spacing.lg }}
+              style={styles.levelProgress}
             />
           )}
 
@@ -150,24 +135,26 @@ const ProfileHeader = ({ skeletonProps, isLoading, isExternUser = true, sourceId
                 )
               }
               bgColor={MyTheme.primaryAccent}
-              onPress={() => (isExternUser ? addFriend(profile.id) : router.push("/setting/edit-profile"))}
+              onPress={handlePrimaryAction}
               textStyle={{ color: MyTheme.background }}
             />
             <AppButton
               variant="primary"
               title={isExternUser ? t("Share Profile") : t("Share Stats")}
-              icon={<Icon name="share" size={16} color={!isDarkMode ? MyTheme.background : MyTheme.text} />}
+              icon={<Icon name="share" size={16} color={!MyTheme.isDark ? MyTheme.background : MyTheme.text} />}
               bgColor={"#2a2a2acb"}
-              textStyle={{ color: !isDarkMode ? MyTheme.background : MyTheme.text }}
+              textStyle={{ color: !MyTheme.isDark ? MyTheme.background : MyTheme.text }}
             />
           </View>
         </>
       )}
     </View>
   );
-};
+});
 
-const getStyles = () =>
+ProfileHeader.displayName = "ProfileHeader";
+
+const getStyles = (theme) =>
   StyleSheet.create({
     frameWrapper: {
       width: 110,
@@ -193,6 +180,33 @@ const getStyles = () =>
     actionButtons: {
       flexDirection: "row",
       gap: Spacing.md,
+      marginTop: Spacing.lg
+    },
+    levelBadge: {
+      position: "absolute",
+      bottom: -Spacing.sm,
+      alignSelf: "center",
+      backgroundColor: theme.primaryAccent,
+      paddingVertical: 2,
+      borderWidth: 2,
+      borderColor: theme.background
+    },
+    nameRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm
+    },
+    statusBadge: {
+      marginTop: Spacing.xs
+    },
+    leagueText: {
+      marginTop: Spacing.xs
+    },
+    descriptionText: {
+      color: theme.text,
+      opacity: 0.9
+    },
+    levelProgress: {
       marginTop: Spacing.lg
     }
   });

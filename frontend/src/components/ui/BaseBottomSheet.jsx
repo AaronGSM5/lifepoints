@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   Animated,
-  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -10,6 +9,7 @@ import {
   Pressable,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
   View
 } from "react-native";
 
@@ -21,17 +21,19 @@ import { triggerHaptic } from "@/utils/haptics";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-
-const SHEET_HEIGHT = SCREEN_HEIGHT * 0.8;
-
-const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
+const BaseBottomSheet = memo(({ isVisible, onClose, title, children }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { height: SCREEN_HEIGHT } = useWindowDimensions();
   const [showModal, setShowModal] = useState(isVisible);
 
   const [slideAnim] = useState(() => new Animated.Value(SCREEN_HEIGHT));
   const [fadeAnim] = useState(() => new Animated.Value(0));
+
+  const handleClose = useCallback(() => {
+    Keyboard.dismiss();
+    onClose();
+  }, [onClose]);
 
   const panResponder = useMemo(
     () =>
@@ -75,7 +77,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
   useEffect(() => {
     if (isVisible) {
       triggerHaptic();
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setShowModal(true);
       Animated.parallel([
         Animated.timing(fadeAnim, {
@@ -106,7 +108,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
         setShowModal(false);
       });
     }
-  }, [isVisible, fadeAnim, slideAnim]);
+  }, [isVisible, fadeAnim, slideAnim, SCREEN_HEIGHT]);
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
@@ -115,13 +117,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
         style={styles.overlay}
         keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
       >
-        <AnimatedPressable
-          onPress={() => {
-            Keyboard.dismiss();
-            onClose();
-          }}
-          style={[styles.backdrop, { opacity: fadeAnim }]}
-        />
+        <AnimatedPressable onPress={handleClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
 
         <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
           <View {...panResponder.panHandlers} style={styles.panResponderArea}>
@@ -141,7 +137,7 @@ const BaseBottomSheet = ({ isVisible, onClose, title, children }) => {
       </KeyboardAvoidingView>
     </Modal>
   );
-};
+});
 
 BaseBottomSheet.displayName = "BaseBottomSheet";
 
@@ -160,7 +156,7 @@ const getStyles = (theme) =>
       borderTopLeftRadius: Spacing.borderRadius.lg,
       borderTopRightRadius: Spacing.borderRadius.lg,
       overflow: "hidden",
-      maxHeight: SHEET_HEIGHT,
+      maxHeight: "80%",
       width: "100%",
       flex: 1
     },

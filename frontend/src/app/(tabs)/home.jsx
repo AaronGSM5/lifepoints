@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 
 import ActiveTaskCard from "@/components/home/ActiveTaskCard";
 import CommentSheet from "@/components/home/CommentSheet";
@@ -18,6 +18,7 @@ import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { tasksCatalog } from "@/constants/TasksCatalog";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useHome } from "@/hooks/useHome";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
@@ -26,6 +27,7 @@ const SKELETON_ITEMS = [1, 2, 3];
 
 export default function HomeScreen() {
   const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
+  const MyTheme = useAppTheme();
   const { t } = useTranslation("home");
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);
@@ -35,7 +37,6 @@ export default function HomeScreen() {
   const [visibleItemIds, setVisibleItemIds] = useState([]);
   const viewConfig = useMemo(() => ({ viewAreaCoveragePercentThreshold: 70 }), []);
   const scrollY = useMemo(() => new Animated.Value(0), []);
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const activeTaskIds = useStore((state) => state.activeTaskIds);
   const completeTask = useStore((state) => state.completeTask);
   const addExperience = useStore((state) => state.addExperience);
@@ -43,16 +44,16 @@ export default function HomeScreen() {
   const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
   const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
   const level = useStore((state) => state.profile.level);
-  const myActiveTasks = tasksCatalog.filter((t) => activeTaskIds.includes(t.id));
+  const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
 
   useEffect(() => {
-    if (feedItems && feedItems.length > 0) {
+    if (feedItems?.length > 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplayedItems(feedItems);
     }
   }, [feedItems]);
 
-  const loadMoreItems = () => {
+  const loadMoreItems = useCallback(() => {
     if (isBatchLoading || isLoading) return;
 
     setIsBatchLoading(true);
@@ -68,25 +69,30 @@ export default function HomeScreen() {
       });
       setIsBatchLoading(false);
     }, 500);
-  };
+  }, [isBatchLoading, isLoading, feedItems]);
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
-    const visibleIds = viewableItems.map((vItem) => String(vItem.key));
-    setVisibleItemIds(visibleIds);
+    setVisibleItemIds((prev) => {
+      const newIds = viewableItems.map((vItem) => String(vItem.key));
+      if (prev.length === newIds.length && prev.every((val, index) => val === newIds[index])) {
+        return prev;
+      }
+      return newIds;
+    });
   }, []);
 
   const skeletonProps = useMemo(
     () => ({
-      colorMode: isDarkMode ? "dark" : "light",
+      colorMode: MyTheme.isDark ? "dark" : "light",
       transition: { type: "timing", duration: 1500 },
       show: isLoading
     }),
-    [isDarkMode, isLoading]
+    [MyTheme.isDark, isLoading]
   );
 
   const renderHeader = useMemo(
     () => (
-      <View style={{ paddingHorizontal: Spacing.md }}>
+      <View style={styles.headerContainer}>
         <EventHero imageSource={require("../../../public/assets/events/achtsamkeit2.png")} isLoading={isLoading} />
         <SectionHeader
           title={t("Active Tasks")}
@@ -94,16 +100,14 @@ export default function HomeScreen() {
           onRightPress={() => setQuestModalVisible(true)}
         />
         {myActiveTasks.length === 0 ? (
-          <>
-            <View style={{ marginBottom: Spacing.md }} />
-            <AppText type="caption" bold style={{ alignSelf: "center" }}>
+          <View style={styles.emptyTasksContainer}>
+            <AppText type="caption" bold>
               {t("No Active Tasks")}
             </AppText>
-            <View style={{ marginBottom: Spacing.lg }} />
-          </>
+          </View>
         ) : (
-          myActiveTasks.map((task) => (
-            <View key={task.id}>
+          <View style={styles.activeTasksList}>
+            {myActiveTasks.map((task) => (
               <ActiveTaskCard
                 key={task.id}
                 title={task.title}
@@ -116,9 +120,8 @@ export default function HomeScreen() {
                   addExperience(task.xp);
                 }}
               />
-              <View style={{ marginBottom: Spacing.md }} />
-            </View>
-          ))
+            ))}
+          </View>
         )}
         <SectionHeader title={"Feed"} />
       </View>
@@ -143,14 +146,17 @@ export default function HomeScreen() {
     [isLoading, skeletonProps, visibleItemIds]
   );
 
-  const renderFooter = () =>
-    isBatchLoading ? (
-      <View style={{ marginTop: Spacing.md, paddingHorizontal: Spacing.sm }}>
-        <AppLoadingSpinner />
-      </View>
-    ) : (
-      <View style={{ height: Spacing.xl }} />
-    );
+  const renderFooter = useCallback(
+    () =>
+      isBatchLoading ? (
+        <View style={styles.loadingFooter}>
+          <AppLoadingSpinner centered />
+        </View>
+      ) : (
+        <View style={styles.emptyFooter} />
+      ),
+    [isBatchLoading]
+  );
 
   return (
     <ScreenWrapper
@@ -191,3 +197,24 @@ export default function HomeScreen() {
     </ScreenWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingHorizontal: Spacing.md
+  },
+  emptyTasksContainer: {
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+    marginTop: Spacing.md
+  },
+  activeTasksList: {
+    gap: Spacing.md,
+    marginBottom: Spacing.md
+  },
+  loadingFooter: {
+    marginTop: Spacing.md
+  },
+  emptyFooter: {
+    height: Spacing.xl
+  }
+});

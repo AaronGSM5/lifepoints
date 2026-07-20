@@ -1,35 +1,40 @@
+import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { capitalize } from "@/utils/helpers";
 
 import { Icon } from "../icons/Icon";
 import AppButton from "../ui/AppButton";
 import AppText from "../ui/AppText";
 
-const EmptyState = ({ activeCat, setActiveCat }) => {
+const EmptyState = memo(({ activeCat, setActiveCat }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("shop");
+  const translatedCat = t(`categories.${activeCat}`);
   return (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconCircle}>
         <Icon name="search" size={32} color={MyTheme.muted} />
       </View>
-      <AppText bold type="title" style={{ color: MyTheme.text, marginBottom: Spacing.xs }}>
-        No Rewards Found
+      <AppText bold type="title" style={styles.title}>
+        {t("No Rewards Found")}
       </AppText>
-      <AppText type="caption" style={{ textAlign: "center", color: MyTheme.muted }}>
-        We don't have any deals for "{capitalize(activeCat)}" right now.
+      <AppText type="caption" style={styles.description}>
+        {t("We don't have any deals for", { category: translatedCat })}
       </AppText>
-      <View style={{ marginTop: Spacing.sm }}>
-        <AppButton variant="outline" title={"Reset filter"} size="sm" onPress={() => setActiveCat("all")} />
+      <View style={styles.buttonContainer}>
+        <AppButton variant="outline" title={t("Reset filter")} size="sm" onPress={() => setActiveCat("all")} />
       </View>
     </View>
   );
-};
+});
 
-const getStyles = () =>
+EmptyState.displayName = "EmptyState";
+
+const getStyles = (theme) =>
   StyleSheet.create({
     emptyContainer: {
       width: "100%",
@@ -41,11 +46,22 @@ const getStyles = () =>
     emptyIconCircle: {
       width: 64,
       height: 64,
-      borderRadius: 32,
-      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.glas,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: Spacing.sm
+    },
+    title: {
+      marginBottom: Spacing.sm
+    },
+    description: {
+      textAlign: "center",
+      color: theme.muted,
+      marginVertical: Spacing.sm
+    },
+    buttonContainer: {
+      marginTop: Spacing.sm
     }
   });
 

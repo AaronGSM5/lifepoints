@@ -1,15 +1,19 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { useRouter } from "expo-router";
 
 import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function BackButton({ onPress, style, iconColor = "#fff", backgroundColor = "rgba(0,0,0,0.5)" }) {
+const BackButton = memo(({ onPress, style, iconColor, backgroundColor }) => {
+  const MyTheme = useAppTheme();
   const router = useRouter();
 
-  const handlePress = () => {
+  const resolvedBackgroundColor = backgroundColor ?? (MyTheme.isDark ? "rgba(0,0,0,0.4)" : MyTheme.glas);
+
+  const handlePress = useCallback(() => {
     if (onPress) {
       onPress();
     } else {
@@ -19,14 +23,19 @@ export default function BackButton({ onPress, style, iconColor = "#fff", backgro
         router.replace("/");
       }
     }
-  };
+  }, [onPress, router]);
 
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor }, style]} onPress={handlePress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={[styles.button, { backgroundColor: resolvedBackgroundColor }, style]}
+      onPress={handlePress}
+      activeOpacity={0.7}
+    >
       <Icon name="back" color={iconColor} />
     </TouchableOpacity>
   );
-}
+});
+BackButton.displayName = "BackButton";
 
 const styles = StyleSheet.create({
   button: {
@@ -40,3 +49,5 @@ const styles = StyleSheet.create({
     left: Spacing.md
   }
 });
+
+export default BackButton;

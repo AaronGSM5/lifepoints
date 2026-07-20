@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -14,9 +14,9 @@ const TABS = [
   { id: "recent", icon: "history" }
 ];
 
-const NavigationRow = () => {
+const NavigationRow = memo(() => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
 
@@ -55,15 +55,18 @@ const NavigationRow = () => {
     [tabWidth, panX]
   );
 
-  const handleTabPress = (index) => {
-    setActiveIndex(index);
-    Animated.spring(panX, {
-      toValue: index * tabWidth,
-      useNativeDriver: true,
-      bounciness: 4,
-      speed: 12
-    }).start();
-  };
+  const handleTabPress = useCallback(
+    (index) => {
+      setActiveIndex(index);
+      Animated.spring(panX, {
+        toValue: index * tabWidth,
+        useNativeDriver: true,
+        bounciness: 4,
+        speed: 12
+      }).start();
+    },
+    [panX, tabWidth]
+  );
 
   return (
     <View style={styles.wrapper}>
@@ -113,7 +116,8 @@ const NavigationRow = () => {
       </TouchableOpacity>
     </View>
   );
-};
+});
+NavigationRow.displayName = "NavigationRow";
 
 const getStyles = (theme) =>
   StyleSheet.create({

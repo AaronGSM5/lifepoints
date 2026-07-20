@@ -4,20 +4,22 @@ import { StyleSheet, View } from "react-native";
 
 import { Stack, useLocalSearchParams } from "expo-router";
 
+// import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
-import { useCommunities } from "@/hooks/useCommunities";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const { t } = useTranslation("community");
-  const { recommended = [], myCommunities = [] } = useCommunities();
+  // const { recommended = [], myCommunities = [] } = useCommunities();
+  const recommended = [];
+  const myCommunities = [];
   const joinCommunity = useStore((state) => state.joinCommunity);
   const community = recommended.find((c) => c.id === id) || myCommunities.find((c) => c.id === id);
 

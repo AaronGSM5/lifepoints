@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
+// import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -15,7 +16,6 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useCommunities } from "@/hooks/useCommunities";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
@@ -32,9 +32,10 @@ const MOCK_MEMBERS = [
 export default function MyCommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  const { myCommunities } = useCommunities();
+  // const { myCommunities } = useCommunities();
+  const myCommunities = [];
   const [isExpanded, setIsExpanded] = useState(false);
   const leaveCommunity = useStore((state) => state.leaveCommunity);
 

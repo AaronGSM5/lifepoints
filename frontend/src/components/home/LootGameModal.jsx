@@ -1,5 +1,5 @@
 // src/components/home/LootGameModal.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Image, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -30,7 +30,7 @@ const STATIC_CHESTS = {
 
 const LootGameModal = () => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
 
   const isLootGameActive = useStore((state) => state.isLootGameActive);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -10,17 +10,20 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
 
 const ActiveTaskCard = ({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
-      <Skeleton colorMode={isDarkMode ? "dark" : "light"} width="100%" height={70} radius={Spacing.borderRadius.lg} />
+      <Skeleton
+        colorMode={MyTheme.isDark ? "dark" : "light"}
+        width="100%"
+        height={70}
+        radius={Spacing.borderRadius.lg}
+      />
     );
   }
 

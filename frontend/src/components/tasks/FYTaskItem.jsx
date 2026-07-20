@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StyleSheet, View } from "react-native";
 
@@ -13,11 +13,10 @@ import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
 
-const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => {
+const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const completeTask = useStore((state) => state.completeTask);
   if (isLoading) {
     return (
@@ -25,7 +24,7 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
         {/* Image */}
         <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
           <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
+            colorMode={MyTheme.isDark ? "dark" : "light"}
             width="100%"
             height={"100%"}
             radius={0}
@@ -38,21 +37,21 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
             <View style={{ flex: 1, paddingRight: Spacing.sm }}>
               <View style={{ marginBottom: 4 }}>
                 <Skeleton
-                  colorMode={isDarkMode ? "dark" : "light"}
+                  colorMode={MyTheme.isDark ? "dark" : "light"}
                   width="80%"
                   height={20}
                   transition={{ type: "timing", duration: 1500 }}
                 />
               </View>
               <Skeleton
-                colorMode={isDarkMode ? "dark" : "light"}
+                colorMode={MyTheme.isDark ? "dark" : "light"}
                 width="80%"
                 height={14}
                 transition={{ type: "timing", duration: 1500 }}
               />
             </View>
             <Skeleton
-              colorMode={isDarkMode ? "dark" : "light"}
+              colorMode={MyTheme.isDark ? "dark" : "light"}
               width={60}
               height={22}
               transition={{ type: "timing", duration: 1500 }}
@@ -60,7 +59,7 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
           </View>
           {/* Button */}
           <Skeleton
-            colorMode={isDarkMode ? "dark" : "light"}
+            colorMode={MyTheme.isDark ? "dark" : "light"}
             width="100%"
             height={44}
             radius={Spacing.borderRadius.lg}
@@ -113,7 +112,8 @@ const FYTaskItem = ({ id, title, description, lp, badge, image, isLoading }) => 
       </View>
     </BaseCard>
   );
-};
+});
+FYTaskItem.displayName = "FYTaskItem";
 
 const getStyles = (theme) =>
   StyleSheet.create({

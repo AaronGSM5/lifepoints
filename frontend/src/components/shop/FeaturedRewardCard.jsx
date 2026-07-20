@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
@@ -8,16 +8,19 @@ import { Skeleton } from "moti/skeleton";
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
+import { DarkTheme } from "@/constants/Colors";
 import { featuredRewards } from "@/constants/FeaturedRewards";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
 
-const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
+const FeaturedRewardCard = memo(({ skeletonProps, isLoading }) => {
   const { t } = useTranslation("shop");
   const redeemReward = useStore((state) => state.redeemReward);
   const selectedReward = featuredRewards?.[0];
+  const styles = useMemo(() => getStyles(), []);
+
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
@@ -25,6 +28,12 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
       </View>
     );
   }
+
+  if (!selectedReward) return null;
+
+  const isDiscounted = !!selectedReward.discount;
+  const currentPrice = isDiscounted ? selectedReward.discount.newPrice : selectedReward.price;
+  const oldPrice = isDiscounted ? selectedReward.discount.oldPrice : null;
 
   return (
     <View style={[styles.featuredWrapper, { marginBottom: Spacing.md }]}>
@@ -35,30 +44,30 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
         style={styles.featuredCard}
       >
         <View style={styles.featuredIconContainer}>
-          <Icon name={selectedReward?.icon} size={20} />
+          <Icon name={selectedReward.icon} size={20} />
         </View>
 
         <View style={styles.featuredContent}>
           <AppBadge label={t("BEST VALUE")} variant="secondary" />
 
-          <AppText type="h2">{t(selectedReward?.title)}</AppText>
+          <AppText type="h2" style={{ color: DarkTheme.text }}>
+            {t(selectedReward.title)}
+          </AppText>
           <AppText type="caption" style={styles.featuredSubtitle}>
-            {t(selectedReward?.description)}
+            {t(selectedReward.description)}
           </AppText>
 
           <View style={styles.featuredFooter}>
-            {selectedReward?.discount ? (
-              <View>
-                <AppText type="caption" style={{ textDecorationLine: "line-through" }}>
-                  {selectedReward?.discount?.oldPrice} LP
+            <View>
+              {isDiscounted && (
+                <AppText type="caption" style={[styles.oldPrice, { color: DarkTheme.muted }]}>
+                  {oldPrice} LP
                 </AppText>
-                <AppText type="title">{selectedReward?.discount?.newPrice} LP</AppText>
-              </View>
-            ) : (
-              <View>
-                <AppText type="title">{selectedReward?.price} LP</AppText>
-              </View>
-            )}
+              )}
+              <AppText type="title" style={{ color: DarkTheme.text }}>
+                {currentPrice} LP
+              </AppText>
+            </View>
             <AppButton
               variant="primary"
               title={t("Redeem")}
@@ -72,42 +81,47 @@ const FeaturedRewardCard = ({ skeletonProps, isLoading }) => {
       </LinearGradient>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  featuredWrapper: {
-    borderRadius: Spacing.borderRadius.lg,
-    boxShadow: `0px 4px 25px rgba(233, 64, 87, 0.7)`,
-    elevation: 10
-  },
-  featuredCard: {
-    borderRadius: Spacing.borderRadius.lg,
-    padding: Spacing.md,
-    minHeight: 240,
-    justifyContent: "space-between",
-    overflow: "hidden"
-  },
-  featuredIconContainer: {
-    width: 36,
-    height: 36,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: Spacing.borderRadius.sm,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  featuredContent: {
-    marginTop: Spacing.md,
-    gap: Spacing.xs
-  },
-  featuredSubtitle: {
-    color: "rgba(255,255,255,0.7)",
-    marginBottom: Spacing.md
-  },
-  featuredFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end"
-  }
 });
+FeaturedRewardCard.displayName = "FeaturedRewardCard";
+
+const getStyles = () =>
+  StyleSheet.create({
+    featuredWrapper: {
+      borderRadius: Spacing.borderRadius.lg,
+      boxShadow: `0px 4px 25px rgba(233, 64, 87, 0.7)`,
+      elevation: 10
+    },
+    featuredCard: {
+      borderRadius: Spacing.borderRadius.lg,
+      padding: Spacing.md,
+      minHeight: 240,
+      justifyContent: "space-between",
+      overflow: "hidden"
+    },
+    featuredIconContainer: {
+      width: 36,
+      height: 36,
+      backgroundColor: "rgba(255,255,255,0.2)",
+      borderRadius: Spacing.borderRadius.sm,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    featuredContent: {
+      marginTop: Spacing.md,
+      gap: Spacing.xs
+    },
+    featuredSubtitle: {
+      color: "rgba(255,255,255,0.7)",
+      marginBottom: Spacing.md
+    },
+    featuredFooter: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-end"
+    },
+    oldPrice: {
+      textDecorationLine: "line-through"
+    }
+  });
 
 export default FeaturedRewardCard;

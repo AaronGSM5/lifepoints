@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -14,8 +14,7 @@ import useStore from "@/store/useStore";
 
 export default function AppearanceScreen() {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const isDarkMode = useStore((state) => state.isDarkMode);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);
   const { t } = useTranslation("settings");
 
@@ -28,30 +27,30 @@ export default function AppearanceScreen() {
           style={[
             styles.card,
             { backgroundColor: MyTheme.primary },
-            !isDarkMode && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
+            !MyTheme.isDark && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
           onPress={() => {
-            if (isDarkMode) toggleDarkMode();
+            if (MyTheme.isDark) toggleDarkMode();
           }}
           activeOpacity={0.8}
         >
-          <Ionicons name="sunny" size={36} color={isDarkMode ? MyTheme.muted : MyTheme.primaryAccent} />
-          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.muted : MyTheme.text }]}>{t("Bright")}</Text>
+          <Ionicons name="sunny" size={36} color={MyTheme.isDark ? MyTheme.muted : MyTheme.primaryAccent} />
+          <Text style={[styles.cardText, { color: MyTheme.isDark ? MyTheme.muted : MyTheme.text }]}>{t("Bright")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.card,
             { backgroundColor: MyTheme.primary },
-            isDarkMode && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
+            MyTheme.isDark && { borderColor: MyTheme.primaryAccent, borderWidth: 2 }
           ]}
           onPress={() => {
-            if (!isDarkMode) toggleDarkMode();
+            if (!MyTheme.isDark) toggleDarkMode();
           }}
           activeOpacity={0.8}
         >
-          <Ionicons name="moon" size={36} color={isDarkMode ? MyTheme.primaryAccent : MyTheme.muted} />
-          <Text style={[styles.cardText, { color: isDarkMode ? MyTheme.text : MyTheme.muted }]}>{t("Dark")}</Text>
+          <Ionicons name="moon" size={36} color={MyTheme.isDark ? MyTheme.primaryAccent : MyTheme.muted} />
+          <Text style={[styles.cardText, { color: MyTheme.isDark ? MyTheme.text : MyTheme.muted }]}>{t("Dark")}</Text>
         </TouchableOpacity>
       </View>
 

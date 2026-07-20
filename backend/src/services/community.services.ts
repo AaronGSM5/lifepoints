@@ -90,4 +90,8 @@ export const getCommunityCategories = async () => {
   return COMMUNITY_CATEGORIES;
 };
 
-export default { getPaginatedCommunityRails, getCommunityCategories };
+export const getOneCommunity = async (id) => {
+  return await CommunityModel.findById(id)
+}
+
+export default { getPaginatedCommunityRails, getCommunityCategories, getOneCommunity };

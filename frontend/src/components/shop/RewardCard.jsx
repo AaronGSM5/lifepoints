@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
@@ -8,22 +8,20 @@ import { Skeleton } from "moti/skeleton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 
-const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
+const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPress, skeletonProps, isLoading }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("shop");
-  const isDarkMode = useStore((state) => state.isDarkMode);
   if (isLoading) {
     return (
       <BaseCard style={styles.gridCard} padding={0}>
         <Skeleton {...skeletonProps} width="100%" height={100} radius={0} />
-        <View style={{ padding: Spacing.sm, gap: 6 }}>
+        <View style={styles.skeletonContent}>
           <Skeleton {...skeletonProps} width="40%" height={12} />
           <Skeleton {...skeletonProps} width="90%" height={16} />
           <View style={[styles.cardFooter, { marginTop: Spacing.xs }]}>
@@ -39,15 +37,7 @@ const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, 
     <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
-        <AppBadge
-          iconNode={<Icon name={icon} size={14} color={!isDarkMode && "rgb(0, 0, 0)"} />}
-          style={{
-            position: "absolute",
-            bottom: Spacing.sm,
-            right: Spacing.sm,
-            backgroundColor: MyTheme.glas
-          }}
-        />
+        <AppBadge iconNode={<Icon name={icon} size={14} color={MyTheme.text} />} style={styles.badge} />
       </View>
 
       <View style={styles.cardContent}>
@@ -59,22 +49,18 @@ const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, 
         </AppText>
 
         <View style={styles.cardFooter}>
-          <AppText bold type="body" style={[{ fontSize: 14 }, isLocked && { color: MyTheme.muted }]}>
+          <AppText bold type="body" style={[styles.pointsText, isLocked && { color: MyTheme.muted }]}>
             {points} LP
           </AppText>
 
           {isLocked ? (
-            <AppBadge
-              label={t("Locked")}
-              textStyle={{ fontSize: 10, color: MyTheme.text }}
-              style={{ backgroundColor: MyTheme.muted }}
-            />
+            <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={{ backgroundColor: MyTheme.muted }} />
           ) : (
             <AppBadge
               iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
               style={{
                 backgroundColor: MyTheme.background,
-                borderColor: isDarkMode ? MyTheme.secondary : MyTheme.separator
+                borderColor: MyTheme.secondary
               }}
             />
           )}
@@ -84,16 +70,22 @@ const RewardCard = ({ id, image, brand, title, points, icon, isLocked, onPress, 
       {isLocked && <View style={styles.lockedOverlay} />}
     </BaseCard>
   );
-};
+});
+
+RewardCard.displayName = "RewardCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
     gridCard: {
       flex: 1
     },
+    skeletonContent: {
+      padding: Spacing.sm,
+      gap: 6
+    },
     cardImageContainer: {
       height: 100,
-      backgroundColor: "#333"
+      backgroundColor: theme.secondary
     },
     cardImage: {
       width: "100%",
@@ -118,9 +110,22 @@ const getStyles = (theme) =>
       alignItems: "center",
       marginTop: Spacing.xs
     },
+    pointsText: {
+      fontSize: 14
+    },
+    badge: {
+      position: "absolute",
+      bottom: Spacing.sm,
+      right: Spacing.sm,
+      backgroundColor: theme.glas
+    },
+    badgeText: {
+      fontSize: 10,
+      color: theme.text
+    },
     lockedOverlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(18, 18, 18, 0.6)"
+      backgroundColor: "rgba(0, 0, 0, 0.5)"
     }
   });
 

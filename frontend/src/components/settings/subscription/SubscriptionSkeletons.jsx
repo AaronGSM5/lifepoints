@@ -5,7 +5,6 @@ import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 export const SkeletonFeatureItem = ({ skBase }) => (
   <View style={styles.featureItem}>
@@ -17,11 +16,10 @@ export const SkeletonFeatureItem = ({ skBase }) => (
 );
 
 export default function SubscriptionSkeletons({ billingCycle }) {
-  const isDarkMode = useStore((state) => state.isDarkMode);
   const MyTheme = useAppTheme();
 
   const skBase = {
-    colorMode: isDarkMode ? "dark" : "light",
+    colorMode: MyTheme.isDark ? "dark" : "light",
     transition: { type: "timing", duration: 1500 }
   };
 
@@ -81,9 +79,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: "relative"
   },
-  cardHeader: { marginBottom: Spacing.md },
-  featureList: { gap: Spacing.sm, marginBottom: Spacing.md },
-  featureItem: { flexDirection: "row", alignItems: "flex-start" },
+  cardHeader: {
+    marginBottom: Spacing.md
+  },
+  featureList: {
+    gap: Spacing.sm,
+    marginBottom: Spacing.md
+  },
+  featureItem: {
+    flexDirection: "row",
+    alignItems: "flex-start"
+  },
   badgeWrapper: {
     position: "absolute",
     top: -12,

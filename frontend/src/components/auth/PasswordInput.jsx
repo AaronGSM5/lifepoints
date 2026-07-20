@@ -7,7 +7,6 @@ import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useStore from "@/store/useStore";
 
 export default function PasswordInput({
   variant = "login", // Standardmäßig ein normales Login-Feld
@@ -22,7 +21,6 @@ export default function PasswordInput({
   const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
   const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
-  const isDarkMode = useStore((state) => state.isDarkMode);
 
   const passwordRules = useMemo(
     () => [
@@ -105,7 +103,11 @@ export default function PasswordInput({
               size="sm"
               variant="ghost"
               icon={
-                <Icon name={isVisible ? "eyeClosed" : "eyeOpen"} size={22} color={isDarkMode ? MyTheme.text : "gray"} />
+                <Icon
+                  name={isVisible ? "eyeClosed" : "eyeOpen"}
+                  size={22}
+                  color={MyTheme.isDark ? MyTheme.text : "gray"}
+                />
               }
               iconPosition="center"
             />

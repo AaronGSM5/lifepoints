@@ -1,19 +1,19 @@
 import React, { useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
+import { useHorizontalRail } from "@/api/communities/useHorizontalRail";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useHorizontalCommunityRail } from "@/hooks/useCommunities";
 import { extractId } from "@/utils/helpers";
 
 import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
 const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalCommunityRail(categoryKey);
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useHorizontalRail(categoryKey);
 
   const flatData = useMemo(() => {
     if (data?.pages && data.pages.length > 0 && data.pages[0].data) {
@@ -40,8 +40,8 @@ const HorizontalSectionList = ({ title, initialData, categoryKey, onPressItem })
   const renderFooter = () => {
     if (isFetchingNextPage) {
       return (
-        <View style={styles.horizontalLoader}>
-          <AppLoadingSpinner />
+        <View style={{ width: 100 }}>
+          <AppLoadingSpinner centered />
         </View>
       );
     }
@@ -82,11 +82,6 @@ const getStyles = () =>
     },
     horizontalScrollContentContainer: {
       paddingLeft: Spacing.md,
-      alignItems: "center"
-    },
-    horizontalLoader: {
-      width: 100,
-      justifyContent: "center",
       alignItems: "center"
     }
   });
