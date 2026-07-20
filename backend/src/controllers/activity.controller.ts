@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as activityService from "../services/activity.services";
 
-export const startActivity = async (req: Request, res: Response, next: NextFunction) => {
+const startActivity = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { taskId, communityId } = req.body;
     const userId = req.user!.id; // User-id aus Auth middleware soon
@@ -13,7 +13,7 @@ export const startActivity = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const updateActivity = async (req: Request, res: Response, next: NextFunction) => {
+const finishTaskActivity = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { status, proofImage } = req.body;
     const { id } = req.params;
@@ -28,3 +28,5 @@ export const updateActivity = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+export default { startActivity, finishTaskActivity };
