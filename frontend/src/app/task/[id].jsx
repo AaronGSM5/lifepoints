@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Stack } from "expo-router";
 
+import { useStartTaskActivity } from "@/api/tasks/useStartTaskActivity";
 import { useTasks } from "@/api/tasks/useTasks";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "@/components/ui/AppBadge";
@@ -40,9 +41,9 @@ export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const trackTask = useStore((state) => state.trackTask);
   const activities = useStore((state) => state.activities);
   const { data: tasks, isLoading } = useTasks();
+  const { mutate: startTask } = useStartTaskActivity();
   const task = useMemo(() => {
     if (!tasks?.data) return null;
     return tasks?.data.find((t) => String(t._id) === String(id));
@@ -165,7 +166,7 @@ export default function TaskDetailScreen() {
             size="lg"
             disabled={task.isLocked}
             style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}
-            onPress={() => trackTask(task._id)}
+            onPress={() => startTask(task._id)}
             bgColor={MyTheme.primaryAccent}
           />
           {task.isLocked === false && (
