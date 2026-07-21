@@ -1,12 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import * as activityService from "../services/activity.services";
+import { checkParameters } from "@/services/utils";
 
-const startActivity = async (req: Request, res: Response, next: NextFunction) => {
+const startTaskActivity = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { taskId, communityId } = req.body;
-    const userId = req.user!.id; // User-id aus Auth middleware soon
+    const userId = req.user.targets.id;
+
+    checkParameters({ taskId, userId });
 
     const activity = await activityService.startActivity(userId, taskId, communityId);
+
     res.status(201).json({ success: true, data: activity });
   } catch (error) {
     next(error);
@@ -15,18 +19,20 @@ const startActivity = async (req: Request, res: Response, next: NextFunction) =>
 
 const finishTaskActivity = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { status, proofImage } = req.body;
-    const { id } = req.params;
+    const { activityId, status } = req.params;
+    const userId = req.user.targets.id;
 
-    if (!["done", "abandoned"].includes(status)) {
-      return res.status(400).json({ message: "Ungültiger Status" });
-    }
+    checkParameters({ status, activityId, userId });
 
-    const activity = await activityService.finishTaskActivity(id, status, proofImage);
+    const activity = await activityService.finishTaskActivity(userId, activityId, status);
+
     res.status(200).json({ success: true, data: activity });
   } catch (error) {
     next(error);
   }
 };
 
-export default { startActivity, finishTaskActivity };
+//Create activity entries
+// create user function by login
+
+export default { startTaskActivity, finishTaskActivity };

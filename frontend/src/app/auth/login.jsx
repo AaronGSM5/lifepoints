@@ -4,6 +4,7 @@ import { Alert, KeyboardAvoidingView, Platform, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
+import { useSyncUser } from "@/api/auth/useSync";
 import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -29,12 +30,27 @@ export default function LoginScreen() {
     [emailInput, passwordInput, isLoading]
   );
 
+  // const maxLogoWidth = 330;
+  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  // const logoHeight = logoWidth / 3.75;
+
+  // Appwrite Login Logic
+
+  const syncUserMutation = useSyncUser();
+
   const handleLogin = useCallback(async () => {
     if (!emailInput || !passwordInput) return;
 
     setIsLoading(true);
     try {
       await account.createEmailPasswordSession(emailInput, passwordInput);
+
+      syncUserMutation.mutate(null, {
+        onSuccess: (user) => {
+          console.log("Logged in and synced! Lifepoints:", user.totalLifepoints);
+          // Navigate to dashboard here
+        }
+      });
 
       router.replace("/home");
     } catch (error) {
@@ -43,7 +59,7 @@ export default function LoginScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [emailInput, passwordInput, router]);
+  }, [emailInput, passwordInput, syncUserMutation, router]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>

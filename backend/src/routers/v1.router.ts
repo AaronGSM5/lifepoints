@@ -7,6 +7,8 @@ import EventController from "@/controllers/event.controller.js";
 import CommunityController from "@/controllers/community.controller.js";
 import ActivityController from "@/controllers/activity.controller.js";
 
+import { authMiddleware } from "@/middleware/auth.middleware.js";
+
 const router = express.Router();
 
 router.get("/healthcheck", (req, res) => res.send("server is running"));
@@ -16,15 +18,17 @@ router.get("/tasks/limited", (req, res) => res.send("must be implemented"));
 router.get("/tasks/:id", (req, res) => res.send("must be implemented"));
 router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));
 
-router.post("/activities", ActivityController.finishTaskActivity);
-router.patch("/activities/task/:id", ActivityController.finishTaskActivity);
+router.post("/activities/task/:taskId", ActivityController.startTaskActivity);
+router.patch("/activities/task/:activityId/:status", ActivityController.finishTaskActivity);
 // router.put("/tasks/favorite", () => res.send("must be implemented"))
+
+router.post("/user/sync", authMiddleware, UserController.syncUser);
 
 // router.get("/user/all", UserController.getUserInfo);
 
 // -- PAGES --
 router.get("/pages/home", PageController.getHomePage);
-router.get("/pages/user", PageController.getProfilePage);
+router.get("/pages/user", authMiddleware, PageController.getProfilePage);
 // router.get("/pages/communities", PageController.getCommunitiesPage);
 router.get("/pages/tasks", (req, res) => res.send("must be implemented"));
 router.get("/pages/shop", (req, res) => res.send("must be implemented"));

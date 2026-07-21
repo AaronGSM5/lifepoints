@@ -317,7 +317,7 @@ export const throwError = ({ type, message, error }: { type: string; message: st
   throw new ErrorType(errorData.message);
 };
 
-export const checkParameters = (parameters: string[], availableParameters: Record<string, string[]>) => {
+export const checkParameters = (parameters: Record<string, any>, availableParameters?: Record<string, string[]>) => {
   const missingParameters: string[] = [];
   const wrongValueParameters: string[] = [];
 
@@ -333,7 +333,7 @@ export const checkParameters = (parameters: string[], availableParameters: Recor
   }
 
   if (missingParameters.length !== 0) {
-    throw new ErrorTypes.MissingParamError(`Parameter(s) missing: ${missingParameters.join(", ")}`);
+    throw new Error(`Parameter(s) missing: ${missingParameters.join(", ")}`);
   }
 
   if (wrongValueParameters.length !== 0) {
@@ -348,7 +348,7 @@ export const checkParameters = (parameters: string[], availableParameters: Recor
       return `${key} ${allowedValuesString}`;
     });
 
-    throw new ErrorTypes.MissingParamError(`Wrong value for parameter(s): ${wrongValueDetails.join(", ")}`);
+    throw new Error(`Wrong value for parameter(s): ${wrongValueDetails.join(", ")}`);
   }
 };
 

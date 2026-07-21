@@ -1,6 +1,6 @@
 import { Activity } from "../models/activity.model";
 import { Task } from "../models/tasks.model";
-import { User } from '../models/user.model'
+import { User } from "../models/user.model";
 import { Types, startSession } from "mongoose";
 
 export const startActivity = async (userId: string, taskId: string, communityId?: string) => {
@@ -12,22 +12,22 @@ export const startActivity = async (userId: string, taskId: string, communityId?
     taskId: new Types.ObjectId(taskId),
     status: "active",
     lifepoints: task.lifepoints,
-    communityId: communityId ? new Types.ObjectId(communityId) : null,
+    communityId: communityId ? new Types.ObjectId(communityId) : null
   });
 
   return await activity.save();
 };
 
 export const finishTaskActivity = async (
-  activityId: string,
-  status: "done" | "abandoned",
-  proofImage?: string
+  userId: string,
+  activityId: string | string[],
+  status: "done" | "abandoned"
 ) => {
   const session = await startSession();
   session.startTransaction();
 
   try {
-    const activity = await Activity.findById(activityId).session(session);
+    const activity = await Activity.findOne({ _id: activityId, userId }).session(session);
     if (!activity) throw new Error("Aktivität nicht gefunden");
     if (activity.status !== "active") throw new Error("Aktivität wurde bereits bearbeitet");
 
@@ -36,34 +36,20 @@ export const finishTaskActivity = async (
 
     if (status === "done") {
       pointsToAward = activity.lifepoints;
-      
-      // 20% Bonus bei Beweisfoto
-      if (proofImage) {
-        pointsToAward = Math.round(pointsToAward * 1.2);
-        updateData.proofImage = proofImage;
-      }
+
       updateData.lifepoints = pointsToAward;
     }
 
-    const updatedActivity = await Activity.findByIdAndUpdate(
-      activityId,
-      updateData,
-      { new: true, session }
-    );
+    const updatedActivity = await Activity.findByIdAndUpdate(activityId, updateData, { new: true, session });
 
     if (status === "done" && pointsToAward > 0) {
-      await User.findByIdAndUpdate(
-        activity.userId,
-        { $inc: { lifepoints: pointsToAward } },
-        { session }
-      );
+      await User.findByIdAndUpdate(activity.userId, { $inc: { lifepoints: pointsToAward } }, { session });
     }
 
     await session.commitTransaction();
     return updatedActivity;
-    
   } catch (error) {
-    // Bei Fehlern alles rückgängig machen
+    // reset if an issue happends
     await session.abortTransaction();
     throw error;
   } finally {

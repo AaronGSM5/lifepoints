@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useRouter } from "expo-router";
 
+import { useSyncUser } from "@/api/auth/useSync";
 import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -30,17 +31,29 @@ export default function RegisterScreen() {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isRepeatValid, setIsRepeatValid] = useState(false);
 
+  // const maxLogoWidth = 330;
+  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
+  // const logoHeight = logoWidth / 3.75;
+
+  const syncUserMutation = useSyncUser();
+
   const handleRegister = useCallback(async () => {
     try {
       await account.create(ID.unique(), emailInput, passwordInput, nameInput);
 
       await account.createEmailPasswordSession(emailInput, passwordInput);
 
+      syncUserMutation.mutate(null, {
+        onSuccess: (user) => {
+          console.log("Registered and synced! Lifepoints:", user.totalLifepoints);
+        }
+      });
+
       router.replace("/home");
     } catch (error) {
       console.log("register error ", error);
     }
-  }, [emailInput, nameInput, passwordInput, router]);
+  }, [emailInput, nameInput, passwordInput, router, syncUserMutation]);
 
   const isNameValid = useCallback(() => {
     return true;
