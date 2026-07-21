@@ -1,18 +1,20 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
-import { Icon } from "@/components/icons/Icon";
+// import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import LayeredIcon from "../icons/LayeredIcons";
+// import LayeredIcon from "../icons/LayeredIcons";
+import AppText from "../ui/AppText";
 
-const TABS = [
-  { id: "catalog", icon: "book" },
-  { id: "routines", icon: "recycle" },
-  { id: "favorites", icon: "heart" },
-  { id: "recent", icon: "history" }
-];
+// const TABS = [
+//   { id: "catalog", icon: "book" },
+//   { id: "routines", icon: "recycle" },
+//   { id: "favorites", icon: "heart" },
+//   { id: "recent", icon: "history" }
+// ];
+const TABS = ["Today", "Catalog", "Routines"];
 
 const NavigationRow = memo(() => {
   const MyTheme = useAppTheme();
@@ -93,13 +95,16 @@ const NavigationRow = memo(() => {
               onPress={() => handleTabPress(index)}
               activeOpacity={0.9}
             >
-              <Icon name={tab.icon} color={isActive ? MyTheme.primaryAccent : MyTheme.text} />
+              {/* <Icon name={tab.icon} color={isActive ? MyTheme.primaryAccent : MyTheme.text} /> */}
+              <AppText style={{ color: isActive ? MyTheme.primaryAccent : undefined }} bold={isActive}>
+                {tab}
+              </AppText>
             </TouchableOpacity>
           );
         })}
       </View>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           width: 44,
           height: 44,
@@ -113,7 +118,7 @@ const NavigationRow = memo(() => {
         activeOpacity={0.9}
       >
         <LayeredIcon bottomIcon={"recycle"} topIcon={"add"} color1={MyTheme.text} color2={MyTheme.text} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 });
