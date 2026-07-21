@@ -7,15 +7,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Stack } from "expo-router";
 
+import { useTasks } from "@/api/tasks/useTasks";
 import { Icon } from "@/components/icons/Icon";
 import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
 import AppImage from "@/components/ui/AppImage";
+import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
 import BackButton from "@/components/ui/BackButton";
 import HistoryCard from "@/components/ui/HistoryCard";
 import { Spacing } from "@/constants/Spacing";
-import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
@@ -41,17 +42,27 @@ export default function TaskDetailScreen() {
   const insets = useSafeAreaInsets();
   const trackTask = useStore((state) => state.trackTask);
   const activities = useStore((state) => state.activities);
-  const task = useMemo(() => tasksCatalog.find((t) => String(t.id) === String(id)), [id]);
+  const { data: tasks, isLoading } = useTasks();
+  const task = useMemo(() => {
+    if (!tasks?.data) return null;
+    return tasks?.data.find((t) => String(t._id) === String(id));
+  }, [tasks?.data, id]);
   const taskTrackingHistory = useMemo(
     () => activities.filter((item) => String(item.taskId) === String(id)),
     [activities, id]
   );
 
-  if (!task) {
+  if (isLoading || !task) {
     return (
       <View style={styles.errorContainer}>
-        <AppText type="h2">Task nicht gefunden 😔</AppText>
-        <AppButton title="Zurück" onPress={() => router.back()} style={{ marginTop: Spacing.md }} />
+        {isLoading ? (
+          <AppLoadingSpinner />
+        ) : (
+          <>
+            <AppText type="h2">"Task nicht gefunden 😔</AppText>
+            <AppButton title="Zurück" onPress={() => router.back()} style={{ marginTop: Spacing.md }} />
+          </>
+        )}
       </View>
     );
   }
@@ -76,24 +87,29 @@ export default function TaskDetailScreen() {
             />
           </View>
 
-          <View style={styles.content}>
-            <View style={styles.headerRow}>
-              <AppBadge iconNode={<Icon name={task.icon} size={20} color={MyTheme.primaryAccent} />} />
+          <View style={styles.headerRow}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 8 }}>
+              {task.category?.map((c) => (
+                <AppBadge key={c} label={c} style={{ marginLeft: Spacing.sm }} />
+              ))}
+            </ScrollView>
 
-              {task.isLocked && (
+            {task.isLocked && (
+              <View style={{ flex: 2 }}>
                 <AppBadge
                   label={t("LOCKED")}
                   textStyle={{ fontSize: 10, color: MyTheme.muted }}
                   style={{ backgroundColor: "#2A2A2A" }}
                 />
-              )}
-            </View>
-
+              </View>
+            )}
+          </View>
+          <View style={styles.paddedContent}>
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
               {t(task.title)}
             </AppText>
             <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {task.lp} LP
+              {task.lifepoints} LP
             </AppText>
 
             <AppText type="title" style={{ marginBottom: Spacing.sm }}>
@@ -134,7 +150,7 @@ export default function TaskDetailScreen() {
               </View>
             ) : (
               <View>
-                <AppText type="body" style={{ color: MyTheme.muted, fontStyle: "italic" }}>
+                <AppText type="body" style={{ color: MyTheme.muted, marginTop: Spacing.lg }}>
                   {t("No entries yet.")}
                 </AppText>
               </View>
@@ -149,7 +165,7 @@ export default function TaskDetailScreen() {
             size="lg"
             disabled={task.isLocked}
             style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}
-            onPress={() => trackTask(task.id)}
+            onPress={() => trackTask(task._id)}
             bgColor={MyTheme.primaryAccent}
           />
           {task.isLocked === false && (
@@ -205,13 +221,12 @@ const getStyles = (theme) =>
       justifyContent: "center",
       alignItems: "center"
     },
-    content: {
-      padding: Spacing.lg,
-      marginTop: -20
+    paddedContent: {
+      paddingHorizontal: Spacing.md
     },
     headerRow: {
       flexDirection: "row",
-      justifyContent: "space-between",
+      // justifyContent: "space-between",
       alignItems: "center",
       marginBottom: Spacing.md
     },

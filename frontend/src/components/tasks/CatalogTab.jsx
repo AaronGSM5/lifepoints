@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
+import { useTasks } from "@/api/tasks/useTasks";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
@@ -11,68 +12,77 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
-import { useTasks } from "@/hooks/useTasks";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
+import { capitalize } from "@/utils/helpers";
 
 const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
+  const styles = getStyles();
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
-  const [expandedTaskId, setExpandedTaskId] = useState(null);
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
-  const { tasks, categories, isLoading, isRefreshing, refreshTasks } = useTasks();
-
-  const styles = getStyles();
+  const { data, isLoading } = useTasks();
 
   const listData = useMemo(() => {
+    const tasks = data?.data || [];
     const topElements = [{ id: "search_bar", type: "search_bar" }];
+    const uniqueCategories = [
+      ...new Set(
+        tasks.flatMap((task) => {
+          if (!task.category) return [];
+          return Array.isArray(task.category) ? task.category : [task.category];
+        })
+      )
+    ];
 
-    const groupedCategories = categories
-      .map((cat) => {
-        const categoryTasks = tasks.filter((task) => task.category === cat.id);
+    const groupedCategories = uniqueCategories
+      .map((categoryName) => {
+        const categoryTasks = tasks.filter((task) => {
+          if (!task.category) return false;
+          return Array.isArray(task.category) ? task.category.includes(categoryName) : task.category === categoryName;
+        });
+
         return {
-          id: `cat_row_${cat.id}`,
+          id: `cat_row_${categoryName}`,
           type: "category_row",
-          title: cat.label,
+          title: capitalize(categoryName),
           data: categoryTasks
         };
       })
       .filter((cat) => cat.data.length > 0);
 
     return [...topElements, ...groupedCategories];
-  }, [tasks, categories]);
+  }, [data?.data]);
 
   const renderHorizontalTaskItem = useCallback(
     ({ item }) => (
       <View style={styles.horizontalTaskContainer}>
         <TaskItem
-          id={item.id}
+          id={item._id}
           isLoading={isLoading}
           title={item.title}
           description={item.description}
-          lp={item.lp}
+          lp={item.lifepoints}
           progress={item.progress}
           status={item.limit}
           icon={item.icon}
           requiresInput={item.requiresInput}
-          onTrack={() => trackTask(item.id)}
+          onTrack={() => trackTask(item._id)}
           onInstaTrack={() => {
             if (showInstaTrackingModal) {
-              onOpenInstaTracking(item.id);
+              onOpenInstaTracking(item._id);
             } else {
               triggerHaptic();
-              completeTask(item.id);
+              completeTask(item._id);
             }
           }}
-          onNavigate={() => router.push(`task/${item.id}`)}
-          isExpanded={expandedTaskId === item.id}
-          onToggleExpand={() => setExpandedTaskId(expandedTaskId === item.id ? null : item.id)}
+          onNavigate={() => router.push(`task/${item._id}`)}
         />
       </View>
     ),
-    [isLoading, expandedTaskId, showInstaTrackingModal, onOpenInstaTracking, trackTask, completeTask, router, styles]
+    [isLoading, showInstaTrackingModal, onOpenInstaTracking, trackTask, completeTask, router, styles]
   );
 
   const renderItem = useCallback(
@@ -93,7 +103,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 data={item.data}
-                keyExtractor={(t) => t.id.toString()}
+                keyExtractor={(taskItem) => taskItem?._id.toString()}
                 renderItem={renderHorizontalTaskItem}
                 contentContainerStyle={styles.horizontalListPadding}
                 snapToInterval={280 + Spacing.md}
@@ -122,11 +132,9 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
     <AnimatedScreenList
       scrollY={scrollY}
       data={listData}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item?.id.toString()}
       renderItem={renderItem}
       ListFooterComponent={!isLoading ? renderFooter() : null}
-      onRefresh={refreshTasks}
-      refreshing={isRefreshing}
       withTopPadding={false}
     />
   );
