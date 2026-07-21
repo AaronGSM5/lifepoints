@@ -1,6 +1,6 @@
 import { account } from "@/api/client/appwrite";
 
-const BACKEND_URL = process.env.API_URL || 'http://localhost:6767/api/v1';
+const BACKEND_URL = process.env.API_URL || "http://localhost:6767/api/v1";
 
 export async function apiRequest(endpoint, options = {}, body) {
   try {

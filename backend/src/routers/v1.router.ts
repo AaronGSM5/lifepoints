@@ -6,6 +6,7 @@ import NotificationController from "@/controllers/notification.controller.js";
 import EventController from "@/controllers/event.controller.js";
 import CommunityController from "@/controllers/community.controller.js";
 import ActivityController from "@/controllers/activity.controller.js";
+import { authMiddleware } from "@/middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.patch("/activities/task/:id", ActivityController.finishTaskActivity);
 
 // -- PAGES --
 router.get("/pages/home", PageController.getHomePage);
-router.get("/pages/user", PageController.getProfilePage);
+router.get("/pages/user", authMiddleware, PageController.getProfilePage);
 // router.get("/pages/communities", PageController.getCommunitiesPage);
 router.get("/pages/tasks", (req, res) => res.send("must be implemented"));
 router.get("/pages/shop", (req, res) => res.send("must be implemented"));
