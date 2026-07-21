@@ -1,33 +1,32 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
-// import { Icon } from "@/components/icons/Icon";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-// import LayeredIcon from "../icons/LayeredIcons";
 import AppText from "../ui/AppText";
 
-// const TABS = [
-//   { id: "catalog", icon: "book" },
-//   { id: "routines", icon: "recycle" },
-//   { id: "favorites", icon: "heart" },
-//   { id: "recent", icon: "history" }
-// ];
-const TABS = ["Today", "Catalog", "Routines"];
-
-const NavigationRow = memo(() => {
+const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
-
   const [panX] = useState(() => new Animated.Value(0));
 
   const PADDING = 2;
   const BORDER_WIDTH = 1;
   const usableWidth = containerWidth - PADDING * 2 - BORDER_WIDTH * 2;
-  const tabWidth = usableWidth > 0 ? usableWidth / TABS.length : 0;
+  const tabWidth = usableWidth > 0 ? usableWidth / tabs.length : 0;
+
+  useEffect(() => {
+    if (tabWidth > 0) {
+      Animated.spring(panX, {
+        toValue: activeIndex * tabWidth,
+        useNativeDriver: true,
+        bounciness: 4,
+        speed: 12
+      }).start();
+    }
+  }, [activeIndex, tabWidth, panX]);
 
   const panResponder = useMemo(
     () =>
@@ -43,31 +42,12 @@ const NavigationRow = memo(() => {
           panX.flattenOffset();
           let newIndex = Math.round(panX._value / tabWidth);
           if (newIndex < 0) newIndex = 0;
-          if (newIndex >= TABS.length) newIndex = TABS.length - 1;
+          if (newIndex >= tabs.length) newIndex = tabs.length - 1;
 
-          setActiveIndex(newIndex);
-          Animated.spring(panX, {
-            toValue: newIndex * tabWidth,
-            useNativeDriver: true,
-            bounciness: 4,
-            speed: 12
-          }).start();
+          if (onTabChange) onTabChange(newIndex);
         }
       }),
-    [tabWidth, panX]
-  );
-
-  const handleTabPress = useCallback(
-    (index) => {
-      setActiveIndex(index);
-      Animated.spring(panX, {
-        toValue: index * tabWidth,
-        useNativeDriver: true,
-        bounciness: 4,
-        speed: 12
-      }).start();
-    },
-    [panX, tabWidth]
+    [tabWidth, panX, onTabChange, tabs.length]
   );
 
   return (
@@ -86,13 +66,13 @@ const NavigationRow = memo(() => {
           />
         )}
 
-        {TABS.map((tab, index) => {
+        {tabs.map((tab, index) => {
           const isActive = activeIndex === index;
           return (
             <TouchableOpacity
               key={index}
               style={styles.tabButton}
-              onPress={() => handleTabPress(index)}
+              onPress={() => onTabChange && onTabChange(index)}
               activeOpacity={0.9}
             >
               {/* <Icon name={tab.icon} color={isActive ? MyTheme.primaryAccent : MyTheme.text} /> */}

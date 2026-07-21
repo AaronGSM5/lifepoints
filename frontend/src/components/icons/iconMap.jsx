@@ -58,6 +58,7 @@ export const IconMap = {
   recycle: ({ outline, ...props }) => <Icon name={getName("recycle", outline)} {...props} />,
   fileDamage: ({ outline, ...props }) => <Icon name={getName("file-damage", outline)} {...props} />,
   // Placeholders
+  flower: ({ outline, ...props }) => <Icon name={getName("flower", outline)} {...props} />,
   code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,
   leaf: ({ outline, ...props }) => <Icon name={getName("leaf", outline)} {...props} />,
   newFolder: ({ outline, ...props }) => <Icon name={getName("folder-add", outline)} {...props} />,

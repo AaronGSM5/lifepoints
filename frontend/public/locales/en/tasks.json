@@ -1,5 +1,8 @@
 {
   // Sections & Layout
+  "Active Tasks": "Active Tasks",
+  "Done Tasks": "Done Tasks",
+  "No Active Tasks": "No Active Tasks",
   "Search...": "Search...",
   "For You": "For You",
   "All Tasks": "All Tasks",
@@ -51,12 +54,12 @@
   "Delete an app that you haven't opened in over a month.": "Delete an app that you haven't opened in over a month.",
   // Task Categories
   "categories": {
-  "all": "All",
-  "selfcare": "Selfcare",
-  "health": "Health",
-  "social": "Social",
-  "digital": "Digital",
-  "special": "Special"
+    "all": "All",
+    "selfcare": "Selfcare",
+    "health": "Health",
+    "social": "Social",
+    "digital": "Digital",
+    "special": "Special"
   },
   // Task dedicated page
   "Description": "Description",

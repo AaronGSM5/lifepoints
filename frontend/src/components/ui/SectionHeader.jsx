@@ -20,6 +20,7 @@ const SectionHeader = memo(
     onRightPress,
     rightLabelColor,
     style,
+    textStyle,
     isLoading
   }) => {
     const MyTheme = useAppTheme();
@@ -32,7 +33,9 @@ const SectionHeader = memo(
       <View style={[styles.container, style]}>
         <View style={styles.leftGroup}>
           {icon && <Icon name={icon} size={20} color={iconColor} outline={iconOutline} />}
-          <AppText type="title">{title}</AppText>
+          <AppText type="title" style={textStyle}>
+            {title}
+          </AppText>
         </View>
 
         {((rightLabel && onRightPress) || rightIcon) && (

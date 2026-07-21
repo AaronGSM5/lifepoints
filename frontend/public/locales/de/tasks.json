@@ -1,5 +1,8 @@
 {
   // Sections & Layout
+  "Active Tasks": "Aktive Aufgaben",
+  "Done Tasks": "Erledigte Aufgaben",
+  "No Active Tasks": "Keine Aufgaben aktiv",
   "Search...": "Suchen...",
   "For You": "Für dich",
   "All Tasks": "Alle Aufgaben",
@@ -51,12 +54,12 @@
   "Delete an app that you haven't opened in over a month.": "Lösche eine App, die du seit über einem Monat nicht geöffnet hast.",
   // Task Categories
   "categories": {
-  "all": "Alle",
-  "selfcare": "Selbstliebe",
-  "health": "Gesundheit",
-  "social": "Soziales",
-  "digital": "Digitales",
-  "special": "Spezial"
+    "all": "Alle",
+    "selfcare": "Selbstliebe",
+    "health": "Gesundheit",
+    "social": "Soziales",
+    "digital": "Digitales",
+    "special": "Spezial"
   },
   // Task dedicated page
   "Description": "Beschreibung",
