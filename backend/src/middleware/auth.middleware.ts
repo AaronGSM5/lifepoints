@@ -1,3 +1,5 @@
+import { Activity } from "@/models/activity.model";
+import { User } from "@/models/user.model";
 import { checkParameters } from "@/services/utils";
 import { Client, Account } from "node-appwrite";
 
@@ -22,26 +24,27 @@ export async function authMiddleware(req, res, next) {
     const client = new Client()
       .setEndpoint(process.env.APPWRITE_ENDPOINT)
       .setProject(process.env.APPWRITE_PROJECT_ID)
-      .setJWT(jwt); // Scopes this client to the incoming user's session
+      .setJWT(jwt);
 
     const account = new Account(client);
 
     // 3. Validate the token by fetching the user account
     // Appwrite will throw an error automatically if the JWT is invalid or expired
-    const user = await account.get();
+    const appwriteUser = await account.get();
+
+    const mongoUser = await User.findOne({ external_id: appwriteUser.$id }).lean();
+
+    checkParameters({ mongoUser });
+
+    const userWithId = { mongoId: mongoUser?._id, ...appwriteUser };
 
     // 4. Attach the user data and the configured client to the request object
-    req.user = user;
+    req.user = userWithId;
     req.appwriteClient = client;
 
-    console.log("USER", req.user);
-
-    // Move to the next controller/middleware
     next();
-  } catch (error) {
+  } catch (error: any) {
     console.error("Authentication middleware error:", error.message);
-
-    // Return a 401 if Appwrite rejects the JWT
     return res.status(401).json({ error: "Unauthorized: Invalid or expired token" });
   }
 }

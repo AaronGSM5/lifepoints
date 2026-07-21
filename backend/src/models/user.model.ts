@@ -7,7 +7,7 @@ const userSchema = new Schema(
     about: { type: String, default: "" },
     email: { type: String, required: true, unique: true },
 
-    external_id: { type: String },
+    external_id: { type: String, required: true },
 
     level: { type: Number, default: 1 },
 
@@ -34,7 +34,9 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+userSchema.index({ external_id: 1 });
+
 export type User = InferSchemaType<typeof userSchema>;
 export type UserDocument = HydratedDocument<User>;
 
-export const User = model("User", userSchema);
+export const User = model<UserDocument>("User", userSchema);
