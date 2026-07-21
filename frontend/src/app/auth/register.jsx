@@ -16,6 +16,7 @@ import { account } from "@/api/client/appwrite";
 import { ID } from "react-native-appwrite";
 import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import { useRouter } from "expo-router";
+import { useSyncUser } from "@/api/auth/useSync";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -33,11 +34,19 @@ export default function RegisterScreen() {
   // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
   // const logoHeight = logoWidth / 3.75;
 
+  const syncUserMutation = useSyncUser();
+
   const handleRegister = async () => {
     try {
       await account.create(ID.unique(), emailInput, passwordInput, nameInput);
 
       await account.createEmailPasswordSession(emailInput, passwordInput);
+
+      syncUserMutation.mutate(null, {
+        onSuccess: (user) => {
+          console.log("Registered and synced! Lifepoints:", user.totalLifepoints);
+        }
+      });
 
       router.replace("/home");
     } catch (error) {

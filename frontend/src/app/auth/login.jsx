@@ -15,6 +15,7 @@ import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useSyncUser } from "@/api/auth/useSync";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
@@ -34,12 +35,22 @@ export default function LoginScreen() {
   // const logoHeight = logoWidth / 3.75;
 
   // Appwrite Login Logic
+
+  const syncUserMutation = useSyncUser();
+
   const handleLogin = async () => {
     if (!emailInput || !passwordInput) return;
 
     setIsLoading(true);
     try {
       await account.createEmailPasswordSession(emailInput, passwordInput);
+
+      syncUserMutation.mutate(null, {
+        onSuccess: (user) => {
+          console.log("Logged in and synced! Lifepoints:", user.totalLifepoints);
+          // Navigate to dashboard here
+        }
+      });
 
       router.replace("/home");
     } catch (error) {

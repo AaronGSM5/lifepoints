@@ -2,7 +2,7 @@ import { account } from "@/api/client/appwrite";
 
 const BACKEND_URL = process.env.API_URL || "http://localhost:6767/api/v1";
 
-export async function apiRequest(endpoint, options = {}, body) {
+export async function apiRequest(endpoint, options = {}) {
   try {
     const { jwt } = await account.createJWT();
 
@@ -14,8 +14,7 @@ export async function apiRequest(endpoint, options = {}, body) {
 
     const response = await fetch(`${BACKEND_URL}${endpoint}`, {
       ...options,
-      headers,
-      body
+      headers
     });
 
     const responseText = await response.text();

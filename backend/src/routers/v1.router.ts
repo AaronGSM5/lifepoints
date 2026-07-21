@@ -6,6 +6,7 @@ import NotificationController from "@/controllers/notification.controller.js";
 import EventController from "@/controllers/event.controller.js";
 import CommunityController from "@/controllers/community.controller.js";
 import ActivityController from "@/controllers/activity.controller.js";
+
 import { authMiddleware } from "@/middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));
 router.post("/activities/task/:taskId", ActivityController.startTaskActivity);
 router.patch("/activities/task/:activityId/:status", ActivityController.finishTaskActivity);
 // router.put("/tasks/favorite", () => res.send("must be implemented"))
+
+router.post("/user/sync", authMiddleware, UserController.syncUser);
 
 // router.get("/user/all", UserController.getUserInfo);
 

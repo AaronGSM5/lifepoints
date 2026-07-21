@@ -7,6 +7,8 @@ const userSchema = new Schema(
     about: { type: String, default: "" },
     email: { type: String, required: true, unique: true },
 
+    external_id: { type: String },
+
     level: { type: Number, default: 1 },
 
     inventory: [{ type: Schema.Types.ObjectId, ref: "Item" }],
