@@ -13,8 +13,6 @@ export async function authMiddleware(req, res, next) {
 
     const jwt = authHeader.split(" ")[1];
 
-    console.log({ authHeader });
-
     const APPWRITE_ENDPOINT = process.env.APPWRITE_ENDPOINT;
     const APPWRITE_PROJECT_ID = process.env.APPWRITE_PROJECT_ID;
 
