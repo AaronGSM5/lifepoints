@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { questCatalog } from "@/constants/QuestCatalog";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { recommendedTasks } from "@/mocks/FeaturedTasks";
 import { capitalize } from "@/utils/helpers";
@@ -9,6 +10,7 @@ export const useTasks = () => {
   const { t } = useTranslation("tasks");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [quests] = useState(questCatalog);
 
   const [activeCat, setActiveCat] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,6 +60,7 @@ export const useTasks = () => {
 
   return {
     tasks: filteredTasks,
+    quests,
     recommendedTasks,
     categories,
     activeCat,

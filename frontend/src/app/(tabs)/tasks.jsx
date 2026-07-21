@@ -4,7 +4,11 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
+import ActiveTaskCard from "@/components/home/ActiveTaskCard";
+import HeroCarousel from "@/components/home/HeroCarousel";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
+import QuestModal from "@/components/home/QuestModal";
+import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import NavigationRow from "@/components/tasks/NavigationRow";
@@ -14,11 +18,11 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
+import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useTasks } from "@/hooks/useTasks";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
-import HeroCarousel from "@/components/home/HeroCarousel";
 
 const TASKS_HERO_DATA = [
   {
@@ -38,6 +42,7 @@ const TASKS_HERO_DATA = [
 const TasksScreen = () => {
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
+  const [questmodalVisible, setQuestModalVisible] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [taskToTrack, setTaskToTrack] = useState(null);
   const [instaTrackingModalVisible, setInstaTrackingModalVisible] = useState(false);
@@ -46,8 +51,12 @@ const TasksScreen = () => {
   const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
-  const { tasks, categories, isLoading, isRefreshing, refreshTasks } = useTasks();
+  const { tasks, quests, categories, isLoading, isRefreshing, refreshTasks } = useTasks();
   const toolbarHeight = useToolbarPadding();
+  const activeTaskIds = useStore((state) => state.activeTaskIds);
+  const addExperience = useStore((state) => state.addExperience);
+  const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
+  const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
 
   const styles = getStyles();
 
@@ -70,7 +79,8 @@ const TasksScreen = () => {
   const listData = useMemo(() => {
     const topElements = [
       { id: "event_banner", type: "event_banner" },
-      { id: "search_bar", type: "search_bar" }
+      { id: "search_bar", type: "search_bar" },
+      { id: "active_tasks", type: "active_tasks" }
     ];
 
     const groupedCategories = categories
@@ -155,11 +165,46 @@ const TasksScreen = () => {
             </View>
           );
 
+        case "active_tasks":
+          return (
+            <View style={styles.paddedContent}>
+              <SectionHeader
+                title={t("Active Tasks")}
+                rightIcon={<Icon name={"survey"} />}
+                onRightPress={() => setQuestModalVisible(true)}
+              />
+              {myActiveTasks.length === 0 ? (
+                <View style={styles.emptyTasksContainer}>
+                  <AppText type="caption" bold>
+                    {t("No Active Tasks")}
+                  </AppText>
+                </View>
+              ) : (
+                <View style={styles.activeTasksList}>
+                  {myActiveTasks.map((task) => (
+                    <ActiveTaskCard
+                      key={task.id}
+                      title={task.title}
+                      points={task.lp}
+                      isLoading={isLoading}
+                      onAction={() => {
+                        completeTask(task.id);
+                        triggerHaptic("success");
+                        notifyQuestSystem("TASK_COMPLETED", { category: task.category });
+                        addExperience(task.xp);
+                      }}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          );
+
         default:
           return null;
       }
     },
-    [isLoading, renderHorizontalTaskItem, t, styles]
+    [isLoading, renderHorizontalTaskItem, addExperience, completeTask, myActiveTasks, notifyQuestSystem, t, styles]
   );
 
   const renderFooter = () => (
@@ -200,6 +245,7 @@ const TasksScreen = () => {
         onClose={() => setInstaTrackingModalVisible(false)}
         onConfirm={handleInstaTrackingConfirm}
       />
+      <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
     </ScreenWrapper>
   );
 };
@@ -208,6 +254,15 @@ const getStyles = () =>
   StyleSheet.create({
     paddedContent: {
       paddingHorizontal: Spacing.md
+    },
+    emptyTasksContainer: {
+      alignItems: "center",
+      marginBottom: Spacing.lg,
+      marginTop: Spacing.md
+    },
+    activeTasksList: {
+      gap: Spacing.md,
+      marginBottom: Spacing.md
     },
     categoryRow: {
       marginBottom: Spacing.lg

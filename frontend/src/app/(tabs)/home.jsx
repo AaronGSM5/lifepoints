@@ -1,26 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, View } from "react-native";
 
-import ActiveTaskCard from "@/components/home/ActiveTaskCard";
 import CommentSheet from "@/components/home/CommentSheet";
 import FeedItem from "@/components/home/FeedItem";
 import HeroCarousel from "@/components/home/HeroCarousel";
 import LootGameModal from "@/components/home/LootGameModal";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
-import QuestModal from "@/components/home/QuestModal";
-import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import LevelUpModal from "@/components/LevelUpModal";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
-import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
-import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useHome } from "@/hooks/useHome";
 import useStore from "@/store/useStore";
-import { triggerHaptic } from "@/utils/haptics";
 
 const SKELETON_ITEMS = [1, 2, 3];
 
@@ -40,24 +33,17 @@ const HOME_HERO_DATA = [
 ];
 
 export default function HomeScreen() {
-  const { feedItems, quests, isLoading, isRefreshing, refreshHomeData } = useHome();
-  const { t } = useTranslation("home");
+  const { feedItems, isLoading, isRefreshing, refreshHomeData } = useHome();
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);
-  const [questmodalVisible, setQuestModalVisible] = useState(false);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [isBatchLoading, setIsBatchLoading] = useState(false);
   const [visibleItemIds, setVisibleItemIds] = useState([]);
   const viewConfig = useMemo(() => ({ viewAreaCoveragePercentThreshold: 70 }), []);
   const scrollY = useMemo(() => new Animated.Value(0), []);
-  const activeTaskIds = useStore((state) => state.activeTaskIds);
-  const completeTask = useStore((state) => state.completeTask);
-  const addExperience = useStore((state) => state.addExperience);
   const showLevelUpModal = useStore((state) => state.showLevelUpModal);
   const setShowLevelUpModal = useStore((state) => state.setShowLevelUpModal);
-  const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
   const level = useStore((state) => state.profile.level);
-  const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
 
   useEffect(() => {
     if (feedItems?.length > 0) {
@@ -98,41 +84,10 @@ export default function HomeScreen() {
     () => (
       <>
         <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
-        <View style={styles.headerContainer}>
-          <SectionHeader
-            title={t("Active Tasks")}
-            rightIcon={<Icon name={"survey"} />}
-            onRightPress={() => setQuestModalVisible(true)}
-          />
-          {myActiveTasks.length === 0 ? (
-            <View style={styles.emptyTasksContainer}>
-              <AppText type="caption" bold>
-                {t("No Active Tasks")}
-              </AppText>
-            </View>
-          ) : (
-            <View style={styles.activeTasksList}>
-              {myActiveTasks.map((task) => (
-                <ActiveTaskCard
-                  key={task.id}
-                  title={task.title}
-                  points={task.lp}
-                  isLoading={isLoading}
-                  onAction={() => {
-                    completeTask(task.id);
-                    triggerHaptic("success");
-                    notifyQuestSystem("TASK_COMPLETED", { category: task.category });
-                    addExperience(task.xp);
-                  }}
-                />
-              ))}
-            </View>
-          )}
-          <SectionHeader title={"Feed"} />
-        </View>
+        <SectionHeader title={"Feed"} style={styles.paddedContent} />
       </>
     ),
-    [isLoading, myActiveTasks, notifyQuestSystem, completeTask, addExperience, t]
+    [isLoading]
   );
 
   const renderItem = useCallback(
@@ -196,7 +151,6 @@ export default function HomeScreen() {
         postId={optionsPostData?.id}
         isOwner={optionsPostData?.isOwner}
       />
-      <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
       <LootGameModal />
       <LevelUpModal visible={showLevelUpModal} level={level} onTransitionEnd={() => setShowLevelUpModal(false)} />
     </ScreenWrapper>
@@ -204,17 +158,8 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  paddedContent: {
     paddingHorizontal: Spacing.md
-  },
-  emptyTasksContainer: {
-    alignItems: "center",
-    marginBottom: Spacing.lg,
-    marginTop: Spacing.md
-  },
-  activeTasksList: {
-    gap: Spacing.md,
-    marginBottom: Spacing.md
   },
   loadingFooter: {
     marginTop: Spacing.md
