@@ -55,4 +55,4 @@ activitySchema.index({ userId: 1, createdAt: -1, communityId: 1 });
 export type Activity = InferSchemaType<typeof activitySchema>;
 export type ActivityDocument = HydratedDocument<Activity>;
 
-export const Activity = model("Activity", activitySchema);
+export const Activity = model<ActivityDocument>("Activity", activitySchema);

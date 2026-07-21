@@ -17,8 +17,8 @@ router.get("/tasks/limited", (req, res) => res.send("must be implemented"));
 router.get("/tasks/:id", (req, res) => res.send("must be implemented"));
 router.post("/tasks/suggest", (req, res) => res.send("must be implemented"));
 
-router.post("/activities", ActivityController.finishTaskActivity);
-router.patch("/activities/task/:id", ActivityController.finishTaskActivity);
+router.post("/activities/task/:taskId", ActivityController.startTaskActivity);
+router.patch("/activities/task/:activityId/:status", ActivityController.finishTaskActivity);
 // router.put("/tasks/favorite", () => res.send("must be implemented"))
 
 // router.get("/user/all", UserController.getUserInfo);
