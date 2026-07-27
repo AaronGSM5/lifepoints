@@ -7,6 +7,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
+import Separator from "../ui/Separator";
 
 const ReplyBar = memo(({ replyingTo, onPress }) => {
   const MyTheme = useAppTheme();
@@ -14,15 +15,18 @@ const ReplyBar = memo(({ replyingTo, onPress }) => {
   const { t } = useTranslation("home");
   if (!replyingTo) return null;
   return (
-    <View style={styles.replyBar}>
-      <AppText style={styles.replyBarText}>
-        {t("Reply to")}{" "}
-        <AppText bold style={styles.username}>
-          @{replyingTo.username}
+    <>
+      <Separator />
+      <View style={styles.replyBar}>
+        <AppText style={styles.replyBarText}>
+          {t("Reply to")}{" "}
+          <AppText bold style={styles.username}>
+            @{replyingTo.username}
+          </AppText>
         </AppText>
-      </AppText>
-      <Icon name="close" size={16} color={MyTheme.muted} onPress={onPress} />
-    </View>
+        <Icon name="close" size={16} color={MyTheme.muted} onPress={onPress} />
+      </View>
+    </>
   );
 });
 ReplyBar.displayName = "ReplyBar";
@@ -35,9 +39,7 @@ const getStyles = (theme) =>
       alignItems: "center",
       backgroundColor: "rgba(0,0,0,0.15)",
       paddingHorizontal: Spacing.md,
-      paddingVertical: 8,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: theme.separator
+      paddingVertical: Spacing.sm
     },
     replyBarText: {
       fontSize: 13,

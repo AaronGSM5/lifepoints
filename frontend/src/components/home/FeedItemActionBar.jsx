@@ -17,7 +17,7 @@ const FeedItemActionBar = memo(({ handleLike, handleSave, handleShare, isLiked, 
         <Icon name="forwardShare" onPress={handleShare} />
       </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
+      <View style={styles.actionRight}>
         <Icon outline={!isSaved} name="bookmark" onPress={handleSave} />
       </View>
     </View>
@@ -36,6 +36,11 @@ const getStyles = () =>
       marginTop: 2
     },
     actionLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.lg
+    },
+    actionRight: {
       flexDirection: "row",
       alignItems: "center",
       gap: Spacing.lg

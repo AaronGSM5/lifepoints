@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
@@ -7,6 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import AppImage from "../ui/AppImage";
 import BackButton from "../ui/BackButton";
 
 const DEFAULT_BANNER = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
@@ -22,9 +23,7 @@ const CommunityHeader = memo(({ community }) => {
 
   return (
     <View style={styles.headerContainer}>
-      <Image source={{ uri: bannerImg }} style={styles.bannerImage} resizeMode="cover" />
-
-      <View style={styles.bannerOverlay} />
+      <AppImage source={bannerImg} variant={"communityBanner"} />
 
       <BackButton />
 
@@ -42,15 +41,6 @@ const getStyles = (theme) =>
   StyleSheet.create({
     headerContainer: {
       marginBottom: Spacing.sm
-    },
-    bannerImage: {
-      width: "100%",
-      height: 180
-    },
-    bannerOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0,0,0,0.25)",
-      height: 180
     },
     avatarWrapper: {
       paddingHorizontal: Spacing.lg,

@@ -7,6 +7,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
+import Separator from "../ui/Separator";
 
 const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
   const MyTheme = useAppTheme();
@@ -22,7 +23,7 @@ const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Pressable
         onPress={handlePress}
         style={({ pressed }) => [styles.item, pressed && setting.type !== "info" && { backgroundColor: MyTheme.glas }]}
@@ -56,20 +57,22 @@ const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
         </View>
       </Pressable>
 
-      {!isLast && <View style={styles.separator} />}
+      {!isLast && <Separator />}
     </View>
   );
 });
 SettingsRow.displayName = "SettingsRow";
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
+    container: {
+      paddingHorizontal: Spacing.md
+    },
     item: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
       paddingVertical: Spacing.sm + 4,
-      paddingHorizontal: Spacing.md,
       minHeight: 52
     },
     itemLeft: {
@@ -84,11 +87,6 @@ const getStyles = (theme) =>
     },
     valueText: {
       opacity: 0.7
-    },
-    separator: {
-      height: StyleSheet.hairlineWidth,
-      backgroundColor: theme.separator,
-      marginHorizontal: Spacing.md
     }
   });
 

@@ -1,11 +1,12 @@
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 import StatusBadge from "../ui/StatusBadge";
 
@@ -30,7 +31,7 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>
         <Pressable onPress={() => onNavigate(item.username)}>
-          <Image source={{ uri: item.avatar }} style={isReply ? styles.replyAvatar : styles.commentAvatar} />
+          <AppImage source={item.avatar} variant={"avatarSmall"} style={isReply && styles.replyAvatar} />
         </Pressable>
       </View>
 
@@ -85,12 +86,6 @@ const getStyles = (theme) =>
     },
     replyRow: {
       marginBottom: Spacing.sm
-    },
-    commentAvatar: {
-      width: 36,
-      height: 36,
-      borderRadius: 18,
-      backgroundColor: "#F0F0F0"
     },
     replyAvatar: {
       width: 28,

@@ -4,65 +4,24 @@ import { Image, StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
-import { Skeleton } from "moti/skeleton";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import RecommendedCommunitySkeleton from "./RecommendedCommunitySkeleton";
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 
 const EMPTY_ARRAY = [];
-const SKELETON_AVATARS = [0, 1, 2];
 
 const RecommendedCommunity = memo(({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
 
-  if (isLoading) {
-    const skeletonMode = MyTheme.isDark ? "dark" : "light";
-
-    return (
-      <BaseCard style={styles.cardContainer}>
-        <View style={styles.headerRow}>
-          <Skeleton colorMode={skeletonMode} width={40} height={40} radius={Spacing.borderRadius.md} />
-        </View>
-
-        <View style={styles.contentArea}>
-          <Skeleton colorMode={skeletonMode} width="70%" height={20} />
-          <View style={styles.spacerSM} />
-          <Skeleton colorMode={skeletonMode} width="100%" height={14} />
-          <View style={styles.spacerXS} />
-          <Skeleton colorMode={skeletonMode} width="80%" height={14} />
-        </View>
-
-        <View style={styles.footerRow}>
-          <View style={styles.socialProof}>
-            <View style={styles.facepile}>
-              {SKELETON_AVATARS.map((index) => (
-                <View
-                  key={`skeleton-avatar-${index}`}
-                  style={[
-                    styles.avatar,
-                    styles.skeletonAvatar,
-                    { zIndex: index === 1 ? 3 : index === 0 ? 2 : 1 },
-                    index > 0 && { marginLeft: -10 }
-                  ]}
-                >
-                  <Skeleton colorMode={skeletonMode} width={20} height={20} radius={10} />
-                </View>
-              ))}
-            </View>
-
-            <Skeleton colorMode={skeletonMode} width={80} height={12} />
-          </View>
-        </View>
-      </BaseCard>
-    );
-  }
+  if (isLoading) return <RecommendedCommunitySkeleton styles={styles} />;
 
   const displayAvatars = item?.avatars ? item.avatars.slice(0, 3) : EMPTY_ARRAY;
 

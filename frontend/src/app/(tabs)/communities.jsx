@@ -9,7 +9,7 @@ import HorizontalSectionList from "@/components/communities/HorizontalSectionLis
 import MyCommunitiesSection from "@/components/communities/MyCommunitiesSection";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
-import EventHero from "@/components/home/EventHero";
+import HeroCarousel from "@/components/home/HeroCarousel";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
@@ -21,6 +21,21 @@ import useStore from "@/store/useStore";
 import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
+
+const COMMUNITIES_HERO_DATA = [
+  {
+    id: "1",
+    image: require("@/../public/assets/events/achtsamkeit2.png"),
+    title: "Sommer Party",
+    eventLink: "/event/123"
+  },
+  {
+    id: "2",
+    image: require("@/../public/assets/events/sportevent.png"),
+    title: "Tech Meetup",
+    eventLink: "/event/456"
+  }
+];
 
 export default function CommunitiesScreen() {
   const MyTheme = useAppTheme();
@@ -84,15 +99,7 @@ export default function CommunitiesScreen() {
     ({ item }) => {
       switch (item.type) {
         case "hero":
-          return (
-            <View style={styles.paddedContent}>
-              <EventHero
-                imageSource={require("../../../public/assets/createCommunityBanner.png")}
-                isLoading={isLoading}
-                onPress={handleHeroPress}
-              />
-            </View>
-          );
+          return <HeroCarousel data={COMMUNITIES_HERO_DATA} isLoading={isLoading} onPressItem={handleHeroPress} />;
 
         case "search":
           return (

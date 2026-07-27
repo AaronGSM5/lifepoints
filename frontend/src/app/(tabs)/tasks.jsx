@@ -4,7 +4,6 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import EventHero from "@/components/home/EventHero";
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
@@ -19,6 +18,22 @@ import { useTasks } from "@/hooks/useTasks";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
+import HeroCarousel from "@/components/home/HeroCarousel";
+
+const TASKS_HERO_DATA = [
+  {
+    id: "1",
+    image: require("@/../public/assets/events/achtsamkeit2.png"),
+    title: "Sommer Party",
+    eventLink: "/event/123"
+  },
+  {
+    id: "2",
+    image: require("@/../public/assets/events/sportevent.png"),
+    title: "Tech Meetup",
+    eventLink: "/event/456"
+  }
+];
 
 const TasksScreen = () => {
   const router = useRouter();
@@ -110,8 +125,8 @@ const TasksScreen = () => {
       switch (item.type) {
         case "event_banner":
           return (
-            <View style={[styles.paddedContent, { marginTop: Spacing.md + 44 + Spacing.md }]}>
-              <EventHero imageSource={require("../../../public/assets/events/sportevent.png")} isLoading={isLoading} />
+            <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
+              <HeroCarousel data={TASKS_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
             </View>
           );
 

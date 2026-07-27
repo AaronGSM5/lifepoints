@@ -7,7 +7,10 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import SectionHeader from "@/components/ui/SectionHeader";
+import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
@@ -40,10 +43,8 @@ export default function SecurityScreen() {
     <ScreenWrapper scrollable>
       <ScreenTitle title={t("Security & Login")} />
       <View style={styles.section}>
-        <AppText type="title" style={styles.sectionTitle}>
-          {t("Change Password")}
-        </AppText>
-        <View style={styles.card}>
+        <SectionHeader title={t("Change Password")} />
+        <BaseCard>
           <AppInput
             label={t("Current Password")}
             placeholder="••••••••"
@@ -72,43 +73,30 @@ export default function SecurityScreen() {
             onPress={handlePasswordChange}
             style={{ marginTop: Spacing.lg }}
             disabled={!passwords.new || passwords.new !== passwords.confirm}
+            variant={"outline"}
           />
-        </View>
+        </BaseCard>
       </View>
 
       <View style={styles.section}>
-        <AppText type="title" style={styles.sectionTitle}>
-          {t("Security & Access")}
-        </AppText>
-        <View style={styles.card}>
+        <SectionHeader title={t("Security & Access")} />
+        <BaseCard>
           <View style={styles.row}>
             <View style={styles.rowContent}>
               <AppText bold>{t("FaceID / Fingerprint")}</AppText>
-              <AppText type="caption" style={{ color: MyTheme.muted }}>
-                {t("Faster Login")}
-              </AppText>
+              <AppText type="caption">{t("Faster Login")}</AppText>
             </View>
-            <Switch
-              value={isBiometricsEnabled}
-              onValueChange={setIsBiometricsEnabled}
-              trackColor={{ false: "#767577", true: MyTheme.primaryAccent }}
-            />
+            <Switch value={isBiometricsEnabled} onValueChange={setIsBiometricsEnabled} trackColor={styles.switch} />
           </View>
-
-          <View style={[styles.row, { borderTopWidth: 1, borderTopColor: "#f2f2f7" }]}>
+          <Separator />
+          <View style={styles.row}>
             <View style={styles.rowContent}>
               <AppText bold>{t("Two-factor authentication")}</AppText>
-              <AppText type="caption" style={{ color: MyTheme.muted }}>
-                {t("Additional protection via email")}
-              </AppText>
+              <AppText type="caption">{t("Additional protection via email")}</AppText>
             </View>
-            <Switch
-              value={isTwoFactorEnabled}
-              onValueChange={setIsTwoFactorEnabled}
-              trackColor={{ false: "#767577", true: MyTheme.primaryAccent }}
-            />
+            <Switch value={isTwoFactorEnabled} onValueChange={setIsTwoFactorEnabled} trackColor={styles.switch} />
           </View>
-        </View>
+        </BaseCard>
       </View>
 
       <View style={styles.section}>
@@ -116,8 +104,9 @@ export default function SecurityScreen() {
           title={t("Permanently delete account")}
           icon={<Icon name="trash" size={20} color={MyTheme.warning} />}
           onPress={handleDeleteAccount}
-          bgColor={MyTheme.inputBorder}
-          borderStyle={{ borderWidth: 1, borderColor: addOpacity(MyTheme.warning, 0.4) }}
+          borderStyle={{ borderWidth: 1, borderColor: addOpacity(MyTheme.warning, 0.6) }}
+          textStyle={{ color: MyTheme.text }}
+          variant={"outline"}
         />
       </View>
     </ScreenWrapper>
@@ -129,16 +118,6 @@ const getStyles = (theme) =>
     section: {
       marginBottom: Spacing.xl
     },
-    sectionTitle: {
-      marginBottom: Spacing.md
-    },
-    card: {
-      backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
-      padding: Spacing.md,
-      borderWidth: 1,
-      borderColor: theme.secondary
-    },
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -148,14 +127,8 @@ const getStyles = (theme) =>
     rowContent: {
       flex: 1
     },
-    deleteButton: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: Spacing.md,
-      backgroundColor: "white",
-      borderRadius: Spacing.borderRadius.lg,
-      borderWidth: 1,
-      borderColor: theme.warning
+    switch: {
+      false: "#767577",
+      true: theme.primaryAccent
     }
   });

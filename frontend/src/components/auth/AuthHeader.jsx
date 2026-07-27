@@ -1,8 +1,10 @@
 import React, { useMemo } from "react";
-import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
+
+import AppImage from "../ui/AppImage";
 
 export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
   const { width } = useWindowDimensions();
@@ -17,18 +19,18 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
   return (
     <View style={styles.header}>
       <View style={styles.appIcon}>
-        <Image
+        <AppImage
           source={require("@/../public/assets/appIcons/adaptive-icon.png")}
           style={logoDimensions}
-          resizeMode="contain"
+          contentFit={"contain"}
         />
       </View>
 
       {showImageLogo ? (
-        <Image
+        <AppImage
           source={require("@/../public/assets/lifepointsLogo.png")}
           style={styles.logoImage}
-          resizeMode="contain"
+          contentFit="contain"
         />
       ) : (
         <AppText type="h1" style={styles.headerText}>
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
     opacity: 0.7
   },
   logoImage: {
-    width: 200
+    width: 200,
+    height: 60
   }
 });

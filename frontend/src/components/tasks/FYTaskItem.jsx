@@ -2,8 +2,6 @@ import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StyleSheet, View } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
@@ -11,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
+import FYTaskItemSkeleton from "./FYTaskItemSkeleton";
 import AppBadge from "../ui/AppBadge";
 
 const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }) => {
@@ -18,57 +17,8 @@ const FYTaskItem = memo(({ id, title, description, lp, badge, image, isLoading }
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
   const completeTask = useStore((state) => state.completeTask);
-  if (isLoading) {
-    return (
-      <BaseCard style={styles.card} padding={0}>
-        {/* Image */}
-        <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
-          <Skeleton
-            colorMode={MyTheme.isDark ? "dark" : "light"}
-            width="100%"
-            height={"100%"}
-            radius={0}
-            transition={{ type: "timing", duration: 1500 }}
-          />
-        </View>
 
-        <View style={styles.cardContent}>
-          <View style={styles.cardInfoRow}>
-            <View style={{ flex: 1, paddingRight: Spacing.sm }}>
-              <View style={{ marginBottom: 4 }}>
-                <Skeleton
-                  colorMode={MyTheme.isDark ? "dark" : "light"}
-                  width="80%"
-                  height={20}
-                  transition={{ type: "timing", duration: 1500 }}
-                />
-              </View>
-              <Skeleton
-                colorMode={MyTheme.isDark ? "dark" : "light"}
-                width="80%"
-                height={14}
-                transition={{ type: "timing", duration: 1500 }}
-              />
-            </View>
-            <Skeleton
-              colorMode={MyTheme.isDark ? "dark" : "light"}
-              width={60}
-              height={22}
-              transition={{ type: "timing", duration: 1500 }}
-            />
-          </View>
-          {/* Button */}
-          <Skeleton
-            colorMode={MyTheme.isDark ? "dark" : "light"}
-            width="100%"
-            height={44}
-            radius={Spacing.borderRadius.lg}
-            transition={{ type: "timing", duration: 1500 }}
-          />
-        </View>
-      </BaseCard>
-    );
-  }
+  if (isLoading) return <FYTaskItemSkeleton styles={styles} />;
 
   const renderBadge = () => {
     if (!badge) return null;

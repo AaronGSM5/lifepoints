@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-import { Skeleton } from "moti/skeleton";
 
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
@@ -14,8 +13,9 @@ import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
+import AppSkeleton from "../ui/AppSkeleton";
 
-const FeaturedRewardCard = memo(({ skeletonProps, isLoading }) => {
+const FeaturedRewardCard = memo(({ isLoading }) => {
   const { t } = useTranslation("shop");
   const redeemReward = useStore((state) => state.redeemReward);
   const selectedReward = featuredRewards?.[0];
@@ -24,7 +24,7 @@ const FeaturedRewardCard = memo(({ skeletonProps, isLoading }) => {
   if (isLoading) {
     return (
       <View style={{ marginBottom: Spacing.md }}>
-        <Skeleton {...skeletonProps} width="100%" height={240} radius={Spacing.borderRadius.lg} />
+        <AppSkeleton height={240} radius={Spacing.borderRadius.lg} />
       </View>
     );
   }

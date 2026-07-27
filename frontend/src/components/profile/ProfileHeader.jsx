@@ -1,10 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
@@ -15,11 +14,13 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAvatarFrames } from "@/hooks/useAvatarFrames";
 import useStore from "@/store/useStore";
 
+import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
+import AppImage from "../ui/AppImage";
 import StatusBadge from "../ui/StatusBadge";
 
-const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sourceId, profileData }) => {
+const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileData }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -64,7 +65,7 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
     <View style={styles.profileHeader}>
       <View style={styles.avatarContainer}>
         <AvatarWrapper {...wrapperProps} style={[styles.frameWrapper, frameStyles]}>
-          <Image source={avatarSource} style={styles.avatar} />
+          <AppImage source={avatarSource} variant={"avatarBig"} />
         </AvatarWrapper>
 
         {!isLoading && profile.level && (
@@ -73,21 +74,7 @@ const ProfileHeader = memo(({ skeletonProps, isLoading, isExternUser = true, sou
       </View>
 
       {isLoading ? (
-        <View style={{ alignItems: "center" }}>
-          <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={80} height={14} />
-          <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={180} height={24} />
-          <View style={{ height: Spacing.sm }} />
-          <Skeleton {...skeletonProps} width={120} height={14} />
-          <View style={{ height: Spacing.xl }} />
-          <Skeleton {...skeletonProps} width={160} height={14} />
-
-          <View style={styles.actionButtons}>
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-            <Skeleton {...skeletonProps} width={130} height={44} radius={Spacing.borderRadius.full} />
-          </View>
-        </View>
+        <ProfileHeaderSkeleton styles={styles} />
       ) : (
         <>
           <AppText type="caption">@{profile.username}</AppText>
@@ -171,11 +158,6 @@ const getStyles = (theme) =>
     avatarContainer: {
       position: "relative",
       marginBottom: Spacing.md
-    },
-    avatar: {
-      width: 100,
-      height: 100,
-      borderRadius: 50
     },
     actionButtons: {
       flexDirection: "row",

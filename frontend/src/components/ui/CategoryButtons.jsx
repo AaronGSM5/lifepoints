@@ -1,14 +1,13 @@
 import { memo, useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppButton from "./AppButton";
+import AppSkeleton from "./AppSkeleton";
 
-const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, skeletonProps, isLoading }) => {
+const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, isLoading }) => {
   const MyTheme = useAppTheme();
   const containerStyle = useMemo(
     () => ({
@@ -21,9 +20,9 @@ const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, skelet
   const renderSkeletons = useMemo(
     () =>
       Array.from({ length: 4 }).map((_, i) => (
-        <Skeleton key={i} {...skeletonProps} width={80} height={45} radius={Spacing.borderRadius.full} />
+        <AppSkeleton key={i} width={80} height={45} radius={Spacing.borderRadius.full} />
       )),
-    [skeletonProps]
+    []
   );
 
   const handlePress = useCallback(

@@ -31,7 +31,7 @@ const AppText = memo(
         color: type === "caption" || disabled ? MyTheme.muted : MyTheme.text,
         ...Typography[type]
       };
-    }, [MyTheme, type, bold]);
+    }, [MyTheme, type, bold, disabled]);
 
     const TextComponent = animated ? Animated.Text : Text;
 

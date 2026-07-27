@@ -3,16 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 
 import CustomizablesCard from "../customizables/CustomizablesCard";
+import AppSkeleton from "../ui/AppSkeleton";
 import SectionHeader from "../ui/SectionHeader";
 
-const CustomizablesPreview = memo(({ isLoading, customizables, skeletonProps }) => {
+const CustomizablesPreview = memo(({ isLoading, customizables }) => {
   const { t } = useTranslation("profile");
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -46,13 +46,7 @@ const CustomizablesPreview = memo(({ isLoading, customizables, skeletonProps }) 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {isLoading &&
           Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton
-              key={`skel-custom-${i}`}
-              {...skeletonProps}
-              width={80}
-              height={80}
-              radius={Spacing.borderRadius.lg}
-            />
+            <AppSkeleton key={`skel-custom-${i}`} width={80} height={80} radius={Spacing.borderRadius.lg} />
           ))}
         {!isLoading &&
           customizables.map((item, i) => (

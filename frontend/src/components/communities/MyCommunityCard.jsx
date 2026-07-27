@@ -3,31 +3,20 @@ import { StyleSheet, View } from "react-native";
 
 // eslint-disable-next-line import/no-unresolved
 import { MaterialIcons } from "@expo/vector-icons";
-import { Skeleton } from "moti/skeleton";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import MyCommunityCardSkeleton from "./MyCommunityCardSkeleton";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 
 const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  if (isLoading) {
-    const skeletonMode = MyTheme.isDark ? "dark" : "light";
-    return (
-      <BaseCard style={styles.communityCard}>
-        <Skeleton colorMode={skeletonMode} width={44} height={44} radius={Spacing.borderRadius.md} />
-        <View style={styles.skeletonBottomContainer}>
-          <Skeleton colorMode={skeletonMode} width={100} height={16} />
-          <View style={styles.skeletonSpacer} />
-          <Skeleton colorMode={skeletonMode} width={60} height={12} />
-        </View>
-      </BaseCard>
-    );
-  }
+
+  if (isLoading) return <MyCommunityCardSkeleton styles={styles} />;
 
   return (
     <BaseCard style={styles.communityCard} onPress={onPress}>

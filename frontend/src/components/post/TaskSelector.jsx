@@ -9,6 +9,7 @@ import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import BaseCard from "../ui/BaseCard";
+import Separator from "../ui/Separator";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -66,28 +67,28 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
         <Icon name={expanded ? "up" : "down"} color={MyTheme.text} />
       </TouchableOpacity>
       {expanded && (
-        <View style={styles.dropdown}>
+        <>
+          <Separator />
           <ScrollView style={styles.scrollArea} nestedScrollEnabled={true}>
             {availableTasks.map((task) => {
               const isSelected = task.id === selectedTaskId;
               return (
-                <TouchableOpacity
-                  key={task.id}
-                  style={[styles.taskItem, isSelected && styles.taskItemSelected]}
-                  onPress={() => handleSelect(task.id)}
-                >
-                  <View style={styles.taskItemLeft}>
-                    <Icon name={task.icon} size={20} color={isSelected ? MyTheme.primaryAccent : MyTheme.text} />
-                    <AppText bold style={[styles.taskTitle, isSelected && { color: MyTheme.primaryAccent }]}>
-                      {t(task.title)}
-                    </AppText>
-                  </View>
-                  {isSelected && <Icon name="checkmark" size={20} color={MyTheme.primaryAccent} />}
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity key={task.id} style={styles.taskItem} onPress={() => handleSelect(task.id)}>
+                    <View style={styles.taskItemLeft}>
+                      <Icon name={task.icon} size={20} color={isSelected ? MyTheme.primaryAccent : MyTheme.text} />
+                      <AppText bold style={[styles.taskTitle, isSelected && { color: MyTheme.primaryAccent }]}>
+                        {t(task.title)}
+                      </AppText>
+                    </View>
+                    {isSelected && <Icon name="checkmark" size={20} color={MyTheme.primaryAccent} />}
+                  </TouchableOpacity>
+                  <Separator />
+                </>
               );
             })}
           </ScrollView>
-        </View>
+        </>
       )}
     </BaseCard>
   );
@@ -114,10 +115,6 @@ const getStyles = (theme) =>
       justifyContent: "center",
       alignItems: "center"
     },
-    dropdown: {
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: theme.separator
-    },
     scrollArea: {
       maxHeight: 200
     },
@@ -126,12 +123,7 @@ const getStyles = (theme) =>
       justifyContent: "space-between",
       alignItems: "center",
       paddingVertical: Spacing.md,
-      paddingHorizontal: Spacing.md,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.separator
-    },
-    taskItemSelected: {
-      backgroundColor: "rgba(0,0,0,0.02)"
+      paddingHorizontal: Spacing.md
     },
     taskItemLeft: {
       flexDirection: "row",

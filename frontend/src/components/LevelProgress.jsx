@@ -4,13 +4,13 @@ import { Animated, Easing, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
+import AppSkeleton from "@/components/ui/AppSkeleton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, skeletonProps = {}, style }) => {
+const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -65,7 +65,7 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, sk
           {t("XP PROGRESS")}
         </AppText>
         {isLoading ? (
-          <Skeleton {...skeletonProps} width={60} height={12} />
+          <AppSkeleton width={60} height={12} />
         ) : (
           <AppText bold type="caption" style={styles.text}>
             {currentXp} / {maxXp}
@@ -75,7 +75,7 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, sk
 
       <View style={[styles.progressBarBg, progressBarStyles]}>
         {isLoading ? (
-          <Skeleton {...skeletonProps} width="100%" height={8} />
+          <AppSkeleton height={8} />
         ) : (
           <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
             <LinearGradient

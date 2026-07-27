@@ -2,8 +2,6 @@ import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-import { Skeleton } from "moti/skeleton";
-
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
@@ -12,20 +10,15 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
+import AppSkeleton from "../ui/AppSkeleton";
+
 const ActiveTaskCard = memo(({ title, points, isLoading, onAction }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("tasks");
 
   if (isLoading) {
-    return (
-      <Skeleton
-        colorMode={MyTheme.isDark ? "dark" : "light"}
-        width="100%"
-        height={70}
-        radius={Spacing.borderRadius.lg}
-      />
-    );
+    return <AppSkeleton height={70} radius={Spacing.borderRadius.lg} />;
   }
 
   return (

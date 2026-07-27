@@ -2,7 +2,6 @@ import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
@@ -11,29 +10,14 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppBadge from "./AppBadge";
+import StatCardSkeleton from "./StatCardSkeleton";
 
 const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const handleGetPlus = useCallback(() => router.push("/setting/subscription"), []);
 
-  const skeletonProps = {
-    colorMode: MyTheme.isDark ? "dark" : "light",
-    transition: { type: "timing", duration: 1500 }
-  };
-
-  if (isLoading) {
-    return (
-      <BaseCard style={style}>
-        <View style={styles.statTop}>
-          <Skeleton {...skeletonProps} width={50} height={20} />
-          <Skeleton {...skeletonProps} width={16} height={16} radius={4} />
-        </View>
-        <View style={{ marginTop: Spacing.sm }} />
-        <Skeleton {...skeletonProps} width={80} height={10} />
-      </BaseCard>
-    );
-  }
+  if (isLoading) return <StatCardSkeleton style={style} styles={styles} />;
 
   return (
     <BaseCard style={style}>

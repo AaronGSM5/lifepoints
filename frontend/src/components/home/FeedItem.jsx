@@ -2,7 +2,6 @@ import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
-import { Skeleton } from "moti/skeleton";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -13,7 +12,9 @@ import FeedItemActionBar from "./FeedItemActionBar";
 import FeedItemFooter from "./FeedItemFooter";
 import FeedItemHeader from "./FeedItemHeader";
 import FeedItemImageContainer from "./FeedItemImageContainer";
+import FeedItemSkeleton from "./FeedItemSkeleton";
 import { LootGameTrigger } from "./LootGameTrigger";
+import Separator from "../ui/Separator";
 
 const FeedItem = memo(
   ({
@@ -26,7 +27,6 @@ const FeedItem = memo(
     id,
     onOpenComments,
     onOpenOptions,
-    skeletonProps,
     isLoading,
     isReady
   }) => {
@@ -56,58 +56,44 @@ const FeedItem = memo(
       });
     }, [username, id]);
 
-    if (isLoading) {
-      return (
-        <View style={styles.skeletonContainer}>
-          <View style={styles.skeletonHeader}>
-            <Skeleton {...skeletonProps} radius="round" width={32} height={32} />
-            <Skeleton {...skeletonProps} width={120} height={12} />
-          </View>
-          <Skeleton {...skeletonProps} width="100%" height={350} />
-          <View style={styles.skeletonFooter}>
-            <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-              <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
-              <Skeleton {...skeletonProps} width={24} height={24} radius="round" />
-            </View>
-            <Skeleton {...skeletonProps} width="80%" height={12} />
-          </View>
-        </View>
-      );
-    }
+    if (isLoading) return <FeedItemSkeleton styles={styles} />;
 
     return (
-      <View style={styles.card}>
-        <FeedItemHeader
-          id={id}
-          username={username}
-          avatar={avatar}
-          badge={badge}
-          onPress={navigateToProfile}
-          onOpenOptions={() => onOpenOptions(id, isOwner)}
-        />
+      <>
+        <View style={styles.card}>
+          <FeedItemHeader
+            id={id}
+            username={username}
+            avatar={avatar}
+            badge={badge}
+            onPress={navigateToProfile}
+            onOpenOptions={() => onOpenOptions(id, isOwner)}
+          />
 
-        {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}
-        <FeedItemImageContainer
-          image={image}
-          heartOpacity={heartOpacity}
-          heartScale={heartScale}
-          onPress={handleDoubleTap}
-        />
-        <FeedItemActionBar
-          handleLike={handleLike}
-          isLiked={isLiked}
-          handleShare={handleShare}
-          isSaved={isSaved}
-          handleSave={handleSave}
-          onOpenComments={() => onOpenComments(id)}
-        />
-        <FeedItemFooter
-          likesCount={likesCount}
-          username={username}
-          description={description}
-          onPress={navigateToProfile}
-        />
-      </View>
+          {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}
+          <FeedItemImageContainer
+            image={image}
+            heartOpacity={heartOpacity}
+            heartScale={heartScale}
+            onPress={handleDoubleTap}
+          />
+          <FeedItemActionBar
+            handleLike={handleLike}
+            isLiked={isLiked}
+            handleShare={handleShare}
+            isSaved={isSaved}
+            handleSave={handleSave}
+            onOpenComments={() => onOpenComments(id)}
+          />
+          <FeedItemFooter
+            likesCount={likesCount}
+            username={username}
+            description={description}
+            onPress={navigateToProfile}
+          />
+        </View>
+        <Separator />
+      </>
     );
   }
 );
@@ -117,14 +103,10 @@ const getStyles = (theme) =>
   StyleSheet.create({
     card: {
       backgroundColor: theme.primary,
-      paddingBottom: Spacing.sm,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.separator
+      paddingBottom: Spacing.sm
     },
     skeletonContainer: {
       backgroundColor: theme.primary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.separator,
       paddingBottom: Spacing.md
     },
     skeletonHeader: {

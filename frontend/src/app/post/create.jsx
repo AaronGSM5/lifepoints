@@ -14,6 +14,7 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -99,6 +100,7 @@ export default function CreatePost() {
             {t("Post")}
           </AppText>
         </View>
+        <Separator />
 
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <BaseCard style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
@@ -153,7 +155,7 @@ export default function CreatePost() {
   );
 }
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1
@@ -163,9 +165,7 @@ const getStyles = (theme) =>
       justifyContent: "space-between",
       alignItems: "center",
       paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.sm,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: theme.separator
+      paddingVertical: Spacing.sm
     },
     headerTitle: {
       fontSize: 16
