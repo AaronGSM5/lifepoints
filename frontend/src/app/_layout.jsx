@@ -111,7 +111,7 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    console.log("🚪 Türsteher Status:", {
+    console.log("Status:", {
       isAppReady,
       hasCompletedOnboarding,
       isAuthenticated,
@@ -137,7 +137,11 @@ export default function RootLayout() {
       console.log("➡️ Türsteher: Leite um zu /auth");
       router.replace("/auth");
     } else if (hasCompletedOnboarding && isAuthenticated && (inAuthGroup || inOnboardingGroup)) {
-      router.replace("/(tabs)/home");
+      if (__DEV__) {
+        console.log("DEV-MODE no automatic rerouting");
+      } else {
+        router.replace("/(tabs)/home");
+      }
     }
   }, [isAppReady, error, hasCompletedOnboarding, isAuthenticated, loaded, router, segments]);
 
