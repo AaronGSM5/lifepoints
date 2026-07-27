@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import ActiveTaskCard from "@/components/home/ActiveTaskCard";
+import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
 import HeroCarousel from "@/components/home/HeroCarousel";
 import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";

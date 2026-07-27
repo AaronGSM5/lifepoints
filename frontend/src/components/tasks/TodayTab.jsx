@@ -2,10 +2,12 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-import ActiveTaskCard from "@/components/home/ActiveTaskCard";
+import { router } from "expo-router";
+
 import HeroCarousel from "@/components/home/HeroCarousel";
 import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
@@ -15,6 +17,8 @@ import { useTasks } from "@/hooks/useTasks";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
 import { triggerHaptic } from "@/utils/haptics";
+
+import FYTaskCard from "./FYTaskCard";
 
 const TASKS_HERO_DATA = [
   {
@@ -36,6 +40,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation(["tasks"]);
   const [isDoneTasksVisible, setIsDoneTasksVisible] = useState(true);
+  const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { isLoading, isRefreshing, refreshTasks } = useTasks();
   const activeTaskIds = useStore((state) => state.activeTaskIds);
@@ -53,6 +58,48 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
 
     return [...topElements];
   }, []);
+
+  const mockActiveTasks = useMemo(
+    () => [
+      {
+        id: 1,
+        title: "10-Min Morning Stretch",
+        icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
+        substeps: [
+          { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
+          { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
+        ]
+      },
+      {
+        id: 2,
+        title: "Deep Work: Coding",
+        icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
+        substeps: [
+          { _id: "s1", title: "Fes ting", description: "Open VS Code", completed: false },
+          { _id: "s2", title: "Mi Bombo!", description: "Get into hyperfocus", completed: false }
+        ]
+      }
+    ],
+    []
+  );
+
+  const mockFYTasks = useMemo(
+    () => [
+      {
+        id: 1,
+        title: "10-Min Morning Stretch",
+        icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
+        lp: 10
+      },
+      {
+        id: 2,
+        title: "Deep Work: Coding",
+        icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
+        lp: 20
+      }
+    ],
+    []
+  );
 
   const handleToggleDoneTasks = () => {
     setIsDoneTasksVisible((prev) => !prev);
@@ -92,19 +139,8 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                   </AppText>
                 </View>
               ) : (
-                <View style={styles.activeTasksList}>
-                  {[
-                    {
-                      id: 1,
-                      title: "10-Min Morning Stretch",
-                      icon: "timer",
-                      lp: 10,
-                      substeps: [
-                        { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
-                        { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
-                      ]
-                    }
-                  ].map((task) => {
+                <View style={styles.tasksList}>
+                  {mockActiveTasks.map((task, i) => {
                     const totalSteps = task.substeps?.length || 0;
                     const completedSteps = task.substeps?.filter((step) => step.completed).length || 0;
                     const calculatedProgress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
@@ -113,9 +149,9 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                         key={task.id}
                         title={task.title}
                         icon={task.icon}
-                        points={task.lp}
                         subSteps={task.substeps}
                         progress={calculatedProgress}
+                        initialExpanded={i === 0 ? true : false}
                         isLoading={isLoading}
                         onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
                         onAction={() => {
@@ -145,6 +181,22 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
           return (
             <View style={styles.paddedContent}>
               <SectionHeader title={t("For You")} />
+              <View style={styles.tasksList}>
+                {mockFYTasks.map((task) => (
+                  <FYTaskCard
+                    key={task.id}
+                    title={task.title}
+                    icon={task.icon}
+                    lp={task.lp}
+                    isLoading={isLoading}
+                    onNavigate={() => router.push(`/task/${task.id}`)}
+                    onAction={() => {
+                      trackTask(task.id);
+                      triggerHaptic("success");
+                    }}
+                  />
+                ))}
+              </View>
             </View>
           );
 
@@ -163,7 +215,10 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       MyTheme,
       t,
       styles,
-      handleToggleSubStep
+      handleToggleSubStep,
+      mockActiveTasks,
+      mockFYTasks,
+      trackTask
     ]
   );
 
@@ -190,7 +245,7 @@ const getStyles = (theme) =>
       marginBottom: Spacing.xl,
       marginTop: Spacing.md
     },
-    activeTasksList: {
+    tasksList: {
       gap: Spacing.md,
       marginBottom: Spacing.md
     },

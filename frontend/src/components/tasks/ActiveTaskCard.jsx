@@ -99,11 +99,12 @@ const ActiveTaskCard = memo(
                   styles.iconFace,
                   {
                     opacity: frontOpacity,
-                    transform: [{ rotateY: frontRotateY }, { perspective: 1000 }]
+                    transform: [{ rotateY: frontRotateY }, { perspective: 1000 }],
+                    backgroundColor: icon.bg
                   }
                 ]}
               >
-                <Icon name={icon} color={MyTheme.primaryAccent} />
+                <Icon name={icon.name} color={icon.color} />
               </Animated.View>
 
               <Animated.View
@@ -197,7 +198,6 @@ const getStyles = (theme) =>
     },
     iconFace: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: addOpacity(theme.primaryAccent, 0.1),
       justifyContent: "center",
       alignItems: "center",
       borderRadius: Spacing.borderRadius.full
