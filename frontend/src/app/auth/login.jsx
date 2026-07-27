@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, View } from "react-native";
 
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 
 import { useSyncUser } from "@/api/auth/useSync";
 import { account } from "@/api/client/appwrite";
@@ -14,11 +14,11 @@ import AppInput from "@/components/ui/AppInput";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 export default function LoginScreen() {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
-  const router = useRouter();
 
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -52,14 +52,20 @@ export default function LoginScreen() {
         }
       });
 
+      useStore.getState().login();
       router.replace("/home");
     } catch (error) {
-      console.error("Login failed:", error);
-      Alert.alert("Login Failed", error.message || "Something went wrong. Please try again.");
+      if (error.message.includes("Creation of a session is prohibited when a session is active")) {
+        console.log("Session war schon aktiv, syncen wir einfach...");
+        useStore.getState().login();
+      } else {
+        console.error("Login fehlgeschlagen:", error.message);
+        Alert.alert("Login fehlgeschlagen:", error.message);
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [emailInput, passwordInput, syncUserMutation, router]);
+  }, [emailInput, passwordInput, syncUserMutation]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>

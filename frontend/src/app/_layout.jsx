@@ -5,14 +5,16 @@ import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-cont
 import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as NavigationBar from "expo-navigation-bar";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 
+import { account } from "@/api/client/appwrite";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import TrophyPopup from "@/components/ui/TrophyPopup";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
+import useStore from "@/store/useStore";
 
 import "@/utils/i18n";
 
@@ -60,6 +62,13 @@ if (typeof window !== "undefined") {
 }
 
 export default function RootLayout() {
+  const isAppReady = useStore((state) => state.isAppReady);
+  const hasCompletedOnboarding = useStore((state) => state.hasCompletedOnboarding);
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+
+  const segments = useSegments();
+  const router = useRouter();
+
   const [loaded, error] = useFonts({
     "Inter-Regular": Inter_400Regular,
     "Inter-SemiBold": Inter_600SemiBold,
@@ -69,6 +78,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
+      useStore.getState().setAppReady(true);
     }
   }, [loaded, error]);
 
@@ -86,6 +96,50 @@ export default function RootLayout() {
 
     hideNavigationBar();
   }, []);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        await account.get();
+        useStore.getState().login();
+      } catch {
+        useStore.getState().logout();
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  useEffect(() => {
+    console.log("🚪 Türsteher Status:", {
+      isAppReady,
+      hasCompletedOnboarding,
+      isAuthenticated,
+      segment: segments[0]
+    });
+    if (!isAppReady || (!loaded && !error)) return;
+
+    const segment = segments[0];
+
+    const isDevRoute = segment === "dev";
+    if (isDevRoute) {
+      console.log("🛠 Dev-Mode aktiv: Route wird ignoriert.");
+      return;
+    }
+
+    const inAuthGroup = segment === "auth";
+    const inOnboardingGroup = segment === "(onboarding)";
+
+    if (!hasCompletedOnboarding && !inOnboardingGroup) {
+      console.log("➡️ Türsteher: Leite um zu /(onboarding)");
+      router.replace("/(onboarding)");
+    } else if (hasCompletedOnboarding && !isAuthenticated && !inAuthGroup) {
+      console.log("➡️ Türsteher: Leite um zu /auth");
+      router.replace("/auth");
+    } else if (hasCompletedOnboarding && isAuthenticated && (inAuthGroup || inOnboardingGroup)) {
+      router.replace("/(tabs)/home");
+    }
+  }, [isAppReady, error, hasCompletedOnboarding, isAuthenticated, loaded, router, segments]);
 
   usePushNotifications();
 
