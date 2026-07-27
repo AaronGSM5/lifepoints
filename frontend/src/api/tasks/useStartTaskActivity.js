@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { apiRequest } from "../client/api";
+import { tasksKeys } from "./tasksOptions";
 
 const startTaskActivityApi = async (taskId) => {
   return await apiRequest(`/activities/task/${taskId}`, {
@@ -14,7 +15,7 @@ export const useStartTaskActivity = () => {
   return useMutation({
     mutationFn: startTaskActivityApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: tasksKeys.all });
       queryClient.invalidateQueries({ queryKey: ["activities"] });
     },
   });
