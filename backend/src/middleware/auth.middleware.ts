@@ -32,13 +32,13 @@ export async function authMiddleware(req, res, next) {
 
     const mongoUser = await User.findOne({ external_id: appwriteUser.$id }).lean();
 
-    checkParameters({ mongoUser });
-
-    const userWithId = { mongoId: mongoUser?._id, ...appwriteUser };
-
     // 4. Attach the user data and the configured client to the request object
-    req.user = userWithId;
     req.appwriteClient = client;
+
+    if (mongoUser) {
+      const userWithId = { mongoId: mongoUser?._id, ...appwriteUser };
+      req.user = userWithId;
+    }
 
     next();
   } catch (error: any) {
