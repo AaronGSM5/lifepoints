@@ -15,24 +15,22 @@ const getUsersInfo = async (userId) => {
 import { User } from "../models/user.model.js";
 
 const syncAppwriteUserToDB = async (appwriteUser: any) => {
-  const { email, name } = appwriteUser;
-
-  const baseUsername = email.split("@")[0];
-  const defaultUsername = `${baseUsername}_${Math.floor(Math.random() * 10000)}`;
+  const { $id, email, name } = appwriteUser;
 
   const user = await User.findOneAndUpdate(
-    { email: email },
+    { external_id: $id },
     {
       $setOnInsert: {
+        external_id: $id,
         email: email,
-        name: name || "New LifePoints User",
-        username: defaultUsername
+        name: name, // can be changed
+        username: name
       }
     },
     {
       upsert: true,
-      new: true,
-      setDefaultsOnInsert: true
+      setDefaultsOnInsert: true,
+      returnDocument: "after"
     }
   );
 
