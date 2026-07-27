@@ -58,6 +58,11 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     setIsDoneTasksVisible((prev) => !prev);
   };
 
+  const handleToggleSubStep = useCallback((taskId, subStepId) => {
+    console.log(`Substep ${subStepId} in Task ${taskId} geklickt!`);
+    triggerHaptic();
+  }, []);
+
   const renderItem = useCallback(
     ({ item }) => {
       switch (item.type) {
@@ -76,7 +81,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                 rightIcon={<Icon name={"survey"} />}
                 onRightPress={onOpenQuestModal}
               />
-              {myActiveTasks.length === 0 ? (
+              {myActiveTasks.length === 1 ? (
                 <View style={styles.emptyTasksContainer}>
                   <View style={styles.emptyTasksIconContainer}>
                     <Icon name={"flower"} color={MyTheme.primaryAccent} />
@@ -88,20 +93,40 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                 </View>
               ) : (
                 <View style={styles.activeTasksList}>
-                  {myActiveTasks.map((task) => (
-                    <ActiveTaskCard
-                      key={task.id}
-                      title={task.title}
-                      points={task.lp}
-                      isLoading={isLoading}
-                      onAction={() => {
-                        completeTask(task.id);
-                        triggerHaptic("success");
-                        notifyQuestSystem("TASK_COMPLETED", { category: task.category });
-                        addExperience(task.xp);
-                      }}
-                    />
-                  ))}
+                  {[
+                    {
+                      id: 1,
+                      title: "10-Min Morning Stretch",
+                      icon: "timer",
+                      lp: 10,
+                      substeps: [
+                        { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
+                        { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
+                      ]
+                    }
+                  ].map((task) => {
+                    const totalSteps = task.substeps?.length || 0;
+                    const completedSteps = task.substeps?.filter((step) => step.completed).length || 0;
+                    const calculatedProgress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+                    return (
+                      <ActiveTaskCard
+                        key={task.id}
+                        title={task.title}
+                        icon={task.icon}
+                        points={task.lp}
+                        subSteps={task.substeps}
+                        progress={calculatedProgress}
+                        isLoading={isLoading}
+                        onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
+                        onAction={() => {
+                          completeTask(task.id);
+                          triggerHaptic("success");
+                          notifyQuestSystem("TASK_COMPLETED", { category: task.category });
+                          addExperience(task.xp);
+                        }}
+                      />
+                    );
+                  })}
                 </View>
               )}
             </View>
@@ -137,7 +162,8 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       notifyQuestSystem,
       MyTheme,
       t,
-      styles
+      styles,
+      handleToggleSubStep
     ]
   );
 
