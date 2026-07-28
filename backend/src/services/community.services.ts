@@ -1,4 +1,4 @@
-import { CommunityModel } from "@/models/community.model.js";
+import { Community as CommunityModel } from "@/models/community.model.js";
 import { Types } from "mongoose";
 import { COMMUNITY_CATEGORIES } from "@/config/community_categories.js";
 
