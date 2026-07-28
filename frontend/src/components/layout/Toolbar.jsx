@@ -47,7 +47,7 @@ export default memo(function Toolbar({ scrollY }) {
 
   // Responsive Logo
   const screenWidth = Dimensions.get("window").width;
-  const logoWidth = Math.min(screenWidth * 0.4, 180);
+  const logoWidth = Math.min(screenWidth * 0.4, 110);
   const logoHeight = logoWidth / 3.75;
 
   const handleResetProfile = useCallback(() => {
@@ -80,7 +80,7 @@ export default memo(function Toolbar({ scrollY }) {
       {/* Back-Button */}
       <View style={styles.sideSection}>
         {isMainTab ? (
-          <LpPoints points={LP} onPress={() => router.push("/shop")} size="small" />
+          <LpPoints points={LP} onPress={() => router.push("/shop")} />
         ) : (
           <Icon name="back" onPress={() => router.back()} />
         )}
@@ -88,9 +88,9 @@ export default memo(function Toolbar({ scrollY }) {
 
       {/* Title */}
       <View style={styles.centerSection}>
-        <Pressable onPress={() => router.push("/")}>
+        <Pressable onPress={() => router.push("/dev")}>
           <AppImage
-            source={require("@/../public/assets/appIcons/adaptive-icon.png")}
+            source={require("@/../public/assets/lifepointsLogo.png")}
             style={{ width: logoWidth, height: logoHeight }}
             contentFit="contain"
           />
