@@ -17,6 +17,8 @@ import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
 import BackButton from "@/components/ui/BackButton";
 import HistoryCard from "@/components/ui/HistoryCard";
+import LpPoints from "@/components/ui/LpPoints";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -33,6 +35,13 @@ const formatHistoryDate = (isoString) => {
 
   return `${dateString} • ${timeString}`;
 };
+
+const mockSubSteps = [
+  { title: "First things first", description: "This is first" },
+  { title: "Losing is Winning", description: "Now this" },
+  { title: "A la boneur", description: "Wow! You got this" },
+  { title: "Pizza time", description: "MHhhhh Pizza..", isLast: true }
+];
 
 export default function TaskDetailScreen() {
   const MyTheme = useAppTheme();
@@ -109,16 +118,45 @@ export default function TaskDetailScreen() {
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
               {t(task.title)}
             </AppText>
-            <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {task.lifepoints} LP
-            </AppText>
 
-            <AppText type="title" style={{ marginBottom: Spacing.sm }}>
-              {t("Description")}
-            </AppText>
-            <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
-              {t(task.description)}
-            </AppText>
+            <LpPoints points={task.lifepoints} size="large" />
+            <View style={styles.section}>
+              <SectionHeader title={t("Description")} />
+              <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
+                {t(task.description)}
+              </AppText>
+            </View>
+
+            {mockSubSteps && mockSubSteps.length > 0 && (
+              <View style={styles.section}>
+                <SectionHeader title={t("Ablauf")} />
+
+                {mockSubSteps.map((step, index) => {
+                  const isLast = index === task.subSteps.length - 1 || step.isLast;
+                  const stepTitle = typeof step === "string" ? step : step.title;
+
+                  return (
+                    <View key={index} style={styles.stepRow}>
+                      <View style={styles.timelineGraphic}>
+                        <View style={styles.stepDot} />
+                        {!isLast && <View style={styles.dashedLine} />}
+                      </View>
+
+                      <View style={styles.stepContent}>
+                        <AppText bold type="body" style={styles.stepTitle}>
+                          {t(stepTitle)}
+                        </AppText>
+                        {step.description && (
+                          <AppText type="caption" style={styles.stepDescription}>
+                            {t(step.description)}
+                          </AppText>
+                        )}
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
 
             {taskTrackingHistory?.length > 0 ? (
               <View style={styles.historySection}>
@@ -227,7 +265,6 @@ const getStyles = (theme) =>
     },
     headerRow: {
       flexDirection: "row",
-      // justifyContent: "space-between",
       alignItems: "center",
       marginBottom: Spacing.md
     },
@@ -244,5 +281,40 @@ const getStyles = (theme) =>
     },
     historySection: {
       marginTop: Spacing.xl
+    },
+    section: {
+      marginBottom: Spacing.md
+    },
+    stepRow: {
+      flexDirection: "row"
+    },
+    timelineGraphic: {
+      alignItems: "center",
+      width: 24,
+      marginRight: Spacing.md
+    },
+    stepDot: {
+      width: 12,
+      height: 12,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.primaryAccent,
+      zIndex: 2
+    },
+    dashedLine: {
+      width: 0,
+      flex: 1,
+      borderStyle: "dashed",
+      borderWidth: 1,
+      borderColor: theme.muted,
+      marginTop: Spacing.xs,
+      marginBottom: Spacing.xs,
+      borderRadius: 1
+    },
+    stepContent: {
+      flex: 1,
+      paddingBottom: Spacing.xl
+    },
+    stepDescription: {
+      marginTop: Spacing.xs
     }
   });

@@ -13,6 +13,7 @@ import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BackButton from "@/components/ui/BackButton";
+import LpPoints from "@/components/ui/LpPoints";
 import { rewardsCatalog } from "@/constants/RewardsCatalog";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -79,9 +80,8 @@ export default function RewardDetailScreen() {
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
               {reward.title}
             </AppText>
-            <AppText type="h2" style={{ color: MyTheme.primaryAccent, marginBottom: Spacing.lg }}>
-              {reward.points} LP
-            </AppText>
+
+            <LpPoints points={reward.points} size="large" />
 
             <AppText type="title" style={{ marginBottom: Spacing.sm }}>
               {t("Description")}

@@ -23,21 +23,21 @@ export default function LpPoints({
   const getSizeStyles = () => {
     switch (size) {
       case "small":
-        return { iconSize: 34 };
+        return { iconSize: 34, fontSize: 16 };
       case "large":
-        return { iconSize: 40 };
+        return { iconSize: 48, fontSize: 22, lineHeight: 28 };
       case "medium":
       default:
-        return { iconSize: 40 };
+        return { iconSize: 40, fontSize: 16 };
     }
   };
 
-  const { iconSize } = getSizeStyles();
+  const { iconSize, fontSize, lineHeight } = getSizeStyles();
 
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={!isClickable} style={style}>
       <View style={[styles.badge]}>
-        <AppText type="caption" bold style={styles.textStyle}>
+        <AppText type="caption" bold style={[{ fontSize: fontSize, lineHeight: lineHeight }, styles.textStyle]}>
           {formatPoints(points)}
         </AppText>
         <LpLogo width={iconSize} height={iconSize} />
@@ -53,7 +53,6 @@ const getStyles = (theme) =>
       alignItems: "center"
     },
     textStyle: {
-      fontSize: 16,
       letterSpacing: 0.5,
       color: theme.primaryAccent
     }
