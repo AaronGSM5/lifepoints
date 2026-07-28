@@ -13,7 +13,7 @@ const formatPoints = (points) => {
 export default function LpPoints({
   points = 0,
   onPress,
-  size = "medium", // Erlaubt: 'small', 'medium', 'large'
+  size = "medium", // 'xs', 'small', 'medium', 'large'
   style
 }) {
   const MyTheme = useAppTheme();
@@ -22,6 +22,8 @@ export default function LpPoints({
 
   const getSizeStyles = () => {
     switch (size) {
+      case "xs":
+        return { iconSize: 24, fontSize: 13 };
       case "small":
         return { iconSize: 34, fontSize: 16 };
       case "large":

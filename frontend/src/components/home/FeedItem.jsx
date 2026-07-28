@@ -57,7 +57,7 @@ const FeedItem = memo(
     }, [username, id]);
 
     if (isLoading) return <FeedItemSkeleton styles={styles} />;
-
+    const mockTask = `Gehe 10.000 Schritte`;
     return (
       <>
         <View style={styles.card}>
@@ -66,8 +66,10 @@ const FeedItem = memo(
             username={username}
             avatar={avatar}
             badge={badge}
+            taskName={mockTask}
             onPress={navigateToProfile}
             onOpenOptions={() => onOpenOptions(id, isOwner)}
+            onTaskPress={() => router.push("task/dasIstNurEinPlatzhalter")}
           />
 
           {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}

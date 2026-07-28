@@ -8,37 +8,48 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
+import LpPoints from "../ui/LpPoints";
 import StatusBadge from "../ui/StatusBadge";
 
-const FeedItemHeader = memo(({ id, username, avatar, badge, onPress, onOpenOptions }) => {
+const FeedItemHeader = memo(({ id, username, avatar, badge, taskName, onPress, onOpenOptions, onTaskPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
-    <View style={styles.header}>
-      <Pressable onPress={onPress}>
-        <View style={styles.headerUser}>
-          <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
-            {avatar ? (
-              <AppImage source={avatar} variant={"avatarMedium"} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={onPress}>
+          <View style={styles.headerUser}>
+            <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
+              {avatar ? (
+                <AppImage source={avatar} variant={"avatarMedium"} />
+              ) : (
+                <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
+              )}
+            </Animated.View>
+            {badge ? (
+              <View style={styles.badge}>
+                <AppText bold style={styles.username}>
+                  {username}
+                </AppText>
+                <StatusBadge id={badge} />
+              </View>
             ) : (
-              <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
-            )}
-          </Animated.View>
-          {badge ? (
-            <View style={styles.badge}>
               <AppText bold style={styles.username}>
                 {username}
               </AppText>
-              <StatusBadge id={badge} />
-            </View>
-          ) : (
-            <AppText bold style={styles.username}>
-              {username}
-            </AppText>
-          )}
-        </View>
-      </Pressable>
-      <Icon name={"dots"} size={20} color={MyTheme.muted} onPress={onOpenOptions} />
+            )}
+          </View>
+        </Pressable>
+        <Icon name={"dots"} size={20} color={MyTheme.muted} onPress={onOpenOptions} />
+      </View>
+      {taskName && (
+        <Pressable style={styles.taskRow} onPress={onTaskPress} disabled={!onTaskPress}>
+          <Icon name="target" size={14} color={MyTheme.muted} />
+          <AppText style={styles.taskText} numberOfLines={1}>
+            {taskName} • <LpPoints points={100} size="xs" />
+          </AppText>
+        </Pressable>
+      )}
     </View>
   );
 });
@@ -46,6 +57,9 @@ FeedItemHeader.displayName = "FeedItemHeader";
 
 const getStyles = (theme) =>
   StyleSheet.create({
+    container: {
+      flexDirection: "column"
+    },
     header: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -73,6 +87,22 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       gap: Spacing.xs
+    },
+    taskRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: Spacing.md,
+      paddingVertical: Spacing.sm,
+      gap: Spacing.sm,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.glas,
+      borderTopColor: theme.glas
+    },
+    taskText: {
+      fontSize: 13,
+      color: theme.muted,
+      flexShrink: 1
     }
   });
 
