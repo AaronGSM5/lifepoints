@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import BaseBottomSheet from "../ui/BaseBottomSheet";
+import LpPoints from "../ui/LpPoints";
 
 const QuestItem = memo(({ quest, onStart }) => {
   const MyTheme = useAppTheme();
@@ -24,8 +25,13 @@ const QuestItem = memo(({ quest, onStart }) => {
 
   return (
     <BaseCard style={styles.questCard}>
-      <View style={{ flex: 1, paddingRight: Spacing.md }}>
-        <AppText bold>{quest.title}</AppText>
+      <View style={{ flex: 1, paddingRight: Spacing.sm }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <AppText bold style={{ flex: 1, paddingRight: Spacing.sm }}>
+            {quest.title}
+          </AppText>
+          <LpPoints points={quest.points} />
+        </View>
         <View style={styles.progressContainer}>
           <View style={styles.progressTrack}>
             <View
@@ -41,7 +47,7 @@ const QuestItem = memo(({ quest, onStart }) => {
       <AppButton
         size="sm"
         title={getButtonTitle()}
-        variant={quest.completed ? (quest.collected ? "primary" : "primary") : "outline"}
+        variant={quest.completed ? "primary" : "outline"}
         bgColor={quest.completed && !quest.collected ? MyTheme.primaryAccent : undefined}
         disabled={quest.completed && quest.collected}
         onPress={onStart}
