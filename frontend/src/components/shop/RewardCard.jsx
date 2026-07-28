@@ -11,6 +11,7 @@ import RewardCardSkeleton from "./RewardCardSkeleton";
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
+import LpPoints from "../ui/LpPoints";
 
 const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPress, isLoading }) => {
   const MyTheme = useAppTheme();
@@ -35,9 +36,10 @@ const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPr
         </AppText>
 
         <View style={styles.cardFooter}>
-          <AppText bold type="body" style={[styles.pointsText, isLocked && { color: MyTheme.muted }]}>
+          {/* <AppText bold type="body" style={[styles.pointsText, isLocked && { color: MyTheme.muted }]}>
             {points} LP
-          </AppText>
+          </AppText> */}
+          <LpPoints points={points} />
 
           {isLocked ? (
             <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={{ backgroundColor: MyTheme.muted }} />
@@ -94,6 +96,7 @@ const getStyles = (theme) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
+      marginLeft: Spacing.xs,
       marginTop: Spacing.xs
     },
     pointsText: {

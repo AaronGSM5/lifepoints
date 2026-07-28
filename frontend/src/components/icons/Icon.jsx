@@ -10,7 +10,7 @@ import { IconMap } from "./iconMap";
 
 export const Icon = memo(({ name, size = 24, color, outline = true, style, onPress, ...rest }) => {
   const MyTheme = useAppTheme();
-  const iconColor = color ?? (MyTheme.isDark ? "white" : "black");
+  const iconColor = color ?? MyTheme.text;
   const IconComponent = IconMap[name];
 
   const renderIcon = () => {

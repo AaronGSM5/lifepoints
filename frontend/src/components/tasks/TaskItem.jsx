@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import TaskItemSkeleton from "./TaskItemSkeleton";
+import LpPoints from "../ui/LpPoints";
 
 const TaskItem = memo(({ title, description, lp, icon, onNavigate, isLoading }) => {
   const MyTheme = useAppTheme();
@@ -21,9 +22,7 @@ const TaskItem = memo(({ title, description, lp, icon, onNavigate, isLoading }) 
     <BaseCard style={styles.container} onPress={onNavigate}>
       <View style={styles.headerRow}>
         <Icon name={icon} size={20} color={MyTheme.text} />
-        <AppText type="caption" bold style={styles.lpText}>
-          {lp} LP
-        </AppText>
+        <LpPoints points={lp} size="small" />
       </View>
 
       <View style={styles.contentRow}>
@@ -39,7 +38,7 @@ const TaskItem = memo(({ title, description, lp, icon, onNavigate, isLoading }) 
 });
 TaskItem.displayName = "TaskItem";
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       padding: Spacing.md,
@@ -60,9 +59,6 @@ const getStyles = (theme) =>
     description: {
       lineHeight: 20,
       height: 40
-    },
-    lpText: {
-      color: theme.primaryAccent
     }
   });
 

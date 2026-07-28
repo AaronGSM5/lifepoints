@@ -14,6 +14,7 @@ import useStore from "@/store/useStore";
 
 import AppBadge from "../ui/AppBadge";
 import AppSkeleton from "../ui/AppSkeleton";
+import LpPoints from "../ui/LpPoints";
 
 const FeaturedRewardCard = memo(({ isLoading }) => {
   const { t } = useTranslation("shop");
@@ -41,43 +42,48 @@ const FeaturedRewardCard = memo(({ isLoading }) => {
         colors={["#8A2387", "#E94057", "#F27121"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.featuredCard}
+        style={[styles.featuredCard, { padding: 0 }]}
       >
-        <View style={styles.featuredIconContainer}>
-          <Icon name={selectedReward.icon} size={20} />
-        </View>
-
-        <View style={styles.featuredContent}>
-          <AppBadge label={t("BEST VALUE")} variant="secondary" />
-
-          <AppText type="h2" style={{ color: DarkTheme.text }}>
-            {t(selectedReward.title)}
-          </AppText>
-          <AppText type="caption" style={styles.featuredSubtitle}>
-            {t(selectedReward.description)}
-          </AppText>
-
-          <View style={styles.featuredFooter}>
-            <View>
-              {isDiscounted && (
-                <AppText type="caption" style={[styles.oldPrice, { color: DarkTheme.muted }]}>
-                  {oldPrice} LP
-                </AppText>
-              )}
-              <AppText type="title" style={{ color: DarkTheme.text }}>
-                {currentPrice} LP
-              </AppText>
-            </View>
-            <AppButton
-              variant="primary"
-              title={t("Redeem")}
-              size="md"
-              textStyle={{ color: "#E94057" }}
-              bgColor="white"
-              onPress={() => redeemReward(selectedReward.id)}
-            />
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.75)"]}
+          start={{ x: 0.5, y: 0.0 }}
+          end={{ x: 0.5, y: 1.0 }}
+          style={styles.featuredCard}
+        >
+          <View style={styles.featuredIconContainer}>
+            <Icon name={selectedReward.icon} size={20} />
           </View>
-        </View>
+
+          <View style={styles.featuredContent}>
+            <AppBadge label={t("BEST VALUE")} variant="secondary" />
+
+            <AppText type="h2" style={{ color: DarkTheme.text }}>
+              {t(selectedReward.title)}
+            </AppText>
+            <AppText type="caption" style={styles.featuredSubtitle}>
+              {t(selectedReward.description)}
+            </AppText>
+
+            <View style={styles.featuredFooter}>
+              <View>
+                {isDiscounted && (
+                  <AppText type="caption" style={[styles.oldPrice, { color: DarkTheme.muted }]}>
+                    {oldPrice}
+                  </AppText>
+                )}
+                <LpPoints points={currentPrice} />
+              </View>
+              <AppButton
+                variant="primary"
+                title={t("Redeem")}
+                size="md"
+                textStyle={{ color: "#E94057" }}
+                bgColor="white"
+                onPress={() => redeemReward(selectedReward.id)}
+              />
+            </View>
+          </View>
+        </LinearGradient>
       </LinearGradient>
     </View>
   );

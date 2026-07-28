@@ -10,9 +10,9 @@ import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
-import AppBadge from "../ui/AppBadge";
-import NotificationIcon from "../ui/NotificationsIcon";
 import AppImage from "../ui/AppImage";
+import LpPoints from "../ui/LpPoints";
+import NotificationIcon from "../ui/NotificationsIcon";
 
 export default memo(function Toolbar({ scrollY }) {
   const insets = useSafeAreaInsets();
@@ -80,7 +80,7 @@ export default memo(function Toolbar({ scrollY }) {
       {/* Back-Button */}
       <View style={styles.sideSection}>
         {isMainTab ? (
-          <AppBadge label={`${LP} LP`} onPress={() => router.push("/shop")} style={{ borderWidth: 0 }} />
+          <LpPoints points={LP} onPress={() => router.push("/shop")} size="small" />
         ) : (
           <Icon name="back" onPress={() => router.back()} />
         )}

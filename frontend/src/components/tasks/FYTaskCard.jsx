@@ -8,8 +8,8 @@ import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import AppBadge from "../ui/AppBadge";
 import AppSkeleton from "../ui/AppSkeleton";
+import LpPoints from "../ui/LpPoints";
 
 const FYTaskCard = memo(({ title, icon, lp, isLoading, onNavigate, onAction, style }) => {
   const MyTheme = useAppTheme();
@@ -105,7 +105,7 @@ const FYTaskCard = memo(({ title, icon, lp, isLoading, onNavigate, onAction, sty
           {t(title)}
         </AppText>
 
-        <AppBadge label={`${lp} LP`} style={styles.lpDisplay} />
+        <LpPoints points={lp} />
       </TouchableOpacity>
     </BaseCard>
   );
@@ -132,11 +132,6 @@ const getStyles = () =>
     titleText: {
       flex: 1,
       marginRight: Spacing.sm
-    },
-    lpDisplay: {
-      borderWidth: 0,
-      backgroundColor: "none",
-      alignSelf: "center"
     }
   });
 

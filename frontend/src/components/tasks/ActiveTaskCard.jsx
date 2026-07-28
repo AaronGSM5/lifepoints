@@ -10,11 +10,13 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
 import AppSkeleton from "../ui/AppSkeleton";
+import LpPoints from "../ui/LpPoints";
 
 const ActiveTaskCard = memo(
   ({
     title,
     icon,
+    lp,
     progress = 0,
     renderHeaderRight = true,
     isLoading,
@@ -88,6 +90,7 @@ const ActiveTaskCard = memo(
     }
 
     const safeProgress = Math.min(Math.max(progress, 0), 100);
+    const stepPoints = subSteps ? lp / subSteps.length : 0;
 
     return (
       <BaseCard style={style}>
@@ -174,6 +177,8 @@ const ActiveTaskCard = memo(
                       </AppText>
                     )}
                   </View>
+
+                  <LpPoints points={stepPoints} size="small" />
                 </TouchableOpacity>
               );
             })}
