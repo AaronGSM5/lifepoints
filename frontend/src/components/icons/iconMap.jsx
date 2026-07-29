@@ -57,6 +57,7 @@ export const IconMap = {
   archive: ({ outline, ...props }) => <Icon name={getName("archive-2", outline)} {...props} />,
   recycle: ({ outline, ...props }) => <Icon name={getName("recycle", outline)} {...props} />,
   fileDamage: ({ outline, ...props }) => <Icon name={getName("file-damage", outline)} {...props} />,
+  time: ({ outline, ...props }) => <Icon name={getName("time", outline)} {...props} />,
   // Placeholders
   flower: ({ outline, ...props }) => <Icon name={getName("flower", outline)} {...props} />,
   code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,

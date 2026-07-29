@@ -125,7 +125,7 @@ export default function CommunitiesScreen() {
             return (
               <View style={styles.sectionContainer}>
                 <View style={styles.paddedContent}>
-                  <SectionHeader title={item.title} isLoading={true} />
+                  <SectionHeader title={t(item.title)} isLoading={true} />
                 </View>
                 <FlatList
                   horizontal
@@ -141,7 +141,7 @@ export default function CommunitiesScreen() {
           }
           return (
             <HorizontalSectionList
-              title={item.title}
+              title={t(item.title)}
               initialData={validSectionData}
               categoryKey={item.categoryKey}
               onPressItem={handleCommunityPress}

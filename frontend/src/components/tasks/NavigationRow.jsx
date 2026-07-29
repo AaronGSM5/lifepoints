@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -11,6 +12,7 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [containerWidth, setContainerWidth] = useState(0);
   const [panX] = useState(() => new Animated.Value(0));
+  const { t } = useTranslation();
 
   const PADDING = 2;
   const BORDER_WIDTH = 1;
@@ -75,9 +77,8 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
               onPress={() => onTabChange && onTabChange(index)}
               activeOpacity={0.9}
             >
-              {/* <Icon name={tab.icon} color={isActive ? MyTheme.primaryAccent : MyTheme.text} /> */}
               <AppText style={{ color: isActive ? MyTheme.primaryAccent : undefined }} bold={isActive}>
-                {tab}
+                {t(tab)}
               </AppText>
             </TouchableOpacity>
           );

@@ -129,7 +129,10 @@ const ActiveTaskCard = memo(
               <AppText bold type="title" numberOfLines={1} style={styles.titleText}>
                 {t(title)}
               </AppText>
-              <AppText type={"caption"}>Social Communities</AppText>
+              <View style={styles.metaRow}>
+                <Icon name={"time"} size={13} color={MyTheme.muted} />
+                <AppText type={"caption"}>10m • Focus</AppText>
+              </View>
             </View>
             <Icon name={isExpanded ? "down" : "right"} color={MyTheme.muted} />
           </View>
@@ -169,12 +172,12 @@ const ActiveTaskCard = memo(
                         type="body"
                         style={[styles.subStepTitle, isCompleted && styles.subStepTitleCompleted]}
                       >
-                        {step.title}
+                        {t(step.title)}
                       </AppText>
 
                       {step.description && (
                         <AppText type="caption" style={styles.subStepDescription} numberOfLines={2}>
-                          {step.description}
+                          {t(step.description)}
                         </AppText>
                       )}
                     </View>
@@ -192,8 +195,8 @@ const ActiveTaskCard = memo(
                 marginTop: Spacing.md
               }}
             >
-              <AppButton title={"go to Task"} variant={"ghost"} />
-              <AppButton title={"Submit"} />
+              <AppButton title={t("Go to Task")} variant={"ghost"} />
+              <AppButton title={t("Finish")} />
             </View>
           </>
         )}
@@ -232,6 +235,11 @@ const getStyles = (theme) =>
     titleText: {
       flex: 1,
       marginRight: Spacing.sm
+    },
+    metaRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.xs
     },
     progressTrack: {
       height: 8,

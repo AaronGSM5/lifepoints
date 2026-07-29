@@ -26,6 +26,10 @@
   "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.": "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.",
   "Badge Earned": "Badge Earned",
   "You unlocked the 'Eco-Protector' badge! 🌿": "You unlocked the 'Eco-Protector' badge! 🌿",
+  // TaskPage
+  "Today": "Today",
+  "Catalog": "Catalog",
+  "Routines": "Routines",
   // Today
   "EmptyTaskQuote1": "Every step counts, no matter how small. Let's grow together and make a positive impact today."
 }

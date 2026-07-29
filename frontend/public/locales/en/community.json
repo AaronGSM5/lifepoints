@@ -75,5 +75,16 @@
   "Voice Chat": "Voice Chat",
   "Text Only": "Text Only",
   "Real-Life Meetups": "Real-Life Meetups",
-  "Events": "Events"
+  "Events": "Events",
+  // Sections
+  "Computers": "Computers",
+  "Creativity": "Creativity",
+  "Early": "Early",
+  "Gym": "Gym",
+  "Health": "Health",
+  "Knowledge": "Knowledge",
+  "lifestyle": "Lifestyle",
+  "mindfulness": "Mindfulness",
+  "Mindset": "Mindset",
+  "Productivity": "Productivity"
 }

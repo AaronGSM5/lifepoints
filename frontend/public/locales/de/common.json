@@ -26,6 +26,10 @@
   "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.": "Durch deine 500 LP bist du jetzt vom „Helfer“ zum „Lichtblick“ aufgestiegen.",
   "Badge Earned": "Abzeichen verdient",
   "You unlocked the 'Eco-Protector' badge! 🌿": "Du hast das Badge „Umwelt-Schützer“ freigeschaltet! 🌿",
+  // TaskPage
+  "Today": "Heute",
+  "Catalog": "Katalog",
+  "Routines": "Routinen",
   // Today
   "EmptyTaskQuote1": "Jeder Schritt zählt, egal wie klein. Lass uns gemeinsam wachsen und heute etwas Positives bewirken."
 }
