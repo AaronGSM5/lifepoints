@@ -36,9 +36,6 @@ const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPr
         </AppText>
 
         <View style={styles.cardFooter}>
-          {/* <AppText bold type="body" style={[styles.pointsText, isLocked && { color: MyTheme.muted }]}>
-            {points} LP
-          </AppText> */}
           <LpPoints points={points} />
 
           {isLocked ? (

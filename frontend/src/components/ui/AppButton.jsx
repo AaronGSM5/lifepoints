@@ -3,8 +3,10 @@ import { Animated, Pressable, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
+import { LightTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/addOpacity";
 
 import AppLoadingSpinner from "./AppLoadingSpinner";
 import AppText from "./AppText";
@@ -74,7 +76,6 @@ const AppButton = memo(
             isSecondary && styles.secondary,
             isOutline && styles.outline,
             isGhost && styles.ghost,
-            isPrimary && { backgroundColor: MyTheme.primary },
             bgColor && { backgroundColor: bgColor },
             borderStyle && borderStyle,
             (disabled || loading) && styles.disabled
@@ -82,7 +83,7 @@ const AppButton = memo(
         >
           {isPrimary && !disabled && !loading && !bgColor && (
             <LinearGradient
-              colors={[MyTheme.secondary, MyTheme.primary]}
+              colors={[addOpacity(MyTheme.primaryAccent, 1), addOpacity(MyTheme.primaryAccent, 0.75)]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFill}
@@ -98,6 +99,7 @@ const AppButton = memo(
               <AppText
                 bold
                 style={[
+                  isPrimary && { color: LightTheme.text },
                   isSecondary && { color: MyTheme.text },
                   isOutline && { color: MyTheme.primaryAccent },
                   isGhost && { color: MyTheme.muted },
@@ -134,13 +136,11 @@ const getStyles = (theme) =>
       elevation: 1
     },
     sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
-    md: { paddingVertical: Spacing.sm + 4, paddingHorizontal: Spacing.lg },
+    md: { paddingVertical: Spacing.sm + 2, paddingHorizontal: Spacing.md },
     lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
 
     secondary: {
-      borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.05)",
-      backgroundColor: "rgba(255, 255, 255, 0.08)"
+      backgroundColor: theme.glas
     },
     outline: {
       borderWidth: 1,
