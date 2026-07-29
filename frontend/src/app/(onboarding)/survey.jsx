@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 
+import { router } from "expo-router";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import SurveyProgressBar from "@/components/onboarding/SurveyProgressBar";
 import SurveyQuestion from "@/components/onboarding/SurveyQuestion";
@@ -48,6 +50,7 @@ export default function SurveyScreen() {
       setStep((prev) => prev + 1);
     } else {
       completeOnboarding(true);
+      router.push("/auth/login");
     }
   }, [step, totalSteps, completeOnboarding]);
 

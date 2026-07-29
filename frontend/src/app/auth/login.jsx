@@ -58,6 +58,7 @@ export default function LoginScreen() {
       if (error.message.includes("Creation of a session is prohibited when a session is active")) {
         console.log("Session war schon aktiv, syncen wir einfach...");
         useStore.getState().login();
+        router.push("/home");
       } else {
         console.error("Login fehlgeschlagen:", error.message);
         Alert.alert("Login fehlgeschlagen:", error.message);
