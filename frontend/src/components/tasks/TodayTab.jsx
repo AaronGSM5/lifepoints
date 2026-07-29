@@ -184,6 +184,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                     return (
                       <ActiveTaskCard
                         key={task.id}
+                        id={task.id}
                         title={task.title}
                         lp={task.lp}
                         icon={task.icon}
