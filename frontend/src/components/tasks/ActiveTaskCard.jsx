@@ -9,6 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
+import AppButton from "../ui/AppButton";
 import AppSkeleton from "../ui/AppSkeleton";
 import LpPoints from "../ui/LpPoints";
 
@@ -18,7 +19,6 @@ const ActiveTaskCard = memo(
     icon,
     lp,
     progress = 0,
-    renderHeaderRight = true,
     isLoading,
     onAction,
     initialExpanded = false,
@@ -93,96 +93,109 @@ const ActiveTaskCard = memo(
     const stepPoints = subSteps ? lp / subSteps.length : 0;
 
     return (
-      <BaseCard style={style}>
-        <TouchableOpacity activeOpacity={0.8} onPress={toggleExpand} style={styles.headerRow}>
-          {icon && (
-            <TouchableOpacity activeOpacity={0.9} onPress={handleIconPress} style={styles.iconWrapper}>
-              <Animated.View
-                style={[
-                  styles.iconFace,
-                  {
-                    opacity: frontOpacity,
-                    transform: [{ rotateY: frontRotateY }, { perspective: 1000 }],
-                    backgroundColor: icon.bg
-                  }
-                ]}
-              >
-                <Icon name={icon.name} color={icon.color} />
-              </Animated.View>
+      <BaseCard style={[styles.card, style]}>
+        <TouchableOpacity activeOpacity={0.8} onPress={toggleExpand}>
+          <View style={styles.headerRow}>
+            {icon && (
+              <TouchableOpacity activeOpacity={0.9} onPress={handleIconPress} style={styles.iconWrapper}>
+                <Animated.View
+                  style={[
+                    styles.iconFace,
+                    {
+                      opacity: frontOpacity,
+                      transform: [{ rotateY: frontRotateY }, { perspective: 1000 }],
+                      backgroundColor: icon.bg
+                    }
+                  ]}
+                >
+                  <Icon name={icon.name} color={icon.color} />
+                </Animated.View>
 
-              <Animated.View
-                style={[
-                  styles.iconFace,
-                  {
-                    opacity: backOpacity,
-                    transform: [{ rotateY: backRotateY }, { perspective: 1000 }],
-                    backgroundColor: MyTheme.primaryAccent
-                  }
-                ]}
-              >
-                <Icon name="checkmark" color={MyTheme.background} />
-              </Animated.View>
-            </TouchableOpacity>
-          )}
-          <View style={styles.contentColumn}>
-            <View style={styles.titleRow}>
+                <Animated.View
+                  style={[
+                    styles.iconFace,
+                    {
+                      opacity: backOpacity,
+                      transform: [{ rotateY: backRotateY }, { perspective: 1000 }],
+                      backgroundColor: MyTheme.primaryAccent
+                    }
+                  ]}
+                >
+                  <Icon name="checkmark" color={MyTheme.background} />
+                </Animated.View>
+              </TouchableOpacity>
+            )}
+            <View style={styles.contentColumn}>
               <AppText bold type="title" numberOfLines={1} style={styles.titleText}>
                 {t(title)}
               </AppText>
-
-              {renderHeaderRight && (
-                <AppText bold type="caption" style={styles.percentageText}>
-                  {`${safeProgress}%`}
-                </AppText>
-              )}
+              <AppText type={"caption"}>Social Communities</AppText>
             </View>
-
-            <View style={styles.progressTrack}>
-              <View
-                style={[styles.progressFill, { width: `${safeProgress}%`, backgroundColor: MyTheme.primaryAccent }]}
-              />
-            </View>
+            <Icon name={isExpanded ? "down" : "right"} color={MyTheme.muted} />
           </View>
-          <Icon name={isExpanded ? "down" : "right"} color={MyTheme.muted} />
+          <View
+            style={[
+              styles.progressTrack,
+              { marginBottom: isExpanded ? 0 : -Spacing.md },
+              isExpanded && styles.progressShadow
+            ]}
+          >
+            <View
+              style={[styles.progressFill, { width: `${safeProgress}%`, backgroundColor: MyTheme.primaryAccent }]}
+            />
+          </View>
         </TouchableOpacity>
 
         {isExpanded && subSteps.length > 0 && (
-          <View style={styles.contentContainer}>
-            {subSteps.map((step, index) => {
-              const isCompleted = step.completed;
+          <>
+            <View style={styles.contentContainer}>
+              {subSteps.map((step, index) => {
+                const isCompleted = step.completed;
 
-              return (
-                <TouchableOpacity
-                  key={step._id || index}
-                  activeOpacity={0.7}
-                  style={styles.subStepItem}
-                  onPress={() => onToggleSubStep && onToggleSubStep(step._id || index, step)}
-                >
-                  <View style={[styles.checkbox, isCompleted && styles.checkboxChecked]}>
-                    {isCompleted && <Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
-                  </View>
+                return (
+                  <TouchableOpacity
+                    key={step._id || index}
+                    activeOpacity={0.7}
+                    style={styles.subStepItem}
+                    onPress={() => onToggleSubStep && onToggleSubStep(step._id || index, step)}
+                  >
+                    <View style={[styles.checkbox, isCompleted && styles.checkboxChecked]}>
+                      {isCompleted && <Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
+                    </View>
 
-                  <View style={styles.subStepTextContainer}>
-                    <AppText
-                      bold
-                      type="body"
-                      style={[styles.subStepTitle, isCompleted && styles.subStepTitleCompleted]}
-                    >
-                      {step.title}
-                    </AppText>
-
-                    {step.description && (
-                      <AppText type="caption" style={styles.subStepDescription} numberOfLines={2}>
-                        {step.description}
+                    <View style={styles.subStepTextContainer}>
+                      <AppText
+                        bold
+                        type="body"
+                        style={[styles.subStepTitle, isCompleted && styles.subStepTitleCompleted]}
+                      >
+                        {step.title}
                       </AppText>
-                    )}
-                  </View>
 
-                  <LpPoints points={stepPoints} size="small" />
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                      {step.description && (
+                        <AppText type="caption" style={styles.subStepDescription} numberOfLines={2}>
+                          {step.description}
+                        </AppText>
+                      )}
+                    </View>
+
+                    <LpPoints points={stepPoints} size="small" />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: Spacing.md
+              }}
+            >
+              <AppButton title={"go to Task"} variant={"ghost"} />
+              <AppButton title={"Submit"} />
+            </View>
+          </>
         )}
       </BaseCard>
     );
@@ -192,9 +205,13 @@ ActiveTaskCard.displayName = "ActiveTaskCard";
 
 const getStyles = (theme) =>
   StyleSheet.create({
+    card: {
+      overflow: "hidden"
+    },
     headerRow: {
       flexDirection: "row",
-      alignItems: "center"
+      alignItems: "center",
+      marginBottom: Spacing.md
     },
     iconWrapper: {
       marginRight: Spacing.md,
@@ -209,32 +226,25 @@ const getStyles = (theme) =>
     },
     contentColumn: {
       flex: 1,
-      justifyContent: "center",
+      flexDirection: "column",
       marginRight: Spacing.sm
-    },
-    titleRow: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 6
     },
     titleText: {
       flex: 1,
       marginRight: Spacing.sm
     },
-    percentageText: {
-      color: theme.primaryAccent
-    },
     progressTrack: {
       height: 8,
       backgroundColor: theme.separator,
-      borderRadius: Spacing.borderRadius.full,
-      overflow: "hidden",
-      width: "100%"
+      marginHorizontal: -Spacing.md
+    },
+    progressShadow: {
+      boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.15)"
     },
     progressFill: {
       height: "100%",
-      borderRadius: Spacing.borderRadius.full
+      borderTopRightRadius: 4,
+      borderBottomRightRadius: 4
     },
     lpDisplay: {
       borderWidth: 0,
@@ -242,11 +252,8 @@ const getStyles = (theme) =>
       alignSelf: "center"
     },
     contentContainer: {
-      marginTop: Spacing.md,
       paddingTop: Spacing.md,
-      paddingLeft: Spacing.lg,
-      borderTopWidth: 1,
-      borderTopColor: theme.separator
+      paddingLeft: Spacing.lg
     },
     subStepItem: {
       flexDirection: "row",
