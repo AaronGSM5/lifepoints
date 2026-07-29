@@ -40,6 +40,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation(["tasks"]);
   const [isDoneTasksVisible, setIsDoneTasksVisible] = useState(true);
+  const [addingStepTaskId, setAddingStepTaskId] = useState(null);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { isLoading, isRefreshing, refreshTasks } = useTasks();
@@ -59,31 +60,28 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     return [...topElements];
   }, []);
 
-  const mockActiveTasks = useMemo(
-    () => [
-      {
-        id: 1,
-        title: "10-Min Morning Stretch",
-        icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
-        lp: 10,
-        substeps: [
-          { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
-          { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
-        ]
-      },
-      {
-        id: 2,
-        title: "Deep Work: Coding",
-        icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
-        lp: 6,
-        substeps: [
-          { _id: "s1", title: "Fes ting", description: "Open VS Code", completed: false },
-          { _id: "s2", title: "Mi Bombo!", description: "Get into hyperfocus", completed: false }
-        ]
-      }
-    ],
-    []
-  );
+  const [mockActiveTasks, setMockActiveTasks] = useState([
+    {
+      id: 1,
+      title: "10-Min Morning Stretch",
+      icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
+      lp: 10,
+      substeps: [
+        { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
+        { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
+      ]
+    },
+    {
+      id: 2,
+      title: "Deep Work: Coding",
+      icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
+      lp: 6,
+      substeps: [
+        { _id: "s1", title: "Fes ting", description: "Open VS Code", completed: false },
+        { _id: "s2", title: "Mi Bombo!", description: "Get into hyperfocus", completed: false }
+      ]
+    }
+  ]);
 
   const mockFYTasks = useMemo(
     () => [
@@ -112,18 +110,42 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     triggerHaptic();
   }, []);
 
-  const handleAddSubStep = useCallback(
-    (taskId, subStepText) => {
-      const selectedTask = mockActiveTasks.find((entry) => entry.id === taskId);
-      selectedTask.substeps.push({
-        _id: Math.random() * 59,
-        title: subStepText.title,
-        description: subStepText.description,
-        completed: false
-      });
-    },
-    [mockActiveTasks]
-  );
+  const handleAddSubStep = useCallback((taskId, subStepText) => {
+    setMockActiveTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            substeps: [
+              ...task.substeps,
+              {
+                _id: Math.random() * 59,
+                title: subStepText.title,
+                description: subStepText.description,
+                completed: false,
+                isCustom: true
+              }
+            ]
+          };
+        }
+        return task;
+      })
+    );
+  }, []);
+
+  const handleDeleteSubStep = useCallback((taskId, subStepId) => {
+    setMockActiveTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            substeps: task.substeps.filter((step) => step._id !== subStepId)
+          };
+        }
+        return task;
+      })
+    );
+  }, []);
 
   const renderItem = useCallback(
     ({ item }) => {
@@ -171,6 +193,10 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                         isLoading={isLoading}
                         onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
                         onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
+                        onDeleteSubStep={(subStepId) => handleDeleteSubStep(task.id, subStepId)}
+                        isAddingStep={addingStepTaskId === task.id}
+                        onStartAddingStep={() => setAddingStepTaskId(task.id)}
+                        onCancelAddingStep={() => setAddingStepTaskId(null)}
                         onAction={() => {
                           completeTask(task.id);
                           triggerHaptic("success");
@@ -236,7 +262,9 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       mockActiveTasks,
       mockFYTasks,
       trackTask,
-      handleAddSubStep
+      handleAddSubStep,
+      handleDeleteSubStep,
+      addingStepTaskId
     ]
   );
 

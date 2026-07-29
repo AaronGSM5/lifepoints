@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, LayoutAnimation, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
@@ -25,6 +26,7 @@ const ActiveTaskCard = memo(
     subSteps = [],
     onToggleSubStep,
     onAddSubStep,
+    onDeleteSubStep,
     style
   }) => {
     const MyTheme = useAppTheme();
@@ -40,7 +42,9 @@ const ActiveTaskCard = memo(
 
     const flipAnim = useRef(new Animated.Value(0)).current;
     const timeoutRef = useRef(null);
+    const titleInputRef = useRef(null);
     const descriptionInputRef = useRef(null);
+    const swipeableRefs = useRef(new Map());
 
     useEffect(() => {
       return () => {
@@ -95,14 +99,33 @@ const ActiveTaskCard = memo(
       if (newStepTitle.trim().length > 0 && onAddSubStep) {
         onAddSubStep({
           title: newStepTitle.trim(),
-          description: newStepDescription.trim()
+          description: newStepDescription ? newStepDescription.trim() : ""
         });
       }
 
       setNewStepTitle("");
       setNewStepDescription("");
-      setIsAddingStep(false);
+      setTimeout(() => {
+        titleInputRef.current?.focus();
+      }, 50);
     }, [newStepTitle, newStepDescription, onAddSubStep]);
+
+    const renderRightActions = (stepId) => {
+      return (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.deleteAction}
+          onPress={() => {
+            if (onDeleteSubStep) onDeleteSubStep(stepId);
+            if (swipeableRefs.current.has(stepId)) {
+              swipeableRefs.current.get(stepId).close();
+            }
+          }}
+        >
+          <Icon name="trash" size={20} color="#FFFFFF" />
+        </TouchableOpacity>
+      );
+    };
 
     if (isLoading) {
       return <AppSkeleton height={70} radius={Spacing.borderRadius.lg} />;
@@ -173,10 +196,9 @@ const ActiveTaskCard = memo(
             <View style={styles.contentContainer}>
               {subSteps.map((step, index) => {
                 const isCompleted = step.completed;
-
-                return (
+                const stepId = step._id || index;
+                const stepContent = (
                   <TouchableOpacity
-                    key={step._id || index}
                     activeOpacity={0.7}
                     style={styles.subStepItem}
                     onPress={() => onToggleSubStep && onToggleSubStep(step._id || index, step)}
@@ -190,7 +212,7 @@ const ActiveTaskCard = memo(
                         {t(step.title)}
                       </AppText>
 
-                      {step.description && (
+                      {Boolean(step.description && step.description.trim().length > 0) && (
                         <AppText type="caption" style={styles.subStepDescription} numberOfLines={2}>
                           {t(step.description)}
                         </AppText>
@@ -200,12 +222,35 @@ const ActiveTaskCard = memo(
                     <LpPoints points={stepPoints} size="small" />
                   </TouchableOpacity>
                 );
+                if (step.isCustom) {
+                  return (
+                    <ReanimatedSwipeable
+                      key={stepId}
+                      ref={(ref) => {
+                        if (ref) swipeableRefs.current.set(stepId, ref);
+                        else swipeableRefs.current.delete(stepId);
+                      }}
+                      renderRightActions={() => renderRightActions(stepId)}
+                      onSwipeableWillOpen={(direction) => {
+                        if (direction === "left" && onDeleteSubStep) {
+                          onDeleteSubStep(stepId);
+                        }
+                      }}
+                    >
+                      {stepContent}
+                    </ReanimatedSwipeable>
+                  );
+                }
+
+                return <View key={stepId}>{stepContent}</View>;
               })}
+
               {isAddingStep ? (
                 <View style={styles.subStepItem}>
                   <View style={[styles.checkbox, { borderColor: MyTheme.separator }]} />
                   <View style={styles.subStepTextContainer}>
                     <TextInput
+                      ref={titleInputRef}
                       autoFocus
                       value={newStepTitle}
                       onChangeText={setNewStepTitle}
@@ -326,6 +371,13 @@ const getStyles = (theme) =>
       alignItems: "center",
       paddingVertical: Spacing.sm,
       marginBottom: Spacing.sm
+    },
+    deleteAction: {
+      backgroundColor: theme.warning,
+      justifyContent: "center",
+      alignItems: "center",
+      width: 64,
+      height: "100%"
     },
     checkbox: {
       width: 24,
