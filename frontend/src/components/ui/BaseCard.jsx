@@ -33,7 +33,8 @@ const getStyles = (theme) =>
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
       borderColor: addOpacity(theme.secondary, 0.7),
-      overflow: "hidden"
+      overflow: "hidden",
+      boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.2)"
     },
     selected: {
       borderColor: theme.primaryAccent,

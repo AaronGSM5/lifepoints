@@ -113,17 +113,17 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
               icon={
                 isExternUser ? (
                   isFriend ? (
-                    <Icon name="chat" size={16} color={MyTheme.background} />
+                    <Icon name="chat" size={16} color={MyTheme.isDark ? "black" : "white"} />
                   ) : (
-                    <Icon name="add" size={16} color={MyTheme.background} />
+                    <Icon name="add" size={16} color={MyTheme.isDark ? "black" : "white"} />
                   )
                 ) : (
-                  <Icon name="pencil" size={16} color={MyTheme.background} />
+                  <Icon name="pencil" size={16} color={MyTheme.isDark ? "black" : "white"} />
                 )
               }
-              bgColor={MyTheme.primaryAccent}
+              // bgColor={MyTheme.primaryAccent}
               onPress={handlePrimaryAction}
-              textStyle={{ color: MyTheme.background }}
+              // textStyle={{ color: MyTheme.background }}
             />
             <AppButton
               variant="primary"
