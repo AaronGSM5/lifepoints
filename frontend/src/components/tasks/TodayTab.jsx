@@ -112,6 +112,19 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     triggerHaptic();
   }, []);
 
+  const handleAddSubStep = useCallback(
+    (taskId, subStepText) => {
+      const selectedTask = mockActiveTasks.find((entry) => entry.id === taskId);
+      selectedTask.substeps.push({
+        _id: Math.random() * 59,
+        title: subStepText.title,
+        description: subStepText.description,
+        completed: false
+      });
+    },
+    [mockActiveTasks]
+  );
+
   const renderItem = useCallback(
     ({ item }) => {
       switch (item.type) {
@@ -157,6 +170,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                         initialExpanded={i === 0 ? true : false}
                         isLoading={isLoading}
                         onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
+                        onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
                         onAction={() => {
                           completeTask(task.id);
                           triggerHaptic("success");
@@ -221,7 +235,8 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       handleToggleSubStep,
       mockActiveTasks,
       mockFYTasks,
-      trackTask
+      trackTask,
+      handleAddSubStep
     ]
   );
 

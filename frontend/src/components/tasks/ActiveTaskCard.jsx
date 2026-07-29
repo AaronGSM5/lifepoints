@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, LayoutAnimation, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
@@ -24,6 +24,7 @@ const ActiveTaskCard = memo(
     initialExpanded = false,
     subSteps = [],
     onToggleSubStep,
+    onAddSubStep,
     style
   }) => {
     const MyTheme = useAppTheme();
@@ -33,8 +34,13 @@ const ActiveTaskCard = memo(
     const [isExpanded, setIsExpanded] = useState(initialExpanded);
     const [isConfirming, setIsConfirming] = useState(false);
 
+    const [isAddingStep, setIsAddingStep] = useState(false);
+    const [newStepTitle, setNewStepTitle] = useState("");
+    const [newStepDescription, setNewStepDescription] = useState("");
+
     const flipAnim = useRef(new Animated.Value(0)).current;
     const timeoutRef = useRef(null);
+    const descriptionInputRef = useRef(null);
 
     useEffect(() => {
       return () => {
@@ -84,6 +90,19 @@ const ActiveTaskCard = memo(
       }),
       [flipAnim]
     );
+
+    const submitNewStep = useCallback(() => {
+      if (newStepTitle.trim().length > 0 && onAddSubStep) {
+        onAddSubStep({
+          title: newStepTitle.trim(),
+          description: newStepDescription.trim()
+        });
+      }
+
+      setNewStepTitle("");
+      setNewStepDescription("");
+      setIsAddingStep(false);
+    }, [newStepTitle, newStepDescription, onAddSubStep]);
 
     if (isLoading) {
       return <AppSkeleton height={70} radius={Spacing.borderRadius.lg} />;
@@ -167,11 +186,7 @@ const ActiveTaskCard = memo(
                     </View>
 
                     <View style={styles.subStepTextContainer}>
-                      <AppText
-                        bold
-                        type="body"
-                        style={[styles.subStepTitle, isCompleted && styles.subStepTitleCompleted]}
-                      >
+                      <AppText bold type="body" style={isCompleted && styles.subStepTitleCompleted}>
                         {t(step.title)}
                       </AppText>
 
@@ -186,6 +201,49 @@ const ActiveTaskCard = memo(
                   </TouchableOpacity>
                 );
               })}
+              {isAddingStep ? (
+                <View style={styles.subStepItem}>
+                  <View style={[styles.checkbox, { borderColor: MyTheme.separator }]} />
+                  <View style={styles.subStepTextContainer}>
+                    <TextInput
+                      autoFocus
+                      value={newStepTitle}
+                      onChangeText={setNewStepTitle}
+                      onSubmitEditing={() => {
+                        if (newStepTitle.trim().length === 0) {
+                          setIsAddingStep(false);
+                        } else {
+                          descriptionInputRef.current?.focus();
+                        }
+                      }}
+                      placeholder={t("Title...")}
+                      placeholderTextColor={MyTheme.muted}
+                      style={styles.simpleTitleInput}
+                      returnKeyType="next"
+                      underlineColorAndroid="transparent"
+                    />
+
+                    <TextInput
+                      ref={descriptionInputRef}
+                      value={newStepDescription}
+                      onChangeText={setNewStepDescription}
+                      onSubmitEditing={submitNewStep}
+                      placeholder={t("Description (optional)...")}
+                      placeholderTextColor={MyTheme.muted}
+                      style={[styles.simpleDescriptionInput, { color: MyTheme.muted }]}
+                      returnKeyType="done"
+                      underlineColorAndroid="transparent"
+                    />
+                  </View>
+                </View>
+              ) : (
+                <TouchableOpacity activeOpacity={0.7} style={styles.subStepItem} onPress={() => setIsAddingStep(true)}>
+                  <View style={[styles.checkbox, { borderColor: "transparent" }]} />
+                  <AppText bold style={{ color: MyTheme.muted }}>
+                    {t("Add step...")}
+                  </AppText>
+                </TouchableOpacity>
+              )}
             </View>
             <View
               style={{
@@ -287,9 +345,6 @@ const getStyles = (theme) =>
     subStepTextContainer: {
       flex: 1
     },
-    subStepTitle: {
-      color: theme.text
-    },
     subStepTitleCompleted: {
       textDecorationLine: "line-through",
       color: theme.muted
@@ -297,6 +352,25 @@ const getStyles = (theme) =>
     subStepDescription: {
       color: theme.muted,
       marginTop: 2
+    },
+    simpleTitleInput: {
+      flex: 1,
+      fontFamily: "Inter-Bold",
+      fontSize: 16,
+      lineHeight: 22,
+      padding: 0,
+      margin: 0,
+      outlineStyle: "none",
+      color: theme.text
+    },
+    simpleDescriptionInput: {
+      fontFamily: "Inter-Regular",
+      fontSize: 13,
+      lineHeight: 18,
+      padding: 0,
+      margin: 0,
+      marginTop: 2,
+      outlineStyle: "none"
     }
   });
 
