@@ -3,8 +3,9 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      "react-native-reanimated/plugin", // always to end
-      ["@babel/plugin-proposal-decorators", { version: "legacy" }]
+      ["@babel/plugin-proposal-decorators", { version: "legacy" }],
+      ["@babel/plugin-transform-class-properties", { loose: true }],
+      "react-native-reanimated/plugin" // must be at the end of the array
     ]
   };
 };

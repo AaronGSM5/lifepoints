@@ -12,11 +12,10 @@ import { StatusBar } from "expo-status-bar";
 import { account } from "@/api/client/appwrite";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import TrophyPopup from "@/components/ui/TrophyPopup";
+import { database } from "@/database";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import useStore from "@/store/useStore";
-
-import { database } from "@/model";
 
 import "@/utils/i18n";
 
