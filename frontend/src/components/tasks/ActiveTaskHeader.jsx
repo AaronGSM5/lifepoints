@@ -119,7 +119,7 @@ const ActiveTaskHeader = memo(({ title, icon, progress, isExpanded, setIsExpande
       </View>
     </TouchableOpacity>
   );
-}, []);
+});
 ActiveTaskHeader.displayName = "ActiveTaskHeader";
 
 const getStyles = (theme) =>

@@ -233,11 +233,8 @@ const getStyles = (theme) =>
       marginBottom: Spacing.sm
     },
     deleteAction: {
-      backgroundColor: theme.warning,
       justifyContent: "center",
-      alignItems: "center",
-      width: 64,
-      height: "100%"
+      alignItems: "center"
     },
     checkbox: {
       width: 24,
