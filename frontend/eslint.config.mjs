@@ -1,79 +1,86 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import js from '@eslint/js'
-import importPlugin from 'eslint-plugin-import'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import globals from 'globals'
+import babelParser from "@babel/eslint-parser";
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import globals from "globals";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
+  allConfig: js.configs.all
+});
 
 export default [
   {
-    ignores: [
-      "node_modules/",
-      "dist/",
-      "build/",
-      "*.config.js",
-    ],
+    ignores: ["node_modules/", "dist/", "build/", "*.config.js"]
   },
-  ...compat.extends('expo'),
-  ...compat.extends('prettier'),
+  ...compat.extends("expo"),
+  ...compat.extends("prettier"),
   {
     plugins: {
       import: importPlugin,
-      'simple-import-sort': simpleImportSort
+      "simple-import-sort": simpleImportSort
     },
     languageOptions: {
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ["babel-preset-expo"],
+          plugins: [["@babel/plugin-proposal-decorators", { version: "legacy" }]]
+        }
+      },
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     settings: {
-      'import/resolver': {
+      "import/resolver": {
         node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"]
         },
         typescript: {
-          project: './jsconfig.json',
-        },
+          project: "./jsconfig.json"
+        }
       }
     },
 
     rules: {
-      'linebreak-style': ['error', 'unix'],
-      'no-restricted-imports': [
-        'error',
+      "linebreak-style": ["error", "unix"],
+      "no-restricted-imports": [
+        "error",
         {
           patterns: [
             {
-              group: ['./ui/*', '../components/ui/*', '../../components/ui/*'],
-              message: "Use '@/components/ui/...' instead of relative import.",
-            },
-          ],
-        },
-      ],
-      'no-unused-vars': ['warn', {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-      }],
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            ['^react', '^react-native'],
-            ['^@?\\w'],
-            ['^@/'],
-            ['^\\./', '^\\.\\./'],
-            ['^.+\\.s?css$', '^.+\\.(png|jpg|jpeg|gif|svg)$']
+              group: ["./ui/*", "../components/ui/*", "../../components/ui/*"],
+              message: "Use '@/components/ui/...' instead of relative import."
+            }
           ]
         }
       ],
-      'simple-import-sort/exports': 'error',
-    },
-  },
-]
+      "no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true
+        }
+      ],
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            ["^react", "^react-native"],
+            ["^@?\\w"],
+            ["^@/"],
+            ["^\\./", "^\\.\\./"],
+            ["^.+\\.s?css$", "^.+\\.(png|jpg|jpeg|gif|svg)$"]
+          ]
+        }
+      ],
+      "simple-import-sort/exports": "error"
+    }
+  }
+];
