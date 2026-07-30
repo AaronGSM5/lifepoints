@@ -30,6 +30,7 @@ export default function RegisterScreen() {
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isRepeatValid, setIsRepeatValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // const maxLogoWidth = 330;
   // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
@@ -39,6 +40,8 @@ export default function RegisterScreen() {
 
   const handleRegister = useCallback(async () => {
     try {
+      setIsLoading(true);
+
       await account.create(ID.unique(), emailInput, passwordInput, nameInput);
 
       await account.createEmailPasswordSession(emailInput, passwordInput);
@@ -49,9 +52,11 @@ export default function RegisterScreen() {
         }
       });
 
-      router.replace("/home");
+      router.replace("/auth/verify-email");
     } catch (error) {
       console.log("register error ", error);
+    } finally {
+      setIsLoading(false);
     }
   }, [emailInput, nameInput, passwordInput, router, syncUserMutation]);
 
@@ -168,6 +173,8 @@ export default function RegisterScreen() {
               textStyle={{ color: isSubmitDisabled && "white" }}
               bgColor={MyTheme.primaryAccent}
               onPress={handleRegister} // Hooked up function
+              disabled={isSubmitDisabled}
+              loading={isLoading}
             />
           </BaseCard>
 
