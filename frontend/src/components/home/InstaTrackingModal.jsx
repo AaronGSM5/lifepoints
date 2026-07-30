@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import { Icon } from "../icons/Icon";
+import AppCheckbox from "../ui/AppCheckbox";
 
 const InstaTrackingModal = memo(({ visible, onClose, onConfirm }) => {
   const [dontShowAgain, setDontShowAgain] = useState(false);
@@ -25,22 +25,15 @@ const InstaTrackingModal = memo(({ visible, onClose, onConfirm }) => {
   return (
     <AppModal visible={visible} onClose={onClose}>
       <View style={styles.container}>
-        {/* Haupttext */}
         <AppText style={styles.messageText} bold>
           Nutzen Sie Insta-Tracking nur bei erfüllten Aufgaben
         </AppText>
 
-        {/* Checkbox Bereich */}
         <Pressable style={styles.checkboxContainer} onPress={toggleDontShowAgain}>
-          <Icon
-            name={dontShowAgain ? "checkmark" : "square"}
-            size={24}
-            color={dontShowAgain ? MyTheme.primaryAccent : MyTheme.text}
-          />
+          <AppCheckbox checked={dontShowAgain} />
           <AppText style={styles.checkboxText}>Nicht wieder anzeigen</AppText>
         </Pressable>
 
-        {/* Bestätigungs-Button */}
         <AppButton title="Verstanden" onPress={handleConfirm} />
       </View>
     </AppModal>

@@ -5,6 +5,7 @@ import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-n
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import AppCheckbox from "../ui/AppCheckbox";
 import AppText from "../ui/AppText";
 
 const AddSubStepForm = memo(({ onAddSubStep }) => {
@@ -52,7 +53,7 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
   if (!isAddingStep) {
     return (
       <TouchableOpacity activeOpacity={0.7} style={styles.subStepItem} onPress={() => setIsAddingStep(true)}>
-        <View style={[styles.checkbox, { borderColor: "transparent" }]} />
+        <AppCheckbox checked={false} borderColor={"transparent"} style={styles.checkbox} />
         <AppText bold style={{ color: MyTheme.muted }}>
           {t("Add step...")}
         </AppText>
@@ -61,7 +62,7 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
   }
   return (
     <View style={styles.subStepItem}>
-      <View style={[styles.checkbox, { borderColor: MyTheme.separator }]} />
+      <AppCheckbox checked={false} borderColor={MyTheme.separator} style={styles.checkbox} />
       <View style={styles.subStepTextContainer}>
         <TextInput
           ref={titleInputRef}
@@ -102,13 +103,6 @@ const getStyles = (theme) =>
       marginBottom: Spacing.sm
     },
     checkbox: {
-      width: 24,
-      height: 24,
-      borderRadius: 6,
-      borderWidth: 2,
-      borderColor: theme.muted,
-      justifyContent: "center",
-      alignItems: "center",
       marginRight: Spacing.md,
       marginTop: 2
     },

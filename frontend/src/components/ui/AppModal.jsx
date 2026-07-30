@@ -24,7 +24,7 @@ const getStyles = (theme) =>
   StyleSheet.create({
     modalBackground: {
       flex: 1,
-      backgroundColor: "rgba(0,0,0,0.3)",
+      backgroundColor: "rgba(0,0,0,0.5)",
       justifyContent: "center",
       alignItems: "center"
     },

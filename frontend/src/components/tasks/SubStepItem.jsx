@@ -5,9 +5,9 @@ import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeabl
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
 
 import { Icon } from "../icons/Icon";
+import AppCheckbox from "../ui/AppCheckbox";
 import AppText from "../ui/AppText";
 import LpPoints from "../ui/LpPoints";
 
@@ -42,9 +42,7 @@ const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
 
   const content = (
     <TouchableOpacity activeOpacity={0.7} style={styles.subStepItem} onPress={handleToggle}>
-      <View style={[styles.checkbox, isCompleted && styles.checkboxChecked]}>
-        {isCompleted && <Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
-      </View>
+      <AppCheckbox checked={isCompleted} style={styles.checkbox} />
 
       <View style={styles.subStepTextContainer}>
         <AppText bold type="body" style={isCompleted && styles.subStepTitleCompleted}>
@@ -95,19 +93,8 @@ const getStyles = (theme) =>
       alignItems: "center"
     },
     checkbox: {
-      width: 24,
-      height: 24,
-      borderRadius: 6,
-      borderWidth: 2,
-      borderColor: theme.muted,
-      justifyContent: "center",
-      alignItems: "center",
       marginRight: Spacing.md,
       marginTop: 2
-    },
-    checkboxChecked: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
     },
     subStepTextContainer: {
       flex: 1
