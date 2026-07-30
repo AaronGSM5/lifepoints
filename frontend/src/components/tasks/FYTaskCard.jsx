@@ -6,11 +6,16 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
 
+import AppSkeleton from "../ui/AppSkeleton";
 import ConfirmableIcon from "../ui/ConfirmableIcon";
 import LpPoints from "../ui/LpPoints";
 
-const FYTaskCard = memo(({ title, icon, lp, onNavigate, onAction, style }) => {
+const FYTaskCard = memo(({ title, icon, lp, isLoading, onNavigate, onAction, style }) => {
   const { t } = useTranslation("tasks");
+
+  if (isLoading) {
+    return <AppSkeleton height={70} radius={Spacing.borderRadius.lg} />;
+  }
 
   return (
     <BaseCard style={style}>

@@ -40,7 +40,6 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation(["tasks"]);
   const [isDoneTasksVisible, setIsDoneTasksVisible] = useState(true);
-  const [addingStepTaskId, setAddingStepTaskId] = useState(null);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { isLoading, isRefreshing, refreshTasks } = useTasks();
@@ -186,18 +185,15 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                         key={task.id}
                         id={task.id}
                         title={task.title}
-                        lp={task.lp}
                         icon={task.icon}
-                        subSteps={task.substeps}
+                        lp={task.lp}
                         progress={calculatedProgress}
-                        initialExpanded={i === 0 ? true : false}
                         isLoading={isLoading}
+                        initialExpanded={i === 0 ? true : false}
+                        subSteps={task.substeps}
                         onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
                         onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
                         onDeleteSubStep={(subStepId) => handleDeleteSubStep(task.id, subStepId)}
-                        isAddingStep={addingStepTaskId === task.id}
-                        onStartAddingStep={() => setAddingStepTaskId(task.id)}
-                        onCancelAddingStep={() => setAddingStepTaskId(null)}
                         onAction={() => {
                           completeTask(task.id);
                           triggerHaptic("success");
@@ -264,8 +260,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       mockFYTasks,
       trackTask,
       handleAddSubStep,
-      handleDeleteSubStep,
-      addingStepTaskId
+      handleDeleteSubStep
     ]
   );
 
