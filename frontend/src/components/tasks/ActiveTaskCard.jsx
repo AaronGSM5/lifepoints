@@ -71,7 +71,7 @@ const ActiveTaskCard = memo(
             </View>
 
             <View style={styles.footer}>
-              <AppButton title={t("Go to Task")} variant={"ghost"} onPress={handleGoToTask} />
+              <AppButton title={t("Go to Task")} variant={"ghost"} onPress={handleGoToTask} size={"sm"} />
               <AppButton title={t("Finish")} onPress={onAction} />
             </View>
           </>
