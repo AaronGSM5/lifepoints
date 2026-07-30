@@ -65,9 +65,7 @@ const getStyles = (theme) =>
     },
     blurredText: {
       color: "transparent",
-      textShadowColor: theme.text,
-      textShadowOffset: { width: 0, height: 0 },
-      textShadowRadius: 10
+      textShadow: `0px 0px 10px ${theme.text}`
     },
     badgeText: {
       color: theme.gold
