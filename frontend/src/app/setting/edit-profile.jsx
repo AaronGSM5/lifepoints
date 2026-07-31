@@ -19,7 +19,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
-import EditProfileSkeleton from "./EditProfileSkeleton";
+import EditProfileSkeleton from "./edit-profile-skeleton";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();

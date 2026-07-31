@@ -2,7 +2,7 @@ import React, { memo, useCallback, useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { useHorizontalRail } from "@/api/communities/useHorizontalRail";
-import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
+import RecommendedCommunity from "@/components/social/RecommendedCommunity";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";

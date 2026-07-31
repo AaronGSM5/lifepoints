@@ -7,7 +7,7 @@ import { router, Stack, useLocalSearchParams } from "expo-router";
 // import { apiRequest } from "@/api/client/api";
 import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
 // import { useCommunities } from "@/api/communities/useCommunities";
-import CommunityHeader from "@/components/communities/CommunityDetailsHeader";
+import CommunityHeader from "@/components/social/CommunityDetailsHeader";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
