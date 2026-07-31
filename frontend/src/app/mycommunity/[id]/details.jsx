@@ -52,7 +52,7 @@ export default function MyCommunityDetailScreen() {
 
   const handleLeaveCommunity = useCallback(() => {
     triggerHaptic("medium");
-    router.replace("/communities");
+    router.replace("/social");
     leaveCommunity(id);
   }, [id, leaveCommunity]);
 
@@ -67,7 +67,7 @@ export default function MyCommunityDetailScreen() {
             </AppText>
             <AppButton
               title={t("Go Back")}
-              onPress={() => router.replace("/communities")}
+              onPress={() => router.replace("/social")}
               style={{ marginTop: Spacing.lg }}
             />
           </View>

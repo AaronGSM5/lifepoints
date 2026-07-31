@@ -42,7 +42,7 @@ export default memo(function Toolbar({ scrollY }) {
     });
   }, [activeScrollY, toolbarHeight]);
 
-  const mainTabs = ["/home", "/tasks", "/communities", "/shop", "/profile"];
+  const mainTabs = ["/home", "/tasks", "/social", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
 
   // Responsive Logo
@@ -68,7 +68,9 @@ export default memo(function Toolbar({ scrollY }) {
           paddingTop: insets.top,
           paddingLeft: Math.max(Spacing.md, insets.left),
           paddingRight: Math.max(Spacing.md, insets.right),
-          transform: [{ translateY: pathname === "/profile" || pathname === "/tasks" ? 0 : translateY }],
+          transform: [
+            { translateY: pathname === "/profile" || pathname === "/tasks" || pathname === "/social" ? 0 : translateY }
+          ],
           position: "absolute",
           top: 0,
           left: 0,

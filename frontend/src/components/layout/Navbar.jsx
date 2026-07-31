@@ -17,7 +17,7 @@ export default function Navbar({ state, navigation }) {
   const insets = useSafeAreaInsets();
 
   const orderedRoutes = [...state.routes].sort((a, b) => {
-    const order = ["home", "tasks", "communities", "shop", "profile"];
+    const order = ["home", "tasks", "social", "shop", "profile"];
     return order.indexOf(a.name) - order.indexOf(b.name);
   });
 

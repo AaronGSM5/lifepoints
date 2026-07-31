@@ -27,7 +27,7 @@ export default function CommunityDetailScreen() {
     triggerHaptic("medium");
     // await apiRequest(`communities/${data._id}/join`, { method: "POST" })
     joinCommunity(data);
-    router.push("/communities");
+    router.push("/social");
   }, [data, joinCommunity]);
   return (
     <>

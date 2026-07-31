@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, FlatList, Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
@@ -11,7 +11,6 @@ import RecommendedCommunity from "@/components/communities/RecommendedCommunity"
 import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import HeroCarousel from "@/components/home/HeroCarousel";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppInput from "@/components/ui/AppInput";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -37,11 +36,10 @@ const COMMUNITIES_HERO_DATA = [
   }
 ];
 
-export default function CommunitiesScreen() {
+const ExploreTab = ({ scrollY }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  const scrollY = useMemo(() => new Animated.Value(0), []);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   const {
@@ -99,7 +97,11 @@ export default function CommunitiesScreen() {
     ({ item }) => {
       switch (item.type) {
         case "hero":
-          return <HeroCarousel data={COMMUNITIES_HERO_DATA} isLoading={isLoading} onPressItem={handleHeroPress} />;
+          return (
+            <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
+              <HeroCarousel data={COMMUNITIES_HERO_DATA} isLoading={isLoading} onPressItem={handleHeroPress} />
+            </View>
+          );
 
         case "search":
           return (
@@ -179,7 +181,7 @@ export default function CommunitiesScreen() {
   }, [hasNextPage, isFetchingNextPage, loadedSections.length, styles, t]);
 
   return (
-    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <>
       <AnimatedScreenList
         scrollY={scrollY}
         data={listData}
@@ -189,11 +191,12 @@ export default function CommunitiesScreen() {
         onEndReached={loadMoreSections}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderMainFooter}
+        withTopPadding={false}
       />
       <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
-    </ScreenWrapper>
+    </>
   );
-}
+};
 
 const getStyles = () =>
   StyleSheet.create({
@@ -215,5 +218,9 @@ const getStyles = () =>
       marginTop: Spacing.md,
       marginBottom: Spacing.md
     },
-    footerSpacer: { height: Spacing.md }
+    footerSpacer: {
+      height: Spacing.md
+    }
   });
+
+export default ExploreTab;

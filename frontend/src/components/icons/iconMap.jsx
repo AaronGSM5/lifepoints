@@ -11,7 +11,7 @@ const getName = (baseName, outline) => {
 export const IconMap = {
   // Navigation Tabs
   home: ({ outline, ...props }) => <Icon name={getName("home", outline)} {...props} />,
-  communities: ({ outline, ...props }) => <Icon name={getName("user-community", outline)} {...props} />,
+  social: ({ outline, ...props }) => <Icon name={getName("user-community", outline)} {...props} />,
   tasks: ({ outline, ...props }) => <Icon name={getName("heart-add-2", outline)} {...props} />,
   shop: ({ outline, ...props }) => <Icon name={getName("shopping-bag-4", outline)} {...props} />,
   profile: ({ outline, ...props }) => <Icon name={getName("user", outline)} {...props} />,
