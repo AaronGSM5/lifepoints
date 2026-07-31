@@ -5,7 +5,6 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ConnectTab from "@/components/social/ConnectTab";
 import ExploreTab from "@/components/social/ExploreTab";
 import NavigationRow from "@/components/tasks/NavigationRow";
-import TodayTab from "@/components/tasks/TodayTab";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 const TABS = ["My Space", "Explore"];
@@ -18,11 +17,11 @@ const SocialScreen = () => {
   const renderActiveTab = () => {
     switch (activeTabIndex) {
       case 0:
-        return <ConnectTab scrollY={scrollY} />;
+        return <ConnectTab />;
       case 1:
-        return <ExploreTab scrollY={scrollY} />;
+        return <ExploreTab />;
       default:
-        return <TodayTab scrollY={scrollY} />;
+        return <ConnectTab />;
     }
   };
 
