@@ -25,8 +25,8 @@ const CreateCommunityCard = ({ onPress }) => {
 const getStyles = (theme) =>
   StyleSheet.create({
     createCard: {
-      width: 150,
-      height: 180,
+      width: 160,
+      height: 140,
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 2,
       borderColor: theme.primary,

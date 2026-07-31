@@ -19,7 +19,7 @@ const SocialScreen = () => {
       case 0:
         return <ConnectTab />;
       case 1:
-        return <ExploreTab />;
+        return <ExploreTab scrollY={scrollY} />;
       default:
         return <ConnectTab />;
     }

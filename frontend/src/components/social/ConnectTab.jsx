@@ -6,13 +6,14 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 import CreateCommunityCard from "./CreateCommunityCard";
+import MyCommunityCard from "./MyCommunityCard";
 import CreateCommunityForm from "../forms/community/CreateCommunityForm";
 import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 
 const MOCK_COMMUNITIES = [
-  { id: "1", name: "React Native Devs", members: 124, image: "https://picsum.photos/200" },
-  { id: "2", name: "Design Thinkers", members: 89, image: "https://picsum.photos/201" }
+  { id: "1", title: "React Native Devs", members: 124, onlineCount: 21, icon: "leaf", hasUnread: false },
+  { id: "2", title: "Design Thinkers", members: 89, onlineCount: 4, icon: "music", hasUnread: true }
 ];
 
 const MOCK_CHATS = [
@@ -68,17 +69,7 @@ const ConnectTab = () => {
       return <CreateCommunityCard onPress={handleCreateCommunity} />;
     }
 
-    return (
-      <TouchableOpacity style={styles.communityCard} activeOpacity={0.8}>
-        <AppImage source={item.image} style={styles.communityImage} />
-        <View style={styles.communityOverlay}>
-          <AppText bold numberOfLines={1}>
-            {item.name}
-          </AppText>
-          <AppText type="caption">{item.members} Members</AppText>
-        </View>
-      </TouchableOpacity>
-    );
+    return <MyCommunityCard item={item} />;
   };
 
   return (
@@ -110,16 +101,14 @@ const ConnectTab = () => {
                 <View style={styles.chatInfo}>
                   <View style={styles.chatHeader}>
                     <AppText bold>{chat.userName}</AppText>
-                    <AppText type="caption" style={{ color: MyTheme.muted }}>
-                      {chat.time}
-                    </AppText>
+                    <AppText type="caption">{chat.time}</AppText>
                   </View>
 
                   <View style={styles.chatFooter}>
                     <AppText
-                      type="body"
+                      bold={chat.unread > 0}
                       numberOfLines={1}
-                      style={[styles.lastMessage, chat.unread > 0 && { color: MyTheme.text, fontWeight: "bold" }]}
+                      style={[styles.lastMessage, chat.unread > 0 && { color: MyTheme.text }]}
                     >
                       {chat.lastMessage}
                     </AppText>
@@ -146,7 +135,7 @@ const ConnectTab = () => {
 const getStyles = (theme) =>
   StyleSheet.create({
     section: {
-      marginBottom: Spacing.xl
+      marginBottom: Spacing.lg
     },
     horizontalListContent: {
       paddingHorizontal: Spacing.lg,
@@ -173,7 +162,8 @@ const getStyles = (theme) =>
       backgroundColor: "rgba(0, 0, 0, 0.6)"
     },
     chatList: {
-      paddingHorizontal: Spacing.md
+      paddingHorizontal: Spacing.md,
+      paddingBottom: Spacing.xl
     },
     chatRow: {
       flexDirection: "row",

@@ -1,14 +1,12 @@
 import React, { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
-// eslint-disable-next-line import/no-unresolved
-import { MaterialIcons } from "@expo/vector-icons";
-
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import MyCommunityCardSkeleton from "./MyCommunityCardSkeleton";
+import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 
@@ -22,7 +20,7 @@ const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
     <BaseCard style={styles.communityCard} onPress={onPress}>
       <View style={styles.headerRow}>
         <View style={[styles.iconBox, { backgroundColor: item.color }]}>
-          <MaterialIcons name={item.icon} size={24} color="#fff" />
+          <Icon name={item.icon} />
           {item.hasUnread && <View style={styles.notificationDot} />}
         </View>
 

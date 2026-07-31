@@ -5,11 +5,11 @@ import { FlatList, Pressable, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
 
 import { useVerticalRails } from "@/api/communities/useVerticalRails";
+import HeroCarousel from "@/components/home/HeroCarousel";
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import HorizontalSectionList from "@/components/social/HorizontalSectionList";
 import MyCommunitiesSection from "@/components/social/MyCommunitiesSection";
 import RecommendedCommunity from "@/components/social/RecommendedCommunity";
-import HeroCarousel from "@/components/home/HeroCarousel";
-import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import AppInput from "@/components/ui/AppInput";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import SectionHeader from "@/components/ui/SectionHeader";
