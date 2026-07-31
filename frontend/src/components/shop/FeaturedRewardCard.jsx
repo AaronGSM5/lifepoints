@@ -75,7 +75,6 @@ const FeaturedRewardCard = memo(({ isLoading }) => {
               </View>
               <AppButton
                 title={t("Redeem")}
-                size="md"
                 textStyle={{ color: "#E94057" }}
                 bgColor="white"
                 onPress={() => redeemReward(selectedReward.id)}

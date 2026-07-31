@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,14 +6,13 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 import CreateCommunityCard from "./CreateCommunityCard";
+import CreateCommunityForm from "../forms/community/CreateCommunityForm";
 import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 
 const MOCK_COMMUNITIES = [
-  { id: "1", name: "React Native Devs", members: 124, image: "https://picsum.photos/200" }
-  // { id: "2", name: "Design Thinkers", members: 89, image: "https://picsum.photos/201" }
-  // { id: "3", name: "Local Runners", members: 42, image: "https://picsum.photos/202" },
-  // { id: "4", name: "Startup Founders", members: 210, image: "https://picsum.photos/203" }
+  { id: "1", name: "React Native Devs", members: 124, image: "https://picsum.photos/200" },
+  { id: "2", name: "Design Thinkers", members: 89, image: "https://picsum.photos/201" }
 ];
 
 const MOCK_CHATS = [
@@ -55,6 +54,8 @@ const ConnectTab = () => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const toolbarHeight = useToolbarPadding();
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
 
   const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
 
@@ -64,7 +65,7 @@ const ConnectTab = () => {
 
   const renderCommunityCard = ({ item }) => {
     if (item.isCreateCard) {
-      return <CreateCommunityCard />;
+      return <CreateCommunityCard onPress={handleCreateCommunity} />;
     }
 
     return (
@@ -81,61 +82,64 @@ const ConnectTab = () => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      scrollEventThrottle={16}
-      contentContainerStyle={{ paddingTop: contentPaddingTop, paddingBottom: Spacing.xl }}
-    >
-      <View style={styles.section}>
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={renderCommunityCard}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalListContent}
-          snapToInterval={150 + Spacing.md}
-          decelerationRate="fast"
-        />
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.chatList}>
-          {MOCK_CHATS.map((chat) => (
-            <TouchableOpacity key={chat.id} style={styles.chatRow} activeOpacity={0.7}>
-              <AppImage source={{ uri: chat.avatar }} style={styles.chatAvatar} />
-
-              <View style={styles.chatInfo}>
-                <View style={styles.chatHeader}>
-                  <AppText bold>{chat.userName}</AppText>
-                  <AppText type="caption" style={{ color: MyTheme.muted }}>
-                    {chat.time}
-                  </AppText>
-                </View>
-
-                <View style={styles.chatFooter}>
-                  <AppText
-                    type="body"
-                    numberOfLines={1}
-                    style={[styles.lastMessage, chat.unread > 0 && { color: MyTheme.text, fontWeight: "bold" }]}
-                  >
-                    {chat.lastMessage}
-                  </AppText>
-
-                  {chat.unread > 0 && (
-                    <View style={styles.unreadBadge}>
-                      <AppText bold style={styles.unreadText}>
-                        {chat.unread}
-                      </AppText>
-                    </View>
-                  )}
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
+    <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ paddingTop: contentPaddingTop, paddingBottom: Spacing.xl }}
+      >
+        <View style={styles.section}>
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.id}
+            renderItem={renderCommunityCard}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.horizontalListContent}
+            snapToInterval={150 + Spacing.md}
+            decelerationRate="fast"
+          />
         </View>
-      </View>
-    </ScrollView>
+
+        <View style={styles.section}>
+          <View style={styles.chatList}>
+            {MOCK_CHATS.map((chat) => (
+              <TouchableOpacity key={chat.id} style={styles.chatRow} activeOpacity={0.7}>
+                <AppImage source={chat.avatar} style={styles.chatAvatar} />
+
+                <View style={styles.chatInfo}>
+                  <View style={styles.chatHeader}>
+                    <AppText bold>{chat.userName}</AppText>
+                    <AppText type="caption" style={{ color: MyTheme.muted }}>
+                      {chat.time}
+                    </AppText>
+                  </View>
+
+                  <View style={styles.chatFooter}>
+                    <AppText
+                      type="body"
+                      numberOfLines={1}
+                      style={[styles.lastMessage, chat.unread > 0 && { color: MyTheme.text, fontWeight: "bold" }]}
+                    >
+                      {chat.lastMessage}
+                    </AppText>
+
+                    {chat.unread > 0 && (
+                      <View style={styles.unreadBadge}>
+                        <AppText bold style={styles.unreadText}>
+                          {chat.unread}
+                        </AppText>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+      <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Pressable, StyleSheet, View } from "react-native";
 
@@ -8,7 +8,6 @@ import { useVerticalRails } from "@/api/communities/useVerticalRails";
 import HorizontalSectionList from "@/components/communities/HorizontalSectionList";
 import MyCommunitiesSection from "@/components/communities/MyCommunitiesSection";
 import RecommendedCommunity from "@/components/communities/RecommendedCommunity";
-import CreateCommunityForm from "@/components/forms/community/CreateCommunityForm";
 import HeroCarousel from "@/components/home/HeroCarousel";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import AppInput from "@/components/ui/AppInput";
@@ -40,7 +39,6 @@ const ExploreTab = ({ scrollY }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
-  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   const {
     data: railsData,
@@ -86,7 +84,6 @@ const ExploreTab = ({ scrollY }) => {
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const handleHeroPress = useCallback(() => setIsCreateModalVisible(true), []);
   const handleSearchPress = useCallback(() => router.push("/search"), []);
   const handleCommunityPress = useCallback((community) => router.push(`/community/${extractId(community)}`), []);
   const handleMyCommunityPress = useCallback((community) => router.push(`/mycommunity/${extractId(community)}`), []);
@@ -99,7 +96,11 @@ const ExploreTab = ({ scrollY }) => {
         case "hero":
           return (
             <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
-              <HeroCarousel data={COMMUNITIES_HERO_DATA} isLoading={isLoading} onPressItem={handleHeroPress} />
+              <HeroCarousel
+                data={COMMUNITIES_HERO_DATA}
+                isLoading={isLoading}
+                onPressItem={() => console.log("test")}
+              />
             </View>
           );
 
@@ -156,7 +157,6 @@ const ExploreTab = ({ scrollY }) => {
     },
     [
       isLoading,
-      handleHeroPress,
       handleSearchPress,
       handleMyCommunityPress,
       handleCommunityPress,
@@ -181,20 +181,17 @@ const ExploreTab = ({ scrollY }) => {
   }, [hasNextPage, isFetchingNextPage, loadedSections.length, styles, t]);
 
   return (
-    <>
-      <AnimatedScreenList
-        scrollY={scrollY}
-        data={listData}
-        extraData={[myCommunities, isLoading]}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        onEndReached={loadMoreSections}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={renderMainFooter}
-        withTopPadding={false}
-      />
-      <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
-    </>
+    <AnimatedScreenList
+      scrollY={scrollY}
+      data={listData}
+      extraData={[myCommunities, isLoading]}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
+      onEndReached={loadMoreSections}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={renderMainFooter}
+      withTopPadding={false}
+    />
   );
 };
 

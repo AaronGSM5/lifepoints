@@ -46,12 +46,7 @@ const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, isLoad
 });
 
 const CategoryItem = memo(({ category, isActive, onPress }) => (
-  <AppButton
-    title={category.label}
-    variant={isActive ? "primary" : "secondary"}
-    size="md"
-    onPress={() => onPress(category.id)}
-  />
+  <AppButton title={category.label} variant={isActive ? "primary" : "secondary"} onPress={() => onPress(category.id)} />
 ));
 
 const styles = StyleSheet.create({

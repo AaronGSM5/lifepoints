@@ -42,7 +42,6 @@ const ServiceItem = memo(({ name, description, icon, isConnected, onPress }) => 
       <AppButton
         title={isConnected ? t("Manage") : t("Connect")}
         variant={isConnected ? "secondary" : "primary"}
-        size="md"
         onPress={onPress}
         bgColor={!isConnected && MyTheme.primaryAccent}
       />

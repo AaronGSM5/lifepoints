@@ -129,7 +129,7 @@ export default function CreatePost() {
             ) : (
               <BaseCard style={{ flexDirection: "column", alignItems: "center", gap: Spacing.md }}>
                 <AppText type="title">{t("No available tasks")}</AppText>
-                <AppButton title={t("Do a task")} variant="outline" size="md" onPress={() => router.push("/tasks")} />
+                <AppButton title={t("Do a task")} variant="outline" onPress={() => router.push("/tasks")} />
               </BaseCard>
             )}
           </View>
