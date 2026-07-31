@@ -9,6 +9,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Stack } from "expo-router";
 
 import { Icon } from "@/components/icons/Icon";
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
@@ -92,18 +93,14 @@ export default function RewardDetailScreen() {
           </View>
         </ScrollView>
 
-        <View style={styles.stickyFooter}>
+        <ScreenFooter>
           <AppButton
-            variant="primary"
             title={isLocked ? t("Locked") : t("Redeem Now")}
             size="lg"
-            style={isLocked ? { opacity: 0.8 } : {}}
-            onPress={() => {
-              if (!isLocked) redeemReward(reward.id);
-            }}
-            bgColor={isLocked ? MyTheme.muted : MyTheme.primaryAccent}
+            disabled={isLocked}
+            onPress={() => redeemReward(reward.id)}
           />
-        </View>
+        </ScreenFooter>
       </View>
     </>
   );
@@ -146,15 +143,5 @@ const getStyles = (theme) =>
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: Spacing.md
-    },
-    stickyFooter: {
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: Spacing.lg,
-      backgroundColor: theme.background,
-      boxShadow: "0px -10px 20px rgba(0, 0, 0, 0.3)",
-      elevation: 20
     }
   });

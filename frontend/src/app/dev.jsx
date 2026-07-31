@@ -10,10 +10,10 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 const navLinks = [
-  { title: "🏠 Main App", href: "/home" },
-  { title: "🌟 Onboarding", href: "/(onboarding)" },
-  { title: "📝 Mini-Umfrage", href: "/survey" },
-  { title: "🔐 Register / Login", href: "/auth/register" }
+  { title: "Main App", href: "/home" },
+  { title: "Onboarding", href: "/(onboarding)" },
+  { title: "Mini-Umfrage", href: "/survey" },
+  { title: "Register / Login", href: "/auth/register" }
 ];
 
 export default function DevEntryScreen() {
@@ -39,7 +39,7 @@ export default function DevEntryScreen() {
         <View style={styles.buttonList}>
           {navLinks.map((link) => (
             <View key={link.href}>
-              <AppButton title={link.title} onPress={() => handlePress(link.href)} />
+              <AppButton variant={"outline"} title={link.title} onPress={() => handlePress(link.href)} />
             </View>
           ))}
         </View>

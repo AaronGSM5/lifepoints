@@ -33,7 +33,6 @@ const CreateCommunityCard = () => {
         icon={<Icon name="add" color={MyTheme.background} />}
         iconPosition="center"
         size="sm"
-        bgColor={MyTheme.primaryAccent}
       />
     </View>
   );

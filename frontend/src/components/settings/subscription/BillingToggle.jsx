@@ -40,12 +40,7 @@ const BillingToggle = memo(({ billingCycle, onChange }) => {
               {t(cycle === "monthly" ? "Monthly" : "Yearly")}
             </AppText>
             {cycle === "yearly" && (
-              <AppBadge
-                variant="primary"
-                label={"-20%"}
-                textStyle={{ fontSize: 10, color: MyTheme.text }}
-                style={styles.badge}
-              />
+              <AppBadge label={"-20%"} textStyle={{ fontSize: 10, color: MyTheme.text }} style={styles.badge} />
             )}
           </TouchableOpacity>
         );

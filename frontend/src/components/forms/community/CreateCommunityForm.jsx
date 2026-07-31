@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
@@ -133,16 +134,15 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <ScreenFooter>
         <AppButton
           title={
             selectedSize.price === "Gratis" ? t("Create now") : `${t("Für")} ${selectedSize.price} ${t("Erstellen")}`
           }
           onPress={handleCreate}
           disabled={!formValid}
-          bgColor={MyTheme.primaryAccent}
         />
-      </View>
+      </ScreenFooter>
     </BaseBottomSheet>
   );
 };
@@ -167,13 +167,6 @@ const getStyles = (theme) =>
       color: theme.muted,
       marginTop: 6,
       marginLeft: 4
-    },
-    footer: {
-      padding: Spacing.lg,
-      paddingTop: Spacing.md,
-      borderTopWidth: 1,
-      borderTopColor: theme.glas,
-      backgroundColor: theme.background
     }
   });
 

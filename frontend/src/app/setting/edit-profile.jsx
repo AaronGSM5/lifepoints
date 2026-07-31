@@ -8,6 +8,7 @@ import { useRouter } from "expo-router";
 import { useMyProfile } from "@/api/profile/useMyProfile";
 import { useUpdateProfile } from "@/api/profile/useUpdateProfile";
 import { Icon } from "@/components/icons/Icon";
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppImage from "@/components/ui/AppImage";
@@ -102,7 +103,6 @@ export default function EditProfileScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Avatar Section */}
           <View style={styles.avatarSection}>
             <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
               <AppImage
@@ -119,7 +119,6 @@ export default function EditProfileScreen() {
             </AppText>
           </View>
 
-          {/* Form Section */}
           <View style={styles.formSection}>
             {isLoading ? (
               <EditProfileSkeleton styles={styles} />
@@ -156,15 +155,14 @@ export default function EditProfileScreen() {
           </View>
         </ScrollView>
 
-        <View style={styles.footer}>
+        <ScreenFooter breakOut>
           <AppButton
             title={isPending ? t("Saving...") : t("Save changes")}
+            size={"lg"}
             onPress={handleSave}
             disabled={!hasChanges || isPending || isLoading}
-            variant="primary"
-            bgColor={MyTheme.primaryAccent}
           />
-        </View>
+        </ScreenFooter>
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );
@@ -211,10 +209,5 @@ const getStyles = (theme) =>
     },
     inputSkeleton: {
       marginBottom: Spacing.md
-    },
-    footer: {
-      paddingVertical: Spacing.md,
-      borderTopWidth: 2,
-      borderTopColor: "rgba(0, 0, 0, 0.05)"
     }
   });

@@ -10,6 +10,7 @@ import { Stack } from "expo-router";
 import { useStartTaskActivity } from "@/api/tasks/useStartTaskActivity";
 import { useTasks } from "@/api/tasks/useTasks";
 import { Icon } from "@/components/icons/Icon";
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
 import AppImage from "@/components/ui/AppImage";
@@ -81,7 +82,11 @@ export default function TaskDetailScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: Spacing.xl }}
+        >
           <View style={styles.imageContainer}>
             <AppImage
               source={task.image}
@@ -197,15 +202,13 @@ export default function TaskDetailScreen() {
           </View>
         </ScrollView>
 
-        <View style={styles.stickyFooter}>
+        <ScreenFooter style={styles.footer}>
           <AppButton
-            variant="primary"
             title={task.isLocked ? t("Level up to unlock") : t("Track now")}
             size="lg"
             disabled={task.isLocked}
-            style={task.isLocked ? { opacity: 0.8, flex: 1 } : { flex: 8 }}
+            style={task.isLocked ? { flex: 1 } : { flex: 8 }}
             onPress={() => startTask(task._id)}
-            bgColor={MyTheme.primaryAccent}
           />
           {task.isLocked === false && (
             <AppButton
@@ -215,7 +218,7 @@ export default function TaskDetailScreen() {
               style={{ flex: 2 }}
             />
           )}
-        </View>
+        </ScreenFooter>
       </View>
     </>
   );
@@ -268,16 +271,9 @@ const getStyles = (theme) =>
       alignItems: "center",
       marginBottom: Spacing.md
     },
-    stickyFooter: {
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: Spacing.lg,
-      backgroundColor: theme.background,
-      boxShadow: `0px -10px 20px rgba(0, 0, 0, 0.3)`,
+    footer: {
       flexDirection: "row",
-      elevation: 20
+      gap: Spacing.sm
     },
     historySection: {
       marginTop: Spacing.xl

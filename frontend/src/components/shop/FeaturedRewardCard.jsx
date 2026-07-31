@@ -74,7 +74,6 @@ const FeaturedRewardCard = memo(({ isLoading }) => {
                 <LpPoints points={currentPrice} />
               </View>
               <AppButton
-                variant="primary"
                 title={t("Redeem")}
                 size="md"
                 textStyle={{ color: "#E94057" }}

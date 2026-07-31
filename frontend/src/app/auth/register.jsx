@@ -170,8 +170,6 @@ export default function RegisterScreen() {
 
             <AppButton
               title={t("Register")}
-              textStyle={{ color: isSubmitDisabled && "white" }}
-              bgColor={MyTheme.primaryAccent}
               onPress={handleRegister} // Hooked up function
               disabled={isSubmitDisabled}
               loading={isLoading}

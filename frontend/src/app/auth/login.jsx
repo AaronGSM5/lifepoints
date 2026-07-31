@@ -103,7 +103,6 @@ export default function LoginScreen() {
             <AppButton
               title={isLoading ? "Logging in..." : "Log in"}
               disabled={isLoginDisabled}
-              bgColor={MyTheme.primaryAccent}
               onPress={handleLogin} // Attach the logic here
             />
             <AppButton

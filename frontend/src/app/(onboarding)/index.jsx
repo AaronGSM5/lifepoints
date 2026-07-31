@@ -3,12 +3,12 @@ import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import OnboardingItem from "@/components/onboarding/OnboardingItem";
 import SlidePaginator from "@/components/onboarding/SlidePaginator";
 import AppButton from "@/components/ui/AppButton";
 import { onboardingSlides } from "@/constants/OnboardingContent";
-import { Spacing } from "@/constants/Spacing";
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
@@ -50,9 +50,9 @@ export default function OnboardingScreen() {
   const renderItem = useCallback(({ item }) => <OnboardingItem item={item} />, []);
 
   return (
-    <ScreenWrapper withPaddingSides={false}>
+    <ScreenWrapper withPaddingSides={false} withPaddingBottom={false}>
       <View style={styles.container}>
-        <View style={styles.sliderContainer}>
+        <View style={styles.content}>
           <FlatList
             data={onboardingSlides}
             renderItem={renderItem}
@@ -67,15 +67,14 @@ export default function OnboardingScreen() {
             getItemLayout={getItemLayout}
           />
         </View>
-
-        <View style={styles.footer}>
+        <ScreenFooter>
           <SlidePaginator data={onboardingSlides} currentIndex={currentIndex} />
 
           <AppButton
             title={currentIndex === onboardingSlides.length - 1 ? "Los geht's" : "Weiter"}
             onPress={scrollToNext}
           />
-        </View>
+        </ScreenFooter>
       </View>
     </ScreenWrapper>
   );
@@ -83,15 +82,9 @@ export default function OnboardingScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-between"
+    flex: 1
   },
-  sliderContainer: {
-    flex: 3
-  },
-  footer: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: Spacing.xl
+  content: {
+    flex: 1
   }
 });

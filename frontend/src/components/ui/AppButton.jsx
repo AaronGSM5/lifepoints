@@ -103,6 +103,7 @@ const AppButton = memo(
                   isSecondary && { color: MyTheme.text },
                   isOutline && { color: MyTheme.primaryAccent },
                   isGhost && { color: MyTheme.muted },
+                  disabled && { color: MyTheme.muted },
                   size === "sm" && { fontSize: 12 },
                   size === "lg" && { fontSize: 16 },
                   textStyle
@@ -150,8 +151,8 @@ const getStyles = (theme) =>
       backgroundColor: "transparent"
     },
     disabled: {
-      backgroundColor: "#2A2A2A",
-      opacity: 0.5
+      backgroundColor: theme.separator,
+      opacity: 0.7
     },
     iconWrapper: {
       marginRight: Spacing.sm

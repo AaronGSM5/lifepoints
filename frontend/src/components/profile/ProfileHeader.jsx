@@ -108,7 +108,6 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
 
           <View style={styles.actionButtons}>
             <AppButton
-              variant="primary"
               title={isExternUser ? (isFriend ? t("Message") : t("Add Friend")) : t("Edit Profile")}
               icon={
                 isExternUser ? (
@@ -121,12 +120,9 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
                   <Icon name="pencil" size={16} color={MyTheme.isDark ? "black" : "white"} />
                 )
               }
-              // bgColor={MyTheme.primaryAccent}
               onPress={handlePrimaryAction}
-              // textStyle={{ color: MyTheme.background }}
             />
             <AppButton
-              variant="primary"
               title={isExternUser ? t("Share Profile") : t("Share Stats")}
               icon={<Icon name="share" size={16} color={!MyTheme.isDark ? MyTheme.background : MyTheme.text} />}
               bgColor={"#2a2a2acb"}
