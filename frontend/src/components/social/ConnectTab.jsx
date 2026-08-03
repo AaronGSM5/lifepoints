@@ -1,15 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
+import ChatListItem from "./ChatListItem";
 import CreateCommunityCard from "./CreateCommunityCard";
 import MyCommunityCard from "./MyCommunityCard";
 import CreateCommunityForm from "../forms/community/CreateCommunityForm";
-import AppImage from "../ui/AppImage";
-import AppText from "../ui/AppText";
 
 const MOCK_COMMUNITIES = [
   { id: "1", title: "React Native Devs", members: 124, onlineCount: 21, icon: "leaf", hasUnread: false },
@@ -95,34 +94,7 @@ const ConnectTab = () => {
         <View style={styles.section}>
           <View style={styles.chatList}>
             {MOCK_CHATS.map((chat) => (
-              <TouchableOpacity key={chat.id} style={styles.chatRow} activeOpacity={0.7}>
-                <AppImage source={chat.avatar} style={styles.chatAvatar} />
-
-                <View style={styles.chatInfo}>
-                  <View style={styles.chatHeader}>
-                    <AppText bold>{chat.userName}</AppText>
-                    <AppText type="caption">{chat.time}</AppText>
-                  </View>
-
-                  <View style={styles.chatFooter}>
-                    <AppText
-                      bold={chat.unread > 0}
-                      numberOfLines={1}
-                      style={[styles.lastMessage, chat.unread > 0 && { color: MyTheme.text }]}
-                    >
-                      {chat.lastMessage}
-                    </AppText>
-
-                    {chat.unread > 0 && (
-                      <View style={styles.unreadBadge}>
-                        <AppText bold style={styles.unreadText}>
-                          {chat.unread}
-                        </AppText>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              </TouchableOpacity>
+              <ChatListItem chat={chat} />
             ))}
           </View>
         </View>
@@ -132,7 +104,7 @@ const ConnectTab = () => {
   );
 };
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     section: {
       marginBottom: Spacing.lg
@@ -141,76 +113,9 @@ const getStyles = (theme) =>
       paddingHorizontal: Spacing.lg,
       gap: Spacing.md
     },
-    communityCard: {
-      width: 150,
-      height: 180,
-      borderRadius: Spacing.borderRadius.lg,
-      overflow: "hidden",
-      backgroundColor: theme.glas
-    },
-    communityImage: {
-      width: "100%",
-      height: "100%",
-      position: "absolute"
-    },
-    communityOverlay: {
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: Spacing.sm,
-      backgroundColor: "rgba(0, 0, 0, 0.6)"
-    },
     chatList: {
       paddingHorizontal: Spacing.md,
       paddingBottom: Spacing.xl
-    },
-    chatRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: Spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.separator
-    },
-    chatAvatar: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      marginRight: Spacing.md,
-      backgroundColor: theme.glas
-    },
-    chatInfo: {
-      flex: 1,
-      justifyContent: "center"
-    },
-    chatHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 4
-    },
-    chatFooter: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center"
-    },
-    lastMessage: {
-      flex: 1,
-      color: theme.muted,
-      marginRight: Spacing.md
-    },
-    unreadBadge: {
-      backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.full,
-      minWidth: 24,
-      height: 24,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 6
-    },
-    unreadText: {
-      color: "black",
-      fontSize: 12
     }
   });
 
