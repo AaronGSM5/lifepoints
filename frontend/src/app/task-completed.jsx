@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { Icon } from "@/components/icons/Icon";
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
+import LpPoints from "@/components/ui/LpPoints";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
@@ -19,46 +21,50 @@ export default function TaskCompletedScreen() {
 
   const { title = t("Task Complete!"), points = "+50 LP", redirectUrl = "/(tabs)/tasks" } = useLocalSearchParams();
 
-  const handleClose = () => {
+  const [isSheetVisible, setIsSheetVisible] = useState(true);
+
+  const handleCloseIntent = () => {
+    setIsSheetVisible(false);
+  };
+
+  const handleAnimationComplete = () => {
     router.replace(redirectUrl);
   };
 
   return (
-    <BaseBottomSheet isVisible onClose={handleClose} onAnimationComplete={handleClose}>
-      <View style={styles.content}>
-        <View style={[styles.iconWrapper, { backgroundColor: addOpacity(MyTheme.success, 0.15) }]}>
-          <Icon name="checkmark" size={40} color={MyTheme.success} />
-        </View>
-
-        <AppText type="h2" style={styles.title}>
-          {title}
-        </AppText>
-
-        {/* LifePoints Badge */}
-        {points && (
-          <View
-            style={[
-              styles.badge,
-              { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.15), borderColor: MyTheme.primaryAccent }
-            ]}
-          >
-            <Icon name="checkmarkCircle" size={16} color={MyTheme.primaryAccent} style={{ marginRight: 6 }} />
-            <AppText style={[styles.badgeText, { color: MyTheme.primaryAccent }]} bold>
-              {points}
-            </AppText>
+    <BaseBottomSheet
+      isVisible={isSheetVisible}
+      onClose={handleCloseIntent}
+      onAnimationComplete={handleAnimationComplete}
+    >
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={[styles.iconWrapper, { backgroundColor: addOpacity(MyTheme.success, 0.15) }]}>
+            <Icon name="checkmark" size={40} color={MyTheme.success} />
           </View>
-        )}
-      </View>
 
-      {/* Button unten */}
-      <View style={styles.footer}>
-        <AppButton title={t("Continue")} onPress={handleClose} style={styles.button} />
+          <AppText type="h1" style={styles.title}>
+            {t("Task Complete!")}
+          </AppText>
+
+          <AppText type="title" style={styles.title}>
+            {title}
+          </AppText>
+          {points && <LpPoints points={points} size="large" />}
+        </View>
+        <ScreenFooter>
+          <AppButton title={t("Continue")} onPress={handleCloseIntent} />
+        </ScreenFooter>
       </View>
     </BaseBottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between"
+  },
   content: {
     alignItems: "center",
     justifyContent: "center",
@@ -86,12 +92,12 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 14
-  },
-  footer: {
-    width: "100%",
-    marginTop: Spacing.md
-  },
-  button: {
-    width: "100%"
   }
+  // footer: {
+  //   width: "100%",
+  //   marginTop: Spacing.md
+  // },
+  // button: {
+  //   width: "100%"
+  // }
 });
