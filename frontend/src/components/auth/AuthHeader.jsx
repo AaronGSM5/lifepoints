@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
-import { StyleSheet, useWindowDimensions, View } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
+
+import { router } from "expo-router";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
@@ -16,6 +18,8 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
     return { width: logoWidth, height: logoHeight };
   }, [width]);
 
+  const handleNavToDev = useCallback(() => router.push("/dev"), []);
+
   return (
     <View style={styles.header}>
       <View style={styles.appIcon}>
@@ -27,11 +31,13 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
       </View>
 
       {showImageLogo ? (
-        <AppImage
-          source={require("@/../public/assets/lifepointsLogo.png")}
-          style={styles.logoImage}
-          contentFit="contain"
-        />
+        <Pressable onPress={handleNavToDev}>
+          <AppImage
+            source={require("@/../public/assets/lifepointsLogo.png")}
+            style={styles.logoImage}
+            contentFit="contain"
+          />
+        </Pressable>
       ) : (
         <AppText type="h1" style={styles.headerText}>
           {title}

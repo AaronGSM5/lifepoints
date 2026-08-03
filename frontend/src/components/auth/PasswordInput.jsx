@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { LayoutAnimation, View } from "react-native";
 
 import PasswordRules from "@/components/auth/PasswordRules";
 import { Icon } from "@/components/icons/Icon";
@@ -20,6 +20,13 @@ export default function PasswordInput({
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const toggleVisibility = useCallback(() => setIsVisible((prev) => !prev), []);
+  const handleFocus = useCallback(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsFocused(true);
+  }, []);
+  const handleBlur = useCallback(() => setIsFocused(false), []);
 
   const passwordRules = useMemo(
     () => [
@@ -75,8 +82,6 @@ export default function PasswordInput({
     if (onValidationChange) onValidationChange(validation.isValid);
   }, [validation.isValid, onValidationChange]);
 
-  const toggleVisibility = useCallback(() => setIsVisible((prev) => !prev), []);
-
   return (
     <>
       <AppInput
@@ -87,6 +92,8 @@ export default function PasswordInput({
         secureTextEntry={!isVisible}
         isValid={!validation.hasError && value.length > 0}
         error={validation.errorMessage}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         rightContent={
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <AppButton
@@ -114,7 +121,9 @@ export default function PasswordInput({
         }
       />
 
-      {variant === "new" && <PasswordRules passwordRules={passwordRules} passwordRuleStatus={ruleStatus} />}
+      {variant === "new" && isFocused && (
+        <PasswordRules passwordRules={passwordRules} passwordRuleStatus={ruleStatus} />
+      )}
     </>
   );
 }

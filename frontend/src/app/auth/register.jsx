@@ -77,7 +77,7 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, pointerEvents: "box-none" }}>
-        <ScreenWrapper scrollable>
+        <ScreenWrapper scrollable withToolbar={false}>
           <AuthHeader showImageLogo={true} subtitle={t("Register to continue")} />
 
           <BaseCard
