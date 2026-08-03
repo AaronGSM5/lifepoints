@@ -7,9 +7,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
+import ChatInputBar from "@/components/chat/ChatInputBar";
+import ChatMessageItem from "@/components/chat/ChatMessageItem";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -53,46 +54,7 @@ export default function MyCommunityChatScreen() {
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
   }, [inputText]);
 
-  const renderMessage = useCallback(
-    ({ item }) => {
-      const isMe = item.senderId === "me";
-      const isSystem = item.senderId === "system";
-
-      if (isSystem) {
-        return (
-          <View style={styles.systemMessageContainer}>
-            <AppText type="caption" bold style={styles.systemMessageText}>
-              {item.text}
-            </AppText>
-          </View>
-        );
-      }
-
-      return (
-        <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
-          {!isMe && (
-            <View style={styles.avatar}>
-              <AppText bold style={styles.avatarText}>
-                {item.senderName?.charAt(0)}
-              </AppText>
-            </View>
-          )}
-          <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
-            {!isMe && (
-              <AppText bold type="caption" style={styles.senderName}>
-                {item.senderName}
-              </AppText>
-            )}
-            <AppText style={{ color: isMe ? "#fff" : MyTheme.text }}>{item.text}</AppText>
-            <AppText type="caption" style={[styles.timeText, isMe && { color: "rgba(255,255,255,0.7)" }]}>
-              {item.time}
-            </AppText>
-          </View>
-        </View>
-      );
-    },
-    [MyTheme.text, styles]
-  );
+  const renderMessage = useCallback(({ item }) => <ChatMessageItem item={item} />, []);
 
   return (
     <KeyboardAvoidingView
@@ -133,22 +95,13 @@ export default function MyCommunityChatScreen() {
           onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
           onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
         />
-
-        <View style={styles.inputContainer}>
-          <TouchableOpacity onPress={() => console.log("attach file or something")} style={styles.attachButton}>
-            <Icon name="add" color={MyTheme.muted} />
-          </TouchableOpacity>
-          <AppInput
-            placeholder={t("Write a message...")}
-            value={inputText}
-            onChangeText={setInputText}
-            containerStyle={{ flex: 8 }}
-            bottomMargin={false}
-          />
-          <TouchableOpacity onPress={sendMessage} style={styles.sendButton} disabled={!inputText.trim()}>
-            <Icon name="send" size={20} color={inputText.trim() ? MyTheme.primaryAccent : MyTheme.muted} />
-          </TouchableOpacity>
-        </View>
+        <ChatInputBar
+          value={inputText}
+          onChangeText={setInputText}
+          onSend={sendMessage}
+          onAttach={() => console.log("Open Attach Menu")}
+          placeholder={t("Write a message...")}
+        />
       </ScreenWrapper>
     </KeyboardAvoidingView>
   );
@@ -183,84 +136,6 @@ const getStyles = (theme) =>
       paddingHorizontal: Spacing.md,
       paddingTop: Spacing.md,
       paddingBottom: Spacing.xl
-    },
-    systemMessageContainer: {
-      alignItems: "center",
-      marginVertical: Spacing.md
-    },
-    systemMessageText: {
-      backgroundColor: theme.glas,
-      paddingHorizontal: Spacing.md,
-      paddingVertical: 4,
-      borderRadius: Spacing.borderRadius.md
-    },
-    messageRow: {
-      flexDirection: "row",
-      marginBottom: Spacing.md,
-      alignItems: "flex-end"
-    },
-    messageRowMe: {
-      justifyContent: "flex-end"
-    },
-    messageRowOther: {
-      justifyContent: "flex-start"
-    },
-    avatar: {
-      width: 32,
-      height: 32,
-      borderRadius: Spacing.borderRadius.full,
-      backgroundColor: "rgba(76, 150, 160, 0.2)",
-      alignItems: "center",
-      justifyContent: "center",
-      marginRight: Spacing.sm
-    },
-    avatarText: {
-      color: "#4C96A0",
-      fontSize: 14
-    },
-    messageBubble: {
-      maxWidth: "80%",
-      padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.lg
-    },
-    messageBubbleMe: {
-      backgroundColor: theme.primaryAccent,
-      borderBottomRightRadius: Spacing.borderRadius.sm - 4
-    },
-    messageBubbleOther: {
-      backgroundColor: theme.primary,
-      borderBottomLeftRadius: Spacing.borderRadius.sm - 4
-    },
-    senderName: {
-      color: theme.primaryAccent,
-      marginBottom: 2
-    },
-    timeText: {
-      fontSize: 10,
-      marginTop: 4,
-      alignSelf: "flex-end",
-      opacity: 0.6
-    },
-    inputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: Spacing.sm,
-      paddingVertical: Spacing.sm,
-      borderTopWidth: 1,
-      borderTopColor: theme.glas,
-      backgroundColor: theme.background
-    },
-    attachButton: {
-      flex: 1,
-      borderRadius: Spacing.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    sendButton: {
-      flex: 1,
-      borderRadius: Spacing.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center"
     },
     iconBox: {
       width: 32,
