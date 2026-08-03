@@ -33,7 +33,7 @@ export default function MyCommunityChatScreen() {
 
   const community = useMemo(() => myCommunities.find((c) => c._id === id) || {}, [id, myCommunities]);
 
-  const [messages, setMessages] = useState(DUMMY_MESSAGES);
+  const [messages, setMessages] = useState([...DUMMY_MESSAGES].reverse());
   const [inputText, setInputText] = useState("");
   const flatListRef = useRef(null);
 
@@ -49,9 +49,8 @@ export default function MyCommunityChatScreen() {
       senderId: "me",
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [newMessage, ...prev]);
     setInputText("");
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
   }, [inputText]);
 
   const renderMessage = useCallback(({ item }) => <ChatMessageItem item={item} />, []);
@@ -86,14 +85,13 @@ export default function MyCommunityChatScreen() {
 
       <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
         <FlatList
+          inverted
           ref={flatListRef}
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={renderMessage}
           contentContainerStyle={styles.chatListContent}
           showsVerticalScrollIndicator={false}
-          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
-          onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
         />
         <ChatInputBar
           value={inputText}
