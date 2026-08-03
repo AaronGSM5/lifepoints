@@ -149,6 +149,8 @@ export default function EditProfileScreen() {
                   multiline
                   numberOfLines={4}
                   style={{ textAlignVertical: "top" }}
+                  showCharCount
+                  maxLength={200}
                 />
               </>
             )}

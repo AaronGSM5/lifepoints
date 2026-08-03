@@ -30,6 +30,9 @@ const AppInput = forwardRef(
       isForm = false,
       onFocus,
       onBlur,
+      value,
+      maxLength,
+      showCharCount = false,
       ...props
     },
     ref
@@ -40,6 +43,7 @@ const AppInput = forwardRef(
     const isDarkMode = MyTheme.isDark;
 
     const isMultiline = props.multiline;
+    const currentLength = value?.length || 0;
 
     const handleFocus = useCallback(
       (e) => {
@@ -77,6 +81,8 @@ const AppInput = forwardRef(
           cursorColor={MyTheme.primaryAccent}
           textAlignVertical={isMultiline ? "top" : "center"}
           accessibilityRole="text"
+          value={value}
+          maxLength={maxLength}
           {...props}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -104,6 +110,8 @@ const AppInput = forwardRef(
       inputStyle
     ];
 
+    const hasFooter = typeof error === "string" || (showCharCount && maxLength);
+
     return (
       <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
         {label && (
@@ -125,7 +133,17 @@ const AppInput = forwardRef(
           <View style={containerStyles}>{inputContent}</View>
         )}
 
-        {typeof error === "string" && <AppText style={styles.errorText}>{error}</AppText>}
+        {hasFooter && (
+          <View style={styles.footerContainer}>
+            {typeof error === "string" ? <AppText style={styles.errorText}>{error}</AppText> : <View />}
+
+            {showCharCount && maxLength && (
+              <AppText style={[styles.charCount, currentLength >= maxLength && styles.charCountWarning]}>
+                {currentLength} / {maxLength}
+              </AppText>
+            )}
+          </View>
+        )}
       </View>
     );
   }
@@ -192,6 +210,22 @@ const getStyles = (theme) =>
       fontSize: 12,
       marginTop: Spacing.xs,
       marginLeft: Spacing.xs
+    },
+    footerContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      marginTop: Spacing.xs,
+      paddingHorizontal: Spacing.xs
+    },
+    charCount: {
+      color: theme.muted,
+      fontSize: 12,
+      marginLeft: Spacing.sm
+    },
+    charCountWarning: {
+      color: theme.warning,
+      fontWeight: "bold"
     }
   });
 

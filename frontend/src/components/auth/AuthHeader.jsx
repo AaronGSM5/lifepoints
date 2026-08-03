@@ -47,7 +47,8 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
 
 const styles = StyleSheet.create({
   header: {
-    marginVertical: Spacing.xl,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.lg,
     alignItems: "center"
   },
   appIcon: {
