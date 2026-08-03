@@ -9,17 +9,24 @@ import { createUISlice } from './slices/createUISlice';
 
 const logger = (config) => (set, get, api) => config(
   (args, replace, actionName) => {
+    const prevState = get();
     set(args, replace);
     const nextState = get();
 
     if (__DEV__) {
-      const label = actionName || 'UNKNOWN_ACTION';
+      let label = actionName;
 
-      console.group(`🚀 Zustand ➔ [${label}]`);
+      if (!label) {
+        const changedKeys = Object.keys(nextState).filter(
+          (key) => prevState[key] !== nextState[key]
+        );
+        label = changedKeys.length > 0
+          ? `UPDATE: ${changedKeys.join(", ")}`
+          : "STATE_UPDATE";
+      }
 
-      console.log('Änderungen:', args);
+      console.groupCollapsed(`🚀 Zustand ➔ [${label}] Changes:`, args);
       console.log('✅ Aktueller Zustand:', nextState);
-
       console.groupEnd();
     }
   },

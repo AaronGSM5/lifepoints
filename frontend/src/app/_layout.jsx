@@ -130,12 +130,8 @@ export default function RootLayout() {
     } else if (hasCompletedOnboarding && !isAuthenticated && !inAuthGroup) {
       console.log("➡️ Türsteher: Leite um zu /auth");
       router.replace("/auth");
-    } else if (hasCompletedOnboarding && isAuthenticated && (inAuthGroup || inOnboardingGroup)) {
-      if (__DEV__) {
-        console.log("DEV-MODE no automatic rerouting");
-      } else {
-        router.replace("/(tabs)/home");
-      }
+    } else if (hasCompletedOnboarding && isAuthenticated && (inAuthGroup || inOnboardingGroup) && !__DEV__) {
+      router.replace("/(tabs)/home");
     }
   }, [isAppReady, error, hasCompletedOnboarding, isAuthenticated, loaded, router, segments]);
 

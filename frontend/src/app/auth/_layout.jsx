@@ -5,7 +5,7 @@ export default function AuthLayout() {
     <Stack>
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="EmailVerification" options={{ headerShown: false }} />
+      <Stack.Screen name="email-verification" options={{ headerShown: false }} />
     </Stack>
   );
 }
