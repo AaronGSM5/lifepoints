@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 
+import { router } from "expo-router";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
@@ -56,6 +58,7 @@ const ConnectTab = () => {
   const toolbarHeight = useToolbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
+  const handleNavigation = useCallback((id) => router.push(`/task/${id}`), []);
 
   const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
 
@@ -68,7 +71,7 @@ const ConnectTab = () => {
       return <CreateCommunityCard onPress={handleCreateCommunity} />;
     }
 
-    return <MyCommunityCard item={item} />;
+    return <MyCommunityCard item={item} onPress={() => handleNavigation(item.id)} />;
   };
 
   return (
