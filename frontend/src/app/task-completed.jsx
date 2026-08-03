@@ -6,10 +6,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { Icon } from "@/components/icons/Icon";
 import ScreenFooter from "@/components/layout/ScreenFooter";
+import AnimatedLpReward from "@/components/ui/AnimatedLpReward";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
-import LpPoints from "@/components/ui/LpPoints";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
@@ -50,7 +50,7 @@ export default function TaskCompletedScreen() {
           <AppText type="title" style={styles.title}>
             {title}
           </AppText>
-          {points && <LpPoints points={points} size="large" />}
+          {points && <AnimatedLpReward points={points} />}
         </View>
         <ScreenFooter>
           <AppButton title={t("Continue")} onPress={handleCloseIntent} />
