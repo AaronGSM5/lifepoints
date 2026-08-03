@@ -45,7 +45,6 @@ export default memo(function Toolbar({ scrollY }) {
   const mainTabs = ["/home", "/tasks", "/social", "/shop", "/profile"];
   const isMainTab = mainTabs.includes(pathname);
 
-  // Responsive Logo
   const screenWidth = Dimensions.get("window").width;
   const logoWidth = Math.min(screenWidth * 0.4, 110);
   const logoHeight = logoWidth / 3.75;
@@ -68,9 +67,7 @@ export default memo(function Toolbar({ scrollY }) {
           paddingTop: insets.top,
           paddingLeft: Math.max(Spacing.md, insets.left),
           paddingRight: Math.max(Spacing.md, insets.right),
-          transform: [
-            { translateY: pathname === "/profile" || pathname === "/tasks" || pathname === "/social" ? 0 : translateY }
-          ],
+          transform: [{ translateY: pathname === "/home" || pathname === "/shop" ? translateY : 0 }],
           position: "absolute",
           top: 0,
           left: 0,
@@ -79,7 +76,6 @@ export default memo(function Toolbar({ scrollY }) {
         }
       ]}
     >
-      {/* Back-Button */}
       <View style={styles.sideSection}>
         {isMainTab ? (
           <LpPoints points={LP} onPress={() => router.push("/shop")} />
@@ -88,7 +84,6 @@ export default memo(function Toolbar({ scrollY }) {
         )}
       </View>
 
-      {/* Title */}
       <View style={styles.centerSection}>
         <Pressable onPress={() => router.push("/dev")}>
           <AppImage
