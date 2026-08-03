@@ -111,12 +111,6 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    console.log("Status:", {
-      isAppReady,
-      hasCompletedOnboarding,
-      isAuthenticated,
-      segment: segments[0]
-    });
     if (!isAppReady || (!loaded && !error)) return;
 
     const segment = segments[0];

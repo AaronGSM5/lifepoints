@@ -8,13 +8,20 @@ import { createQuestSlice } from './slices/createQuestSlice';
 import { createUISlice } from './slices/createUISlice';
 
 const logger = (config) => (set, get, api) => config(
-  (args) => {
-    console.group('Zustand Update 🚀');
-    const prevState = get();
-    set(args);
-    console.log('🔄 VORHER:', prevState);
-    console.log('✅ NACHHER:', get());
-    console.groupEnd();
+  (args, replace, actionName) => {
+    set(args, replace);
+    const nextState = get();
+
+    if (__DEV__) {
+      const label = actionName || 'UNKNOWN_ACTION';
+
+      console.group(`🚀 Zustand ➔ [${label}]`);
+
+      console.log('Änderungen:', args);
+      console.log('✅ Aktueller Zustand:', nextState);
+
+      console.groupEnd();
+    }
   },
   get,
   api
