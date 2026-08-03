@@ -6,14 +6,13 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
-import AppModal from "../ui/AppModal";
 
-export default function PasswordRulesModal({ visible, onClose, passwordRules, passwordRuleStatus }) {
+export default function PasswordRules({ passwordRules, passwordRuleStatus }) {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
   return (
-    <AppModal visible={visible} onClose={onClose}>
+    <View>
       {passwordRules.map((rule) => (
         <View key={rule.name} style={styles.ruleRow}>
           <Icon
@@ -22,18 +21,23 @@ export default function PasswordRulesModal({ visible, onClose, passwordRules, pa
             color={passwordRuleStatus[rule.name] ? MyTheme.success : MyTheme.warning}
             style={{ marginRight: Spacing.sm }}
           />
-          <AppText>{rule.displayMessage}</AppText>
+          <AppText type={"caption"} style={styles.displayText}>
+            {rule.displayMessage}
+          </AppText>
         </View>
       ))}
-    </AppModal>
+    </View>
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     ruleRow: {
       flexDirection: "row",
       alignItems: "center",
-      marginBottom: Spacing.sm
+      marginBottom: Spacing.xs
+    },
+    displayText: {
+      color: theme.text
     }
   });

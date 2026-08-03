@@ -11,7 +11,6 @@ import { account } from "@/api/client/appwrite";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthHeader from "@/components/auth/AuthHeader";
 import PasswordInput from "@/components/auth/PasswordInput";
-// import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
@@ -28,13 +27,8 @@ export default function RegisterScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isRepeatValid, setIsRepeatValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // const maxLogoWidth = 330;
-  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  // const logoHeight = logoWidth / 3.75;
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
   const syncUserMutation = useSyncUser();
 
@@ -75,35 +69,9 @@ export default function RegisterScreen() {
   const passwordsFilled = passwordInput && repeatPasswordInput;
   const passwordsMatch = passwordsFilled && passwordInput === repeatPasswordInput;
 
-  // const passwordRules = useMemo(
-  //   () => [
-  //     { name: "lengthRule", validate: (pwInput) => pwInput.length >= 8, displayMessage: "min. length of 8 characters" },
-  //     {
-  //       name: "uppercaseRule",
-  //       validate: (pwInput) => /[A-Z]/.test(pwInput),
-  //       displayMessage: "min. 1 uppercase letter"
-  //     },
-  //     { name: "numberRule", validate: (pwInput) => /[0-9]/.test(pwInput), displayMessage: "min. 1 number" },
-  //     {
-  //       name: "specialCharRule",
-  //       validate: (pwInput) => /[!@#$%^&*]/.test(pwInput),
-  //       displayMessage: "min. 1 special character"
-  //     }
-  //   ],
-  //   []
-  // );
-
-  // const [passwordRuleStatus, setPasswordRuleStatus] = useState({
-  //   lengthRule: false,
-  //   uppercaseRule: false,
-  //   numberRule: false,
-  //   specialCharRule: false
-  // });
-
-  // const allRulesPassed = Object.values(passwordRuleStatus).every((status) => status === true);
   const isSubmitDisabled = useMemo(
-    () => !nameInput || !emailInput || !isPasswordValid || !isRepeatValid || !isEmailValidFlag || !isNameValidFlag,
-    [nameInput, emailInput, isPasswordValid, isRepeatValid, isEmailValidFlag, isNameValidFlag]
+    () => !nameInput || !emailInput || !isPasswordValid || !passwordsMatch || !isEmailValidFlag || !isNameValidFlag,
+    [nameInput, emailInput, isPasswordValid, passwordsMatch, isEmailValidFlag, isNameValidFlag]
   );
 
   return (
@@ -152,31 +120,14 @@ export default function RegisterScreen() {
               value={repeatPasswordInput}
               onChangeText={setRepeatPasswordInput}
               compareTo={passwordInput}
-              onValidationChange={setIsRepeatValid}
               bottomMargin={false}
               isValid={passwordsMatch}
               error={passwordsFilled && !passwordsMatch ? "Passwords do not match" : null}
             />
 
-            {/* Overlay */}
-            {/* {isRuleOverlayVisible && (
-              <PasswordRulesModal
-                visible={isRuleOverlayVisible}
-                onClose={() => setIsRuleOverlayVisible(false)}
-                passwordRules={passwordRules}
-                passwordRuleStatus={passwordRuleStatus}
-              />
-            )} */}
-
-            <AppButton
-              title={t("Register")}
-              onPress={handleRegister} // Hooked up function
-              disabled={isSubmitDisabled}
-              loading={isLoading}
-            />
+            <AppButton title={t("Register")} onPress={handleRegister} disabled={isSubmitDisabled} loading={isLoading} />
           </BaseCard>
 
-          {/* Footer */}
           <AuthFooter text={t("Already have an account?")} linkText={t("Log in")} href="/auth/login" />
         </ScreenWrapper>
       </View>

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import PasswordRulesModal from "@/components/auth/PasswordRulesModal";
+import PasswordRules from "@/components/auth/PasswordRules";
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
@@ -20,7 +20,6 @@ export default function PasswordInput({
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
   const [isVisible, setIsVisible] = useState(false);
-  const [isRuleOverlayVisible, setIsRuleOverlayVisible] = useState(false);
 
   const passwordRules = useMemo(
     () => [
@@ -103,33 +102,19 @@ export default function PasswordInput({
               }
               iconPosition="center"
             />
-            {variant === "new" && value.length > 0 && (
+            {variant === "new" && allRulesPassed && (
               <AppButton
                 variant="ghost"
                 size="sm"
-                icon={
-                  <Icon
-                    name={allRulesPassed ? "checkmarkCircle" : "infoCircle"}
-                    size={22}
-                    color={allRulesPassed ? MyTheme.primaryAccent : "red"}
-                  />
-                }
+                icon={<Icon name={"checkmarkCircle"} size={22} color={MyTheme.primaryAccent} />}
                 iconPosition="center"
-                onPress={() => setIsRuleOverlayVisible(true)}
               />
             )}
           </View>
         }
       />
 
-      {variant === "new" && isRuleOverlayVisible && (
-        <PasswordRulesModal
-          visible={isRuleOverlayVisible}
-          onClose={() => setIsRuleOverlayVisible(false)}
-          passwordRules={passwordRules}
-          passwordRuleStatus={ruleStatus}
-        />
-      )}
+      {variant === "new" && <PasswordRules passwordRules={passwordRules} passwordRuleStatus={ruleStatus} />}
     </>
   );
 }
