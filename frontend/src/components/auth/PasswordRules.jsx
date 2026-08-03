@@ -29,17 +29,19 @@ const AnimatedRule = ({ rule, isMet, theme, styles }) => {
   });
 
   return (
-    <Animated.View style={[styles.ruleRow, { transform: [{ scale }], opacity }]}>
+    <View style={styles.ruleRow}>
       <Icon
         name={isMet ? "checkmark" : "close"}
         size={20}
         color={isMet ? theme.success : theme.warning}
         style={{ marginRight: Spacing.sm }}
       />
-      <AppText type={"caption"} style={styles.displayText}>
-        {rule.displayMessage}
-      </AppText>
-    </Animated.View>
+      <Animated.View style={[{ transform: [{ scale }], opacity, transformOrigin: "left center" }]}>
+        <AppText type={"caption"} style={styles.displayText}>
+          {rule.displayMessage}
+        </AppText>
+      </Animated.View>
+    </View>
   );
 };
 
@@ -71,8 +73,7 @@ const getStyles = (theme) =>
     ruleRow: {
       flexDirection: "row",
       alignItems: "center",
-      marginBottom: Spacing.xs,
-      transformOrigin: "left center"
+      marginBottom: Spacing.xs
     },
     displayText: {
       color: theme.text

@@ -15,7 +15,8 @@ export default function PasswordInput({
   compareTo = "", // Wird nur für variant="repeat" gebraucht
   onValidationChange,
   placeholder,
-  bottomMargin = true
+  bottomMargin = true,
+  showErrorMessage = true
 }) {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("auth");
@@ -91,7 +92,7 @@ export default function PasswordInput({
         bottomMargin={bottomMargin}
         secureTextEntry={!isVisible}
         isValid={!validation.hasError && value.length > 0}
-        error={validation.errorMessage}
+        error={showErrorMessage ? validation.errorMessage : validation.hasError}
         onFocus={handleFocus}
         onBlur={handleBlur}
         rightContent={

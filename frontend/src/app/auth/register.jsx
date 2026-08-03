@@ -113,6 +113,7 @@ export default function RegisterScreen() {
               onChangeText={setPasswordInput}
               onValidationChange={setIsPasswordValid}
               bottomMargin={false}
+              showErrorMessage={false}
             />
 
             <PasswordInput
