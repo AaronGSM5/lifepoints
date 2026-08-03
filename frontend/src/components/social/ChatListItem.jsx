@@ -11,7 +11,7 @@ const ChatListItem = memo(({ chat }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
-    <TouchableOpacity key={chat.id} style={styles.chatRow} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.chatRow} activeOpacity={0.7}>
       <AppImage source={chat.avatar} style={styles.chatAvatar} />
 
       <View style={styles.chatInfo}>

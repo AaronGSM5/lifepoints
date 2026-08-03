@@ -94,7 +94,7 @@ const ConnectTab = () => {
         <View style={styles.section}>
           <View style={styles.chatList}>
             {MOCK_CHATS.map((chat) => (
-              <ChatListItem chat={chat} />
+              <ChatListItem key={chat.id} chat={chat} />
             ))}
           </View>
         </View>
