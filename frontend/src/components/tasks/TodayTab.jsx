@@ -146,6 +146,24 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     );
   }, []);
 
+  const handleTaskFinished = useCallback(
+    (task) => {
+      completeTask(task.id);
+      triggerHaptic("success");
+      notifyQuestSystem("TASK_COMPLETED", { category: task.category });
+      addExperience(task.xp);
+      router.push({
+        pathname: "/task-completed",
+        params: {
+          title: task.title,
+          points: task.lp,
+          redirectUrl: "/(tabs)/tasks"
+        }
+      });
+    },
+    [addExperience, notifyQuestSystem, completeTask]
+  );
+
   const renderItem = useCallback(
     ({ item }) => {
       switch (item.type) {
@@ -194,12 +212,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                         onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
                         onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
                         onDeleteSubStep={(subStepId) => handleDeleteSubStep(task.id, subStepId)}
-                        onAction={() => {
-                          completeTask(task.id);
-                          triggerHaptic("success");
-                          notifyQuestSystem("TASK_COMPLETED", { category: task.category });
-                          addExperience(task.xp);
-                        }}
+                        onAction={() => handleTaskFinished(task)}
                       />
                     );
                   })}
@@ -246,12 +259,9 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     },
     [
       isLoading,
-      addExperience,
-      completeTask,
       onOpenQuestModal,
       isDoneTasksVisible,
       myActiveTasks,
-      notifyQuestSystem,
       MyTheme,
       t,
       styles,
@@ -260,7 +270,8 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       mockFYTasks,
       trackTask,
       handleAddSubStep,
-      handleDeleteSubStep
+      handleDeleteSubStep,
+      handleTaskFinished
     ]
   );
 

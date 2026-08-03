@@ -175,6 +175,13 @@ export default function RootLayout() {
             <Stack.Screen name="notifications" />
             <Stack.Screen name="settings" />
             <Stack.Screen name="journal" />
+            <Stack.Screen
+              name="task-completed"
+              options={{
+                presentation: "transparentModal",
+                animation: "none"
+              }}
+            />
           </Stack>
         </QueryClientProvider>
       </SafeAreaProvider>

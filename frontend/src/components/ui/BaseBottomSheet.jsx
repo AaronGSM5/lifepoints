@@ -21,7 +21,7 @@ import { triggerHaptic } from "@/utils/haptics";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const BaseBottomSheet = memo(({ isVisible, onClose, title, children }) => {
+const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, children }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { height: SCREEN_HEIGHT } = useWindowDimensions();
@@ -106,9 +106,12 @@ const BaseBottomSheet = memo(({ isVisible, onClose, title, children }) => {
         })
       ]).start(() => {
         setShowModal(false);
+        if (onAnimationComplete) {
+          onAnimationComplete();
+        }
       });
     }
-  }, [isVisible, fadeAnim, slideAnim, SCREEN_HEIGHT]);
+  }, [isVisible, fadeAnim, slideAnim, SCREEN_HEIGHT, onAnimationComplete]);
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
