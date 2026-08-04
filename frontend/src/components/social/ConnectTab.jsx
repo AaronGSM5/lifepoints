@@ -97,7 +97,7 @@ const ConnectTab = () => {
         <View style={styles.section}>
           <View style={styles.chatList}>
             {MOCK_CHATS.map((chat) => (
-              <ChatListItem key={chat.id} chat={chat} />
+              <ChatListItem key={chat.id} chat={chat} onPress={() => router.push(`/chat/${chat.id}`)} />
             ))}
           </View>
         </View>

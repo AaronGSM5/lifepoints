@@ -7,11 +7,11 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
 
-const ChatListItem = memo(({ chat }) => {
+const ChatListItem = memo(({ chat, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
-    <TouchableOpacity style={styles.chatRow} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.chatRow} activeOpacity={0.7} onPress={onPress}>
       <AppImage source={chat.avatar} style={styles.chatAvatar} />
 
       <View style={styles.chatInfo}>
