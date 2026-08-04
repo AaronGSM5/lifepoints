@@ -2,10 +2,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Animated, View } from "react-native";
 
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
-import QuestModal from "@/components/home/QuestModal";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import CatalogTab from "@/components/tasks/CatalogTab";
 import NavigationRow from "@/components/tasks/NavigationRow";
+import QuestModal from "@/components/tasks/QuestModal";
 import RoutinesTab from "@/components/tasks/RoutinesTab";
 import TodayTab from "@/components/tasks/TodayTab";
 import { useTasks } from "@/hooks/useTasks";

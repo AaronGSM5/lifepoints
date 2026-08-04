@@ -3,13 +3,13 @@ import { Animated, StyleSheet, View } from "react-native";
 
 import CommentSheet from "@/components/home/CommentSheet";
 import FeedItem from "@/components/home/FeedItem";
-import HeroCarousel from "@/components/home/HeroCarousel";
 import LootGameModal from "@/components/home/LootGameModal";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import LevelUpModal from "@/components/LevelUpModal";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useHome } from "@/hooks/useHome";

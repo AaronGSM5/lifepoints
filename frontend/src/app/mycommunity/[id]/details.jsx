@@ -4,10 +4,10 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
-import CommunityHeader from "@/components/social/CommunityDetailsHeader";
-import LeaderboardRow from "@/components/social/LeaderboardRow";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import CommunityHeader from "@/components/social/CommunityDetailsHeader";
+import LeaderboardRow from "@/components/social/LeaderboardRow";
 import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";

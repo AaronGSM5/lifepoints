@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Share, StyleSheet, View } from "react-native";
 
@@ -7,8 +7,11 @@ import { Spacing } from "@/constants/Spacing";
 import AppButton from "../ui/AppButton";
 import AppText from "../ui/AppText";
 import BaseCard from "../ui/BaseCard";
+import CloseButton from "../ui/CloseButton";
 
 const InviteFriendCard = ({ referralCode }) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const { t } = useTranslation("profile");
   const shareInvite = async () => {
     try {
       const inviteUrl = `https://lifepoints.app/invite/${referralCode}`;
@@ -22,10 +25,11 @@ const InviteFriendCard = ({ referralCode }) => {
     }
   };
 
-  const { t } = useTranslation("profile");
+  if (!isVisible) return null;
 
   return (
     <BaseCard style={styles.card}>
+      <CloseButton style={styles.closeButton} onPress={() => setIsVisible(false)} />
       <View style={styles.iconContainer}>
         <AppText style={{ fontSize: 28 }}>🎁</AppText>
       </View>
@@ -64,6 +68,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: Spacing.md,
     lineHeight: 20
+  },
+  closeButton: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    padding: Spacing.sm
   }
 });
 

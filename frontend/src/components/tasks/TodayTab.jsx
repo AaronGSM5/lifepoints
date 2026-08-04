@@ -4,11 +4,11 @@ import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
-import HeroCarousel from "@/components/home/HeroCarousel";
 import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
 import AppText from "@/components/ui/AppText";
+import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { tasksCatalog } from "@/constants/TasksCatalog";

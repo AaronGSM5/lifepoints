@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import { Icon } from "../icons/Icon";
+import AppIconButton from "../ui/AppIconButton";
 import AppInput from "../ui/AppInput";
 
 const ChatInputBar = ({ value, onChangeText, onSend, onAttach, placeholder }) => {
@@ -12,9 +12,7 @@ const ChatInputBar = ({ value, onChangeText, onSend, onAttach, placeholder }) =>
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.inputContainer}>
-      <TouchableOpacity onPress={onAttach} style={styles.attachButton}>
-        <Icon name="add" color={MyTheme.muted} />
-      </TouchableOpacity>
+      <AppIconButton icon="add" color={MyTheme.muted} onPress={onAttach} style={styles.attachButton} />
       <AppInput
         placeholder={placeholder}
         value={value}
@@ -22,9 +20,14 @@ const ChatInputBar = ({ value, onChangeText, onSend, onAttach, placeholder }) =>
         containerStyle={{ flex: 8 }}
         bottomMargin={false}
       />
-      <TouchableOpacity onPress={onSend} style={styles.sendButton} disabled={!value.trim()}>
-        <Icon name="send" size={20} color={value.trim() ? MyTheme.primaryAccent : MyTheme.muted} />
-      </TouchableOpacity>
+      <AppIconButton
+        icon="send"
+        iconSize={20}
+        color={value.trim() ? MyTheme.primaryAccent : MyTheme.muted}
+        onPress={onSend}
+        disabled={!value.trim()}
+        style={styles.sendButton}
+      />
     </View>
   );
 };
@@ -37,20 +40,14 @@ const getStyles = (theme) =>
       paddingHorizontal: Spacing.sm,
       paddingVertical: Spacing.sm,
       borderTopWidth: 1,
-      borderTopColor: theme.glas,
+      borderTopColor: theme.separator,
       backgroundColor: theme.background
     },
     attachButton: {
-      flex: 1,
-      borderRadius: Spacing.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center"
+      flex: 1
     },
     sendButton: {
-      flex: 1,
-      borderRadius: Spacing.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center"
+      flex: 1
     }
   });
 

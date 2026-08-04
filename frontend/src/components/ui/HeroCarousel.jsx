@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
-import EventSlide from "./EventSlide";
-import AppText from "../ui/AppText";
+import AppText from "./AppText";
+import EventSlide from "../home/EventSlide";
 
 export default function HeroCarousel({ data, isLoading, onPressItem }) {
   const { width } = useWindowDimensions();
