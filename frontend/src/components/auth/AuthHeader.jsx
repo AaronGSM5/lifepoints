@@ -7,6 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 
 import AppImage from "../ui/AppImage";
+import LpLogo from "../ui/LpLogo";
 
 export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
   const { width } = useWindowDimensions();
@@ -23,11 +24,7 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
   return (
     <View style={styles.header}>
       <View style={styles.appIcon}>
-        <AppImage
-          source={require("@/../public/assets/appIcons/adaptive-icon.png")}
-          style={logoDimensions}
-          contentFit={"contain"}
-        />
+        <LpLogo height={logoDimensions.height} width={logoDimensions.width} />
       </View>
 
       {showImageLogo ? (

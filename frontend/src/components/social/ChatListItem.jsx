@@ -4,15 +4,15 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 
 const ChatListItem = memo(({ chat, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <TouchableOpacity style={styles.chatRow} activeOpacity={0.7} onPress={onPress}>
-      <AppImage source={chat.avatar} style={styles.chatAvatar} />
+      <Avatar source={chat.avatar} size="medium" style={styles.chatAvatar} />
 
       <View style={styles.chatInfo}>
         <View style={styles.chatHeader}>
@@ -53,11 +53,7 @@ const getStyles = (theme) =>
       borderBottomColor: theme.separator
     },
     chatAvatar: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      marginRight: Spacing.md,
-      backgroundColor: theme.glas
+      marginRight: Spacing.md
     },
     chatInfo: {
       flex: 1,

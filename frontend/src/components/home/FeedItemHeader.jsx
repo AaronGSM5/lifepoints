@@ -6,8 +6,8 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
-import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 import LpPoints from "../ui/LpPoints";
 import StatusBadge from "../ui/StatusBadge";
 
@@ -20,11 +20,7 @@ const FeedItemHeader = memo(({ id, username, avatar, badge, taskName, onPress, o
         <Pressable onPress={onPress}>
           <View style={styles.headerUser}>
             <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
-              {avatar ? (
-                <AppImage source={avatar} variant={"avatarMedium"} />
-              ) : (
-                <AppText type="title">{username ? username.charAt(0).toUpperCase() : "U"}</AppText>
-              )}
+              <Avatar source={avatar} />
             </Animated.View>
             {badge ? (
               <View style={styles.badge}>

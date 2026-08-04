@@ -6,8 +6,8 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
-import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 import StatusBadge from "../ui/StatusBadge";
 
 const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, onNavigate }) => {
@@ -31,7 +31,7 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>
         <Pressable onPress={() => onNavigate(item.username)}>
-          <AppImage source={item.avatar} variant={"avatarSmall"} style={isReply && styles.replyAvatar} />
+          <Avatar source={item.avatar} size="small" style={isReply && styles.replyAvatar} />
         </Pressable>
       </View>
 

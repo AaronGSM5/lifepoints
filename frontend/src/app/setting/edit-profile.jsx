@@ -11,9 +11,9 @@ import { Icon } from "@/components/icons/Icon";
 import ScreenFooter from "@/components/layout/ScreenFooter";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
-import AppImage from "@/components/ui/AppImage";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
+import Avatar from "@/components/ui/Avatar";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -105,11 +105,7 @@ export default function EditProfileScreen() {
         >
           <View style={styles.avatarSection}>
             <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
-              <AppImage
-                source={avatarSource}
-                variant={"avatarBig"}
-                style={{ borderWidth: 1, borderColor: MyTheme.secondary }}
-              />
+              <Avatar source={avatarSource} size={"big"} style={styles.avatar} />
               <View style={styles.editBadge}>
                 <Icon name="camera" size={18} color="#fff" />
               </View>
@@ -183,10 +179,7 @@ const getStyles = (theme) =>
       position: "relative"
     },
     avatar: {
-      width: 120,
-      height: 120,
-      borderRadius: 60,
-      borderWidth: 3,
+      borderWidth: 1,
       borderColor: theme.secondary
     },
     editBadge: {

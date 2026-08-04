@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import AppImage from "../ui/AppImage";
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 import Separator from "../ui/Separator";
 
 const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPost }) => {
@@ -19,7 +19,7 @@ const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPos
     <>
       <Separator />
       <View style={[styles.inputSection, { paddingBottom: Math.max(insets.bottom, Spacing.md) }]}>
-        <AppImage source={"https://i.pravatar.cc/150?u=du"} variant={"avatarSmall"} style={styles.inputAvatar} />
+        <Avatar source={"https://i.pravatar.cc/150?u=du"} size="small" style={styles.inputAvatar} />
         <View style={styles.inputBubble}>
           <TextInput
             ref={inputRef}
@@ -56,9 +56,6 @@ const getStyles = (theme) =>
       paddingTop: Spacing.sm
     },
     inputAvatar: {
-      width: 36,
-      height: 36,
-      borderRadius: Spacing.borderRadius.full,
       marginRight: 12,
       marginBottom: 2
     },

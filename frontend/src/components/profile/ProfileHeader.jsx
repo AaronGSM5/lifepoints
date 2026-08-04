@@ -17,7 +17,7 @@ import useStore from "@/store/useStore";
 import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 import LevelProgress from "../LevelProgress";
 import AppBadge from "../ui/AppBadge";
-import AppImage from "../ui/AppImage";
+import Avatar from "../ui/Avatar";
 import StatusBadge from "../ui/StatusBadge";
 
 const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileData }) => {
@@ -65,7 +65,7 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
     <View style={styles.profileHeader}>
       <View style={styles.avatarContainer}>
         <AvatarWrapper {...wrapperProps} style={[styles.frameWrapper, frameStyles]}>
-          <AppImage source={avatarSource} variant={"avatarBig"} />
+          <Avatar source={avatarSource} size="big" />
         </AvatarWrapper>
 
         {!isLoading && profile.level && (
