@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Animated, Share } from "react-native";
+import { Animated, Platform, Share } from "react-native";
 
 import { APP_EVENTS } from "@/constants/Events";
 import useStore from "@/store/useStore";
@@ -68,12 +68,12 @@ export const useFeedItem = ({ initialLikes, username, description }) => {
 
       Animated.sequence([
         Animated.parallel([
-          Animated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: true }),
-          Animated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: true })
+          Animated.spring(heartScale, { toValue: 1, friction: 3, useNativeDriver: Platform.OS !== "web" }),
+          Animated.timing(heartOpacity, { toValue: 1, duration: 100, useNativeDriver: Platform.OS !== "web" })
         ]),
         Animated.delay(400),
-        Animated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: true })
+        Animated.timing(heartOpacity, { toValue: 0, duration: 200, useNativeDriver: Platform.OS !== "web" }),
+        Animated.timing(heartScale, { toValue: 0, duration: 0, useNativeDriver: Platform.OS !== "web" })
       ]).start();
     }
     lastTap.current = now

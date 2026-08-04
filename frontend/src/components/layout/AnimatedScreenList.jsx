@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Platform } from "react-native";
 
 import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
@@ -46,7 +46,7 @@ export default function AnimatedScreenList({
         contentContainerStyle
       ]}
       onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-        useNativeDriver: true,
+        useNativeDriver: Platform.OS !== "web",
         listener: onScroll
       })}
       onMomentumScrollEnd={(e) => handleSnap(e)}

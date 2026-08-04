@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Animated, Pressable, StyleSheet } from "react-native";
+import { Animated, Platform, Pressable, StyleSheet } from "react-native";
 
 import AppImage from "../ui/AppImage";
 
@@ -17,7 +17,7 @@ export const LootGameTrigger = memo(({ isReady, onPress }) => {
           toValue: 0,
           friction: 12,
           tension: 40,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         })
       ]).start();
     }

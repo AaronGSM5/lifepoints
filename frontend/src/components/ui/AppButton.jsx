@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
-import { Animated, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -36,7 +36,7 @@ const AppButton = memo(
         toValue: 0.95,
         speed: 500,
         bounciness: 10,
-        useNativeDriver: true
+        useNativeDriver: Platform.OS !== "web"
       }).start();
     }, [scaleAnim]);
 
@@ -45,7 +45,7 @@ const AppButton = memo(
         toValue: 1,
         speed: 20,
         bounciness: 10,
-        useNativeDriver: true
+        useNativeDriver: Platform.OS !== "web"
       }).start();
     }, [scaleAnim]);
 

@@ -1,7 +1,7 @@
 // src/components/home/LootGameModal.js
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, Dimensions, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, Dimensions, Modal, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import * as Haptics from "expo-haptics";
 
@@ -49,9 +49,9 @@ const LootGameModal = memo(() => {
       fadeCenter.setValue(0);
 
       Animated.parallel([
-        Animated.spring(slideLeft, { toValue: 0, tension: 20, friction: 7, useNativeDriver: true }),
-        Animated.spring(slideRight, { toValue: 0, tension: 20, friction: 7, useNativeDriver: true }),
-        Animated.timing(fadeCenter, { toValue: 1, duration: 600, useNativeDriver: true })
+        Animated.spring(slideLeft, { toValue: 0, tension: 20, friction: 7, useNativeDriver: Platform.OS !== "web" }),
+        Animated.spring(slideRight, { toValue: 0, tension: 20, friction: 7, useNativeDriver: Platform.OS !== "web" }),
+        Animated.timing(fadeCenter, { toValue: 1, duration: 600, useNativeDriver: Platform.OS !== "web" })
       ]).start(() => setCanInteract(true));
     }
   }, [isLootGameActive, currentLootSet, slideLeft, slideRight, fadeCenter]);

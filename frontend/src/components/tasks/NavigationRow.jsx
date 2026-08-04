@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, PanResponder, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, PanResponder, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -23,7 +23,7 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
     if (tabWidth > 0) {
       Animated.spring(panX, {
         toValue: activeIndex * tabWidth,
-        useNativeDriver: true,
+        useNativeDriver: Platform.OS !== "web",
         bounciness: 4,
         speed: 12
       }).start();

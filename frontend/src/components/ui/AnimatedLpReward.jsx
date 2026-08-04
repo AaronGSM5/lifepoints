@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Animated, Easing, StyleSheet, View } from "react-native";
+import { Animated, Easing, Platform, StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
@@ -20,13 +20,13 @@ export default function AnimatedLpReward({ points }) {
           toValue: 1,
           duration: 350,
           easing: Easing.in(Easing.back(1)),
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         }),
         Animated.spring(stackAnim, {
           toValue: 1,
           friction: 4,
           tension: 50,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         })
       ]).start();
     }, 800);

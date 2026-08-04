@@ -54,7 +54,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
             toValue: 0,
             tension: 65,
             friction: 11,
-            useNativeDriver: true
+            useNativeDriver: Platform.OS !== "web"
           }).start();
         },
         onPanResponderRelease: (_, gestureState) => {
@@ -66,7 +66,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
               toValue: 0,
               tension: 65,
               friction: 11,
-              useNativeDriver: true
+              useNativeDriver: Platform.OS !== "web"
             }).start();
           }
         }
@@ -83,13 +83,13 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 300,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         }),
         Animated.spring(slideAnim, {
           toValue: 0,
           tension: 65,
           friction: 11,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         })
       ]).start();
     } else {
@@ -97,12 +97,12 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 250,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         }),
         Animated.timing(slideAnim, {
           toValue: SCREEN_HEIGHT,
           duration: 250,
-          useNativeDriver: true
+          useNativeDriver: Platform.OS !== "web"
         })
       ]).start(() => {
         setShowModal(false);

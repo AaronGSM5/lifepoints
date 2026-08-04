@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -60,7 +60,9 @@ export default function ScreenWrapper({
           contentContainerStyle={[contentStyles, { flexGrow: 1 }]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: Platform.OS !== "web"
+          })}
           scrollEventThrottle={16}
         >
           {children}

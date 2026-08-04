@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, StyleSheet, TouchableOpacity } from "react-native";
+import { Animated, Platform, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -26,7 +26,7 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
     Animated.timing(flipAnim, {
       toValue: 0,
       duration: 300,
-      useNativeDriver: true
+      useNativeDriver: Platform.OS !== "web"
     }).start();
   }, [flipAnim]);
 
@@ -40,7 +40,7 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
       Animated.timing(flipAnim, {
         toValue: 1,
         duration: 300,
-        useNativeDriver: true
+        useNativeDriver: Platform.OS !== "web"
       }).start();
 
       timeoutRef.current = setTimeout(() => {

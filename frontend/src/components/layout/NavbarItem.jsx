@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { Animated, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -17,8 +17,8 @@ const NavbarItem = memo(({ route, isFocused, onPress }) => {
   const inactiveColor = MyTheme.text;
 
   const animatePop = useCallback(() => {
-    Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: true }).start(() => {
-      Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: true }).start();
+    Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: Platform.OS !== "web" }).start(() => {
+      Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: Platform.OS !== "web" }).start();
     });
   }, [scale]);
 
