@@ -54,7 +54,7 @@ export default function RewardDetailScreen() {
               sharedTransitionTag={`reward-image-${id}`}
             />
 
-            <BackButton />
+            <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
 
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}

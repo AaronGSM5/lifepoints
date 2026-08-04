@@ -11,6 +11,7 @@ import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 import AppImage from "../ui/AppImage";
+import BackButton from "../ui/BackButton";
 import LpPoints from "../ui/LpPoints";
 import NotificationIcon from "../ui/NotificationsIcon";
 
@@ -77,11 +78,7 @@ export default memo(function Toolbar({ scrollY }) {
       ]}
     >
       <View style={styles.sideSection}>
-        {isMainTab ? (
-          <LpPoints points={LP} onPress={() => router.push("/shop")} />
-        ) : (
-          <Icon name="back" onPress={() => router.back()} />
-        )}
+        {isMainTab ? <LpPoints points={LP} onPress={() => router.push("/shop")} /> : <BackButton />}
       </View>
 
       <View style={styles.centerSection}>

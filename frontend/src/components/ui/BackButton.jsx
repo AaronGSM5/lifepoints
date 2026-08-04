@@ -7,7 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 
 import AppIconButton from "./AppIconButton";
 
-const BackButton = ({ onPress, style, iconColor, ref, ...rest }) => {
+const BackButton = ({ onPress, style, iconColor, withBackground = false, ref, ...rest }) => {
   const router = useRouter();
 
   const handlePress = useCallback(() => {
@@ -29,7 +29,7 @@ const BackButton = ({ onPress, style, iconColor, ref, ...rest }) => {
       onPress={handlePress}
       color={iconColor}
       style={[styles.button, style]}
-      withBackground
+      withBackground={withBackground}
       accessibilityLabel={"Back"}
       {...rest}
     />
@@ -40,10 +40,7 @@ const styles = StyleSheet.create({
   button: {
     width: 40,
     height: 40,
-    borderRadius: Spacing.borderRadius.full,
-    position: "absolute",
-    top: 20,
-    left: Spacing.md
+    borderRadius: Spacing.borderRadius.full
   }
 });
 

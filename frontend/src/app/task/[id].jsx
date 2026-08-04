@@ -94,7 +94,7 @@ export default function TaskDetailScreen() {
               variant={"fill"}
             />
 
-            <BackButton />
+            <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
 
             <LinearGradient
               colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}

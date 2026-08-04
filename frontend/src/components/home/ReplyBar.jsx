@@ -5,8 +5,8 @@ import { StyleSheet, View } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import { Icon } from "../icons/Icon";
 import AppText from "../ui/AppText";
+import CloseButton from "../ui/CloseButton";
 import Separator from "../ui/Separator";
 
 const ReplyBar = memo(({ replyingTo, onPress }) => {
@@ -24,7 +24,7 @@ const ReplyBar = memo(({ replyingTo, onPress }) => {
             @{replyingTo.username}
           </AppText>
         </AppText>
-        <Icon name="close" size={16} color={MyTheme.muted} onPress={onPress} />
+        <CloseButton iconSize={16} color={MyTheme.muted} onPress={onPress} />
       </View>
     </>
   );

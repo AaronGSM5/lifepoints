@@ -9,9 +9,9 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
 import ChatInputBar from "@/components/chat/ChatInputBar";
 import ChatMessageItem from "@/components/chat/ChatMessageItem";
-import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
+import BackButton from "@/components/ui/BackButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -64,9 +64,7 @@ export default function MyCommunityChatScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <View style={[styles.customHeader, { paddingTop: insets.top }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
-          <Icon name="back" />
-        </TouchableOpacity>
+        <BackButton style={styles.headerIcon} />
 
         <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
@@ -116,9 +114,7 @@ const getStyles = (theme) =>
       borderBottomColor: theme.glas
     },
     headerIcon: {
-      padding: Spacing.md,
-      width: 60,
-      alignItems: "center"
+      padding: Spacing.md
     },
     headerTitleContainer: {
       flexDirection: "row",

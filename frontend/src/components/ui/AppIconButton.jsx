@@ -32,7 +32,8 @@ export default function AppIconButton({
         styles.button,
         withBackground && {
           backgroundColor: MyTheme.isDark ? "rgba(0,0,0,0.4)" : MyTheme.glas,
-          borderRadius: Spacing.borderRadius.full
+          borderRadius: Spacing.borderRadius.full,
+          padding: Spacing.sm
         },
         pressed && Platform.OS === "ios" && { opacity: 0.6 },
         disabled && { opacity: 0.4 },

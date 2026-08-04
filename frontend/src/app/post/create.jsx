@@ -5,13 +5,13 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, View } 
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 
-import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ImageUploader from "@/components/post/ImageUploader";
 import TaskSelector from "@/components/post/TaskSelector";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
+import BackButton from "@/components/ui/BackButton";
 import BaseCard from "@/components/ui/BaseCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Separator from "@/components/ui/Separator";
@@ -87,7 +87,7 @@ export default function CreatePost() {
     >
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
-          <Icon name="back" color={MyTheme.text} onPress={() => router.back()} />
+          <BackButton />
           <AppText style={styles.headerTitle} bold>
             {t("Create Post")}
           </AppText>

@@ -7,6 +7,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Icon } from "@/components/icons/Icon";
 import AppImage from "@/components/ui/AppImage";
 import AppText from "@/components/ui/AppText";
+import CloseButton from "@/components/ui/CloseButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -39,7 +40,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       {bannerUri ? (
         <View style={styles.bannerImageWrapper}>
           <AppImage source={bannerUri} variant={"fill"} />
-          <Icon name="close" color="#fff" size={16} onPress={onBannerClear} style={styles.clearImageIcon} />
+          <CloseButton withBackground onPress={onBannerClear} style={styles.clearImageIcon} />
         </View>
       ) : (
         <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
@@ -86,9 +87,7 @@ const getStyles = (theme) =>
       position: "absolute",
       top: 8,
       right: 8,
-      backgroundColor: "rgba(0,0,0,0.6)",
-      padding: Spacing.sm,
-      borderRadius: Spacing.borderRadius.full
+      padding: Spacing.xs
     },
     placeholderText: {
       textAlign: "center",

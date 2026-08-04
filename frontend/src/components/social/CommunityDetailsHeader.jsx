@@ -25,7 +25,7 @@ const CommunityHeader = memo(({ community }) => {
     <View style={styles.headerContainer}>
       <AppImage source={bannerImg} variant={"communityBanner"} />
 
-      <BackButton />
+      <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
 
       <View style={styles.avatarWrapper}>
         <View style={[styles.iconBox, { backgroundColor: bgColor }]}>

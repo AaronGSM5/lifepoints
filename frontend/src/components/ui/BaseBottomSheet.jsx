@@ -8,16 +8,16 @@ import {
   Platform,
   Pressable,
   StyleSheet,
-  TouchableOpacity,
   useWindowDimensions,
   View
 } from "react-native";
 
-import { Icon } from "@/components/icons/Icon";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
+
+import CloseButton from "./CloseButton";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -130,9 +130,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
 
             <View style={styles.header}>
               {title ? <AppText type="h2">{title}</AppText> : <View />}
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Icon name="close" size={24} color={MyTheme.text} />
-              </TouchableOpacity>
+              <CloseButton withBackground onPress={onClose} />
             </View>
           </View>
           <View style={styles.content}>{children}</View>

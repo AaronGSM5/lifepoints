@@ -2,18 +2,13 @@ import { memo } from "react";
 
 import AppIconButton from "./AppIconButton";
 
-const CloseButton = memo(({ onPress, style, color, withBackground = false, ref, ...rest }) => {
-  const handlePress = (e) => {
-    if (onPress) {
-      onPress(e);
-    }
-  };
-
+const CloseButton = memo(({ onPress, iconSize, style, color, withBackground = false, ref, ...rest }) => {
   return (
     <AppIconButton
       ref={ref}
       icon="close"
-      onPress={handlePress}
+      iconSize={iconSize}
+      onPress={onPress}
       withBackground={withBackground}
       style={style}
       color={color}
