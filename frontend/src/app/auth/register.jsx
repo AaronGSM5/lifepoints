@@ -27,6 +27,7 @@ export default function RegisterScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [repeatPasswordInput, setRepeatPasswordInput] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
@@ -100,12 +101,14 @@ export default function RegisterScreen() {
             <AppInput
               value={emailInput}
               onChangeText={setEmailInput}
+              onFocus={() => setEmailTouched(false)}
+              onBlur={() => setEmailTouched(true)}
               placeholder="E-Mail"
               bottomMargin={false}
               keyboardType="email-address"
               autoCapitalize="none"
-              isValid={isEmailValidFlag && emailInput.length > 0}
-              error={!isEmailValidFlag && emailInput.length > 0 ? "Invalid email address" : null}
+              isValid={emailTouched && isEmailValidFlag && emailInput.length > 0}
+              error={emailTouched && !isEmailValidFlag && emailInput.length > 0 ? "Invalid email address" : null}
             />
             <PasswordInput
               variant="new"
