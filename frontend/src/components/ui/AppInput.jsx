@@ -169,7 +169,8 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderColor: theme.inputBorder,
       height: 54,
-      paddingHorizontal: Spacing.md
+      paddingHorizontal: Spacing.md,
+      boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.25)"
     },
     containerMultiline: {
       height: "auto",
