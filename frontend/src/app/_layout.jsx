@@ -24,6 +24,27 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+if (Platform.OS === "web" && typeof console !== "undefined") {
+  const originalWarn = console.warn;
+  const originalError = console.error;
+
+  console.warn = (...args) => {
+    const msg = args[0];
+    if (typeof msg === "string" && msg.includes("pointerEvents is deprecated")) {
+      return;
+    }
+    originalWarn(...args);
+  };
+
+  console.error = (...args) => {
+    const msg = args[0];
+    if (typeof msg === "string" && msg.includes("Accessing element.ref was removed in React 19")) {
+      return;
+    }
+    originalError(...args);
+  };
+}
+
 export function ErrorBoundary({ error, retry }) {
   return <ErrorFallback error={error} resetError={retry} />;
 }
