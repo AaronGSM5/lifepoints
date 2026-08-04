@@ -1,24 +1,26 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-import { createDataSlice } from './slices/createDataSlice';
-import { createProfileSlice } from './slices/createProfileSlice';
-import { createQuestSlice } from './slices/createQuestSlice';
-import { createUISlice } from './slices/createUISlice';
+import { createDataSlice } from "./slices/createDataSlice";
+import { createProfileSlice } from "./slices/createProfileSlice";
+import { createQuestSlice } from "./slices/createQuestSlice";
+import { createTaskSlice } from "./slices/createTaskSlice";
+import { createUISlice } from "./slices/createUISlice";
 
-const logger = (config) => (set, get, api) => config(
-  (args) => {
-    console.group('Zustand Update 🚀');
-    const prevState = get();
-    set(args);
-    console.log('🔄 VORHER:', prevState);
-    console.log('✅ NACHHER:', get());
-    console.groupEnd();
-  },
-  get,
-  api
-);
+const logger = (config) => (set, get, api) =>
+  config(
+    (args) => {
+      // console.group("Zustand Update 🚀");
+      const prevState = get();
+      set(args);
+      // console.log("🔄 VORHER:", prevState);
+      // console.log("✅ NACHHER:", get());
+      // console.groupEnd();
+    },
+    get,
+    api
+  );
 
 const useStore = create(
   logger(
@@ -28,9 +30,10 @@ const useStore = create(
         ...createDataSlice(set, get, api),
         ...createProfileSlice(set, get, api),
         ...createQuestSlice(set, get, api),
+        ...createTaskSlice(set, get, api)
       }),
       {
-        name: 'lifepoints-storage',
+        name: "lifepoints-storage",
         storage: createJSONStorage(() => AsyncStorage),
         partialize: (state) => ({
           profile: state.profile,
@@ -42,10 +45,10 @@ const useStore = create(
           isAuthenticated: state.isAuthenticated,
           isDarkMode: state.isDarkMode,
           showInstaTrackingModal: state.showInstaTrackingModal
-        }),
+        })
       }
     )
   )
 );
 
-export default useStore
+export default useStore;

@@ -40,20 +40,20 @@ export const schema = appSchema({
     tableSchema({
       name: "users",
       columns: [
-        { name: "username", type: "string" },
-        { name: "name", type: "string" },
+        { name: "username", type: "string", isOptional: true },
+        { name: "name", type: "string", isOptional: true },
         { name: "about", type: "string", isOptional: true },
-        { name: "email", type: "string" },
-        { name: "external_id", type: "string", isIndexed: true },
-        { name: "level", type: "number" },
-        { name: "inventory_json", type: "string" },
+        { name: "email", type: "string", isOptional: true },
+        { name: "external_id", type: "string", isOptional: true },
+        { name: "level", type: "number", isOptional: true },
+        { name: "lifepoints", type: "number", isOptional: true },
+        { name: "inventory", type: "string", isOptional: true }, // json field
         { name: "profile_picture", type: "string", isOptional: true },
-        { name: "communities_json", type: "string" },
-        { name: "subscription", type: "string" },
-        { name: "settings_json", type: "string" },
+        { name: "communities", type: "string", isOptional: true }, // json field
+        { name: "subscription", type: "string", isOptional: true },
+        { name: "settings", type: "string", isOptional: true }, // json field
         { name: "created_at", type: "number" },
-        { name: "updated_at", type: "number" },
-        { name: "is_synced", type: "boolean" }
+        { name: "updated_at", type: "number" }
       ]
     })
   ]

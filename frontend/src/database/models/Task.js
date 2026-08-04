@@ -1,5 +1,5 @@
 import { Model } from "@nozbe/watermelondb";
-import { date, field, json, readonly, text } from "@nozbe/watermelondb/decorators";
+import { date, field, json, text } from "@nozbe/watermelondb/decorators";
 
 import { sanitizeJSON } from "./utils";
 

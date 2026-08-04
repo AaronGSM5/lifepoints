@@ -3,7 +3,7 @@ import LokiJSAdapter from "@nozbe/watermelondb/adapters/lokijs";
 
 import Activity from "./models/Activity";
 import Tasks from "./models/Task";
-import User from "./models/User";
+import Users from "./models/User";
 import { schema } from "./schema";
 
 const adapter = new LokiJSAdapter({
@@ -18,5 +18,5 @@ const adapter = new LokiJSAdapter({
 
 export const database = new Database({
   adapter,
-  modelClasses: [Activity, Tasks]
+  modelClasses: [Activity, Tasks, Users]
 });

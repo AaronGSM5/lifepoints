@@ -17,6 +17,8 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import useStore from "@/store/useStore";
 
+import DatabaseTestScreen from "./testscreen";
+
 import "@/utils/i18n";
 
 SplashScreen.preventAutoHideAsync();
@@ -63,6 +65,8 @@ if (typeof window !== "undefined") {
 }
 
 export default function RootLayout() {
+  return DatabaseTestScreen();
+
   const isAppReady = useStore((state) => state.isAppReady);
   const hasCompletedOnboarding = useStore((state) => state.hasCompletedOnboarding);
   const isAuthenticated = useStore((state) => state.isAuthenticated);
