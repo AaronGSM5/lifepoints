@@ -23,9 +23,7 @@ const FullscreenVideoItem = ({ item, isVisible }) => {
   const videoProgress = useStore((state) => state.videoProgress);
   const setVideoProgress = useStore((state) => state.setVideoProgress);
 
-  const [initialTime] = useState(() => videoProgress[item.id] || 0);
-
-  const hasSetTime = useRef(false);
+  const hasRestoredTime = useRef(false);
 
   const player = useVideoPlayer(item.videoUrl, (p) => {
     p.loop = true;
@@ -34,26 +32,41 @@ const FullscreenVideoItem = ({ item, isVisible }) => {
   });
 
   useEffect(() => {
+    if (!player) return;
+
+    const subscription = player.addListener("statusChange", (payload) => {
+      if (payload.status === "readyToPlay" && !hasRestoredTime.current) {
+        const savedTime = videoProgress[item.id] || 0;
+        if (savedTime > 0) {
+          player.currentTime = savedTime;
+        }
+        hasRestoredTime.current = true;
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [player, videoProgress, item.id]);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      if (isVisible) {
+        playerRef.current.play();
+      } else {
+        playerRef.current.pause();
+        setVideoProgress(item.id, playerRef.current.currentTime);
+      }
+    }
+  }, [isVisible, item.id, setVideoProgress]);
+
+  useEffect(() => {
     return () => {
       if (playerRef.current) {
         setVideoProgress(item.id, playerRef.current.currentTime);
       }
     };
   }, [item.id, setVideoProgress]);
-
-  useEffect(() => {
-    if (playerRef.current) {
-      if (isVisible) {
-        if (!hasSetTime.current && initialTime > 0) {
-          playerRef.current.currentTime = initialTime;
-          hasSetTime.current = true;
-        }
-        playerRef.current.play();
-      } else {
-        playerRef.current.pause();
-      }
-    }
-  }, [isVisible, initialTime]);
 
   useEffect(() => {
     if (playerRef.current) {

@@ -56,8 +56,9 @@ export const useFeedItem = ({ initialLikes, username, description }) => {
 
   const handleDoubleTap = useCallback(() => {
     const now = Date.now();
-
+    let isDoubleTap = false
     if (now - lastTap.current < DOUBLE_PRESS_DELAY) {
+      isDoubleTap = true;
       setIsLiked((prevLiked) => {
         if (!prevLiked) {
           setLikesCount((count) => count + 1);
@@ -77,6 +78,7 @@ export const useFeedItem = ({ initialLikes, username, description }) => {
       ]).start();
     }
     lastTap.current = now
+    return isDoubleTap
   }, [trackEvent, heartOpacity, heartScale])
 
 
