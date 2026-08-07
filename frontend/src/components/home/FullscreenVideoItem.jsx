@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 
+import { router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
 
 import { Spacing } from "@/constants/Spacing";
@@ -16,7 +17,6 @@ import BackButton from "../ui/BackButton";
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions }) => {
-  const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const playerRef = useRef(null);
   const tapTimeout = useRef(null);
@@ -86,12 +86,6 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
     };
   }, [item.id, setVideoProgress]);
 
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
   const handleTogglePlayPause = useCallback(() => {
     if (playerRef.current) {
       if (playerRef.current.playing) {
@@ -120,6 +114,18 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
     }
   }, [handleDoubleTap, handleTogglePlayPause]);
 
+  const handleOpenProfile = () => {
+    const userId = item.userId || item.username;
+    router.push({
+      pathname: `/user/${userId}`,
+      params: { userId }
+    });
+  };
+
+  const handleExpandDescription = () => {
+    console.log("Beschreibung ausklappen");
+  };
+
   return (
     <View style={styles.itemContainer}>
       <VideoView
@@ -146,13 +152,20 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
       </Animated.View>
 
       <View style={styles.overlay} pointerEvents="box-none">
-        <View style={styles.authorRow} pointerEvents="none">
-          <Avatar source={item.avatar} />
-          <View style={styles.postDetails}>
-            <AppText bold>@{item.username}</AppText>
-            <AppText type="caption" style={styles.description} numberOfLines={2}>
-              {item.description}
-            </AppText>
+        <View style={styles.postDetails} pointerEvents="box-none">
+          <Pressable style={styles.avatarContainer} onPress={handleOpenProfile}>
+            <Avatar source={item.avatar} />
+          </Pressable>
+
+          <View style={styles.rightColumn}>
+            <Pressable onPress={handleOpenProfile} style={styles.usernamePressable}>
+              <AppText bold>@{item.username}</AppText>
+            </Pressable>
+            <Pressable onPress={handleExpandDescription}>
+              <AppText type="caption" style={styles.description} numberOfLines={2}>
+                {item.description}
+              </AppText>
+            </Pressable>
           </View>
         </View>
 
@@ -231,14 +244,23 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     zIndex: 20
   },
-  authorRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-    marginRight: Spacing.xl
-  },
   postDetails: {
-    flex: 1
+    flexDirection: "row",
+    alignItems: "flex-end",
+    marginRight: 75,
+    marginBottom: Spacing.sm,
+    gap: Spacing.sm
+  },
+  avatarContainer: {
+    alignSelf: "flex-start"
+  },
+  rightColumn: {
+    flex: 1,
+    flexDirection: "column"
+  },
+  usernamePressable: {
+    alignSelf: "flex-start",
+    marginBottom: Spacing.xs
   },
   description: {
     color: "#fff"
