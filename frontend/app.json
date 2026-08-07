@@ -47,7 +47,8 @@
             "image": "./public/assets/appIcons/icon-dark.png"
           }
         }
-      ]
+      ],
+      "expo-video"
     ]
   }
 }

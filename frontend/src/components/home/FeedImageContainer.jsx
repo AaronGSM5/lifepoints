@@ -6,7 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppImage from "../ui/AppImage";
 
-const FeedItemImageContainer = memo(({ image, heartOpacity, heartScale, onPress }) => {
+const FeedImageContainer = memo(({ image, heartOpacity, heartScale, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
@@ -29,7 +29,7 @@ const FeedItemImageContainer = memo(({ image, heartOpacity, heartScale, onPress 
     </View>
   );
 });
-FeedItemImageContainer.displayName = "FeedItemImageContainer";
+FeedImageContainer.displayName = "FeedImageContainer";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -47,4 +47,4 @@ const getStyles = (theme) =>
     }
   });
 
-export default FeedItemImageContainer;
+export default FeedImageContainer;

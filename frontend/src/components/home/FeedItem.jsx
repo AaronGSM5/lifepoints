@@ -8,16 +8,19 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useFeedItem } from "@/hooks/useFeedItem";
 import useStore from "@/store/useStore";
 
+import FeedImageContainer from "./FeedImageContainer";
 import FeedItemActionBar from "./FeedItemActionBar";
 import FeedItemFooter from "./FeedItemFooter";
 import FeedItemHeader from "./FeedItemHeader";
-import FeedItemImageContainer from "./FeedItemImageContainer";
 import FeedItemSkeleton from "./FeedItemSkeleton";
+import FeedVideoContainer from "./FeedVideoContainer";
 import { LootGameTrigger } from "./LootGameTrigger";
 import Separator from "../ui/Separator";
 
 const FeedItem = memo(
   ({
+    type = "image",
+    videoUrl,
     username,
     badge,
     avatar,
@@ -73,12 +76,22 @@ const FeedItem = memo(
           />
 
           {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}
-          <FeedItemImageContainer
-            image={image}
-            heartOpacity={heartOpacity}
-            heartScale={heartScale}
-            onPress={handleDoubleTap}
-          />
+          {type === "video" ? (
+            <FeedVideoContainer
+              videoUrl={videoUrl}
+              isReady={isReady}
+              heartOpacity={heartOpacity}
+              heartScale={heartScale}
+              onPress={handleDoubleTap}
+            />
+          ) : (
+            <FeedImageContainer
+              image={image}
+              heartOpacity={heartOpacity}
+              heartScale={heartScale}
+              onPress={handleDoubleTap}
+            />
+          )}
           <FeedItemActionBar
             handleLike={handleLike}
             isLiked={isLiked}
@@ -106,20 +119,6 @@ const getStyles = (theme) =>
     card: {
       backgroundColor: theme.primary,
       paddingBottom: Spacing.sm
-    },
-    skeletonContainer: {
-      backgroundColor: theme.primary,
-      paddingBottom: Spacing.md
-    },
-    skeletonHeader: {
-      flexDirection: "row",
-      alignItems: "center",
-      padding: Spacing.md,
-      gap: Spacing.sm
-    },
-    skeletonFooter: {
-      padding: Spacing.md,
-      gap: Spacing.md
     }
   });
 
