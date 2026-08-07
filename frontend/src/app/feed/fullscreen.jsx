@@ -5,6 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 
 import CommentSheet from "@/components/home/CommentSheet";
 import FullscreenVideoItem from "@/components/home/FullscreenVideoItem";
+import PostOptionsSheet from "@/components/home/PostOptionsSheet";
 import useStore from "@/store/useStore";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -25,6 +26,7 @@ export default function FullscreenFeedScreen() {
 
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [optionsPostData, setOptionsPostData] = useState(null);
   const flatListRef = useRef(null);
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
@@ -39,6 +41,7 @@ export default function FullscreenFeedScreen() {
         item={item}
         isVisible={index === currentIndex}
         onOpenComments={(id) => setSelectedPostId(id)}
+        onOpenOptions={(id) => setOptionsPostData(id)}
       />
     ),
     [currentIndex]
@@ -73,6 +76,12 @@ export default function FullscreenFeedScreen() {
         isVisible={selectedPostId !== null}
         onClose={() => setSelectedPostId(null)}
         postId={selectedPostId}
+      />
+      <PostOptionsSheet
+        isVisible={optionsPostData !== null}
+        onClose={() => setOptionsPostData(null)}
+        postId={targetPostId}
+        isOwner={false}
       />
     </View>
   );

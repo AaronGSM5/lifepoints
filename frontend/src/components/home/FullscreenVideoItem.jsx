@@ -4,6 +4,7 @@ import { Dimensions, Pressable, StyleSheet, View } from "react-native";
 import { useVideoPlayer, VideoView } from "expo-video";
 
 import { Spacing } from "@/constants/Spacing";
+import { useFeedItem } from "@/hooks/useFeedItem";
 import useStore from "@/store/useStore";
 
 import AppIconButton from "../ui/AppIconButton";
@@ -13,14 +14,18 @@ import BackButton from "../ui/BackButton";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
-const FullscreenVideoItem = ({ item, isVisible, onOpenComments }) => {
+const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(item.initialLikes || 120);
   const [isPlaying, setIsPlaying] = useState(true);
   const playerRef = useRef(null);
-
+  const { handleShare } = useFeedItem({
+    initialLikes: likesCount,
+    username: item.username,
+    description: item.description
+  });
   const videoProgress = useStore((state) => state.videoProgress);
   const setVideoProgress = useStore((state) => state.setVideoProgress);
 
@@ -154,10 +159,15 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments }) => {
           </View>
 
           <View style={styles.actionButton}>
-            <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={() => {}} />
+            <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={handleShare} />
           </View>
 
-          <AppIconButton icon="menu" iconSize={26} color="#FFFFFF" onPress={() => {}} />
+          <AppIconButton
+            icon="menu"
+            iconSize={26}
+            color="#FFFFFF"
+            onPress={() => onOpenOptions && onOpenOptions(item.id)}
+          />
         </View>
       </View>
     </View>
