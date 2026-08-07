@@ -1,6 +1,16 @@
 export const mockFeedItems = [
   {
     id: 1,
+    type: 'video',
+    username: 'LifePoints_Dev',
+    badge: 'badge_elite',
+    description: 'Erster Video-Feed Test! 🚀🎥',
+    videoUrl: require("@/../public/assets/posts/testVideo.mp4"),
+    thumbnail: require("@/../public/assets/posts/sportSelfie1.jpeg"),
+    avatar: 'https://i.pravatar.cc/150?u=LifePoints_Dev'
+  },
+  {
+    id: 2,
     type: 'image',
     username: 'Velo_Mind',
     badge: 'badge_elite',
@@ -9,7 +19,17 @@ export const mockFeedItems = [
     avatar: 'https://i.pravatar.cc/150?u=Velo_Mind'
   },
   {
-    id: 2,
+    id: 3,
+    type: 'video',
+    username: 'LifePoints_Dev',
+    badge: 'badge_elite',
+    description: 'Erster Videowdasd-Feed Test! 🚀🎥',
+    videoUrl: require("@/../public/assets/posts/testVideo2.mp4"),
+    thumbnail: require("@/../public/assets/posts/sportSelfie1.jpeg"),
+    avatar: 'https://i.pravatar.cc/150?u=LifePoints_Dev'
+  },
+  {
+    id: 4,
     type: 'image',
     username: 'PixelPionier',
     badge: 'badge_rookie',
@@ -18,7 +38,7 @@ export const mockFeedItems = [
     avatar: 'https://i.pravatar.cc/150?u=PixelPionier'
   },
   {
-    id: 3,
+    id: 5,
     type: 'image',
     username: 'Nox_Echo',
     badge: 'badge_grinder',
@@ -27,7 +47,7 @@ export const mockFeedItems = [
     avatar: 'https://i.pravatar.cc/150?u=Nox_Echo'
   },
   {
-    id: 4,
+    id: 6,
     type: 'image',
     username: 'Zest_Runner',
     badge: null,
@@ -35,14 +55,4 @@ export const mockFeedItems = [
     image: require("@/../public/assets/posts/helping.jpg"),
     avatar: 'https://i.pravatar.cc/150?u=Zest_Runner'
   },
-  {
-    id: 5,
-    type: 'video',
-    username: 'LifePoints_Dev',
-    badge: 'badge_elite',
-    description: 'Erster Video-Feed Test! 🚀🎥',
-    videoUrl: require("@/../public/assets/posts/testVideo.mp4"),
-    thumbnail: require("@/../public/assets/posts/sportSelfie1.jpeg"),
-    avatar: 'https://i.pravatar.cc/150?u=LifePoints_Dev'
-  }
 ];
