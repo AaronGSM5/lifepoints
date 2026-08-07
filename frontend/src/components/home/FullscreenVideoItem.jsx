@@ -8,6 +8,7 @@ import useStore from "@/store/useStore";
 
 import AppIconButton from "../ui/AppIconButton";
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 import BackButton from "../ui/BackButton";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -116,49 +117,47 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments }) => {
       <BackButton style={styles.backButton} />
 
       <View style={styles.overlay} pointerEvents="box-none">
-        <View style={styles.bottomRow} pointerEvents="box-none">
-          <View style={styles.captionContainer} pointerEvents="none">
-            <AppText bold style={styles.username}>
-              @{item.username}
-            </AppText>
-            <AppText style={styles.description} numberOfLines={2}>
+        <View style={styles.authorRow} pointerEvents="none">
+          <Avatar source={item.avatar} />
+          <View>
+            <AppText bold>@{item.username}</AppText>
+            <AppText type="caption" style={styles.description} numberOfLines={2}>
               {item.description}
             </AppText>
           </View>
-          <View style={styles.actionBar} pointerEvents="box-none">
-            <View style={styles.actionButton}>
-              <AppIconButton
-                icon="heart"
-                iconSize={28}
-                color={isLiked ? "#FF3B30" : "#FFFFFF"}
-                onPress={handleLike}
-                outline={!isLiked}
-              />
-              <AppText bold style={styles.actionText}>
-                {likesCount}
-              </AppText>
-            </View>
+        </View>
 
-            <View style={styles.actionButton}>
-              <AppIconButton
-                icon="chat"
-                iconSize={26}
-                color={"#FFFFFF"}
-                onPress={() => onOpenComments && onOpenComments(item.id)}
-              />
-              <AppText bold style={styles.actionText}>
-                {item.commentsCount || 0}
-              </AppText>
-            </View>
-
-            <View style={styles.actionButton}>
-              <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={() => {}} />
-            </View>
-
-            <View style={styles.actionButton}>
-              <AppIconButton icon="menu" iconSize={26} color="#FFFFFF" onPress={() => {}} />
-            </View>
+        <View style={styles.actionBar} pointerEvents="box-none">
+          <View style={styles.actionButton}>
+            <AppIconButton
+              icon="heart"
+              iconSize={28}
+              color={isLiked ? "#FF3B30" : "#FFFFFF"}
+              onPress={handleLike}
+              outline={!isLiked}
+            />
+            <AppText bold style={styles.actionText}>
+              {likesCount}
+            </AppText>
           </View>
+
+          <View style={styles.actionButton}>
+            <AppIconButton
+              icon="chat"
+              iconSize={26}
+              color={"#FFFFFF"}
+              onPress={() => onOpenComments && onOpenComments(item.id)}
+            />
+            <AppText bold style={styles.actionText}>
+              {item.commentsCount || 0}
+            </AppText>
+          </View>
+
+          <View style={styles.actionButton}>
+            <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={() => {}} />
+          </View>
+
+          <AppIconButton icon="menu" iconSize={26} color="#FFFFFF" onPress={() => {}} />
         </View>
       </View>
     </View>
@@ -192,27 +191,25 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     zIndex: 20
   },
-  bottomRow: {
+  authorRow: {
     flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    width: "100%"
+    alignItems: "center",
+    gap: Spacing.sm
   },
-  captionContainer: {
-    flex: 1
-  },
-  username: {
-    color: "#fff",
-    fontSize: 16,
-    marginBottom: 4
+  infoRow: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm
   },
   description: {
-    color: "#fff",
-    fontSize: 14
+    color: "#fff"
   },
   actionBar: {
+    position: "absolute",
+    right: Spacing.lg,
+    bottom: Spacing.lg,
     alignItems: "center",
-    justifyContent: "flex-end",
     gap: Spacing.md
   },
   actionButton: {
