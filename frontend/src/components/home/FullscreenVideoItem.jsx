@@ -119,7 +119,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments }) => {
       <View style={styles.overlay} pointerEvents="box-none">
         <View style={styles.authorRow} pointerEvents="none">
           <Avatar source={item.avatar} />
-          <View>
+          <View style={styles.postDetails}>
             <AppText bold>@{item.username}</AppText>
             <AppText type="caption" style={styles.description} numberOfLines={2}>
               {item.description}
@@ -194,13 +194,11 @@ const styles = StyleSheet.create({
   authorRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: Spacing.sm
+    gap: Spacing.sm,
+    marginRight: Spacing.xl
   },
-  infoRow: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm
+  postDetails: {
+    flex: 1
   },
   description: {
     color: "#fff"
