@@ -110,5 +110,6 @@ export const IconMap = {
   clothes: ({ outline, ...props }) => <Icon name={getName("shirt", outline)} {...props} />,
   happy: ({ outline, ...props }) => <Icon name={getName("emotion-laugh", outline)} {...props} />,
   remix: ({ outline, ...props }) => <Icon name={getName("remix", outline)} {...props} />,
-  reset: ({ outline, ...props }) => <Icon name={getName("reset-right", outline)} {...props} />
+  reset: ({ outline, ...props }) => <Icon name={getName("reset-right", outline)} {...props} />,
+  menu: ({ outline, ...props }) => <Icon name={getName("menu-5", outline)} {...props} />
 };

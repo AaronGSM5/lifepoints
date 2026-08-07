@@ -1,104 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Pressable, StyleSheet, View } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
-import { useVideoPlayer, VideoView } from "expo-video";
 
-import { Icon } from "@/components/icons/Icon";
-import AppText from "@/components/ui/AppText";
-import BackButton from "@/components/ui/BackButton";
-import { Spacing } from "@/constants/Spacing";
+import FullscreenVideoItem from "@/components/home/FullscreenVideoItem";
 import useStore from "@/store/useStore";
 
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const VIEWABILITY_CONFIG = {
   itemVisiblePercentThreshold: 80
-};
-
-const FullscreenVideoItem = ({ item, isVisible }) => {
-  const [isMuted, setIsMuted] = useState(false);
-  const playerRef = useRef(null);
-
-  const videoProgress = useStore((state) => state.videoProgress);
-  const setVideoProgress = useStore((state) => state.setVideoProgress);
-
-  const hasRestoredTime = useRef(false);
-
-  const player = useVideoPlayer(item.videoUrl, (p) => {
-    p.loop = true;
-    p.muted = false;
-    playerRef.current = p;
-  });
-
-  useEffect(() => {
-    if (!player) return;
-
-    const subscription = player.addListener("statusChange", (payload) => {
-      if (payload.status === "readyToPlay" && !hasRestoredTime.current) {
-        const savedTime = videoProgress[item.id] || 0;
-        if (savedTime > 0) {
-          player.currentTime = savedTime;
-        }
-        hasRestoredTime.current = true;
-      }
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [player, videoProgress, item.id]);
-
-  useEffect(() => {
-    if (playerRef.current) {
-      if (isVisible) {
-        playerRef.current.play();
-      } else {
-        playerRef.current.pause();
-        setVideoProgress(item.id, playerRef.current.currentTime);
-      }
-    }
-  }, [isVisible, item.id, setVideoProgress]);
-
-  useEffect(() => {
-    return () => {
-      if (playerRef.current) {
-        setVideoProgress(item.id, playerRef.current.currentTime);
-      }
-    };
-  }, [item.id, setVideoProgress]);
-
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
-  const toggleMute = () => setIsMuted((prev) => !prev);
-
-  return (
-    <View style={styles.itemContainer}>
-      <VideoView
-        style={styles.video}
-        player={player}
-        contentFit="cover"
-        nativeControls={false}
-        allowsFullscreen={false}
-      />
-      <BackButton style={styles.backButton} />
-
-      <Pressable style={styles.muteButton} onPress={toggleMute}>
-        <Icon name={isMuted ? "volumeMute" : "volumeHigh"} size={22} />
-      </Pressable>
-
-      <View style={styles.overlay}>
-        <View style={styles.captionContainer}>
-          <AppText style={styles.username}>@{item.username}</AppText>
-          <AppText style={styles.description}>{item.description}</AppText>
-        </View>
-      </View>
-    </View>
-  );
 };
 
 export default function FullscreenFeedScreen() {
@@ -158,50 +69,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000"
-  },
-  itemContainer: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-    backgroundColor: "#000",
-    position: "relative"
-  },
-  video: {
-    width: "100%",
-    height: "100%"
-  },
-  backButton: {
-    position: "absolute",
-    top: Spacing.md,
-    left: Spacing.md,
-    zIndex: 30
-  },
-  muteButton: {
-    position: "absolute",
-    bottom: 100,
-    right: Spacing.md,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    padding: Spacing.sm,
-    borderRadius: 20,
-    zIndex: 30
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "flex-end",
-    padding: Spacing.lg,
-    zIndex: 20,
-    pointerEvents: "box-none"
-  },
-  captionContainer: {
-    marginBottom: Spacing.xl
-  },
-  username: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 4
-  },
-  description: {
-    color: "#fff",
-    fontSize: 14
   }
 });

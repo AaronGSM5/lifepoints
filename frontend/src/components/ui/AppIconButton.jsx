@@ -8,6 +8,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 export default function AppIconButton({
   icon,
   iconSize,
+  outline = true,
   onPress,
   style,
   color,
@@ -41,7 +42,7 @@ export default function AppIconButton({
       ]}
       {...rest}
     >
-      <Icon name={icon} color={color || MyTheme.text} size={iconSize} />
+      <Icon name={icon} color={color || MyTheme.text} size={iconSize} outline={outline} />
     </Pressable>
   );
 }
