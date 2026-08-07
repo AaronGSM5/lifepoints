@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Animated, Dimensions, Image, Pressable, StyleSheet } from "react-native";
 
+import { router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
 
 import { Spacing } from "@/constants/Spacing";
@@ -11,7 +12,7 @@ import { Icon } from "../icons/Icon";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const VIDEO_HEIGHT = SCREEN_HEIGHT * 0.75;
 
-const FeedVideoContainer = memo(({ videoUrl, thumbnail, isReady, heartOpacity, heartScale, onPress }) => {
+const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacity, heartScale, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [isMuted, setIsMuted] = useState(true);
@@ -76,6 +77,18 @@ const FeedVideoContainer = memo(({ videoUrl, thumbnail, isReady, heartOpacity, h
       </Animated.View>
       <Pressable style={styles.muteButton} onPress={toggleMute}>
         <Icon name={isMuted ? "volumeMute" : "volumeHigh"} size={20} />
+      </Pressable>
+      <Pressable
+        style={styles.fullscreenButton}
+        onPress={(e) => {
+          e.stopPropagation();
+          router.push({
+            pathname: "/feed/fullscreen",
+            params: { postId: id }
+          });
+        }}
+      >
+        <Icon name="expand" size={20} color="#FFFFFF" />
       </Pressable>
     </Pressable>
   );

@@ -1,4 +1,4 @@
-export const feedItems = [
+export const mockFeedItems = [
   {
     id: 1,
     type: 'image',

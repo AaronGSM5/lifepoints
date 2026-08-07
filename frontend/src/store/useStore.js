@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { createDataSlice } from './slices/createDataSlice';
+import { createFeedSlice } from './slices/createFeedSlice';
 import { createProfileSlice } from './slices/createProfileSlice';
 import { createQuestSlice } from './slices/createQuestSlice';
 import { createUISlice } from './slices/createUISlice';
@@ -42,6 +43,7 @@ const useStore = create(
         ...createDataSlice(set, get, api),
         ...createProfileSlice(set, get, api),
         ...createQuestSlice(set, get, api),
+        ...createFeedSlice(set, get, api),
       }),
       {
         name: 'lifepoints-storage',

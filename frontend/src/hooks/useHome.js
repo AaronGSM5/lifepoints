@@ -1,27 +1,31 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { feedItems as mockFeedItems } from "@/mocks/FeedData";
+import { mockFeedItems } from "@/mocks/FeedData";
+import useStore from "@/store/useStore";
 
 export const useHome = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [feedItems] = useState(mockFeedItems);
 
-  const fetchHomeData = useCallback(async () => {
-    setTimeout(() => setIsLoading(false), 1500);
-  }, []);
+  const feedItems = useStore((state) => state.feedItems);
+  const setFeedItems = useStore((state) => state.setFeedItems);
+
+  useEffect(() => {
+    if (!feedItems || feedItems.length === 0) {
+      setFeedItems(mockFeedItems);
+    }
+  }, [feedItems, setFeedItems]);
 
   const refreshHomeData = useCallback(async () => {
     setIsRefreshing(true);
-    setTimeout(() => setIsRefreshing(false), 1500);
-  }, []);
-
-  useEffect(() => {
-    fetchHomeData();
-  }, [fetchHomeData]);
+    setTimeout(() => {
+      setFeedItems(mockFeedItems);
+      setIsRefreshing(false);
+    }, 1000);
+  }, [setFeedItems]);
 
   return {
-    feedItems,
+    feedItems: feedItems.length > 0 ? feedItems : mockFeedItems,
     isLoading,
     isRefreshing,
     refreshHomeData

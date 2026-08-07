@@ -79,6 +79,7 @@ const FeedItem = memo(
           {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}
           {type === "video" ? (
             <FeedVideoContainer
+              id={id}
               videoUrl={videoUrl}
               thumbnail={thumbnail}
               isReady={isReady}
