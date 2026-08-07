@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Dimensions, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 
 import { useVideoPlayer, VideoView } from "expo-video";
 
@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useFeedItem } from "@/hooks/useFeedItem";
 import useStore from "@/store/useStore";
 
+import { Icon } from "../icons/Icon";
 import AppIconButton from "../ui/AppIconButton";
 import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
@@ -16,20 +17,19 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions }) => {
   const [isMuted, setIsMuted] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [likesCount, setLikesCount] = useState(item.initialLikes || 120);
   const [isPlaying, setIsPlaying] = useState(true);
   const playerRef = useRef(null);
-  const { handleShare } = useFeedItem({
-    initialLikes: likesCount,
+  const tapTimeout = useRef(null);
+
+  const videoProgress = useStore((state) => state.videoProgress);
+  const setVideoProgress = useStore((state) => state.setVideoProgress);
+  const hasRestoredTime = useRef(false);
+
+  const { isLiked, likesCount, heartScale, heartOpacity, handleLike, handleDoubleTap, handleShare } = useFeedItem({
+    initialLikes: item.initialLikes || 120,
     username: item.username,
     description: item.description
   });
-  const videoProgress = useStore((state) => state.videoProgress);
-  const setVideoProgress = useStore((state) => state.setVideoProgress);
-
-  const hasRestoredTime = useRef(false);
 
   const player = useVideoPlayer(item.videoUrl, (p) => {
     p.loop = true;
@@ -80,6 +80,9 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
       if (playerRef.current) {
         setVideoProgress(item.id, playerRef.current.currentTime);
       }
+      if (tapTimeout.current) {
+        clearTimeout(tapTimeout.current);
+      }
     };
   }, [item.id, setVideoProgress]);
 
@@ -99,15 +102,23 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
     }
   }, []);
 
-  // const toggleMute = () => setIsMuted((prev) => !prev);
+  const handleContainerPress = useCallback(() => {
+    const isDoubleTap = handleDoubleTap();
 
-  const handleLike = () => {
-    setIsLiked((prev) => {
-      const next = !prev;
-      setLikesCount((count) => (next ? count + 1 : count - 1));
-      return next;
-    });
-  };
+    if (isDoubleTap) {
+      if (tapTimeout.current) {
+        clearTimeout(tapTimeout.current);
+        tapTimeout.current = null;
+      }
+    } else {
+      if (!tapTimeout.current) {
+        tapTimeout.current = setTimeout(() => {
+          tapTimeout.current = null;
+          handleTogglePlayPause();
+        }, 300);
+      }
+    }
+  }, [handleDoubleTap, handleTogglePlayPause]);
 
   return (
     <View style={styles.itemContainer}>
@@ -118,8 +129,21 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
         nativeControls={false}
         allowsFullscreen={false}
       />
-      <Pressable style={styles.videoPressable} onPress={handleTogglePlayPause} />
+      <Pressable style={styles.videoPressable} onPress={handleContainerPress} />
       <BackButton style={styles.backButton} />
+
+      <Animated.View
+        style={[
+          styles.bigHeartOverlay,
+          {
+            opacity: heartOpacity,
+            transform: [{ scale: heartScale }],
+            pointerEvents: "none"
+          }
+        ]}
+      >
+        <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
+      </Animated.View>
 
       <View style={styles.overlay} pointerEvents="box-none">
         <View style={styles.authorRow} pointerEvents="none">
@@ -166,7 +190,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
             icon="menu"
             iconSize={26}
             color="#FFFFFF"
-            onPress={() => onOpenOptions && onOpenOptions(item.id)}
+            onPress={() => onOpenOptions && onOpenOptions(item.id, item.isOwner)}
           />
         </View>
       </View>
@@ -194,6 +218,12 @@ const styles = StyleSheet.create({
     top: Spacing.md,
     left: Spacing.md,
     zIndex: 30
+  },
+  bigHeartOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 15
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
