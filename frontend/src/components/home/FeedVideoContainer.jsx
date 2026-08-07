@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Animated, Dimensions, Pressable, StyleSheet } from "react-native";
+import { Animated, Dimensions, Image, Pressable, StyleSheet } from "react-native";
 
 import { useVideoPlayer, VideoView } from "expo-video";
 
@@ -11,15 +11,25 @@ import { Icon } from "../icons/Icon";
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const VIDEO_HEIGHT = SCREEN_HEIGHT * 0.75;
 
-const FeedVideoContainer = memo(({ videoUrl, isReady, heartOpacity, heartScale, onPress }) => {
+const FeedVideoContainer = memo(({ videoUrl, thumbnail, isReady, heartOpacity, heartScale, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const player = useVideoPlayer(videoUrl, (p) => {
     p.loop = true;
     p.muted = true;
   });
+
+  useEffect(() => {
+    const subscription = player.addListener("playingChange", (event) => {
+      setIsPlaying(event.isPlaying);
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, [player]);
 
   useEffect(() => {
     if (isReady) {
@@ -38,6 +48,8 @@ const FeedVideoContainer = memo(({ videoUrl, isReady, heartOpacity, heartScale, 
     setIsMuted((prev) => !prev);
   }, []);
 
+  const showThumbnail = !isPlaying && thumbnail;
+
   return (
     <Pressable style={styles.videoContainer} onPress={onPress}>
       <VideoView
@@ -47,6 +59,9 @@ const FeedVideoContainer = memo(({ videoUrl, isReady, heartOpacity, heartScale, 
         nativeControls={false}
         allowsFullscreen={false}
       />
+
+      {showThumbnail && <Image source={thumbnail} style={styles.thumbnail} resizeMode="cover" />}
+
       <Animated.View
         style={[
           styles.bigHeartOverlay,
@@ -73,12 +88,18 @@ const getStyles = () =>
       width: "100%",
       height: VIDEO_HEIGHT,
       backgroundColor: "#000",
-      overflow: "hidden",
-      flexDirection: "column"
+      position: "relative",
+      overflow: "hidden"
     },
     video: {
       width: "100%",
       height: "100%"
+    },
+    thumbnail: {
+      ...StyleSheet.absoluteFillObject,
+      width: "100%",
+      height: "100%",
+      zIndex: 5
     },
     bigHeartOverlay: {
       ...StyleSheet.absoluteFillObject,

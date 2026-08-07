@@ -42,6 +42,7 @@ export const feedItems = [
     badge: 'badge_elite',
     description: 'Erster Video-Feed Test! 🚀🎥',
     videoUrl: require("@/../public/assets/posts/testVideo.mp4"),
+    thumbnail: require("@/../public/assets/posts/sportSelfie1.jpeg"),
     avatar: 'https://i.pravatar.cc/150?u=LifePoints_Dev'
   }
 ];

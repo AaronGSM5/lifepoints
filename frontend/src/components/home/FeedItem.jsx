@@ -21,6 +21,7 @@ const FeedItem = memo(
   ({
     type = "image",
     videoUrl,
+    thumbnail,
     username,
     badge,
     avatar,
@@ -79,6 +80,7 @@ const FeedItem = memo(
           {type === "video" ? (
             <FeedVideoContainer
               videoUrl={videoUrl}
+              thumbnail={thumbnail}
               isReady={isReady}
               heartOpacity={heartOpacity}
               heartScale={heartScale}
