@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Animated, Dimensions, Image, Pressable, StyleSheet } from "react-native";
 
 import { router } from "expo-router";
@@ -6,6 +6,7 @@ import { useVideoPlayer, VideoView } from "expo-video";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
 
@@ -18,10 +19,35 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const videoProgress = useStore((state) => state.videoProgress);
+  const setVideoProgress = useStore((state) => state.setVideoProgress);
+  const savedTime = videoProgress[id] || 0;
+
+  const playerRef = useRef(null);
+
   const player = useVideoPlayer(videoUrl, (p) => {
     p.loop = true;
     p.muted = true;
+    p.currentTime = savedTime;
+    playerRef.current = p;
   });
+
+  useEffect(() => {
+    return () => {
+      if (playerRef.current) {
+        setVideoProgress(id, playerRef.current.currentTime);
+      }
+    };
+  }, [id, setVideoProgress]);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      const timeDiff = Math.abs(playerRef.current.currentTime - savedTime);
+      if (timeDiff > 0.5) {
+        playerRef.current.currentTime = savedTime;
+      }
+    }
+  }, [savedTime]);
 
   useEffect(() => {
     const subscription = player.addListener("playingChange", (event) => {
@@ -82,6 +108,10 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
         style={styles.fullscreenButton}
         onPress={(e) => {
           e.stopPropagation();
+          if (playerRef.current) {
+            setVideoProgress(id, playerRef.current.currentTime);
+          }
+
           router.push({
             pathname: "/feed/fullscreen",
             params: { postId: id }
@@ -123,6 +153,15 @@ const getStyles = () =>
       position: "absolute",
       bottom: Spacing.md,
       right: Spacing.md,
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      padding: Spacing.xs,
+      borderRadius: Spacing.borderRadius.full,
+      zIndex: 20
+    },
+    fullscreenButton: {
+      position: "absolute",
+      bottom: Spacing.md,
+      right: 52,
       backgroundColor: "rgba(0, 0, 0, 0.6)",
       padding: Spacing.xs,
       borderRadius: Spacing.borderRadius.full,

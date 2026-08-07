@@ -18,8 +18,14 @@ const VIEWABILITY_CONFIG = {
 
 const FullscreenVideoItem = ({ item, isVisible }) => {
   const [isMuted, setIsMuted] = useState(false);
-
   const playerRef = useRef(null);
+
+  const videoProgress = useStore((state) => state.videoProgress);
+  const setVideoProgress = useStore((state) => state.setVideoProgress);
+
+  const [initialTime] = useState(() => videoProgress[item.id] || 0);
+
+  const hasSetTime = useRef(false);
 
   const player = useVideoPlayer(item.videoUrl, (p) => {
     p.loop = true;
@@ -28,14 +34,26 @@ const FullscreenVideoItem = ({ item, isVisible }) => {
   });
 
   useEffect(() => {
+    return () => {
+      if (playerRef.current) {
+        setVideoProgress(item.id, playerRef.current.currentTime);
+      }
+    };
+  }, [item.id, setVideoProgress]);
+
+  useEffect(() => {
     if (playerRef.current) {
       if (isVisible) {
+        if (!hasSetTime.current && initialTime > 0) {
+          playerRef.current.currentTime = initialTime;
+          hasSetTime.current = true;
+        }
         playerRef.current.play();
       } else {
         playerRef.current.pause();
       }
     }
-  }, [isVisible]);
+  }, [isVisible, initialTime]);
 
   useEffect(() => {
     if (playerRef.current) {

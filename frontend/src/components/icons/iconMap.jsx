@@ -60,6 +60,7 @@ export const IconMap = {
   time: ({ outline, ...props }) => <Icon name={getName("time", outline)} {...props} />,
   volumeMute: ({ outline, ...props }) => <Icon name={getName("volume-mute", outline)} {...props} />,
   volumeHigh: ({ outline, ...props }) => <Icon name={getName("volume-up", outline)} {...props} />,
+  expand: ({ outline, ...props }) => <Icon name={getName("expand-diagonal", outline)} {...props} />,
   // Placeholders
   flower: ({ outline, ...props }) => <Icon name={getName("flower", outline)} {...props} />,
   code: ({ outline, ...props }) => <Icon name={getName("code", outline)} {...props} />,
