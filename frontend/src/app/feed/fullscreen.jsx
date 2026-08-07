@@ -3,6 +3,7 @@ import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
 
+import CommentSheet from "@/components/home/CommentSheet";
 import FullscreenVideoItem from "@/components/home/FullscreenVideoItem";
 import useStore from "@/store/useStore";
 
@@ -23,6 +24,7 @@ export default function FullscreenFeedScreen() {
   const startIndex = initialIndex !== -1 ? initialIndex : 0;
 
   const [currentIndex, setCurrentIndex] = useState(startIndex);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const flatListRef = useRef(null);
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
@@ -32,7 +34,13 @@ export default function FullscreenFeedScreen() {
   }, []);
 
   const renderItem = useCallback(
-    ({ item, index }) => <FullscreenVideoItem item={item} isVisible={index === currentIndex} />,
+    ({ item, index }) => (
+      <FullscreenVideoItem
+        item={item}
+        isVisible={index === currentIndex}
+        onOpenComments={(id) => setSelectedPostId(id)}
+      />
+    ),
     [currentIndex]
   );
 
@@ -60,6 +68,11 @@ export default function FullscreenFeedScreen() {
         onViewableItemsChanged={onViewableItemsChanged}
         initialScrollIndex={startIndex}
         getItemLayout={getItemLayout}
+      />
+      <CommentSheet
+        isVisible={selectedPostId !== null}
+        onClose={() => setSelectedPostId(null)}
+        postId={selectedPostId}
       />
     </View>
   );
