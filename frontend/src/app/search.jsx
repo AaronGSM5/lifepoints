@@ -7,6 +7,7 @@ import HistoryItem from "@/components/search/HistoryItem";
 import AppBadge from "@/components/ui/AppBadge";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
+import { EmptyView } from "@/components/ui/EmptyView";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -14,6 +15,7 @@ export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchHistory = ["Gaming", "Meditation", "Fitness Beginner", "Rewe"];
+  const searchResults = [];
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("common");
@@ -76,18 +78,33 @@ export default function SearchScreen() {
       </View>
 
       {searchQuery === "" ? (
-        <View style={{ flex: 1 }}>
-          <View style={{ marginVertical: Spacing.md }}>
+        <View style={styles.historySection}>
+          <View style={styles.historyHeader}>
             <AppText bold>{t("Recently Searched")}</AppText>
           </View>
-
-          <FlatList data={searchHistory} keyExtractor={(_, index) => index.toString()} renderItem={renderHistoryItem} />
+          <FlatList
+            data={searchHistory}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={renderHistoryItem}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       ) : (
         <View style={styles.resultsSection}>
-          <AppText style={styles.searchForText}>
-            {t("Search for:")} "{searchQuery}"
-          </AppText>
+          {searchResults.length === 0 ? (
+            <EmptyView
+              icon="search"
+              title={t("No results found")}
+              description={t("We couldn't find anything matching your search. Try a different keyword.")}
+              actionTitle={t("Clear search")}
+              onAction={() => {
+                setSearchQuery("");
+                Keyboard.dismiss();
+              }}
+            />
+          ) : (
+            <AppText>Ergebnisse für "{searchQuery}"</AppText>
+          )}
         </View>
       )}
     </ScreenWrapper>
@@ -113,13 +130,14 @@ const getStyles = () =>
       gap: Spacing.sm,
       paddingHorizontal: Spacing.md
     },
+    historySection: {
+      flex: 1
+    },
+    historyHeader: {
+      marginVertical: Spacing.md
+    },
     resultsSection: {
       flex: 1,
       paddingHorizontal: Spacing.md
-    },
-    searchForText: {
-      textAlign: "center",
-      marginTop: 40,
-      opacity: 0.5
     }
   });

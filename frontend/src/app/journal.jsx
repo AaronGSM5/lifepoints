@@ -2,10 +2,13 @@ import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionList, StyleSheet, View } from "react-native";
 
+import { router } from "expo-router";
+
 import { useMyProfile } from "@/api/profile/useMyProfile";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
+import { EmptyView } from "@/components/ui/EmptyView";
 import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
@@ -71,14 +74,18 @@ const JournalPage = () => {
     );
   }
 
-  if (!activities || activities.length === 0) {
+  if (activities || activities.length === 0) {
     return (
       <ScreenWrapper style={styles.wrapper}>
         <ScreenTitle title={t("My Impact Journal")} />
         <View style={styles.centerContent}>
-          <AppText type="body" style={{ textAlign: "center", color: MyTheme.muted }}>
-            {t("No activities yet. Start completing tasks to see your impact here!")}
-          </AppText>
+          <EmptyView
+            icon="calendar"
+            title={t("No activity recorded")}
+            description={t("Your past achievements will appear here once you completed tasks regularly.")}
+            actionTitle={t("View tasks")}
+            onAction={() => router.push("/tasks")}
+          />
         </View>
       </ScreenWrapper>
     );

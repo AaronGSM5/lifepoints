@@ -3,10 +3,12 @@ import { useTranslation } from "react-i18next";
 import { SectionList, StyleSheet, View } from "react-native";
 
 import { useNotifications } from "@/api/notifications/useNotifications";
+import { ErrorFallback } from "@/components/ErrorFallback";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import NotificationListItem from "@/components/notifications/NotificationListItem";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
+import { EmptyView } from "@/components/ui/EmptyView";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -20,7 +22,7 @@ export default function NotificationsScreen() {
   const { data: rawNotifications, isLoading, isError, error } = useNotifications();
 
   const sections = useMemo(() => {
-    if (!rawNotifications) return [];
+    if (!rawNotifications || rawNotifications.length === 0) return [];
     const sorted = [...rawNotifications].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const prozessed = sorted.map((item) => ({
@@ -50,9 +52,13 @@ export default function NotificationsScreen() {
       {isLoading ? (
         <AppLoadingSpinner centered />
       ) : isError ? (
-        <View style={styles.errorContainer}>
-          <AppText>Fehler beim Laden: {error.message}</AppText>
-        </View>
+        <ErrorFallback error={error} />
+      ) : sections.length === 0 ? (
+        <EmptyView
+          icon="bell"
+          title={t("All caught up!")}
+          description={t("You have no new notifications right now. Check back later!")}
+        />
       ) : (
         <SectionList
           sections={sections}
@@ -75,10 +81,5 @@ const getStyles = () =>
     sectionHeader: {
       paddingBottom: Spacing.sm,
       backgroundColor: "transparent"
-    },
-    errorContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
     }
   });
