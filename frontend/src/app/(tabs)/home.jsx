@@ -13,24 +13,10 @@ import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useHome } from "@/hooks/useHome";
+import { HOME_HERO_DATA } from "@/mocks/HeroData";
 import useStore from "@/store/useStore";
 
 const SKELETON_ITEMS = [1, 2, 3];
-
-const HOME_HERO_DATA = [
-  {
-    id: "1",
-    image: require("@/../public/assets/events/achtsamkeit2.png"),
-    title: "Sommer Party",
-    eventLink: "/event/123"
-  },
-  {
-    id: "2",
-    image: require("@/../public/assets/events/sportevent.png"),
-    title: "Tech Meetup",
-    eventLink: "/event/456"
-  }
-];
 
 export default function HomeScreen() {
   const { feedItems, isLoading, isRefreshing, refreshHomeData } = useHome();

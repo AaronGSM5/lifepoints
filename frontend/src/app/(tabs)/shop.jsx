@@ -6,11 +6,11 @@ import { useRouter } from "expo-router";
 
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import EmptyState from "@/components/shop/EmptyState";
 import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import RewardCard from "@/components/shop/RewardCard";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import CategoryButtons from "@/components/ui/CategoryButtons";
+import { EmptyView } from "@/components/ui/EmptyView";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -90,14 +90,20 @@ export default function ShopScreen() {
     );
   }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, styles]);
 
-  const renderEmptyState = useCallback(
-    () => (
+  const renderEmptyState = useCallback(() => {
+    const translatedCat = t(`categories.${activeCat.toLowerCase()}`);
+    return (
       <View style={styles.paddedContent}>
-        <EmptyState activeCat={activeCat} setActiveCat={setActiveCat} />
+        <EmptyView
+          icon="search"
+          title={t("No Rewards Found")}
+          description={t("We don't have any deals for", { category: translatedCat })}
+          actionTitle={t("Reset filter")}
+          onAction={() => setActiveCat("all")}
+        />
       </View>
-    ),
-    [activeCat, setActiveCat, styles.paddedContent]
-  );
+    );
+  }, [activeCat, setActiveCat, styles.paddedContent, t]);
 
   const renderFooter = useCallback(() => {
     if (!isFetchingMore) return null;

@@ -7,32 +7,27 @@ import { router } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
-import AppText from "@/components/ui/AppText";
 import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTasks } from "@/hooks/useTasks";
+import { TASKS_HERO_DATA } from "@/mocks/HeroData";
+import { mockActiveTasks } from "@/mocks/Tasks";
+import { mockFYTasks } from "@/mocks/Tasks";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/addOpacity";
 import { triggerHaptic } from "@/utils/haptics";
 
 import FYTaskCard from "./FYTaskCard";
+import { EmptyView } from "../ui/EmptyView";
 
-const TASKS_HERO_DATA = [
-  {
-    id: "1",
-    image: require("@/../public/assets/events/achtsamkeit2.png"),
-    title: "Sommer Party",
-    eventLink: "/event/123"
-  },
-  {
-    id: "2",
-    image: require("@/../public/assets/events/sportevent.png"),
-    title: "Tech Meetup",
-    eventLink: "/event/456"
-  }
+const listData = [
+  { id: "event_banner", type: "event_banner" },
+  { id: "active_tasks", type: "active_tasks" },
+  { id: "done_tasks", type: "done_tasks" },
+  { id: "for_you", type: "for_you" }
 ];
 
 const TodayTab = ({ scrollY, onOpenQuestModal }) => {
@@ -48,57 +43,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
   const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
 
-  const listData = useMemo(() => {
-    const topElements = [
-      { id: "event_banner", type: "event_banner" },
-      { id: "active_tasks", type: "active_tasks" },
-      { id: "done_tasks", type: "done_tasks" },
-      { id: "for_you", type: "for_you" }
-    ];
-
-    return [...topElements];
-  }, []);
-
-  const [mockActiveTasks, setMockActiveTasks] = useState([
-    {
-      id: 1,
-      title: "10-Min Morning Stretch",
-      icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
-      lp: 10,
-      substeps: [
-        { _id: "s1", title: "Roll out mat", description: "Prepare your space", completed: true },
-        { _id: "s2", title: "Neck stretches", description: "Release tension", completed: false }
-      ]
-    },
-    {
-      id: 2,
-      title: "Deep Work: Coding",
-      icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
-      lp: 6,
-      substeps: [
-        { _id: "s1", title: "Fes ting", description: "Open VS Code", completed: false },
-        { _id: "s2", title: "Mi Bombo!", description: "Get into hyperfocus", completed: false }
-      ]
-    }
-  ]);
-
-  const mockFYTasks = useMemo(
-    () => [
-      {
-        id: 1,
-        title: "10-Min Morning Stretch",
-        icon: { name: "sun", color: "#d6c100", bg: addOpacity("#d6c100", 0.1) },
-        lp: 10
-      },
-      {
-        id: 2,
-        title: "Deep Work: Coding",
-        icon: { name: "code", color: "#dbe2fb", bg: "#2d3448" },
-        lp: 20
-      }
-    ],
-    []
-  );
+  const [activeTasks, setActiveTasks] = useState(mockActiveTasks);
 
   const handleToggleDoneTasks = () => {
     setIsDoneTasksVisible((prev) => !prev);
@@ -110,7 +55,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   }, []);
 
   const handleAddSubStep = useCallback((taskId, subStepText) => {
-    setMockActiveTasks((prevTasks) =>
+    setActiveTasks((prevTasks) =>
       prevTasks.map((task) => {
         if (task.id === taskId) {
           return {
@@ -133,7 +78,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   }, []);
 
   const handleDeleteSubStep = useCallback((taskId, subStepId) => {
-    setMockActiveTasks((prevTasks) =>
+    setActiveTasks((prevTasks) =>
       prevTasks.map((task) => {
         if (task.id === taskId) {
           return {
@@ -182,19 +127,18 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                 rightIcon={<Icon name={"survey"} />}
                 onRightPress={onOpenQuestModal}
               />
-              {myActiveTasks.length === 1 ? (
-                <View style={styles.emptyTasksContainer}>
-                  <View style={styles.emptyTasksIconContainer}>
-                    <Icon name={"flower"} color={MyTheme.primaryAccent} />
-                  </View>
-                  <AppText style={styles.noTasksText}>{t("No Active Tasks")}</AppText>
-                  <AppText bold style={styles.noTasksQuote}>
-                    {t("common:EmptyTaskQuote1")}
-                  </AppText>
-                </View>
+              {myActiveTasks.length === 0 ? (
+                <EmptyView
+                  icon="flower"
+                  iconColor={MyTheme.primaryAccent}
+                  iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
+                  iconSize={24}
+                  title={t("No Active Tasks")}
+                  description={t("common:EmptyTaskQuote1")}
+                />
               ) : (
                 <View style={styles.tasksList}>
-                  {mockActiveTasks.map((task, i) => {
+                  {activeTasks.map((task, i) => {
                     const totalSteps = task.substeps?.length || 0;
                     const completedSteps = task.substeps?.filter((step) => step.completed).length || 0;
                     const calculatedProgress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
@@ -266,8 +210,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       t,
       styles,
       handleToggleSubStep,
-      mockActiveTasks,
-      mockFYTasks,
+      activeTasks,
       trackTask,
       handleAddSubStep,
       handleDeleteSubStep,
@@ -288,35 +231,14 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   );
 };
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     paddedContent: {
       paddingHorizontal: Spacing.md
     },
-    emptyTasksContainer: {
-      alignItems: "center",
-      marginBottom: Spacing.xl,
-      marginTop: Spacing.md
-    },
     tasksList: {
       gap: Spacing.md,
       marginBottom: Spacing.md
-    },
-    emptyTasksIconContainer: {
-      backgroundColor: addOpacity(theme.primaryAccent, 0.16),
-      padding: Spacing.sm,
-      borderRadius: Spacing.borderRadius.full
-    },
-    noTasksText: {
-      textAlign: "center",
-      marginTop: Spacing.sm,
-      color: theme.muted
-    },
-    noTasksQuote: {
-      textAlign: "center",
-      marginTop: Spacing.md,
-      color: addOpacity(theme.text, 0.85),
-      fontSize: 13
     }
   });
 

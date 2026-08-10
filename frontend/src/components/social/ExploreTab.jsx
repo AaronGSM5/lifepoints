@@ -15,25 +15,11 @@ import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { COMMUNITIES_HERO_DATA } from "@/mocks/HeroData";
 import useStore from "@/store/useStore";
 import { capitalize, extractId } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
-
-const COMMUNITIES_HERO_DATA = [
-  {
-    id: "1",
-    image: require("@/../public/assets/events/achtsamkeit2.png"),
-    title: "Sommer Party",
-    eventLink: "/event/123"
-  },
-  {
-    id: "2",
-    image: require("@/../public/assets/events/sportevent.png"),
-    title: "Tech Meetup",
-    eventLink: "/event/456"
-  }
-];
 
 const ExploreTab = ({ scrollY }) => {
   const MyTheme = useAppTheme();
