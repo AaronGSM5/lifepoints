@@ -82,5 +82,12 @@
   "eingeben...": "eingeben...",
   // TaskSelector
   "Related task": "Zugehörige Aufgabe",
-  "Select task": "Aufgabe auswählen"
+  "Select task": "Aufgabe auswählen",
+  // Empty / Error
+  "Could not load tasks": "Aufgaben konnten nicht geladen werden",
+  "Please check your internet connection and try again.": "Bitte überprüfe deine Internetverbindung und versuche es erneut.",
+  "No tasks available": "Keine Aufgaben verfügbar",
+  "We are currently updating our challenges. But hey, you can shape LifePoints by suggesting a task.": "Wir updaten gerade unsere Challenges. Aber hey, du kannst LifePoints mitgestalten indem du eine Aufgabe vorschlägst.",
+  "Try again": "Erneut versuchen",
+  "Refresh": "Aktualisieren"
 }

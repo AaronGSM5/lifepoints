@@ -12,21 +12,33 @@ import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 import { capitalize } from "@/utils/helpers";
 
+import { EmptyView } from "../ui/EmptyView";
+
 const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
+  const MyTheme = useAppTheme();
   const styles = getStyles();
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
-  const { data, isLoading } = useTasks();
+  const { data, isLoading, isError, refetch } = useTasks();
 
   const listData = useMemo(() => {
+    if (isError) {
+      return [{ id: "error_state", type: "error_state" }];
+    }
+
     const tasks = data?.data || [];
+
+    if (!isLoading && tasks.length === 0) {
+      return [{ id: "empty_state", type: "empty_state" }];
+    }
     const topElements = [{ id: "search_bar", type: "search_bar" }];
     const uniqueCategories = [
       ...new Set(
@@ -54,7 +66,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
       .filter((cat) => cat.data.length > 0);
 
     return [...topElements, ...groupedCategories];
-  }, [data?.data]);
+  }, [data?.data, isError, isLoading]);
 
   const renderHorizontalTaskItem = useCallback(
     ({ item }) => (
@@ -87,10 +99,39 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
 
   const renderItem = useCallback(
     ({ item }) => {
+      const topOffset = { marginTop: Spacing.md + 44 + Spacing.md };
       switch (item.type) {
+        case "error_state":
+          return (
+            <View style={[styles.paddedContent, topOffset]}>
+              <EmptyView
+                icon="infoCircle"
+                iconColor={MyTheme.warning}
+                title={t("Could not load tasks")}
+                description={t("Please check your internet connection and try again.")}
+                actionTitle={t("Try again")}
+                onAction={refetch}
+              />
+            </View>
+          );
+        case "empty_state":
+          return (
+            <View style={[styles.paddedContent, topOffset]}>
+              <EmptyView
+                icon="flower"
+                iconColor={MyTheme.primaryAccent}
+                title={t("No tasks available")}
+                description={t(
+                  "We are currently updating our challenges. But hey, you can shape LifePoints by suggesting a task."
+                )}
+                actionTitle={t("Refresh")}
+                onAction={refetch}
+              />
+            </View>
+          );
         case "search_bar":
           return (
-            <View style={[styles.paddedContent, { marginTop: Spacing.md + 44 + Spacing.md }]}>
+            <View style={[styles.paddedContent, topOffset]}>
               <AppInput icon="search" placeholder={t("Search...")} blur />
             </View>
           );
@@ -116,17 +157,20 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
           return null;
       }
     },
-    [isLoading, renderHorizontalTaskItem, t, styles]
+    [isLoading, renderHorizontalTaskItem, t, styles, MyTheme, refetch]
   );
 
-  const renderFooter = () => (
-    <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
-      <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
-        {t("Can't find what you're searching for?")}
-      </AppText>
-      <SuggestTaskInput />
-    </View>
-  );
+  const renderFooter = () => {
+    if (isError) return null;
+    return (
+      <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
+        <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>
+          {t("Can't find what you're searching for?")}
+        </AppText>
+        <SuggestTaskInput />
+      </View>
+    );
+  };
 
   return (
     <AnimatedScreenList

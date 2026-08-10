@@ -82,5 +82,12 @@
   "eingeben...": "",
   // TaskSelector
   "Related task": "Related task",
-  "Select task": "Select task"
+  "Select task": "Select task",
+  // Empty / Error
+  "Could not load tasks": "Could not load tasks",
+  "Please check your internet connection and try again.": "Please check your internet connection and try again.",
+  "No tasks available": "No tasks available",
+  "We are currently updating our challenges. But hey, you can shape LifePoints by suggesting a task.": "We are currently updating our challenges. But hey, you can shape LifePoints! Scroll down and suggest a task.",
+  "Try again": "Try again",
+  "Refresh": "Refresh"
 }
