@@ -21,6 +21,7 @@ export const IconMap = {
   notifications: ({ outline, ...props }) => <Icon name={getName("notification", outline)} {...props} />,
   settings: ({ outline, ...props }) => <Icon name={getName("settings-3", outline)} {...props} />,
   // UI
+  video: ({ outline, ...props }) => <Icon name={getName("video", outline)} {...props} />,
   add: ({ outline, ...props }) => <Icon name={getName("add", outline)} {...props} />,
   filter: ({ outline, ...props }) => <Icon name={getName("equalizer", outline)} {...props} />,
   checkmark: ({ outline, ...props }) => <Icon name={getName("check", outline)} {...props} />,

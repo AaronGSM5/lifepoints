@@ -6,7 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import ImageUploader from "@/components/post/ImageUploader";
+import MediaUploader from "@/components/post/MediaUploader";
 import TaskSelector from "@/components/post/TaskSelector";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
@@ -27,7 +27,7 @@ export default function CreatePost() {
   const [isPublic, setIsPublic] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [caption, setCaption] = useState("");
-  const [image, setImage] = useState(null);
+  const [media, setMedia] = useState(null);
   const activities = useStore((state) => state.activities);
 
   const availableTaskIds = useMemo(() => {
@@ -49,27 +49,32 @@ export default function CreatePost() {
   const isPostButtonEnabled = useMemo(
     () =>
       isPublic
-        ? image !== null && caption.trim().length > 0 && selectedTaskId !== null
+        ? media !== null && caption.trim().length > 0 && selectedTaskId !== null
         : caption.trim().length > 0 && selectedTaskId !== null,
-    [caption, image, isPublic, selectedTaskId]
+    [caption, media, isPublic, selectedTaskId]
   );
 
-  const pickImage = useCallback(async () => {
+  const pickMedia = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert(t("We need access to your gallery so you can post pictures!"));
+      alert(t("We need access to your gallery so you can post pictures and videos!"));
       return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [4, 5],
       quality: 0.8
+      // videoMaxDuration: 60
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const asset = result.assets[0];
+      setMedia({
+        uri: asset.uri,
+        type: asset.type || (asset.uri.endsWith(".mp4") || asset.uri.endsWith(".mov") ? "video" : "image"),
+        duration: asset.duration || null
+      });
     }
   }, [t]);
 
@@ -146,8 +151,8 @@ export default function CreatePost() {
           </View>
 
           <View>
-            <SectionHeader title={t("Upload image")} />
-            <ImageUploader isPublic={isPublic} image={image} setImage={setImage} pickImage={pickImage} />
+            <SectionHeader title={t("Upload photo or video")} />
+            <MediaUploader isPublic={isPublic} media={media} setMedia={setMedia} pickMedia={pickMedia} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
