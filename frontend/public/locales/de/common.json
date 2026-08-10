@@ -2,6 +2,14 @@
   "save": "Speichern",
   "cancel": "Abbrechen",
   "back": "Zurück",
+  // ErrorView
+  "Oops, that didn't go as planned.": "Hoppla, das lief nicht nach Plan.",
+  "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.": "Ein unerwarteter Fehler ist aufgetreten. Keine Sorge, dein Fortschritt in LifePoints ist sicher gespeichert.",
+  "Reload app": "App neu laden",
+  "Contact support": "Support kontaktieren",
+  "Unknown error": "Unbekannter Fehler",
+  "Something went wrong": "Da ist was schiefgelaufen.",
+  "Try again": "Erneut versuchen",
   // Search Page
   "Search...": "Suchen...",
   "User": "Nutzer",

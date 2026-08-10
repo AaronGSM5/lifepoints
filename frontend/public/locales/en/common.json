@@ -2,6 +2,14 @@
   "save": "Save",
   "cancel": "Cancel",
   "back": "Back",
+  // ErrorView
+  "Oops, that didn't go as planned.": "Oops, that didn't go as planned.",
+  "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.": "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.",
+  "Reload app": "Reload app",
+  "Contact support": "Contact support",
+  "Unknown error": "Unknown error",
+  "Something went wrong": "Something went wrong",
+  "Try again": "Try again",
   // Search Page
   "Search...": "Search...",
   "User": "User",
