@@ -44,5 +44,8 @@
   "Catalog": "Catalog",
   "Routines": "Routines",
   // Today
-  "EmptyTaskQuote1": "Every step counts, no matter how small. Let's grow together and make a positive impact today."
+  "EmptyTaskQuote1": "Every step counts, no matter how small. Let's grow together and make a positive impact today.",
+  // SocialPage
+  "Connect": "Connect",
+  "Explore": "Explore"
 }

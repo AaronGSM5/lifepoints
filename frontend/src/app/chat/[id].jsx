@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
+import ChatDateSeparator from "@/components/chat/ChatDateSeparator";
 import ChatInputBar from "@/components/chat/ChatInputBar";
 import ChatMessageItem from "@/components/chat/ChatMessageItem";
 import { Icon } from "@/components/icons/Icon";
@@ -14,14 +15,10 @@ import Avatar from "@/components/ui/Avatar";
 import BackButton from "@/components/ui/BackButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useChatTimeline } from "@/hooks/useChatTimeline";
+import { DUMMY_MESSAGES, mockChatPartner } from "@/mocks/UserChat";
 
-const DUMMY_MESSAGES = [
-  { id: "3", text: "Klar, machen wir so! 🙌", senderId: "me", time: "14:32" },
-  { id: "2", text: "Treffen wir uns später?", senderId: "otherUser", time: "14:30" },
-  { id: "1", text: "Hey Aaron!", senderId: "otherUser", time: "14:28" }
-];
-
-const chatPartner = { name: "Emilia", avatar: "https://i.pravatar.cc/150?u=du", isOnline: true };
+const viewabilityConfig = { itemVisiblePercentThreshold: 1 };
 
 const UserChatScreen = () => {
   const insets = useSafeAreaInsets();
@@ -32,14 +29,60 @@ const UserChatScreen = () => {
   const router = useRouter();
   const [messages, setMessages] = useState(DUMMY_MESSAGES);
   const [inputText, setInputText] = useState("");
+  const chatMessages = useChatTimeline(messages);
+
+  const [topVisibleDate, setTopVisibleDate] = useState(() => chatMessages[0]?.dateLabel || null);
+  const [fadeAnim] = useState(() => new Animated.Value(0));
+  const hideTimeout = useRef(null);
+  const currentTopDateRef = useRef(null);
+
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      const sortedItems = [...viewableItems].sort((a, b) => b.index - a.index);
+      const topItem = sortedItems[0]?.item;
+
+      if (topItem && topItem.dateLabel) {
+        if (currentTopDateRef.current !== topItem.dateLabel) {
+          currentTopDateRef.current = topItem.dateLabel;
+          setTopVisibleDate(topItem.dateLabel);
+        }
+      }
+    }
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 150,
+      useNativeDriver: true
+    }).start();
+
+    if (hideTimeout.current) clearTimeout(hideTimeout.current);
+
+    hideTimeout.current = setTimeout(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true
+      }).start();
+    }, 1200);
+  }, [fadeAnim]);
+
+  useEffect(() => {
+    return () => {
+      if (hideTimeout.current) clearTimeout(hideTimeout.current);
+    };
+  }, []);
 
   const sendMessage = useCallback(() => {
     if (!inputText.trim()) return;
 
+    const now = new Date();
     const newMessage = {
       id: Date.now().toString(),
       text: inputText.trim(),
       senderId: "me",
+      createdAt: now.toISOString(),
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     };
 
@@ -51,7 +94,15 @@ const UserChatScreen = () => {
     router.push(`/user/${id}`);
   }, [router, id]);
 
-  const renderMessage = useCallback(({ item }) => <ChatMessageItem item={item} showSenderName={false} />, []);
+  const renderMessage = useCallback(
+    ({ item }) => (
+      <View>
+        {item.isFirstOfDay && <ChatDateSeparator label={item.dateLabel} />}
+        <ChatMessageItem item={item} showSenderName={false} />
+      </View>
+    ),
+    []
+  );
 
   const keyExtractor = useCallback((item) => item.id, []);
 
@@ -67,10 +118,10 @@ const UserChatScreen = () => {
         <BackButton style={styles.headerIcon} />
 
         <TouchableOpacity onPress={openProfile} style={styles.headerTitleContainer} activeOpacity={0.7}>
-          <Avatar source={chatPartner.avatar} name={chatPartner.name} />
+          <Avatar source={mockChatPartner.avatar} name={mockChatPartner.name} />
           <View>
-            <AppText bold>{chatPartner.name}</AppText>
-            {chatPartner.isOnline && (
+            <AppText bold>{mockChatPartner.name}</AppText>
+            {mockChatPartner.isOnline && (
               <AppText bold type="caption" style={styles.onlineStatus}>
                 Online
               </AppText>
@@ -78,13 +129,25 @@ const UserChatScreen = () => {
           </View>
         </TouchableOpacity>
 
-        <Icon name="dots" color={MyTheme.text} onPress={() => console.log("Options")} style={styles.headerIcon} />
+        <Icon name="dots" onPress={() => console.log("Options")} style={styles.headerIcon} />
       </View>
 
       <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
+        <Animated.View
+          style={{
+            position: "absolute",
+            top: 0,
+            width: "100%",
+            zIndex: 10,
+            opacity: fadeAnim,
+            pointerEvents: "none"
+          }}
+        >
+          <ChatDateSeparator label={topVisibleDate} />
+        </Animated.View>
         <FlatList
           inverted
-          data={messages}
+          data={chatMessages}
           keyExtractor={keyExtractor}
           renderItem={renderMessage}
           contentContainerStyle={styles.chatListContent}
@@ -93,6 +156,11 @@ const UserChatScreen = () => {
           initialNumToRender={25}
           maxToRenderPerBatch={10}
           windowSize={11}
+          // scroll
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
         />
         <ChatInputBar
           value={inputText}

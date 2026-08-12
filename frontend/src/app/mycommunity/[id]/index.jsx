@@ -14,13 +14,8 @@ import AppText from "@/components/ui/AppText";
 import BackButton from "@/components/ui/BackButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { DUMMY_MESSAGES } from "@/mocks/CommunityChat";
 import useStore from "@/store/useStore";
-
-const DUMMY_MESSAGES = [
-  { id: "1", text: "Hey Leute, willkommen in der Community! 🎉", senderId: "system", time: "10:00" },
-  { id: "2", text: "Moin! Wer ist heute beim Workout dabei?", senderId: "user2", senderName: "Alex", time: "10:05" },
-  { id: "3", text: "Ich bin am Start! 💪", senderId: "me", time: "10:06" }
-];
 
 export default function MyCommunityChatScreen() {
   const MyTheme = useAppTheme();

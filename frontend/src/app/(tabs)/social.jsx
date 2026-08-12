@@ -7,7 +7,7 @@ import ExploreTab from "@/components/social/ExploreTab";
 import NavigationRow from "@/components/tasks/NavigationRow";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
-const TABS = ["My Space", "Explore"];
+const TABS = ["Connect", "Explore"];
 
 const SocialScreen = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);

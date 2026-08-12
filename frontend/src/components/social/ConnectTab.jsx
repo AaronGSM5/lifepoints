@@ -58,7 +58,7 @@ const ConnectTab = () => {
   const toolbarHeight = useToolbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
-  const handleNavigation = useCallback((id) => router.push(`/task/${id}`), []);
+  const handleNavigation = useCallback((id) => router.push(`/mycommunity/${id}`), []);
 
   const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
 
