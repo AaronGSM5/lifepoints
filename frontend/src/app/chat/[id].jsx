@@ -15,7 +15,7 @@ import Avatar from "@/components/ui/Avatar";
 import BackButton from "@/components/ui/BackButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useChatTimeline } from "@/hooks/useChatTimeline";
+import { useUserChat } from "@/hooks/useUserChat";
 import { DUMMY_MESSAGES, mockChatPartner } from "@/mocks/UserChat";
 
 const viewabilityConfig = { itemVisiblePercentThreshold: 1 };
@@ -27,10 +27,7 @@ const UserChatScreen = () => {
   const { t } = useTranslation("chat");
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const [messages, setMessages] = useState(DUMMY_MESSAGES);
-  const [inputText, setInputText] = useState("");
-  const chatMessages = useChatTimeline(messages);
-
+  const { chatMessages, inputText, setInputText, sendMessage } = useUserChat(DUMMY_MESSAGES);
   const [topVisibleDate, setTopVisibleDate] = useState(() => chatMessages[0]?.dateLabel || null);
   const [fadeAnim] = useState(() => new Animated.Value(0));
   const hideTimeout = useRef(null);
@@ -53,7 +50,7 @@ const UserChatScreen = () => {
   const handleScroll = useCallback(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 150,
+      duration: 50,
       useNativeDriver: true
     }).start();
 
@@ -62,10 +59,10 @@ const UserChatScreen = () => {
     hideTimeout.current = setTimeout(() => {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 300,
+        duration: 500,
         useNativeDriver: true
       }).start();
-    }, 1200);
+    }, 250);
   }, [fadeAnim]);
 
   useEffect(() => {
@@ -73,22 +70,6 @@ const UserChatScreen = () => {
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
     };
   }, []);
-
-  const sendMessage = useCallback(() => {
-    if (!inputText.trim()) return;
-
-    const now = new Date();
-    const newMessage = {
-      id: Date.now().toString(),
-      text: inputText.trim(),
-      senderId: "me",
-      createdAt: now.toISOString(),
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    };
-
-    setMessages((prev) => [newMessage, ...prev]);
-    setInputText("");
-  }, [inputText]);
 
   const openProfile = useCallback(() => {
     router.push(`/user/${id}`);

@@ -32,7 +32,7 @@ const ChatMessageItem = memo(({ item, showSenderName = true }) => {
       )}
       <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
         {!isMe && showSenderName && (
-          <AppText bold type="caption" style={styles.senderName}>
+          <AppText bold type="caption" style={[styles.senderName, item.color && { color: item.color }]}>
             {item.senderName}
           </AppText>
         )}
