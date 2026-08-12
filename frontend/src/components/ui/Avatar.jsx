@@ -47,7 +47,7 @@ const Avatar = ({
           style
         ]}
       >
-        <AppText type={"title"} style={{ fontSize: dimensions.fontSize, color: MyTheme.background }}>
+        <AppText type={"title"} style={{ fontSize: dimensions.fontSize, color: MyTheme.primaryAccent }}>
           {getInitial(name)}
         </AppText>
       </View>

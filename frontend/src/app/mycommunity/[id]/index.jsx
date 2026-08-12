@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-// eslint-disable-next-line import/no-unresolved
-import { MaterialIcons } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
-import ChatDateSeparator from "@/components/chat/ChatDateSeparator";
 import ChatInputBar from "@/components/chat/ChatInputBar";
-import ChatMessageItem from "@/components/chat/ChatMessageItem";
+import ChatMessageList from "@/components/chat/ChatMessageList";
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
@@ -19,8 +16,6 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useCommunityChat } from "@/hooks/useCommunityChat";
 import { DUMMY_MESSAGES } from "@/mocks/CommunityChat";
 import useStore from "@/store/useStore";
-
-const viewabilityConfig = { itemVisiblePercentThreshold: 1 };
 
 export default function MyCommunityChatScreen() {
   const insets = useSafeAreaInsets();
@@ -32,63 +27,10 @@ export default function MyCommunityChatScreen() {
   const { chatMessages, inputText, setInputText, sendMessage } = useCommunityChat(DUMMY_MESSAGES);
   const myCommunities = useStore((state) => state.myCommunities);
   const community = useMemo(() => myCommunities.find((c) => c._id === id) || {}, [id, myCommunities]);
-  const [topVisibleDate, setTopVisibleDate] = useState(() => chatMessages[0]?.dateLabel || null);
-  const [fadeAnim] = useState(() => new Animated.Value(0));
-  const hideTimeout = useRef(null);
-  const currentTopDateRef = useRef(null);
-
-  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
-      const sortedItems = [...viewableItems].sort((a, b) => b.index - a.index);
-      const topItem = sortedItems[0]?.item;
-
-      if (topItem && topItem.dateLabel) {
-        if (currentTopDateRef.current !== topItem.dateLabel) {
-          currentTopDateRef.current = topItem.dateLabel;
-          setTopVisibleDate(topItem.dateLabel);
-        }
-      }
-    }
-  }, []);
-
-  const handleScroll = useCallback(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 50,
-      useNativeDriver: true
-    }).start();
-
-    if (hideTimeout.current) clearTimeout(hideTimeout.current);
-
-    hideTimeout.current = setTimeout(() => {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true
-      }).start();
-    }, 250);
-  }, [fadeAnim]);
-
-  useEffect(() => {
-    return () => {
-      if (hideTimeout.current) clearTimeout(hideTimeout.current);
-    };
-  }, []);
 
   const openDetails = useCallback(() => {
     router.push(`/mycommunity/${id}/details`);
   }, [id, router]);
-
-  const renderMessage = useCallback(
-    ({ item }) => (
-      <View>
-        {item.isFirstOfDay && <ChatDateSeparator label={item.dateLabel} />}
-        <ChatMessageItem item={item} />
-      </View>
-    ),
-    []
-  );
-  const keyExtractor = useCallback((item) => item.id, []);
 
   return (
     <KeyboardAvoidingView
@@ -105,7 +47,7 @@ export default function MyCommunityChatScreen() {
           <View style={styles.titleRow}>
             {community?.icon && (
               <View style={[styles.iconBox, { backgroundColor: community?.color }]}>
-                <MaterialIcons name={community.icon} size={20} color="#fff" />
+                <Icon name={community.icon} size={20} />
               </View>
             )}
             <AppText bold>{community?.title || "Community Chat"}</AppText>
@@ -117,35 +59,7 @@ export default function MyCommunityChatScreen() {
       </View>
 
       <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            width: "100%",
-            zIndex: 10,
-            opacity: fadeAnim,
-            pointerEvents: "none"
-          }}
-        >
-          <ChatDateSeparator label={topVisibleDate} />
-        </Animated.View>
-        <FlatList
-          inverted
-          data={chatMessages}
-          keyExtractor={keyExtractor}
-          renderItem={renderMessage}
-          contentContainerStyle={styles.chatListContent}
-          showsVerticalScrollIndicator={false}
-          // performance optimizations
-          initialNumToRender={25}
-          maxToRenderPerBatch={10}
-          windowSize={11}
-          // scroll
-          onScroll={handleScroll}
-          scrollEventThrottle={16}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-        />
+        <ChatMessageList chatMessages={chatMessages} showSenderName contentContainerStyle={styles.chatListContent} />
         <ChatInputBar
           value={inputText}
           onChangeText={setInputText}

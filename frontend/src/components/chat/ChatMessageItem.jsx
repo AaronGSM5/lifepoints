@@ -5,6 +5,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
+import Avatar from "../ui/Avatar";
 
 const ChatMessageItem = memo(({ item, showSenderName = true }) => {
   const MyTheme = useAppTheme();
@@ -23,21 +24,15 @@ const ChatMessageItem = memo(({ item, showSenderName = true }) => {
   }
   return (
     <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
-      {!isMe && showSenderName && (
-        <View style={styles.avatar}>
-          <AppText bold style={styles.avatarText}>
-            {item.senderName?.charAt(0)}
-          </AppText>
-        </View>
-      )}
+      {!isMe && showSenderName && <Avatar source={item.avatar} name={item.senderName} style={styles.avatar} />}
       <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
         {!isMe && showSenderName && (
           <AppText bold type="caption" style={[styles.senderName, item.color && { color: item.color }]}>
             {item.senderName}
           </AppText>
         )}
-        <AppText style={{ color: isMe ? "#fff" : MyTheme.text }}>{item.text}</AppText>
-        <AppText type="caption" style={[styles.timeText, isMe && { color: "rgba(255,255,255,0.7)" }]}>
+        <AppText style={{ color: isMe ? "#000" : MyTheme.text }}>{item.text}</AppText>
+        <AppText type="caption" style={[styles.timeText, isMe && { color: "#000" }]}>
           {item.time}
         </AppText>
       </View>
@@ -70,17 +65,7 @@ const getStyles = (theme) =>
       justifyContent: "flex-start"
     },
     avatar: {
-      width: 32,
-      height: 32,
-      borderRadius: Spacing.borderRadius.full,
-      backgroundColor: "rgba(76, 150, 160, 0.2)",
-      alignItems: "center",
-      justifyContent: "center",
       marginRight: Spacing.sm
-    },
-    avatarText: {
-      color: "#4C96A0",
-      fontSize: 14
     },
     messageBubble: {
       maxWidth: "80%",
@@ -101,9 +86,9 @@ const getStyles = (theme) =>
     },
     timeText: {
       fontSize: 10,
-      marginTop: 4,
+      marginTop: Spacing.xs,
       alignSelf: "flex-end",
-      opacity: 0.6
+      opacity: 0.75
     }
   });
 

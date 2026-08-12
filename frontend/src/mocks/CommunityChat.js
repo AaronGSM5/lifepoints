@@ -5,6 +5,7 @@ export const DUMMY_MESSAGES = [
     text: "Freut mich, dass das neue Chat-Update so gut ankommt! 🚀 Das Scrolling sollte jetzt super flüssig sein.",
     senderId: "me",
     senderName: "Aaron",
+    avatar: "https://i.pravatar.cc/150?u=aaron",
     createdAt: new Date().toISOString(),
     time: "15:05"
   },
@@ -14,6 +15,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_alex",
     senderName: "Alex",
     color: "#4ADE80",
+    avatar: "https://i.pravatar.cc/150?u=alex",
     createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
     time: "14:50"
   },
@@ -23,6 +25,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_lisa",
     senderName: "Lisa",
     color: "#F472B6",
+    avatar: "https://i.pravatar.cc/150?u=lisa",
     createdAt: new Date(Date.now() - 1000 * 60 * 95).toISOString(),
     time: "13:30"
   },
@@ -31,6 +34,7 @@ export const DUMMY_MESSAGES = [
     text: "Bin gerade noch am Bugfixing, aber sollte am Wochenende in die Beta gehen.",
     senderId: "me",
     senderName: "Aaron",
+    avatar: "https://i.pravatar.cc/150?u=aaron",
     createdAt: new Date(Date.now() - 1000 * 60 * 110).toISOString(),
     time: "13:15"
   },
@@ -42,6 +46,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_tom",
     senderName: "Tom",
     color: "#60A5FA",
+    avatar: "https://i.pravatar.cc/150?u=tom",
     createdAt: new Date(Date.now() - 86400000).toISOString(),
     time: "20:45"
   },
@@ -51,6 +56,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_emilia",
     senderName: "Emilia",
     color: "#A78BFA",
+    avatar: "https://i.pravatar.cc/150?u=emilia",
     createdAt: new Date(Date.now() - 86400000 - 1000 * 60 * 85).toISOString(),
     time: "19:20"
   },
@@ -60,6 +66,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_alex",
     senderName: "Alex",
     color: "#4ADE80",
+    avatar: "https://i.pravatar.cc/150?u=alex",
     createdAt: new Date(Date.now() - 86400000 - 1000 * 60 * 195).toISOString(),
     time: "17:30"
   },
@@ -71,6 +78,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_tom",
     senderName: "Tom",
     color: "#60A5FA",
+    avatar: "https://i.pravatar.cc/150?u=tom",
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
     time: "10:20"
   },
@@ -80,6 +88,7 @@ export const DUMMY_MESSAGES = [
     senderId: "user_lisa",
     senderName: "Lisa",
     color: "#F472B6",
+    avatar: "https://i.pravatar.cc/150?u=lisa",
     createdAt: new Date(Date.now() - 86400000 * 3 - 1000 * 60 * 5).toISOString(),
     time: "10:15"
   },
@@ -88,6 +97,7 @@ export const DUMMY_MESSAGES = [
     text: "Willkommen in der LifePoints Beta-Community! Teilt hier gerne direkt euer Feedback oder Bugs, die euch auffallen.",
     senderId: "me",
     senderName: "Aaron",
+    avatar: "https://i.pravatar.cc/150?u=aaron",
     createdAt: new Date(Date.now() - 86400000 * 3 - 1000 * 60 * 20).toISOString(),
     time: "10:00"
   },
@@ -98,6 +108,7 @@ export const DUMMY_MESSAGES = [
     text: "Hat das geklappt? Test 2...",
     senderId: "me",
     senderName: "Aaron",
+    avatar: "https://i.pravatar.cc/150?u=aaron",
     createdAt: "2026-06-12T10:05:00.000Z",
     time: "10:05"
   },
@@ -106,6 +117,7 @@ export const DUMMY_MESSAGES = [
     text: "Test-Nachricht für die erste Datenbank-Einrichtung der Community-Chats. Hallo Welt!",
     senderId: "me",
     senderName: "Aaron",
+    avatar: "https://i.pravatar.cc/150?u=aaron",
     createdAt: "2026-06-12T10:00:00.000Z",
     time: "10:00"
   }
