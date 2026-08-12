@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
 import ChatInputBar from "@/components/chat/ChatInputBar";
 import ChatMessageItem from "@/components/chat/ChatMessageItem";
@@ -19,18 +21,19 @@ const DUMMY_MESSAGES = [
   { id: "1", text: "Hey Aaron!", senderId: "otherUser", time: "14:28" }
 ];
 
+const chatPartner = { name: "Emilia", avatar: "https://i.pravatar.cc/150?u=du", isOnline: true };
+
 const UserChatScreen = () => {
+  const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("chat");
   const { id } = useLocalSearchParams();
   const router = useRouter();
-
-  const chatPartner = { name: "Emilia", avatar: "https://i.pravatar.cc/150?u=du", isOnline: true };
-
   const [messages, setMessages] = useState(DUMMY_MESSAGES);
   const [inputText, setInputText] = useState("");
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (!inputText.trim()) return;
 
     const newMessage = {
@@ -42,7 +45,7 @@ const UserChatScreen = () => {
 
     setMessages((prev) => [newMessage, ...prev]);
     setInputText("");
-  };
+  }, [inputText]);
 
   const openProfile = useCallback(() => {
     router.push(`/user/${id}`);
@@ -50,45 +53,53 @@ const UserChatScreen = () => {
 
   const renderMessage = useCallback(({ item }) => <ChatMessageItem item={item} showSenderName={false} />, []);
 
+  const keyExtractor = useCallback((item) => item.id, []);
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
+      <Stack.Screen options={{ headerShown: false }} />
+
+      <View style={[styles.customHeader, { paddingTop: insets.top }]}>
+        <BackButton style={styles.headerIcon} />
+
+        <TouchableOpacity onPress={openProfile} style={styles.headerTitleContainer} activeOpacity={0.7}>
+          <Avatar source={chatPartner.avatar} name={chatPartner.name} />
+          <View>
+            <AppText bold>{chatPartner.name}</AppText>
+            {chatPartner.isOnline && (
+              <AppText bold type="caption" style={styles.onlineStatus}>
+                Online
+              </AppText>
+            )}
+          </View>
+        </TouchableOpacity>
+
+        <Icon name="dots" color={MyTheme.text} onPress={() => console.log("Options")} style={styles.headerIcon} />
+      </View>
+
       <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
-        <View style={styles.customHeader}>
-          <BackButton style={styles.headerIcon} />
-
-          <TouchableOpacity onPress={openProfile} style={styles.headerTitleContainer} activeOpacity={0.7}>
-            <Avatar source={chatPartner.avatar} name={chatPartner.name} />
-            <View>
-              <AppText bold>{chatPartner.name}</AppText>
-              {chatPartner.isOnline && (
-                <AppText bold type="caption" style={styles.onlineStatus}>
-                  Online
-                </AppText>
-              )}
-            </View>
-          </TouchableOpacity>
-
-          <Icon name="dots" color={MyTheme.text} onPress={() => console.log("Options")} style={styles.headerIcon} />
-        </View>
-
         <FlatList
           inverted
           data={messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           renderItem={renderMessage}
           contentContainerStyle={styles.chatListContent}
           showsVerticalScrollIndicator={false}
+          // performance optimizations
+          initialNumToRender={25}
+          maxToRenderPerBatch={10}
+          windowSize={11}
         />
         <ChatInputBar
           value={inputText}
           onChangeText={setInputText}
           onSend={sendMessage}
           onAttach={() => console.log("Open Attach Menu")}
-          placeholder="Nachricht schreiben..."
+          placeholder={t("Write a message...")}
         />
       </ScreenWrapper>
     </KeyboardAvoidingView>
@@ -106,11 +117,13 @@ const getStyles = (theme) =>
       borderBottomColor: theme.separator
     },
     headerIcon: {
-      padding: Spacing.md
+      padding: Spacing.md,
+      minWidth: 50
     },
     headerTitleContainer: {
       flexDirection: "row",
       alignItems: "center",
+      justifyContent: "flex-start",
       flex: 1,
       gap: Spacing.sm
     },

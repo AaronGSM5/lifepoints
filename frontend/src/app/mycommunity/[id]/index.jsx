@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -25,7 +25,7 @@ const DUMMY_MESSAGES = [
 export default function MyCommunityChatScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const { t } = useTranslation("community");
+  const { t } = useTranslation("chat");
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -35,7 +35,6 @@ export default function MyCommunityChatScreen() {
 
   const [messages, setMessages] = useState([...DUMMY_MESSAGES].reverse());
   const [inputText, setInputText] = useState("");
-  const flatListRef = useRef(null);
 
   const openDetails = useCallback(() => {
     router.push(`/mycommunity/${id}/details`);
@@ -54,6 +53,7 @@ export default function MyCommunityChatScreen() {
   }, [inputText]);
 
   const renderMessage = useCallback(({ item }) => <ChatMessageItem item={item} />, []);
+  const keyExtractor = useCallback((item) => item.id, []);
 
   return (
     <KeyboardAvoidingView
@@ -67,15 +67,15 @@ export default function MyCommunityChatScreen() {
         <BackButton style={styles.headerIcon} />
 
         <TouchableOpacity onPress={openDetails} style={styles.headerTitleContainer} activeOpacity={0.7}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.sm }}>
-            <View style={[styles.iconBox, { backgroundColor: community?.color }]}>
-              <MaterialIcons name={community?.icon} size={20} color="#fff" />
-            </View>
+          <View style={styles.titleRow}>
+            {community?.icon && (
+              <View style={[styles.iconBox, { backgroundColor: community?.color }]}>
+                <MaterialIcons name={community.icon} size={20} color="#fff" />
+              </View>
+            )}
             <AppText bold>{community?.title || "Community Chat"}</AppText>
           </View>
-          <AppText type="caption" style={styles.headerSubtitleText}>
-            {t("Tap for more info")}
-          </AppText>
+          <AppText type="caption">{t("Tap for more info")}</AppText>
         </TouchableOpacity>
 
         <View style={styles.headerIcon} />
@@ -84,12 +84,15 @@ export default function MyCommunityChatScreen() {
       <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
         <FlatList
           inverted
-          ref={flatListRef}
           data={messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           renderItem={renderMessage}
           contentContainerStyle={styles.chatListContent}
           showsVerticalScrollIndicator={false}
+          // performance optimizations
+          initialNumToRender={25}
+          maxToRenderPerBatch={10}
+          windowSize={11}
         />
         <ChatInputBar
           value={inputText}
@@ -114,17 +117,19 @@ const getStyles = (theme) =>
       borderBottomColor: theme.glas
     },
     headerIcon: {
-      padding: Spacing.md
+      padding: Spacing.md,
+      minWidth: 50
     },
     headerTitleContainer: {
-      flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
       flex: 1,
-      gap: Spacing.md
+      gap: Spacing.xs - 2
     },
-    headerSubtitleText: {
-      fontSize: 13
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm
     },
     chatListContent: {
       paddingHorizontal: Spacing.md,
@@ -136,7 +141,6 @@ const getStyles = (theme) =>
       height: 32,
       borderRadius: Spacing.borderRadius.md,
       alignItems: "center",
-      justifyContent: "center",
-      position: "relative"
+      justifyContent: "center"
     }
   });
