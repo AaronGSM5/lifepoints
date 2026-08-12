@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
+import { MOCK_CHATS } from "@/mocks/UserChat";
 
 import ChatListItem from "./ChatListItem";
 import CreateCommunityCard from "./CreateCommunityCard";
@@ -15,41 +16,6 @@ import CreateCommunityForm from "../forms/community/CreateCommunityForm";
 const MOCK_COMMUNITIES = [
   { id: "1", title: "React Native Devs", members: 124, onlineCount: 21, icon: "leaf", hasUnread: false },
   { id: "2", title: "Design Thinkers", members: 89, onlineCount: 4, icon: "music", hasUnread: true }
-];
-
-const MOCK_CHATS = [
-  {
-    id: "1",
-    userName: "Emilia",
-    lastMessage: "Hey, hast du schon die neuen Designs gesehen?",
-    time: "11:20",
-    unread: 2,
-    avatar: "https://picsum.photos/100"
-  },
-  {
-    id: "2",
-    userName: "Max",
-    lastMessage: "Lass uns später über das Layout sprechen.",
-    time: "Gestern",
-    unread: 0,
-    avatar: "https://picsum.photos/101"
-  },
-  {
-    id: "3",
-    userName: "Sarah (Design)",
-    lastMessage: "Super, danke dir! 🙌",
-    time: "Gestern",
-    unread: 0,
-    avatar: "https://picsum.photos/102"
-  },
-  {
-    id: "4",
-    userName: "Alex",
-    lastMessage: "Geht klar.",
-    time: "Montag",
-    unread: 0,
-    avatar: "https://picsum.photos/103"
-  }
 ];
 
 const ConnectTab = () => {

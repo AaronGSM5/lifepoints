@@ -29,7 +29,7 @@ const getStyles = (theme) =>
       marginVertical: Spacing.md
     },
     pill: {
-      backgroundColor: theme.glas,
+      backgroundColor: theme.isDark ? theme.darkBg : theme.glas,
       paddingHorizontal: Spacing.md,
       paddingVertical: Spacing.xs - 2,
       borderRadius: Spacing.borderRadius.md

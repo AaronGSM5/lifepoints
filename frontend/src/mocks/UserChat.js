@@ -1,3 +1,38 @@
+export const MOCK_CHATS = [
+  {
+    id: "1",
+    userName: "Emilia",
+    lastMessage: "Hey, hast du schon die neuen Designs gesehen?",
+    time: "11:20",
+    unread: 2,
+    avatar: "https://picsum.photos/100"
+  },
+  {
+    id: "2",
+    userName: "Max",
+    lastMessage: "Lass uns später über das Layout sprechen.",
+    time: "Gestern",
+    unread: 0,
+    avatar: "https://picsum.photos/101"
+  },
+  {
+    id: "3",
+    userName: "Sarah (Design)",
+    lastMessage: "Super, danke dir! 🙌",
+    time: "Gestern",
+    unread: 0,
+    avatar: "https://picsum.photos/102"
+  },
+  {
+    id: "4",
+    userName: "Alex",
+    lastMessage: "Geht klar.",
+    time: "Montag",
+    unread: 0,
+    avatar: "https://picsum.photos/103"
+  }
+];
+
 export const DUMMY_MESSAGES = [
   // --- HEUTE ---
   {

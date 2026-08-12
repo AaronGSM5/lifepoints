@@ -12,7 +12,8 @@ export const DarkTheme = {
   warning: 'rgb(240, 0, 0)',
   separator: "rgba(255, 255, 255, 0.08)",
   inputBorder: "rgba(255, 255, 255, 0.1)",
-  glas: "rgba(255,255,255,0.05)"
+  glas: "rgba(255,255,255,0.05)",
+  darkBg: "#000418"
 };
 
 export const LightTheme = {
@@ -29,5 +30,5 @@ export const LightTheme = {
   warning: 'rgb(220, 38, 38)',
   separator: "rgba(0, 0, 0, 0.06)",
   inputBorder: "rgba(0, 0, 0, 0.05)",
-  glas: "rgba(255, 255, 255, 0.7)"
+  glas: "rgba(255, 255, 255, 0.7)",
 };
