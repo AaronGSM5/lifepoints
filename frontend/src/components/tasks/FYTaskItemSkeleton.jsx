@@ -8,7 +8,6 @@ import BaseCard from "../ui/BaseCard";
 const FYTaskItemSkeleton = ({ styles }) => {
   return (
     <BaseCard style={styles.card} padding={0}>
-      {/* Image */}
       <View style={[styles.cardImage, { padding: 0, overflow: "hidden" }]}>
         <AppSkeleton height={"100%"} radius={0} />
       </View>
@@ -23,7 +22,6 @@ const FYTaskItemSkeleton = ({ styles }) => {
           </View>
           <AppSkeleton width={60} height={22} />
         </View>
-        {/* Button */}
         <AppSkeleton height={44} radius={Spacing.borderRadius.lg} />
       </View>
     </BaseCard>

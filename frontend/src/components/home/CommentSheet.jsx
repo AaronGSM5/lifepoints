@@ -25,12 +25,12 @@ const EmptyComments = memo(({ theme, t }) => (
 ));
 EmptyComments.displayName = "EmptyComments";
 
-export default function CommentSheet({ isVisible, onClose }) {
+const CommentSheet = memo(({ isVisible, onClose }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   const {
-    comments,
+    comments = [],
     commentText,
     setCommentText,
     replyingTo,
@@ -79,12 +79,14 @@ export default function CommentSheet({ isVisible, onClose }) {
     [handleReply, handleLikeComment, handleNavigate, styles]
   );
 
+  const keyExtractor = useCallback((item) => item?.id?.toString() || Math.random().toString(), []);
+
   return (
     <BaseBottomSheet isVisible={isVisible} onClose={onClose} title={t("Comments")}>
       <View style={{ flex: 1 }}>
         <FlatList
           data={comments}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           renderItem={renderComment}
           showsVerticalScrollIndicator={true}
           onRefresh={onRefresh}
@@ -105,7 +107,8 @@ export default function CommentSheet({ isVisible, onClose }) {
       </View>
     </BaseBottomSheet>
   );
-}
+});
+CommentSheet.displayName = "CommentSheet";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -126,3 +129,5 @@ const getStyles = (theme) =>
       marginBottom: Spacing.sm
     }
   });
+
+export default CommentSheet;

@@ -62,7 +62,7 @@ const TrophyCard = memo(({ id, title, icon, unlocked, justUnlocked, onAnimationC
         outputRange: [1, 0]
       })
     }),
-    [animValue, MyTheme]
+    [animValue, MyTheme.muted, MyTheme.text]
   );
 
   const handlePress = useCallback(() => {

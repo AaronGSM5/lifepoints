@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { forwardRef, memo, useCallback } from "react";
 import { StyleSheet } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -7,34 +7,37 @@ import { Spacing } from "@/constants/Spacing";
 
 import AppIconButton from "./AppIconButton";
 
-const BackButton = ({ onPress, style, iconColor, withBackground = false, ref, ...rest }) => {
-  const router = useRouter();
+const BackButton = memo(
+  forwardRef(({ onPress, style, iconColor, withBackground = false, ...rest }, ref) => {
+    const router = useRouter();
 
-  const handlePress = useCallback(() => {
-    if (onPress) {
-      onPress();
-    } else {
-      if (router.canGoBack()) {
-        router.back();
+    const handlePress = useCallback(() => {
+      if (onPress) {
+        onPress();
       } else {
-        router.replace("/");
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.replace("/");
+        }
       }
-    }
-  }, [onPress, router]);
+    }, [onPress, router]);
 
-  return (
-    <AppIconButton
-      ref={ref}
-      icon="back"
-      onPress={handlePress}
-      color={iconColor}
-      style={[styles.button, style]}
-      withBackground={withBackground}
-      accessibilityLabel={"Back"}
-      {...rest}
-    />
-  );
-};
+    return (
+      <AppIconButton
+        ref={ref}
+        icon="back"
+        onPress={handlePress}
+        color={iconColor}
+        style={[styles.button, style]}
+        withBackground={withBackground}
+        accessibilityLabel={"Back"}
+        {...rest}
+      />
+    );
+  })
+);
+BackButton.displayName = "BackButton";
 
 const styles = StyleSheet.create({
   button: {

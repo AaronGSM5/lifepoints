@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { router } from "expo-router";
@@ -9,7 +9,7 @@ import { Spacing } from "@/constants/Spacing";
 import AppImage from "../ui/AppImage";
 import LpLogo from "../ui/LpLogo";
 
-export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
+const AuthHeader = memo(({ title, subtitle, showImageLogo = false }) => {
   const { width } = useWindowDimensions();
 
   const logoDimensions = useMemo(() => {
@@ -46,7 +46,8 @@ export default function AuthHeader({ title, subtitle, showImageLogo = false }) {
       </AppText>
     </View>
   );
-}
+});
+AuthHeader.displayName = "AuthHeader";
 
 const styles = StyleSheet.create({
   header: {
@@ -69,3 +70,5 @@ const styles = StyleSheet.create({
     height: 60
   }
 });
+
+export default AuthHeader;

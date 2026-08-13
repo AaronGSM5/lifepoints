@@ -7,7 +7,11 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 const AppModal = memo(({ visible, onClose, children, contentStyle }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const handleIgnorePress = useCallback(() => {}, []);
+
+  const handleIgnorePress = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.modalBackground} onPress={onClose}>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -11,33 +11,48 @@ import AppPopupMenu from "../ui/AppPopupMenu";
 import AppText from "../ui/AppText";
 import BackButton from "../ui/BackButton";
 
-const CommunityChatHeader = ({ community, onDetailsPress, onOptionsPress }) => {
+const CommunityChatHeader = memo(({ community, onDetailsPress, onOptionsPress }) => {
   const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("chat");
   const [showMenu, setShowMenu] = useState(false);
 
-  const menuItems = [
-    {
-      label: "Stummschalten",
-      icon: "notifications-off-outline",
-      onPress: () => {
-        console.log("Benachrichtigungen stummschalten");
-        if (onOptionsPress) onOptionsPress("mute");
+  const handleMute = useCallback(() => {
+    setShowMenu(false);
+    if (onOptionsPress) onOptionsPress("mute");
+  }, [onOptionsPress]);
+
+  const handleBlock = useCallback(() => {
+    setShowMenu(false);
+    if (onOptionsPress) onOptionsPress("block");
+  }, [onOptionsPress]);
+
+  const menuItems = useCallback(
+    () => [
+      {
+        label: "Stummschalten",
+        icon: "notifications-off-outline",
+        onPress: handleMute
+      },
+      {
+        label: "Blockieren",
+        icon: "ban-outline",
+        color: "#EF4444",
+        isDanger: true,
+        onPress: handleBlock
       }
-    },
-    {
-      label: "Blockieren",
-      icon: "ban-outline",
-      color: "#EF4444",
-      isDanger: true,
-      onPress: () => {
-        console.log("Community blockieren / verlassen");
-        if (onOptionsPress) onOptionsPress("block");
-      }
-    }
-  ];
+    ],
+    [handleMute, handleBlock]
+  );
+
+  const toggleMenu = useCallback(() => {
+    setShowMenu((prev) => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setShowMenu(false);
+  }, []);
 
   return (
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
@@ -56,12 +71,13 @@ const CommunityChatHeader = ({ community, onDetailsPress, onOptionsPress }) => {
       </TouchableOpacity>
 
       <View style={styles.optionsWrapper}>
-        <Icon name="dots" onPress={() => setShowMenu(!showMenu)} style={styles.headerIcon} />
-        <AppPopupMenu visible={showMenu} items={menuItems} onClose={() => setShowMenu(false)} />
+        <Icon name="dots" onPress={toggleMenu} style={styles.headerIcon} />
+        <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} />
       </View>
     </View>
   );
-};
+});
+CommunityChatHeader.displayName = "CommunityChatHeader";
 
 const getStyles = (theme) =>
   StyleSheet.create({

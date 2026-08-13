@@ -8,7 +8,7 @@ import { useMyProfile } from "@/api/profile/useMyProfile";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
-import { EmptyView } from "@/components/ui/EmptyView";
+import EmptyView from "@/components/ui/EmptyView";
 import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";

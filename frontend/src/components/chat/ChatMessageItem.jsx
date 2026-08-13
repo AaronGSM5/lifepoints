@@ -8,9 +8,10 @@ import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
 import StatusBadge from "../ui/StatusBadge";
 
-const ChatMessageItem = memo(({ item, showSenderName = true }) => {
+const ChatMessageItem = memo(({ item = {}, showSenderName = true }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+
   const isMe = item.senderId === "me";
   const isSystem = item.senderId === "system";
 
@@ -23,6 +24,7 @@ const ChatMessageItem = memo(({ item, showSenderName = true }) => {
       </View>
     );
   }
+
   return (
     <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
       {!isMe && showSenderName && <Avatar source={item.avatar} name={item.senderName} style={styles.avatar} />}

@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
-import { useWindowDimensions, View } from "react-native";
+import React, { memo, useCallback, useMemo } from "react";
+import { Platform, useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 import AppText from "./AppText";
 import EventSlide from "../home/EventSlide";
 
-export default function HeroCarousel({ data, isLoading, onPressItem }) {
+const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
   const { width } = useWindowDimensions();
+
   const itemDimensions = useMemo(
     () => ({
       width: width * 0.85,
@@ -14,6 +15,21 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
     }),
     [width]
   );
+
+  const handlePressItem = useCallback(
+    (item) => {
+      if (onPressItem) onPressItem(item);
+    },
+    [onPressItem]
+  );
+
+  const renderCarouselItem = useCallback(
+    ({ item }) => {
+      return <EventSlide imageSource={item.image} isLoading={isLoading} onPress={() => handlePressItem(item)} />;
+    },
+    [isLoading, handlePressItem]
+  );
+
   if (!data || data.length === 0) {
     return (
       <View>
@@ -27,12 +43,17 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
       loop
       width={itemDimensions.width}
       height={itemDimensions.height}
-      style={{
-        width: width,
-        justifyContent: "center",
-        alignItems: "center",
-        touchAction: "pan-y"
-      }}
+      style={[
+        {
+          width: width,
+          justifyContent: "center",
+          alignItems: "center"
+        },
+        Platform.select({
+          web: { touchAction: "pan-y" },
+          default: {}
+        })
+      ]}
       data={data}
       mode="parallax"
       modeConfig={{
@@ -44,9 +65,10 @@ export default function HeroCarousel({ data, isLoading, onPressItem }) {
       pagingEnabled={false}
       snapEnabled={true}
       scrollAnimationDuration={500}
-      renderItem={({ item }) => {
-        return <EventSlide imageSource={item.image} isLoading={isLoading} onPress={() => onPressItem(item)} />;
-      }}
+      renderItem={renderCarouselItem}
     />
   );
-}
+});
+HeroCarousel.displayName = "HeroCarousel";
+
+export default HeroCarousel;

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -5,7 +6,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const AppPopupMenu = ({ visible, onClose, items }) => {
+const AppPopupMenu = memo(({ visible, onClose, items }) => {
   const theme = useAppTheme();
 
   if (!visible) return null;
@@ -15,9 +16,9 @@ const AppPopupMenu = ({ visible, onClose, items }) => {
       <Pressable style={styles.backdrop} onPress={onClose} />
 
       <View style={[styles.menuCard, { backgroundColor: theme.background, borderColor: theme.separator }]}>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <TouchableOpacity
-            key={index}
+            key={item.label}
             style={[styles.menuItem, item.isDanger && { borderTopWidth: 1, borderTopColor: theme.separator }]}
             onPress={() => {
               onClose();
@@ -31,7 +32,8 @@ const AppPopupMenu = ({ visible, onClose, items }) => {
       </View>
     </>
   );
-};
+});
+AppPopupMenu.displayName = "AppPopupMenu";
 
 const styles = StyleSheet.create({
   backdrop: {

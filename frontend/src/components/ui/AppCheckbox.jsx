@@ -8,28 +8,44 @@ import { addOpacity } from "@/utils/addOpacity";
 const AppCheckbox = memo(({ checked, onPress, borderColor, size = 24, style }) => {
   const MyTheme = useAppTheme();
   borderColor = borderColor || MyTheme.muted;
-  const styles = useMemo(() => getStyles(MyTheme, size, borderColor), [MyTheme, size, borderColor]);
+  const styles = useMemo(() => getStyles(MyTheme, size), [MyTheme, size]);
+  const resolvedBorderColor = borderColor || MyTheme.muted;
 
   const content = (
-    <View style={[styles.checkbox, checked ? styles.checked : styles.unchecked, style]}>
+    <View
+      style={[
+        styles.checkbox,
+        checked ? styles.checked : [styles.unchecked, { borderColor: resolvedBorderColor }],
+        style
+      ]}
+    >
       {checked && <Icon name="checkmark" size={size * 0.65} color={MyTheme.primaryAccent} />}
     </View>
   );
 
   if (onPress) {
     return (
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onPress}
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked }}
+      >
         {content}
       </TouchableOpacity>
     );
   }
 
-  return content;
+  return (
+    <View accessibilityRole="checkbox" accessibilityState={{ checked }}>
+      {content}
+    </View>
+  );
 });
 
 AppCheckbox.displayName = "AppCheckbox";
 
-const getStyles = (theme, size, borderColor) => {
+const getStyles = (theme, size) => {
   return StyleSheet.create({
     checkbox: {
       width: size,
@@ -40,7 +56,6 @@ const getStyles = (theme, size, borderColor) => {
       alignItems: "center"
     },
     unchecked: {
-      borderColor: borderColor,
       backgroundColor: "transparent"
     },
     checked: {

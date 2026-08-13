@@ -16,8 +16,8 @@ const ActiveTaskHeader = memo(({ title, icon, progress, isExpanded, setIsExpande
 
   const toggleExpand = useCallback(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsExpanded(!isExpanded);
-  }, [isExpanded, setIsExpanded]);
+    setIsExpanded((prev) => !prev);
+  }, [setIsExpanded]);
 
   const safeProgress = Math.min(Math.max(progress, 0), 100);
 
@@ -70,7 +70,6 @@ const getStyles = (theme) =>
       marginRight: Spacing.sm
     },
     titleText: {
-      flex: 1,
       marginRight: Spacing.sm
     },
     metaRow: {

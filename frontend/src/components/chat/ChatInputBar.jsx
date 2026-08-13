@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -9,21 +9,32 @@ import AppIconButton from "../ui/AppIconButton";
 import AppInput from "../ui/AppInput";
 import AppText from "../ui/AppText";
 
-const ChatInputBar = ({ value, onChangeText, onSend, placeholder }) => {
+const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [showMenu, setShowMenu] = useState(false);
 
-  const handleSelectOption = (type) => {
+  const handleSelectOption = useCallback((type) => {
     setShowMenu(false);
     console.log("Ausgewählt:", type);
-  };
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    setShowMenu((prev) => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setShowMenu(false);
+  }, []);
+
+  const safeValue = value || "";
+  const isTrimmedEmpty = !safeValue.trim();
 
   return (
     <View style={styles.wrapper}>
       {showMenu && (
         <>
-          <Pressable style={styles.backdrop} onPress={() => setShowMenu(false)} />
+          <Pressable style={styles.backdrop} onPress={closeMenu} />
 
           <View style={styles.menuCard}>
             <TouchableOpacity style={styles.menuItem} onPress={() => handleSelectOption("photo")}>
@@ -44,15 +55,10 @@ const ChatInputBar = ({ value, onChangeText, onSend, placeholder }) => {
         </>
       )}
       <View style={styles.inputContainer}>
-        <AppIconButton
-          icon="add"
-          color={MyTheme.muted}
-          onPress={() => setShowMenu(!showMenu)}
-          style={styles.attachButton}
-        />
+        <AppIconButton icon="add" color={MyTheme.muted} onPress={toggleMenu} style={styles.attachButton} />
         <AppInput
           placeholder={placeholder}
-          value={value}
+          value={safeValue}
           onChangeText={onChangeText}
           containerStyle={{ flex: 8 }}
           bottomMargin={false}
@@ -60,15 +66,16 @@ const ChatInputBar = ({ value, onChangeText, onSend, placeholder }) => {
         <AppIconButton
           icon="send"
           iconSize={20}
-          color={value.trim() ? MyTheme.primaryAccent : MyTheme.muted}
+          color={isTrimmedEmpty ? MyTheme.muted : MyTheme.primaryAccent}
           onPress={onSend}
-          disabled={!value.trim()}
+          disabled={isTrimmedEmpty}
           style={styles.sendButton}
         />
       </View>
     </View>
   );
-};
+});
+ChatInputBar.displayName = "ChatInputBar";
 
 const getStyles = (theme) =>
   StyleSheet.create({

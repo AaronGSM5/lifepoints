@@ -11,8 +11,8 @@ const FeedImageContainer = memo(({ image, heartOpacity, heartScale, onPress }) =
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.imageContainer}>
-      <Pressable style={{ flex: 1 }} onPress={onPress}>
-        <AppImage source={image} variant={"fill"} />
+      <Pressable style={styles.pressableFlex} onPress={onPress}>
+        <AppImage source={image} variant="fill" />
         <Animated.View
           style={[
             styles.bigHeartOverlay,
@@ -39,6 +39,9 @@ const getStyles = (theme) =>
       backgroundColor: theme.primary,
       position: "relative",
       overflow: "hidden"
+    },
+    pressableFlex: {
+      flex: 1
     },
     bigHeartOverlay: {
       ...StyleSheet.absoluteFillObject,

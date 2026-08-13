@@ -27,11 +27,11 @@ const AppText = memo(
       }
 
       return {
+        ...Typography[type],
         fontFamily,
-        color: type === "caption" || disabled ? MyTheme.muted : MyTheme.text,
-        ...Typography[type]
+        color: type === "caption" || disabled ? MyTheme.muted : MyTheme.text
       };
-    }, [MyTheme, type, bold, disabled]);
+    }, [MyTheme.muted, MyTheme.text, type, bold, disabled]);
 
     const TextComponent = animated ? Animated.Text : Text;
 
@@ -43,7 +43,13 @@ const AppText = memo(
 
     if (onPress) {
       return (
-        <Pressable onPress={onPress} disabled={disabled} hitSlop={15}>
+        <Pressable
+          onPress={onPress}
+          disabled={disabled}
+          hitSlop={15}
+          accessibilityRole={props.accessibilityRole || "link"}
+          accessibilityState={{ disabled }}
+        >
           {content}
         </Pressable>
       );

@@ -38,7 +38,7 @@ const FeedItem = memo(
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
     const startLootGame = useStore((state) => state.startLootGame);
-    const myUsername = useStore((state) => state.profile.username);
+    const myUsername = useStore((state) => state.profile?.username);
     const isOwner = useMemo(() => username === myUsername, [username, myUsername]);
     const hasChest = useMemo(() => id % 2 === 0, [id]);
     const {
@@ -60,6 +60,14 @@ const FeedItem = memo(
       });
     }, [username, id]);
 
+    const handleOpenOptions = useCallback(() => {
+      if (onOpenOptions) onOpenOptions(id, isOwner);
+    }, [onOpenOptions, id, isOwner]);
+
+    const handleOpenComments = useCallback(() => {
+      if (onOpenComments) onOpenComments(id);
+    }, [onOpenComments, id]);
+
     if (isLoading) return <FeedItemSkeleton styles={styles} />;
     const mockTask = `Gehe 10.000 Schritte`;
     return (
@@ -72,7 +80,7 @@ const FeedItem = memo(
             badge={badge}
             taskName={mockTask}
             onPress={navigateToProfile}
-            onOpenOptions={() => onOpenOptions(id, isOwner)}
+            onOpenOptions={handleOpenOptions}
             onTaskPress={() => router.push("task/dasIstNurEinPlatzhalter")}
           />
 
@@ -101,7 +109,7 @@ const FeedItem = memo(
             handleShare={handleShare}
             isSaved={isSaved}
             handleSave={handleSave}
-            onOpenComments={() => onOpenComments(id)}
+            onOpenComments={handleOpenComments}
           />
           <FeedItemFooter
             likesCount={likesCount}

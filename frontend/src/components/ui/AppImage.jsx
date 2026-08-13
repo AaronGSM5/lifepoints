@@ -12,6 +12,16 @@ import { Icon } from "../icons/Icon";
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
+const VARIANT_STYLES = {
+  avatarSmall: { width: 36, height: 36, borderRadius: Spacing.borderRadius.full },
+  avatarMedium: { width: 40, height: 40, borderRadius: Spacing.borderRadius.full },
+  avatarBig: { width: 120, height: 120, borderRadius: Spacing.borderRadius.full },
+  communityBanner: { width: "100%", height: 180 },
+  fill: { flex: 1, width: "100%", height: "100%" },
+  lootGameTrigger: { width: 90, height: 90 },
+  custom: {}
+};
+
 const AppImage = memo(
   ({
     source,
@@ -29,19 +39,8 @@ const AppImage = memo(
     const formattedSource = typeof source === "string" ? { uri: source } : source;
     const finalSource = hasError && fallbackSource ? fallbackSource : formattedSource;
 
-    const variantStyles =
-      {
-        avatarSmall: { width: 36, height: 36, borderRadius: Spacing.borderRadius.full },
-        avatarMedium: { width: 40, height: 40, borderRadius: Spacing.borderRadius.full },
-        avatarBig: { width: 120, height: 120, borderRadius: Spacing.borderRadius.full },
-        communityBanner: { width: "100%", height: 180 },
-        fill: { flex: 1, width: "100%", height: "100%" },
-        lootGameTrigger: { width: 90, height: 90 },
-        custom: {}
-      }[variant] || {};
-
+    const variantStyles = VARIANT_STYLES[variant] || {};
     const combinedStyle = StyleSheet.flatten([styles.base, variantStyles, style]);
-
     const skeletonRadius = combinedStyle.borderRadius || 0;
 
     return (

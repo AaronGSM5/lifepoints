@@ -16,6 +16,14 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
   const [newStepTitle, setNewStepTitle] = useState("");
   const [newStepDescription, setNewStepDescription] = useState("");
 
+  const titleRef = useRef(newStepTitle);
+  const descRef = useRef(newStepDescription);
+
+  useEffect(() => {
+    titleRef.current = newStepTitle;
+    descRef.current = newStepDescription;
+  }, [newStepTitle, newStepDescription]);
+
   const titleInputRef = useRef(null);
   const descriptionInputRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -27,18 +35,20 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
   }, []);
 
   const handleTitleSubmit = useCallback(() => {
-    if (newStepTitle.trim().length === 0) {
+    if (titleRef.current.trim().length === 0) {
       setIsAddingStep(false);
     } else {
       descriptionInputRef.current?.focus();
     }
-  }, [newStepTitle]);
+  }, []);
 
   const submitNewStep = useCallback(() => {
-    if (newStepTitle.trim().length > 0 && onAddSubStep) {
+    const trimmedTitle = titleRef.current.trim();
+    const trimmedDesc = descRef.current.trim();
+    if (trimmedTitle.length > 0 && onAddSubStep) {
       onAddSubStep({
-        title: newStepTitle.trim(),
-        description: newStepDescription ? newStepDescription.trim() : ""
+        title: trimmedTitle,
+        description: trimmedDesc
       });
     }
 
@@ -48,7 +58,7 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
     timeoutRef.current = setTimeout(() => {
       titleInputRef.current?.focus();
     }, 50);
-  }, [newStepTitle, newStepDescription, onAddSubStep]);
+  }, [onAddSubStep]);
 
   if (!isAddingStep) {
     return (

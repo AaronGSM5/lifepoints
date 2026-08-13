@@ -54,12 +54,14 @@ const AppButton = memo(
     const isOutline = variant === "outline";
     const isGhost = variant === "ghost";
 
-    const iconMarginStyle =
-      iconPosition === "left"
-        ? { marginRight: Spacing.sm }
-        : iconPosition === "right"
-          ? { marginLeft: Spacing.sm }
-          : {};
+    const getTextColor = () => {
+      if (disabled) return MyTheme.muted;
+      if (isPrimary) return LightTheme.text;
+      if (isSecondary) return MyTheme.text;
+      if (isOutline) return MyTheme.primaryAccent;
+      if (isGhost) return MyTheme.muted;
+      return MyTheme.text;
+    };
 
     return (
       <Animated.View style={[{ transform: [{ scale: scaleAnim }], width: fullWidth ? "100%" : undefined }, style]}>
@@ -91,19 +93,15 @@ const AppButton = memo(
           )}
 
           {loading ? (
-            <AppLoadingSpinner size={"small"} color={isPrimary && "#fff"} />
+            <AppLoadingSpinner size={"small"} color={isPrimary ? "#fff" : undefined} />
           ) : (
-            <View style={[styles.content, iconPosition === "right" && { flexDirection: "row-reverse" }]}>
-              {icon && <View style={iconMarginStyle}>{icon}</View>}
+            <View style={[styles.content, iconPosition === "right" && styles.contentReverse]}>
+              {icon && icon}
 
               <AppText
                 bold
                 style={[
-                  isPrimary && { color: LightTheme.text },
-                  isSecondary && { color: MyTheme.text },
-                  isOutline && { color: MyTheme.primaryAccent },
-                  isGhost && { color: MyTheme.muted },
-                  disabled && { color: MyTheme.muted },
+                  { color: getTextColor() },
                   size === "sm" && { fontSize: 12 },
                   size === "lg" && { fontSize: 16 },
                   textStyle
@@ -133,13 +131,16 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
+      gap: Spacing.sm,
       zIndex: 1,
       elevation: 1
+    },
+    contentReverse: {
+      flexDirection: "row-reverse"
     },
     sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
     md: { paddingVertical: Spacing.sm + 2, paddingHorizontal: Spacing.md },
     lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
-
     secondary: {
       backgroundColor: theme.glas
     },
@@ -153,9 +154,6 @@ const getStyles = (theme) =>
     disabled: {
       backgroundColor: theme.separator,
       opacity: 0.7
-    },
-    iconWrapper: {
-      marginRight: Spacing.sm
     }
   });
 

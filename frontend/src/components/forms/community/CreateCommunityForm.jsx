@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import ScreenFooter from "@/components/layout/ScreenFooter";
 import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
 import { communityBadges, communityIcons } from "@/constants/CommunityOptions";
@@ -15,11 +16,10 @@ import BadgePicker from "./BadgePicker";
 import BannerUploader from "./BannerUploader";
 import IconPicker from "./IconPicker";
 import SizePicker from "./SizePicker";
-import AppInput from "../../ui/AppInput";
 
 const DEFAULT_BANNER_URI = "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1000&auto=format&fit=crop";
 
-const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
+const CreateCommunityForm = memo(({ visible, onClose, onCreate }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -145,7 +145,8 @@ const CreateCommunityForm = ({ visible, onClose, onCreate }) => {
       </ScreenFooter>
     </BaseBottomSheet>
   );
-};
+});
+CreateCommunityForm.displayName = "CreateCommunityForm";
 
 const getStyles = (theme) =>
   StyleSheet.create({

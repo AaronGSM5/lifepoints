@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
@@ -14,7 +13,6 @@ import LpPoints from "../ui/LpPoints";
 const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const { t } = useTranslation("tasks");
   const swipeableRef = useRef(null);
 
   const isCompleted = step.completed;
@@ -46,12 +44,12 @@ const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
 
       <View style={styles.subStepTextContainer}>
         <AppText bold type="body" style={isCompleted && styles.subStepTitleCompleted}>
-          {t(step.title)}
+          {step.title}
         </AppText>
 
         {Boolean(step.description && step.description.trim().length > 0) && (
           <AppText type="caption" style={styles.subStepDescription} numberOfLines={2}>
-            {t(step.description)}
+            {step.description}
           </AppText>
         )}
       </View>

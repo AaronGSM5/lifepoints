@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,32 +11,47 @@ import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
 import BackButton from "../ui/BackButton";
 
-const UserChatHeader = ({ mockChatPartner, onProfilePress, onOptionsPress }) => {
+const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }) => {
   const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [showMenu, setShowMenu] = useState(false);
 
-  const menuItems = [
-    {
-      label: "Stummschalten",
-      icon: "notifications-off-outline",
-      onPress: () => {
-        console.log("Benachrichtigungen stummschalten");
-        if (onOptionsPress) onOptionsPress("mute");
+  const handleMute = useCallback(() => {
+    setShowMenu(false);
+    if (onOptionsPress) onOptionsPress("mute");
+  }, [onOptionsPress]);
+
+  const handleBlock = useCallback(() => {
+    setShowMenu(false);
+    if (onOptionsPress) onOptionsPress("block");
+  }, [onOptionsPress]);
+
+  const menuItems = useMemo(
+    () => [
+      {
+        label: "Stummschalten",
+        icon: "notifications-off-outline",
+        onPress: handleMute
+      },
+      {
+        label: "Blockieren",
+        icon: "ban-outline",
+        color: "#EF4444",
+        isDanger: true,
+        onPress: handleBlock
       }
-    },
-    {
-      label: "Blockieren",
-      icon: "ban-outline",
-      color: "#EF4444",
-      isDanger: true,
-      onPress: () => {
-        console.log("User blockieren");
-        if (onOptionsPress) onOptionsPress("block");
-      }
-    }
-  ];
+    ],
+    [handleMute, handleBlock]
+  );
+
+  const toggleMenu = useCallback(() => {
+    setShowMenu((prev) => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setShowMenu(false);
+  }, []);
 
   return (
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
@@ -54,12 +69,13 @@ const UserChatHeader = ({ mockChatPartner, onProfilePress, onOptionsPress }) => 
         </View>
       </TouchableOpacity>
       <View style={styles.optionsWrapper}>
-        <Icon name="dots" onPress={() => setShowMenu(!showMenu)} style={styles.headerIcon} />
-        <AppPopupMenu visible={showMenu} items={menuItems} onClose={() => setShowMenu(false)} />
+        <Icon name="dots" onPress={toggleMenu} style={styles.headerIcon} />
+        <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} />
       </View>
     </View>
   );
-};
+});
+UserChatHeader.displayName = "UserChatHeader";
 
 const getStyles = (theme) =>
   StyleSheet.create({

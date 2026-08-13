@@ -10,22 +10,27 @@ import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
 import StatusBadge from "../ui/StatusBadge";
 
-const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, onNavigate }) => {
+const CommentItem = memo(({ item = {}, parentId, isReply = false, onReply, onLike, onNavigate }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
+
+  const handleNavigate = useCallback(() => {
+    if (onNavigate && item.username) {
+      onNavigate(item.username);
+    }
+  }, [onNavigate, item.username]);
 
   const handleReplyPress = useCallback(() => {
     const targetParentId = isReply ? parentId : item.id;
     onReply(targetParentId, item.username);
   }, [isReply, item, onReply, parentId]);
 
-  const handleLike = useCallback(
-    (id) => {
-      onLike(id);
-    },
-    [onLike]
-  );
+  const handleLike = useCallback(() => {
+    if (onLike && item.id) {
+      onLike(item.id);
+    }
+  }, [onLike, item.id]);
 
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
@@ -38,13 +43,13 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
       <View style={styles.commentContent}>
         {item.badge ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.xs }}>
-            <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+            <AppText bold style={styles.usernameText} onPress={handleNavigate}>
               {item.username}
             </AppText>
             <StatusBadge id={item.badge} size={16} />
           </View>
         ) : (
-          <AppText bold style={styles.usernameText} onPress={() => onNavigate(item.username)}>
+          <AppText bold style={styles.usernameText} onPress={handleNavigate}>
             {item.username}
           </AppText>
         )}
@@ -57,7 +62,7 @@ const CommentItem = memo(({ item, parentId, isReply = false, onReply, onLike, on
               name={"heart"}
               outline={!item.isLiked}
               size={14}
-              onPress={() => handleLike(item.id)}
+              onPress={handleLike}
               color={item.isLiked ? "#FF3B30" : MyTheme.muted}
               style={styles.likeButton}
             />

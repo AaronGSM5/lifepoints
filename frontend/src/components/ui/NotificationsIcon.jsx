@@ -8,7 +8,7 @@ import useStore from "@/store/useStore";
 
 const NotificationIcon = memo(({ onPress }) => {
   const MyTheme = useAppTheme();
-  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
+  const hasUnread = useStore((state) => state.profile?.hasUnreadNotifications ?? false);
 
   const badgeStyle = useMemo(
     () => ({

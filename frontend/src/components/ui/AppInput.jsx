@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState } from "react";
+import React, { forwardRef, memo, useCallback, useMemo, useState } from "react";
 import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import { BlurView } from "expo-blur";
@@ -10,143 +10,145 @@ import { addOpacity } from "@/utils/addOpacity";
 
 import { Icon } from "../icons/Icon";
 
-const AppInput = forwardRef(
-  (
-    {
-      label,
-      icon,
-      error,
-      isValid,
-      style,
-      containerStyle,
-      inputStyle,
-      rightIcon,
-      onRightIconPress,
-      rightContent,
-      bottomMargin = true,
-      blur = false,
-      blurIntensity = 65,
-      blurTint,
-      isForm = false,
-      onFocus,
-      onBlur,
-      value,
-      maxLength,
-      showCharCount = false,
-      ...props
-    },
-    ref
-  ) => {
-    const MyTheme = useAppTheme();
-    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-    const [isFocused, setIsFocused] = useState(false);
-    const isDarkMode = MyTheme.isDark;
-
-    const isMultiline = props.multiline;
-    const currentLength = value?.length || 0;
-
-    const handleFocus = useCallback(
-      (e) => {
-        setIsFocused(true);
-        if (onFocus) onFocus(e);
+const AppInput = memo(
+  forwardRef(
+    (
+      {
+        label,
+        icon,
+        error,
+        isValid,
+        style,
+        containerStyle,
+        inputStyle,
+        rightIcon,
+        onRightIconPress,
+        rightContent,
+        bottomMargin = true,
+        blur = false,
+        blurIntensity = 65,
+        blurTint,
+        isForm = false,
+        onFocus,
+        onBlur,
+        value,
+        maxLength,
+        showCharCount = false,
+        ...props
       },
-      [onFocus]
-    );
+      ref
+    ) => {
+      const MyTheme = useAppTheme();
+      const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+      const [isFocused, setIsFocused] = useState(false);
+      const isDarkMode = MyTheme.isDark;
 
-    const handleBlur = useCallback(
-      (e) => {
-        setIsFocused(false);
-        if (onBlur) onBlur(e);
-      },
-      [onBlur]
-    );
+      const isMultiline = props.multiline;
+      const currentLength = value?.length || 0;
 
-    const inputContent = (
-      <>
-        {icon && (
-          <Icon
-            name={icon}
-            size={20}
-            color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
-            style={styles.leftIcon}
+      const handleFocus = useCallback(
+        (e) => {
+          setIsFocused(true);
+          if (onFocus) onFocus(e);
+        },
+        [onFocus]
+      );
+
+      const handleBlur = useCallback(
+        (e) => {
+          setIsFocused(false);
+          if (onBlur) onBlur(e);
+        },
+        [onBlur]
+      );
+
+      const inputContent = (
+        <>
+          {icon && (
+            <Icon
+              name={icon}
+              size={20}
+              color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
+              style={styles.leftIcon}
+            />
+          )}
+
+          <TextInput
+            ref={ref}
+            style={[styles.input, isMultiline && styles.inputMultiline, style]}
+            placeholderTextColor={MyTheme.muted}
+            selectionColor={MyTheme.primaryAccent}
+            underlineColorAndroid="transparent"
+            cursorColor={MyTheme.primaryAccent}
+            textAlignVertical={isMultiline ? "top" : "center"}
+            accessibilityRole="text"
+            value={value}
+            maxLength={maxLength}
+            {...props}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
-        )}
 
-        <TextInput
-          ref={ref}
-          style={[styles.input, isMultiline && styles.inputMultiline, style]}
-          placeholderTextColor={MyTheme.muted}
-          selectionColor={MyTheme.primaryAccent}
-          underlineColorAndroid="transparent"
-          cursorColor={MyTheme.primaryAccent}
-          textAlignVertical={isMultiline ? "top" : "center"}
-          accessibilityRole="text"
-          value={value}
-          maxLength={maxLength}
-          {...props}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
+          {rightContent ? (
+            rightContent
+          ) : rightIcon ? (
+            <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
+              <Icon name={rightIcon} size={20} />
+            </TouchableOpacity>
+          ) : null}
+        </>
+      );
 
-        {rightContent ? (
-          rightContent
-        ) : rightIcon ? (
-          <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
-            <Icon name={rightIcon} size={20} />
-          </TouchableOpacity>
-        ) : null}
-      </>
-    );
+      const containerStyles = [
+        styles.container,
+        isFocused && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
+        !isDarkMode &&
+          isForm && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
+        error && styles.containerError,
+        isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
+        isMultiline && styles.containerMultiline,
+        blur && { backgroundColor: "transparent" },
+        inputStyle
+      ];
 
-    const containerStyles = [
-      styles.container,
-      isFocused && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
-      !isDarkMode &&
-        isForm && { borderColor: MyTheme.primaryAccent, backgroundColor: addOpacity(MyTheme.primaryAccent, 0.05) },
-      error && styles.containerError,
-      isValid && !isFocused && { borderColor: MyTheme.primaryAccent },
-      isMultiline && styles.containerMultiline,
-      blur && { backgroundColor: "transparent" },
-      inputStyle
-    ];
+      const hasFooter = typeof error === "string" || (showCharCount && maxLength);
 
-    const hasFooter = typeof error === "string" || (showCharCount && maxLength);
+      return (
+        <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
+          {label && (
+            <AppText style={styles.label} bold>
+              {label}
+            </AppText>
+          )}
 
-    return (
-      <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
-        {label && (
-          <AppText style={styles.label} bold>
-            {label}
-          </AppText>
-        )}
+          {blur ? (
+            <BlurView
+              intensity={Platform.OS === "android" ? 100 : blurIntensity}
+              tint={blurTint || (isDarkMode ? "dark" : "light")}
+              experimentalBlurMethod="dimezisBlurView"
+              style={[{ overflow: "hidden" }, ...containerStyles]}
+            >
+              {inputContent}
+            </BlurView>
+          ) : (
+            <View style={containerStyles}>{inputContent}</View>
+          )}
 
-        {blur ? (
-          <BlurView
-            intensity={Platform.OS === "android" ? 100 : blurIntensity}
-            tint={isDarkMode ? "dark" : "light"}
-            experimentalBlurMethod="dimezisBlurView"
-            style={[{ overflow: "hidden" }, ...containerStyles]}
-          >
-            {inputContent}
-          </BlurView>
-        ) : (
-          <View style={containerStyles}>{inputContent}</View>
-        )}
+          {hasFooter && (
+            <View style={styles.footerContainer}>
+              {typeof error === "string" ? <AppText style={styles.errorText}>{error}</AppText> : <View />}
 
-        {hasFooter && (
-          <View style={styles.footerContainer}>
-            {typeof error === "string" ? <AppText style={styles.errorText}>{error}</AppText> : <View />}
-
-            {showCharCount && maxLength && (
-              <AppText style={[styles.charCount, currentLength >= maxLength && styles.charCountWarning]}>
-                {currentLength} / {maxLength}
-              </AppText>
-            )}
-          </View>
-        )}
-      </View>
-    );
-  }
+              {showCharCount && maxLength && (
+                <AppText style={[styles.charCount, currentLength >= maxLength && styles.charCountWarning]}>
+                  {currentLength} / {maxLength}
+                </AppText>
+              )}
+            </View>
+          )}
+        </View>
+      );
+    }
+  )
 );
 
 AppInput.displayName = "AppInput";

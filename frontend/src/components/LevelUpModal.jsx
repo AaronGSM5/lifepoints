@@ -11,17 +11,22 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "./icons/Icon";
 
-const LevelUpModal = memo(({ visible, level, onTransitionEnd }) => {
+const LevelUpModal = memo(({ visible, level, unlockedItems = [], onTransitionEnd }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const unlockedItems = useMemo(
-    () => [
-      { id: 1, icon: "sun", color: MyTheme.glas },
-      { id: 2, icon: "sun", color: MyTheme.gold },
-      { id: 3, icon: "sun", color: MyTheme.primaryAccent }
-    ],
-    [MyTheme]
+
+  const resolvedItems = useMemo(
+    () =>
+      unlockedItems.length > 0
+        ? unlockedItems
+        : [
+            { id: 1, icon: "sun", color: MyTheme.glas },
+            { id: 2, icon: "sun", color: MyTheme.gold },
+            { id: 3, icon: "sun", color: MyTheme.primaryAccent }
+          ],
+    [unlockedItems, MyTheme]
   );
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onTransitionEnd}>
       <View style={styles.overlay}>
@@ -29,6 +34,7 @@ const LevelUpModal = memo(({ visible, level, onTransitionEnd }) => {
           source={{ uri: "https://assets9.lottiefiles.com/packages/lf20_u4yrau.json" }}
           autoPlay
           loop={false}
+          pointerEvents="none"
           style={styles.lottie}
         />
 
@@ -46,7 +52,7 @@ const LevelUpModal = memo(({ visible, level, onTransitionEnd }) => {
           </AppText>
 
           <View style={styles.itemsRow}>
-            {unlockedItems.map((item) => (
+            {resolvedItems.map((item) => (
               <View key={item.id} style={[styles.itemBox, { backgroundColor: item.color }]}>
                 <Icon name={item.icon} />
               </View>

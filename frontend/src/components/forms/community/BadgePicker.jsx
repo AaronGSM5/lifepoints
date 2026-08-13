@@ -24,6 +24,15 @@ const BadgePicker = memo(({ badges = [], selectedBadges = [], onToggleBadge }) =
     }).start();
   }, [fullHeight, heightAnim]);
 
+  const handleToggle = useCallback(
+    (badge) => {
+      if (onToggleBadge) {
+        onToggleBadge(badge);
+      }
+    },
+    [onToggleBadge]
+  );
+
   return (
     <View>
       <AppText type="caption" style={styles.label}>
@@ -49,7 +58,7 @@ const BadgePicker = memo(({ badges = [], selectedBadges = [], onToggleBadge }) =
                 key={`${badge}-${index}`}
                 label={t(badge)}
                 variant={isSelected ? "primary" : "outline"}
-                onPress={() => onToggleBadge(badge)}
+                onPress={() => handleToggle(badge)}
               />
             );
           })}

@@ -39,14 +39,11 @@ const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPr
           <LpPoints points={points} />
 
           {isLocked ? (
-            <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={{ backgroundColor: MyTheme.muted }} />
+            <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={styles.lockedBadge} />
           ) : (
             <AppBadge
               iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
-              style={{
-                backgroundColor: MyTheme.background,
-                borderColor: MyTheme.secondary
-              }}
+              style={styles.shoppingBadge}
             />
           )}
         </View>
@@ -112,7 +109,12 @@ const getStyles = (theme) =>
     lockedOverlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: "rgba(0, 0, 0, 0.5)"
-    }
+    },
+    shoppingBadge: {
+      backgroundColor: theme.background,
+      borderColor: theme.secondary
+    },
+    lockedBadge: { backgroundColor: theme.muted }
   });
 
 export default RewardCard;

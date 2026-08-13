@@ -1,21 +1,17 @@
 import { memo } from "react";
 import { StyleSheet } from "react-native";
-import BaseCard from "../ui/BaseCard";
-import AppText from "../ui/AppText";
+
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import AppText from "../ui/AppText";
+import BaseCard from "../ui/BaseCard";
+
 const SelectableOptionCard = memo(({ children, label, isSelected, onPress }) => {
   const MyTheme = useAppTheme();
-  
+
   return (
-    <BaseCard
-      style={[
-        styles.card,
-        isSelected && { borderColor: MyTheme.primaryAccent }
-      ]}
-      onPress={onPress}
-    >
+    <BaseCard style={[styles.card, isSelected && { borderColor: MyTheme.primaryAccent }]} onPress={onPress}>
       {children}
       <AppText bold={isSelected} disabled={!isSelected} style={styles.cardText}>
         {label}
@@ -23,6 +19,7 @@ const SelectableOptionCard = memo(({ children, label, isSelected, onPress }) => 
     </BaseCard>
   );
 });
+SelectableOptionCard.displayName = "SelectableOptionCard";
 
 const styles = StyleSheet.create({
   card: {

@@ -21,7 +21,7 @@ import { addOpacity } from "@/utils/addOpacity";
 import { triggerHaptic } from "@/utils/haptics";
 
 import FYTaskCard from "./FYTaskCard";
-import { EmptyView } from "../ui/EmptyView";
+import EmptyView from "../ui/EmptyView";
 
 const listData = [
   { id: "event_banner", type: "event_banner" },
@@ -63,7 +63,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
             substeps: [
               ...task.substeps,
               {
-                _id: Math.random() * 59,
+                _id: Date.now().toString(),
                 title: subStepText.title,
                 description: subStepText.description,
                 completed: false,
@@ -127,7 +127,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                 rightIcon={<Icon name={"survey"} />}
                 onRightPress={onOpenQuestModal}
               />
-              {myActiveTasks.length === 0 ? (
+              {myActiveTasks.length === 1 ? (
                 <EmptyView
                   icon="flower"
                   iconColor={MyTheme.primaryAccent}

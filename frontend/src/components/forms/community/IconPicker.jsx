@@ -10,7 +10,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/addOpacity";
 
-const IconPicker = memo(({ icons, selectedIcon, onSelectIcon }) => {
+const IconPicker = memo(({ icons = [], selectedIcon, onSelectIcon }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -26,6 +26,15 @@ const IconPicker = memo(({ icons, selectedIcon, onSelectIcon }) => {
       useNativeDriver: false
     }).start();
   }, [fullHeight, heightAnim]);
+
+  const handleSelect = useCallback(
+    (icon) => {
+      if (onSelectIcon) {
+        onSelectIcon(icon);
+      }
+    },
+    [onSelectIcon]
+  );
 
   return (
     <View>
@@ -48,7 +57,7 @@ const IconPicker = memo(({ icons, selectedIcon, onSelectIcon }) => {
           {icons.map((icon, index) => (
             <Pressable
               key={`${icon}-${index}`}
-              onPress={() => onSelectIcon(icon)}
+              onPress={() => handleSelect(icon)}
               style={[styles.iconItem, selectedIcon === icon && styles.iconItemActive]}
             >
               <MaterialIcons

@@ -2,23 +2,11 @@ import { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
+import { getRankColor } from "@/utils/getRankColor";
 
 import AppText from "../ui/AppText";
 import Separator from "../ui/Separator";
 import StatusBadge from "../ui/StatusBadge";
-
-const getRankColor = (idx) => {
-  switch (idx) {
-    case 0:
-      return "#FFD700";
-    case 1:
-      return "#C0C0C0";
-    case 2:
-      return "#CD7F32";
-    default:
-      return "#b8b8b8";
-  }
-};
 
 const LeaderboardRow = memo(({ member, index, theme }) => {
   const styles = useMemo(() => getStyles(theme), [theme]);

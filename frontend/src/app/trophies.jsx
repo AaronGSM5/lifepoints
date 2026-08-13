@@ -39,6 +39,8 @@ export default function TrophiesScreen() {
     [clearJustUnlockedTrophy]
   );
 
+  const renderHeader = useCallback(() => <ScreenTitle title={t("Trophies")} />, [t]);
+
   const renderItem = useCallback(
     ({ item }) => (
       <TrophyGridItem
@@ -62,7 +64,7 @@ export default function TrophiesScreen() {
           contentContainerStyle={[styles.flatListContent, { paddingBottom: bottomPadding }]}
           columnWrapperStyle={styles.columnWrapper}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={<ScreenTitle title={t("Trophies")} />}
+          ListHeaderComponent={renderHeader}
           renderItem={renderItem}
         />
       </View>

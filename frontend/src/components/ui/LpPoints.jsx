@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -10,43 +10,52 @@ const formatPoints = (points) => {
   return Number(points).toLocaleString("de-DE");
 };
 
-export default function LpPoints({
-  points = 0,
-  onPress,
-  size = "medium", // 'xs', 'small', 'medium', 'large'
-  style
-}) {
-  const MyTheme = useAppTheme();
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const isClickable = !!onPress;
+const SIZE_CONFIG = {
+  xs: { iconSize: 24, fontSize: 13 },
+  small: { iconSize: 34, fontSize: 16 },
+  large: { iconSize: 48, fontSize: 22, lineHeight: 28 },
+  medium: { iconSize: 40, fontSize: 16 }
+};
 
-  const getSizeStyles = () => {
-    switch (size) {
-      case "xs":
-        return { iconSize: 24, fontSize: 13 };
-      case "small":
-        return { iconSize: 34, fontSize: 16 };
-      case "large":
-        return { iconSize: 48, fontSize: 22, lineHeight: 28 };
-      case "medium":
-      default:
-        return { iconSize: 40, fontSize: 16 };
-    }
-  };
+const LpPoints = memo(
+  ({
+    points = 0,
+    onPress,
+    size = "medium", // 'xs', 'small', 'medium', 'large'
+    style
+  }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-  const { iconSize, fontSize, lineHeight } = getSizeStyles();
+    const { iconSize, fontSize, lineHeight } = SIZE_CONFIG[size] || SIZE_CONFIG.medium;
 
-  return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={!isClickable} style={style}>
-      <View style={[styles.badge]}>
-        <AppText type="caption" bold style={[{ fontSize: fontSize, lineHeight: lineHeight }, styles.textStyle]}>
+    const content = (
+      <View style={styles.badge}>
+        <AppText type="caption" bold style={[{ fontSize, lineHeight }, styles.textStyle]}>
           {formatPoints(points)}
         </AppText>
         <LpLogo width={iconSize} height={iconSize} />
       </View>
-    </TouchableOpacity>
-  );
-}
+    );
+
+    if (onPress) {
+      return (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPress}
+          style={style}
+          accessibilityRole="button"
+          accessibilityState={{ disabled: false }}
+        >
+          {content}
+        </TouchableOpacity>
+      );
+    }
+
+    return <View style={style}>{content}</View>;
+  }
+);
+LpPoints.displayName = "LpPoints";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -59,3 +68,5 @@ const getStyles = (theme) =>
       color: theme.primaryAccent
     }
   });
+
+export default LpPoints;

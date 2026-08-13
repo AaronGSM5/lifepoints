@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Animated, Platform, StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
@@ -7,7 +7,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 
-const AnimatedRule = ({ rule, isMet, theme, styles }) => {
+const AnimatedRule = memo(({ rule, isMet, theme, styles }) => {
   const [animValue] = useState(() => new Animated.Value(isMet ? 1 : 0));
 
   useEffect(() => {
@@ -18,15 +18,19 @@ const AnimatedRule = ({ rule, isMet, theme, styles }) => {
     }).start();
   }, [isMet, animValue]);
 
-  const scale = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0.85]
-  });
-
-  const opacity = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0.4]
-  });
+  const { scale, opacity } = useMemo(
+    () => ({
+      scale: animValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0.85]
+      }),
+      opacity: animValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0.4]
+      })
+    }),
+    [animValue]
+  );
 
   return (
     <View style={styles.ruleRow}>
@@ -43,9 +47,9 @@ const AnimatedRule = ({ rule, isMet, theme, styles }) => {
       </Animated.View>
     </View>
   );
-};
+});
 
-export default function PasswordRules({ passwordRules, passwordRuleStatus }) {
+const PasswordRules = memo(({ passwordRules, passwordRuleStatus }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
@@ -62,7 +66,10 @@ export default function PasswordRules({ passwordRules, passwordRuleStatus }) {
       ))}
     </View>
   );
-}
+});
+
+AnimatedRule.displayName = "AnimatedRule";
+PasswordRules.displayName = "PasswordRules";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -79,3 +86,5 @@ const getStyles = (theme) =>
       color: theme.text
     }
   });
+
+export default PasswordRules;

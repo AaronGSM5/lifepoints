@@ -8,7 +8,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import NotificationListItem from "@/components/notifications/NotificationListItem";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
-import { EmptyView } from "@/components/ui/EmptyView";
+import EmptyView from "@/components/ui/EmptyView";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, PanResponder, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -13,6 +13,14 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [panX] = useState(() => new Animated.Value(0));
   const { t } = useTranslation();
+
+  const currentVal = useRef(0);
+  useEffect(() => {
+    const id = panX.addListener(({ value }) => {
+      currentVal.current = value;
+    });
+    return () => panX.removeListener(id);
+  }, [panX]);
 
   const PADDING = 2;
   const BORDER_WIDTH = 1;
@@ -36,13 +44,13 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
         onPanResponderGrant: () => {
-          panX.setOffset(panX._value);
+          panX.setOffset(currentVal.current);
           panX.setValue(0);
         },
         onPanResponderMove: Animated.event([null, { dx: panX }], { useNativeDriver: false }),
         onPanResponderRelease: () => {
           panX.flattenOffset();
-          let newIndex = Math.round(panX._value / tabWidth);
+          let newIndex = Math.round(currentVal.current / tabWidth);
           if (newIndex < 0) newIndex = 0;
           if (newIndex >= tabs.length) newIndex = tabs.length - 1;
 
@@ -84,22 +92,6 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
           );
         })}
       </View>
-
-      {/* <TouchableOpacity
-        style={{
-          width: 44,
-          height: 44,
-          backgroundColor: MyTheme.background,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: Spacing.borderRadius.full,
-          borderWidth: 1,
-          borderColor: MyTheme.primary
-        }}
-        activeOpacity={0.9}
-      >
-        <LayeredIcon bottomIcon={"recycle"} topIcon={"add"} color1={MyTheme.text} color2={MyTheme.text} />
-      </TouchableOpacity> */}
     </View>
   );
 });

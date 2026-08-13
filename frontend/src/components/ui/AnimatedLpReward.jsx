@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Animated, Easing, Platform, StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
@@ -34,31 +34,39 @@ export default function AnimatedLpReward({ points }) {
     return () => clearTimeout(timeout);
   }, [flyAnim, stackAnim]);
 
-  const numberTranslateX = flyAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 35]
-  });
-  const numberScale = flyAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0]
-  });
-  const numberOpacity = flyAnim.interpolate({
-    inputRange: [0, 0.7, 1],
-    outputRange: [1, 0, 0]
-  });
-
-  const iconScale = stackAnim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [1, 1.4, 1]
-  });
-
-  const scatter1X = stackAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 3] });
-  const scatter1Y = stackAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -2] });
-
-  const stackOpacity = stackAnim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0, 1, 1]
-  });
+  const { numberTranslateX, numberScale, numberOpacity, iconScale, scatter1X, scatter1Y, stackOpacity } = useMemo(
+    () => ({
+      numberTranslateX: flyAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 35]
+      }),
+      numberScale: flyAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0]
+      }),
+      numberOpacity: flyAnim.interpolate({
+        inputRange: [0, 0.7, 1],
+        outputRange: [1, 0, 0]
+      }),
+      iconScale: stackAnim.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [1, 1.4, 1]
+      }),
+      scatter1X: stackAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 3]
+      }),
+      scatter1Y: stackAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -2]
+      }),
+      stackOpacity: stackAnim.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [0, 1, 1]
+      })
+    }),
+    [flyAnim, stackAnim]
+  );
 
   return (
     <View style={styles.container}>
@@ -117,5 +125,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: -1
   },
-  pointsText: { letterSpacing: 0.5, fontSize: 22, lineHeight: 28 }
+  pointsText: {
+    letterSpacing: 0.5,
+    fontSize: 22,
+    lineHeight: 28
+  }
 });

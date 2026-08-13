@@ -45,9 +45,13 @@ const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, isLoad
   );
 });
 
-const CategoryItem = memo(({ category, isActive, onPress }) => (
-  <AppButton title={category.label} variant={isActive ? "primary" : "secondary"} onPress={() => onPress(category.id)} />
-));
+const CategoryItem = memo(({ category, isActive, onPress }) => {
+  const handleItemPress = useCallback(() => {
+    onPress(category.id);
+  }, [onPress, category.id]);
+
+  return <AppButton title={category.label} variant={isActive ? "primary" : "secondary"} onPress={handleItemPress} />;
+});
 
 const styles = StyleSheet.create({
   scrollView: {

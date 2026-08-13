@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function AuthFooter({ text, linkText, href }) {
+const AuthFooter = memo(({ text, linkText, href }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
@@ -25,7 +25,8 @@ export default function AuthFooter({ text, linkText, href }) {
       </AppText>
     </View>
   );
-}
+});
+AuthFooter.displayName = "AuthFooter";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -38,3 +39,5 @@ const getStyles = (theme) =>
       color: theme.primaryAccent
     }
   });
+
+export default AuthFooter;

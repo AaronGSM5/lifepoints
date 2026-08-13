@@ -1,12 +1,10 @@
 import React, { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
-// eslint-disable-next-line import/no-unresolved
-import { MaterialIcons } from "@expo/vector-icons";
-
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import { Icon } from "../icons/Icon";
 import AppImage from "../ui/AppImage";
 import BackButton from "../ui/BackButton";
 
@@ -25,11 +23,11 @@ const CommunityHeader = memo(({ community }) => {
     <View style={styles.headerContainer}>
       <AppImage source={bannerImg} variant={"communityBanner"} />
 
-      <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
+      <BackButton withBackground style={styles.backButton} />
 
       <View style={styles.avatarWrapper}>
         <View style={[styles.iconBox, { backgroundColor: bgColor }]}>
-          <MaterialIcons name={iconName} size={40} color={iconColor} />
+          <Icon name={iconName} size={40} color={iconColor} />
         </View>
       </View>
     </View>
@@ -55,6 +53,11 @@ const getStyles = (theme) =>
       justifyContent: "center",
       borderWidth: 4,
       borderColor: theme.background
+    },
+    backButton: {
+      position: "absolute",
+      top: 20,
+      left: Spacing.md
     }
   });
 

@@ -105,6 +105,7 @@ const getStyles = (theme) =>
       padding: Spacing.md,
       borderRadius: Spacing.borderRadius.md,
       maxHeight: 200,
+      width: "100%",
       marginBottom: Spacing.xl,
       borderWidth: 1,
       borderColor: addOpacity(theme.warning, 0.5)

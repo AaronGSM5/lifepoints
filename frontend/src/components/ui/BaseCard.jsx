@@ -8,13 +8,15 @@ import { addOpacity } from "@/utils/addOpacity";
 const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false, isSelected = false }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const containerStyle = [styles.card, { padding }, isSelected && styles.selected, style];
+  const containerStyle = [styles.card, { padding }, isSelected && styles.selected, disabled && styles.disabled, style];
 
   if (onPress) {
     return (
       <Pressable
         disabled={disabled}
         onPress={onPress}
+        accessibilityRole="button"
+        accessibilityState={{ disabled }}
         style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
       >
         {children}
@@ -43,6 +45,9 @@ const getStyles = (theme) =>
     pressed: {
       opacity: 0.8,
       transform: [{ scale: 0.98 }]
+    },
+    disabled: {
+      opacity: 0.6
     }
   });
 

@@ -8,7 +8,6 @@ import { Icon } from "../icons/Icon";
 
 const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles(MyTheme);
 
   const [isConfirming, setIsConfirming] = useState(false);
 
@@ -68,7 +67,7 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
           styles.iconFace,
           {
             opacity: frontOpacity,
-            transform: [{ rotateY: frontRotateY }, { perspective: 1000 }],
+            transform: [{ perspective: 1000 }, { rotateY: frontRotateY }],
             backgroundColor: icon.bg
           }
         ]}
@@ -81,7 +80,7 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
           styles.iconFace,
           {
             opacity: backOpacity,
-            transform: [{ rotateY: backRotateY }, { perspective: 1000 }],
+            transform: [{ perspective: 1000 }, { rotateY: backRotateY }],
             backgroundColor: MyTheme.primaryAccent
           }
         ]}
@@ -93,19 +92,18 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
 });
 ConfirmableIcon.displayName = "ConfirmableIcon";
 
-const getStyles = () =>
-  StyleSheet.create({
-    iconWrapper: {
-      marginRight: Spacing.md,
-      width: 44,
-      height: 44
-    },
-    iconFace: {
-      ...StyleSheet.absoluteFillObject,
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: Spacing.borderRadius.full
-    }
-  });
+const styles = StyleSheet.create({
+  iconWrapper: {
+    marginRight: Spacing.md,
+    width: 44,
+    height: 44
+  },
+  iconFace: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: Spacing.borderRadius.full
+  }
+});
 
 export default ConfirmableIcon;

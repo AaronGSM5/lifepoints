@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Animated, FlatList, StyleSheet, View } from "react-native";
 
 import ChatDateSeparator from "@/components/chat/ChatDateSeparator";
@@ -6,7 +6,7 @@ import ChatMessageItem from "@/components/chat/ChatMessageItem";
 
 const viewabilityConfig = { itemVisiblePercentThreshold: 1 };
 
-const ChatMessageList = ({ chatMessages, showSenderName = false, contentContainerStyle }) => {
+const ChatMessageList = memo(({ chatMessages = [], showSenderName = false, contentContainerStyle }) => {
   const [topVisibleDate, setTopVisibleDate] = useState(() => chatMessages[0]?.dateLabel || null);
   const [fadeAnim] = useState(() => new Animated.Value(0));
   const hideTimeout = useRef(null);
@@ -60,7 +60,7 @@ const ChatMessageList = ({ chatMessages, showSenderName = false, contentContaine
     [showSenderName]
   );
 
-  const keyExtractor = useCallback((item) => item.id, []);
+  const keyExtractor = useCallback((item) => item?.id?.toString() || Math.random().toString(), []);
 
   return (
     <View style={styles.container}>
@@ -85,7 +85,8 @@ const ChatMessageList = ({ chatMessages, showSenderName = false, contentContaine
       />
     </View>
   );
-};
+});
+ChatMessageList.displayName = "ChatMessageList";
 
 const styles = StyleSheet.create({
   container: {

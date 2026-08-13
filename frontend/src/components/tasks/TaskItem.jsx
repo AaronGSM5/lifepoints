@@ -46,7 +46,7 @@ const getStyles = () =>
     },
     title: {
       fontSize: 16,
-      lineHeight: 18
+      lineHeight: 22
     }
   });
 

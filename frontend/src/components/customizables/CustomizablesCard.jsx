@@ -44,25 +44,27 @@ const CustomizablesCard = memo(
       }
     }, [justUnlocked, unlocked, animValue, id, onAnimationComplete]);
 
-    const itemOpacity = animValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.3, 1]
-    });
-
-    const textColor = animValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [MyTheme.muted, MyTheme.text]
-    });
-
-    const scale = animValue.interpolate({
-      inputRange: [0, 0.5, 0.8, 1],
-      outputRange: [1, 1.4, 0.9, 1]
-    });
-
-    const lockOpacity = animValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0]
-    });
+    const { itemOpacity, textColor, scale, lockOpacity } = useMemo(
+      () => ({
+        itemOpacity: animValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0.3, 1]
+        }),
+        textColor: animValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [MyTheme.muted, MyTheme.text]
+        }),
+        scale: animValue.interpolate({
+          inputRange: [0, 0.5, 0.8, 1],
+          outputRange: [1, 1.4, 0.9, 1]
+        }),
+        lockOpacity: animValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0]
+        })
+      }),
+      [MyTheme.muted, MyTheme.text, animValue]
+    );
 
     const handlePress = useCallback(() => {
       if (onPress) {

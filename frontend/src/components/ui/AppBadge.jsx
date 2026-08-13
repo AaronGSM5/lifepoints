@@ -19,7 +19,6 @@ const AppBadge = memo(
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
-    const Container = onPress ? TouchableOpacity : View;
     let leftElement = null;
 
     if (iconNode) {
@@ -28,17 +27,26 @@ const AppBadge = memo(
       leftElement = <AppText style={[styles.emoji, label && { marginRight: Spacing.xs }]}>{emoji}</AppText>;
     }
 
-    return (
-      <Container onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
+    const content = (
+      <>
         {leftElement}
-
         {label && (
           <AppText type="caption" bold style={[styles.text, styles[`${variant}Text`], textStyle]}>
             {label}
           </AppText>
         )}
-      </Container>
+      </>
     );
+
+    if (onPress) {
+      return (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
+          {content}
+        </TouchableOpacity>
+      );
+    }
+
+    return <View style={[styles.badge, styles[variant], style]}>{content}</View>;
   }
 );
 AppBadge.displayName = "AppBadge";
@@ -88,7 +96,7 @@ const getStyles = (theme) =>
 
     outline: {
       backgroundColor: "transparent",
-      borderColor: "rgba(255,255,255,0.2)"
+      borderColor: theme.separator
     },
     outlineText: {
       color: theme.muted
@@ -96,7 +104,7 @@ const getStyles = (theme) =>
 
     glas: {
       backgroundColor: theme.background,
-      borderColor: "rgba(255,255,255,0.1)"
+      borderColor: theme.separator
     },
     glasText: {
       color: theme.primaryAccent

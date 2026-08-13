@@ -11,13 +11,18 @@ import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
 import Separator from "../ui/Separator";
 
-const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPost }) => {
+const CommentInputSection = memo(({ inputRef, commentText = "", setCommentText, onPost }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   const insets = useSafeAreaInsets() || { top: 0, bottom: 0, left: 0, right: 0 };
-  const userAvatar = useStore((state) => state.profile.avatar);
-  const userName = useStore((state) => state.profile.username);
+
+  const userAvatar = useStore((state) => state.profile?.avatar);
+  const userName = useStore((state) => state.profile?.username);
+
+  const safeComment = commentText || "";
+  const isInputEmpty = safeComment.trim().length === 0;
+
   return (
     <>
       <Separator />
@@ -29,18 +34,13 @@ const CommentInputSection = memo(({ inputRef, commentText, setCommentText, onPos
             style={styles.textInput}
             placeholder={t("Leave a comment...")}
             placeholderTextColor={MyTheme.muted}
-            value={commentText}
+            value={safeComment}
             onChangeText={setCommentText}
             multiline
             textAlignVertical="center"
             accessibilityRole="text"
           />
-          <AppText
-            bold
-            onPress={onPost}
-            disabled={commentText.trim().length === 0}
-            style={{ color: MyTheme.primaryAccent }}
-          >
+          <AppText bold onPress={onPost} disabled={isInputEmpty} style={{ color: MyTheme.primaryAccent }}>
             {t("Post")}
           </AppText>
         </View>

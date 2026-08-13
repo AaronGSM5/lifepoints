@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,8 +6,13 @@ import { Spacing } from "@/constants/Spacing";
 import AppImage from "../ui/AppImage";
 
 const EventSlide = memo(({ imageSource, onPress, style }) => {
+  const handlePress = useCallback(() => {
+    if (onPress) {
+      onPress();
+    }
+  }, [onPress]);
   return (
-    <Pressable onPress={onPress} style={[styles.container, style]}>
+    <Pressable onPress={handlePress} style={[styles.container, style]}>
       <View style={styles.heroSection}>
         <AppImage source={imageSource} variant={"fill"} contentFit={"contain"} />
       </View>

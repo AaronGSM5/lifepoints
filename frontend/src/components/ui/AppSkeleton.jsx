@@ -1,10 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { Skeleton } from "moti/skeleton";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function AppSkeleton({ width = "100%", height, radius = 8, ...props }) {
+const AppSkeleton = memo(({ width = "100%", height, radius = 8, ...props }) => {
   const MyTheme = useAppTheme();
 
   return (
@@ -17,4 +17,7 @@ export default function AppSkeleton({ width = "100%", height, radius = 8, ...pro
       {...props}
     />
   );
-}
+});
+AppSkeleton.displayName = "AppSkeleton";
+
+export default AppSkeleton;

@@ -12,12 +12,12 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import AppBadge from "./AppBadge";
 import StatCardSkeleton from "./StatCardSkeleton";
 
-const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style }) => {
+const StatCard = memo(({ label, value, icon, color, blurred = true, isLoading, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const handleGetPlus = useCallback(() => router.push("/setting/subscription"), []);
 
-  if (isLoading) return <StatCardSkeleton style={style} styles={styles} />;
+  if (isLoading) return <StatCardSkeleton style={style} />;
 
   return (
     <BaseCard style={style}>
@@ -65,7 +65,9 @@ const getStyles = (theme) =>
     },
     blurredText: {
       color: "transparent",
-      textShadow: `0px 0px 10px ${theme.text}`
+      textShadowColor: theme.text,
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 10
     },
     badgeText: {
       color: theme.gold

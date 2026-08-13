@@ -10,7 +10,7 @@ import FeaturedRewardCard from "@/components/shop/FeaturedRewardCard";
 import RewardCard from "@/components/shop/RewardCard";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import CategoryButtons from "@/components/ui/CategoryButtons";
-import { EmptyView } from "@/components/ui/EmptyView";
+import EmptyView from "@/components/ui/EmptyView";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";

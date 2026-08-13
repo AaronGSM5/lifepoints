@@ -13,6 +13,8 @@ export const DarkTheme = {
   separator: "rgba(255, 255, 255, 0.08)",
   inputBorder: "rgba(255, 255, 255, 0.1)",
   glas: "rgba(255,255,255,0.05)",
+  backdrop: "rgba(0, 0, 0, 0.3)",
+  // theme spezific colors
   darkBg: "#000418"
 };
 
@@ -31,4 +33,5 @@ export const LightTheme = {
   separator: "rgba(0, 0, 0, 0.06)",
   inputBorder: "rgba(0, 0, 0, 0.05)",
   glas: "rgba(255, 255, 255, 0.7)",
+  backdrop: "rgba(0, 0, 0, 0.3)",
 };

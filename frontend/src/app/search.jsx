@@ -7,7 +7,7 @@ import HistoryItem from "@/components/search/HistoryItem";
 import AppBadge from "@/components/ui/AppBadge";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import { EmptyView } from "@/components/ui/EmptyView";
+import EmptyView from "@/components/ui/EmptyView";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 

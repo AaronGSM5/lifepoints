@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   Animated,
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -8,7 +9,6 @@ import {
   Platform,
   Pressable,
   StyleSheet,
-  useWindowDimensions,
   View
 } from "react-native";
 
@@ -24,10 +24,9 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, children }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const { height: SCREEN_HEIGHT } = useWindowDimensions();
   const [showModal, setShowModal] = useState(isVisible);
 
-  const [slideAnim] = useState(() => new Animated.Value(SCREEN_HEIGHT));
+  const [slideAnim] = useState(() => new Animated.Value(Dimensions.get("window").height));
   const [fadeAnim] = useState(() => new Animated.Value(0));
 
   const handleClose = useCallback(() => {
@@ -75,6 +74,8 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
   );
 
   useEffect(() => {
+    const currentScreenHeight = Dimensions.get("window").height;
+
     if (isVisible) {
       triggerHaptic();
 
@@ -100,7 +101,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
           useNativeDriver: Platform.OS !== "web"
         }),
         Animated.timing(slideAnim, {
-          toValue: SCREEN_HEIGHT,
+          toValue: currentScreenHeight,
           duration: 250,
           useNativeDriver: Platform.OS !== "web"
         })
@@ -111,7 +112,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
         }
       });
     }
-  }, [isVisible, fadeAnim, slideAnim, SCREEN_HEIGHT, onAnimationComplete]);
+  }, [isVisible, fadeAnim, slideAnim, onAnimationComplete]);
 
   return (
     <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
@@ -133,7 +134,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
               <CloseButton withBackground onPress={onClose} />
             </View>
           </View>
-          <View style={styles.content}>{children}</View>
+          {children}
         </Animated.View>
       </KeyboardAvoidingView>
     </Modal>
@@ -150,7 +151,7 @@ const getStyles = (theme) =>
     },
     backdrop: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.6)"
+      backgroundColor: theme.backdrop
     },
     sheetContainer: {
       backgroundColor: theme.background,
@@ -159,7 +160,7 @@ const getStyles = (theme) =>
       overflow: "hidden",
       maxHeight: "80%",
       width: "100%",
-      flex: 1
+      paddingBottom: Platform.OS === "ios" ? 20 : 0
     },
     panResponderArea: {
       backgroundColor: theme.background,
@@ -191,9 +192,6 @@ const getStyles = (theme) =>
       backgroundColor: theme.primary,
       alignItems: "center",
       justifyContent: "center"
-    },
-    content: {
-      flex: 1
     }
   });
 

@@ -17,11 +17,11 @@ import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 import { capitalize } from "@/utils/helpers";
 
-import { EmptyView } from "../ui/EmptyView";
+import EmptyView from "../ui/EmptyView";
 
 const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
   const MyTheme = useAppTheme();
-  const styles = getStyles();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const router = useRouter();
   const { t } = useTranslation(["tasks", "common"]);
   const showInstaTrackingModal = useStore((state) => state.showInstaTrackingModal);
@@ -178,7 +178,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
       data={listData}
       keyExtractor={(item) => item?.id.toString()}
       renderItem={renderItem}
-      ListFooterComponent={!isLoading ? renderFooter() : null}
+      ListFooterComponent={!isLoading ? renderFooter : null}
       withTopPadding={false}
     />
   );

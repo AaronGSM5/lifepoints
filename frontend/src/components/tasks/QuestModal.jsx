@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -24,11 +24,10 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
     <BaseBottomSheet isVisible={visible} onClose={onClose} title={t("Challenges")}>
       <NavigationRow tabs={tabLabels} activeIndex={activeIndex} onTabChange={setActiveIndex} />
 
-      <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.list} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {quests.map((quest) => (
           <QuestItem key={quest.id} quest={quest} onStart={() => console.log("Quest gestartet: ", quest.id)} />
         ))}
-        <View style={{ height: Spacing.xl }} />
       </ScrollView>
     </BaseBottomSheet>
   );
@@ -40,6 +39,9 @@ const getStyles = () =>
       flex: 1,
       paddingHorizontal: Spacing.lg,
       paddingTop: Spacing.xl
+    },
+    scrollContent: {
+      paddingBottom: Spacing.xl
     }
   });
 

@@ -44,7 +44,7 @@ const InviteFriendCard = ({ referralCode }) => {
         )}
       </AppText>
 
-      <AppButton title={t("Send invitation link")} fullWidth onPress={shareInvite} />
+      <AppButton variant={"outline"} title={t("Send invitation link")} onPress={shareInvite} />
     </BaseCard>
   );
 };

@@ -9,7 +9,7 @@ import { Icon } from "../icons/Icon";
 const hexagonPoints = "50,0 100,25 100,75 50,100 0,75 0,25";
 
 const StatusBadge = memo(({ size = 16, id, iconColor, style }) => {
-  const badgeData = useMemo(() => mockCustomizables.badges.find((badge) => badge.id === id), [id]);
+  const badgeData = useMemo(() => mockCustomizables?.badges?.find((badge) => badge.id === id), [id]);
 
   if (!badgeData) return null;
 

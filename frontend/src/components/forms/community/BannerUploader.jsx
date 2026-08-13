@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
 
@@ -11,7 +11,7 @@ import CloseButton from "@/components/ui/CloseButton";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClear }) {
+const BannerUploader = memo(({ bannerUri, onBannerSelect, onBannerClear }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("community");
@@ -27,10 +27,18 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       aspect: [16, 9],
       quality: 0.8
     });
-    if (!result.canceled) {
-      onBannerSelect(result.assets[0].uri);
+    if (!result.canceled && result.assets?.[0]?.uri) {
+      if (onBannerSelect) {
+        onBannerSelect(result.assets[0].uri);
+      }
     }
   }, [onBannerSelect, t]);
+
+  const handleClear = useCallback(() => {
+    if (onBannerClear) {
+      onBannerClear();
+    }
+  }, [onBannerClear]);
 
   return (
     <View>
@@ -40,7 +48,7 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       {bannerUri ? (
         <View style={styles.bannerImageWrapper}>
           <AppImage source={bannerUri} variant={"fill"} />
-          <CloseButton withBackground onPress={onBannerClear} style={styles.clearImageIcon} />
+          <CloseButton withBackground onPress={handleClear} style={styles.clearImageIcon} />
         </View>
       ) : (
         <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
@@ -52,7 +60,8 @@ export default function BannerUploader({ bannerUri, onBannerSelect, onBannerClea
       )}
     </View>
   );
-}
+});
+BannerUploader.displayName = "BannerUploader";
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -94,3 +103,5 @@ const getStyles = (theme) =>
       marginTop: Spacing.xs
     }
   });
+
+export default BannerUploader;

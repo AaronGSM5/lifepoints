@@ -16,25 +16,20 @@ const QuestItem = memo(({ quest, onStart }) => {
   const target = quest.target || 1;
   const progressPercent = Math.min((current / target) * 100, 100);
 
-  const getButtonTitle = () => {
-    if (quest.completed) return quest.collected ? "Done" : `+${quest.points} LP`;
-    return "Start";
-  };
+  const buttonTitle = quest.completed ? (quest.collected ? "Done" : `+${quest.points} LP`) : "Start";
 
   return (
     <BaseCard style={styles.questCard}>
-      <View style={{ flex: 1, paddingRight: Spacing.sm }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AppText bold style={{ flex: 1, paddingRight: Spacing.sm }}>
+      <View style={styles.leftContainer}>
+        <View style={styles.titleRow}>
+          <AppText bold style={styles.titleText}>
             {quest.title}
           </AppText>
           <LpPoints points={quest.points} />
         </View>
         <View style={styles.progressContainer}>
           <View style={styles.progressTrack}>
-            <View
-              style={[styles.progressFill, { width: `${progressPercent}%`, backgroundColor: MyTheme.primaryAccent }]}
-            />
+            <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
           </View>
           <AppText type="caption">
             {current}/{target}
@@ -44,7 +39,7 @@ const QuestItem = memo(({ quest, onStart }) => {
 
       <AppButton
         size="sm"
-        title={getButtonTitle()}
+        title={buttonTitle}
         variant={quest.completed ? "primary" : "outline"}
         bgColor={quest.completed && !quest.collected ? MyTheme.primaryAccent : undefined}
         disabled={quest.completed && quest.collected}
@@ -65,6 +60,18 @@ const getStyles = (theme) =>
       padding: Spacing.md,
       gap: Spacing.sm
     },
+    leftContainer: {
+      flex: 1,
+      paddingRight: Spacing.sm
+    },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    titleText: {
+      flex: 1,
+      paddingRight: Spacing.sm
+    },
     progressContainer: {
       flexDirection: "row",
       alignItems: "center",
@@ -74,7 +81,7 @@ const getStyles = (theme) =>
     progressTrack: {
       flex: 1,
       height: 6,
-      backgroundColor: "rgba(255,255,255,0.1)",
+      backgroundColor: theme.separator,
       borderRadius: Spacing.borderRadius.lg,
       overflow: "hidden"
     },

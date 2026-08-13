@@ -7,7 +7,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export const EmptyView = memo(
+const EmptyView = memo(
   ({
     icon,
     iconColor,
@@ -94,3 +94,5 @@ const getStyles = (theme) =>
       marginTop: Spacing.sm
     }
   });
+
+export default EmptyView;
