@@ -6,6 +6,7 @@ export const DUMMY_MESSAGES = [
     senderId: "me",
     senderName: "Aaron",
     avatar: "https://i.pravatar.cc/150?u=aaron",
+    badge: "badge_elite",
     createdAt: new Date().toISOString(),
     time: "15:05"
   },
@@ -16,6 +17,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Alex",
     color: "#4ADE80",
     avatar: "https://i.pravatar.cc/150?u=alex",
+    badge: "badge_grinder",
     createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
     time: "14:50"
   },
@@ -26,6 +28,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Lisa",
     color: "#F472B6",
     avatar: "https://i.pravatar.cc/150?u=lisa",
+    badge: "badge_rookie",
     createdAt: new Date(Date.now() - 1000 * 60 * 95).toISOString(),
     time: "13:30"
   },
@@ -35,6 +38,7 @@ export const DUMMY_MESSAGES = [
     senderId: "me",
     senderName: "Aaron",
     avatar: "https://i.pravatar.cc/150?u=aaron",
+    badge: "badge_elite",
     createdAt: new Date(Date.now() - 1000 * 60 * 110).toISOString(),
     time: "13:15"
   },
@@ -47,6 +51,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Tom",
     color: "#60A5FA",
     avatar: "https://i.pravatar.cc/150?u=tom",
+    // Tom hat absichtlich kein Badge, um den Fallback-Render zu testen
     createdAt: new Date(Date.now() - 86400000).toISOString(),
     time: "20:45"
   },
@@ -57,6 +62,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Emilia",
     color: "#A78BFA",
     avatar: "https://i.pravatar.cc/150?u=emilia",
+    badge: "badge_grinder",
     createdAt: new Date(Date.now() - 86400000 - 1000 * 60 * 85).toISOString(),
     time: "19:20"
   },
@@ -67,6 +73,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Alex",
     color: "#4ADE80",
     avatar: "https://i.pravatar.cc/150?u=alex",
+    badge: "badge_grinder",
     createdAt: new Date(Date.now() - 86400000 - 1000 * 60 * 195).toISOString(),
     time: "17:30"
   },
@@ -79,6 +86,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Tom",
     color: "#60A5FA",
     avatar: "https://i.pravatar.cc/150?u=tom",
+    // Auch hier kein Badge für Tom
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
     time: "10:20"
   },
@@ -89,6 +97,7 @@ export const DUMMY_MESSAGES = [
     senderName: "Lisa",
     color: "#F472B6",
     avatar: "https://i.pravatar.cc/150?u=lisa",
+    badge: "badge_rookie",
     createdAt: new Date(Date.now() - 86400000 * 3 - 1000 * 60 * 5).toISOString(),
     time: "10:15"
   },
@@ -98,6 +107,7 @@ export const DUMMY_MESSAGES = [
     senderId: "me",
     senderName: "Aaron",
     avatar: "https://i.pravatar.cc/150?u=aaron",
+    badge: "badge_elite",
     createdAt: new Date(Date.now() - 86400000 * 3 - 1000 * 60 * 20).toISOString(),
     time: "10:00"
   },
@@ -109,6 +119,7 @@ export const DUMMY_MESSAGES = [
     senderId: "me",
     senderName: "Aaron",
     avatar: "https://i.pravatar.cc/150?u=aaron",
+    badge: "badge_elite",
     createdAt: "2026-06-12T10:05:00.000Z",
     time: "10:05"
   },
@@ -118,6 +129,7 @@ export const DUMMY_MESSAGES = [
     senderId: "me",
     senderName: "Aaron",
     avatar: "https://i.pravatar.cc/150?u=aaron",
+    badge: "badge_elite",
     createdAt: "2026-06-12T10:00:00.000Z",
     time: "10:00"
   }

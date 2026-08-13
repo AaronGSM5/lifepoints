@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
+import StatusBadge from "../ui/StatusBadge";
 
 const ChatMessageItem = memo(({ item, showSenderName = true }) => {
   const MyTheme = useAppTheme();
@@ -26,11 +27,20 @@ const ChatMessageItem = memo(({ item, showSenderName = true }) => {
     <View style={[styles.messageRow, isMe ? styles.messageRowMe : styles.messageRowOther]}>
       {!isMe && showSenderName && <Avatar source={item.avatar} name={item.senderName} style={styles.avatar} />}
       <View style={[styles.messageBubble, isMe ? styles.messageBubbleMe : styles.messageBubbleOther]}>
-        {!isMe && showSenderName && (
-          <AppText bold type="caption" style={[styles.senderName, item.color && { color: item.color }]}>
-            {item.senderName}
-          </AppText>
-        )}
+        {!isMe &&
+          showSenderName &&
+          (item.badge ? (
+            <View style={styles.nameWithBadge}>
+              <AppText bold type="caption" style={[styles.senderName, item.color && { color: item.color }]}>
+                {item.senderName}
+              </AppText>
+              <StatusBadge id={item.badge} />
+            </View>
+          ) : (
+            <AppText bold type="caption" style={[styles.senderName, item.color && { color: item.color }]}>
+              {item.senderName}
+            </AppText>
+          ))}
         <AppText style={{ color: isMe ? "#000" : MyTheme.text }}>{item.text}</AppText>
         <AppText type="caption" style={[styles.timeText, isMe && { color: "#000" }]}>
           {item.time}
@@ -83,6 +93,11 @@ const getStyles = (theme) =>
     senderName: {
       color: theme.primaryAccent,
       marginBottom: 2
+    },
+    nameWithBadge: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.xs
     },
     timeText: {
       fontSize: 10,
