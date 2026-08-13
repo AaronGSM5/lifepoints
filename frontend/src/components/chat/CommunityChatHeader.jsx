@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -7,6 +7,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppPopupMenu from "../ui/AppPopupMenu";
 import AppText from "../ui/AppText";
 import BackButton from "../ui/BackButton";
 
@@ -15,6 +16,29 @@ const CommunityChatHeader = ({ community, onDetailsPress, onOptionsPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("chat");
+  const [showMenu, setShowMenu] = useState(false);
+
+  const menuItems = [
+    {
+      label: "Stummschalten",
+      icon: "notifications-off-outline",
+      onPress: () => {
+        console.log("Benachrichtigungen stummschalten");
+        if (onOptionsPress) onOptionsPress("mute");
+      }
+    },
+    {
+      label: "Blockieren",
+      icon: "ban-outline",
+      color: "#EF4444",
+      isDanger: true,
+      onPress: () => {
+        console.log("Community blockieren / verlassen");
+        if (onOptionsPress) onOptionsPress("block");
+      }
+    }
+  ];
+
   return (
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
       <BackButton style={styles.headerIcon} />
@@ -31,7 +55,10 @@ const CommunityChatHeader = ({ community, onDetailsPress, onOptionsPress }) => {
         <AppText type="caption">{t("Tap for more info")}</AppText>
       </TouchableOpacity>
 
-      <Icon name="dots" onPress={onOptionsPress} style={styles.headerIcon} />
+      <View style={styles.optionsWrapper}>
+        <Icon name="dots" onPress={() => setShowMenu(!showMenu)} style={styles.headerIcon} />
+        <AppPopupMenu visible={showMenu} items={menuItems} onClose={() => setShowMenu(false)} />
+      </View>
     </View>
   );
 };
@@ -44,7 +71,8 @@ const getStyles = (theme) =>
       justifyContent: "space-between",
       backgroundColor: theme.background,
       borderBottomWidth: 1,
-      borderBottomColor: theme.glas
+      borderBottomColor: theme.glas,
+      zIndex: 50
     },
     headerIcon: {
       padding: Spacing.md,
@@ -67,6 +95,9 @@ const getStyles = (theme) =>
       borderRadius: Spacing.borderRadius.md,
       alignItems: "center",
       justifyContent: "center"
+    },
+    optionsWrapper: {
+      position: "relative"
     }
   });
 

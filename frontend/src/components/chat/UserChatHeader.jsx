@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -6,6 +6,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
+import AppPopupMenu from "../ui/AppPopupMenu";
 import AppText from "../ui/AppText";
 import Avatar from "../ui/Avatar";
 import BackButton from "../ui/BackButton";
@@ -14,6 +15,29 @@ const UserChatHeader = ({ mockChatPartner, onProfilePress, onOptionsPress }) => 
   const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const menuItems = [
+    {
+      label: "Stummschalten",
+      icon: "notifications-off-outline",
+      onPress: () => {
+        console.log("Benachrichtigungen stummschalten");
+        if (onOptionsPress) onOptionsPress("mute");
+      }
+    },
+    {
+      label: "Blockieren",
+      icon: "ban-outline",
+      color: "#EF4444",
+      isDanger: true,
+      onPress: () => {
+        console.log("User blockieren");
+        if (onOptionsPress) onOptionsPress("block");
+      }
+    }
+  ];
+
   return (
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
       <BackButton style={styles.headerIcon} />
@@ -29,8 +53,10 @@ const UserChatHeader = ({ mockChatPartner, onProfilePress, onOptionsPress }) => 
           )}
         </View>
       </TouchableOpacity>
-
-      <Icon name="dots" onPress={onOptionsPress} style={styles.headerIcon} />
+      <View style={styles.optionsWrapper}>
+        <Icon name="dots" onPress={() => setShowMenu(!showMenu)} style={styles.headerIcon} />
+        <AppPopupMenu visible={showMenu} items={menuItems} onClose={() => setShowMenu(false)} />
+      </View>
     </View>
   );
 };
@@ -43,7 +69,8 @@ const getStyles = (theme) =>
       justifyContent: "space-between",
       backgroundColor: theme.background,
       borderBottomWidth: 1,
-      borderBottomColor: theme.separator
+      borderBottomColor: theme.separator,
+      zIndex: 50
     },
     headerIcon: {
       padding: Spacing.md,
@@ -58,6 +85,9 @@ const getStyles = (theme) =>
     },
     onlineStatus: {
       color: theme.primaryAccent
+    },
+    optionsWrapper: {
+      position: "relative"
     }
   });
 
