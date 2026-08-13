@@ -82,7 +82,7 @@ const CustomizablesCard = memo(
 
             {(!unlocked || justUnlocked) && (
               <RNAnimated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-                <Icon name="lock" size={12} color={MyTheme.text} />
+                <Icon name="lock" size={12} />
               </RNAnimated.View>
             )}
           </RNAnimated.View>

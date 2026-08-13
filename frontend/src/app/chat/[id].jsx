@@ -41,7 +41,6 @@ const UserChatScreen = () => {
           value={inputText}
           onChangeText={setInputText}
           onSend={sendMessage}
-          onAttach={() => console.log("Open Attach Menu")}
           placeholder={t("Write a message...")}
         />
       </ScreenWrapper>

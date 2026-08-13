@@ -21,7 +21,7 @@ const TaskItem = memo(({ title, lp, icon, onNavigate, isLoading }) => {
   return (
     <BaseCard style={styles.container} onPress={onNavigate}>
       <View style={styles.headerRow}>
-        <Icon name={icon} size={20} color={MyTheme.text} />
+        <Icon name={icon} size={20} />
         <LpPoints points={lp} size="small" />
       </View>
       <AppText type="body" bold style={styles.title} numberOfLines={2}>

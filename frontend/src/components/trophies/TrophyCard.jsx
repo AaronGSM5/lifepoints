@@ -85,7 +85,7 @@ const TrophyCard = memo(({ id, title, icon, unlocked, justUnlocked, onAnimationC
 
         {(!unlocked || justUnlocked) && (
           <RNAnimated.View style={[styles.lockOverlay, { opacity: unlocked ? lockOpacity : 1 }]}>
-            <Icon name="lock" size={13} color={MyTheme.text} />
+            <Icon name="lock" size={13} />
           </RNAnimated.View>
         )}
       </RNAnimated.View>
@@ -102,7 +102,7 @@ const getStyles = (theme) =>
   StyleSheet.create({
     trophyItem: {
       alignItems: "center",
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       borderWidth: 0
     },
     trophyIconBox: {

@@ -64,7 +64,7 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
           </View>
         </View>
 
-        <Icon name={expanded ? "up" : "down"} color={MyTheme.text} />
+        <Icon name={expanded ? "up" : "down"} />
       </TouchableOpacity>
       {expanded && (
         <>

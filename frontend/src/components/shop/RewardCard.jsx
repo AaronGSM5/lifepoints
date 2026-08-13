@@ -24,7 +24,7 @@ const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPr
     <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
-        <AppBadge iconNode={<Icon name={icon} size={14} color={MyTheme.text} />} style={styles.badge} />
+        <AppBadge iconNode={<Icon name={icon} size={14} />} style={styles.badge} />
       </View>
 
       <View style={styles.cardContent}>
