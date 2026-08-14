@@ -15,7 +15,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
-import { capitalize } from "@/utils/helpers";
+import { capitalize } from "@/utils/textHelpers";
 
 import EmptyView from "../ui/EmptyView";
 

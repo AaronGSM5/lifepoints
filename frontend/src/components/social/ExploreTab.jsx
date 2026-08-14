@@ -17,7 +17,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { COMMUNITIES_HERO_DATA } from "@/mocks/HeroData";
 import useStore from "@/store/useStore";
-import { capitalize } from "@/utils/helpers";
+import { capitalize } from "@/utils/textHelpers";
 
 const SKELETON_DATA = [1, 2, 3];
 

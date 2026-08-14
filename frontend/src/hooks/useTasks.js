@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { questCatalog } from "@/constants/QuestCatalog";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { recommendedTasks } from "@/mocks/FeaturedTasks";
-import { capitalize } from "@/utils/helpers";
+import { capitalize } from "@/utils/textHelpers";
 
 export const useTasks = () => {
   const { t } = useTranslation("tasks");

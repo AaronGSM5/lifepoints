@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { rewardsCatalog } from "@/constants/RewardsCatalog";
-import { capitalize } from "@/utils/helpers";
+import { capitalize } from "@/utils/textHelpers";
 
 const ITEMS_PER_PAGE = 6;
 
