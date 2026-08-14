@@ -12,7 +12,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import AppBadge from "./AppBadge";
 import StatCardSkeleton from "./StatCardSkeleton";
 
-const StatCard = memo(({ label, value, icon, color, blurred = true, isLoading, style }) => {
+const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const handleGetPlus = useCallback(() => router.push("/setting/subscription"), []);
