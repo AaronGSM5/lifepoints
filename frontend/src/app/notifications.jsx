@@ -12,7 +12,7 @@ import EmptyView from "@/components/ui/EmptyView";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { groupDataByDate } from "@/utils/helpers";
+import { groupDataByDate } from "@/utils/dateHelpers";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation("common");

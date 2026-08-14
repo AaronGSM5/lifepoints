@@ -13,7 +13,7 @@ import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { groupDataByDate } from "@/utils/helpers";
+import { groupDataByDate } from "@/utils/dateHelpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();

@@ -1,8 +1,3 @@
-export const capitalize = (str) => {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
 export const formatTimeOrDate = (isoString) => {
   if (!isoString) return "";
   const date = new Date(isoString);

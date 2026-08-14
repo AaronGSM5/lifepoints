@@ -6,7 +6,7 @@ import { router } from "expo-router";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { formatTimeOrDate } from "@/utils/helpers";
+import { formatTimeOrDate } from "@/utils/dateHelpers";
 
 import JournalPreviewSkeleton from "./JournalPreviewSkeleton";
 import AppText from "../ui/AppText";
