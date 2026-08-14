@@ -1,4 +1,4 @@
-import { formatTimeOrDate, groupDataByDate } from "./dateHelpers";
+import { formatTimeOrDate, getDateLabel, groupDataByDate, isSameDay } from "./dateHelpers";
 
 describe("formatTimeOrDate", () => {
   it("should return an empty string if no isoString is provided", () => {
@@ -67,5 +67,60 @@ describe("groupDataByDate", () => {
     expect(result[2].title).not.toBe("Yesterday")
     expect(result[2].data).toHaveLength(1)
     expect(result[2].data[0].id).toBe(4)
+  })
+})
+
+describe("isSameDay", () => {
+  it("should return false on missing or invalid dates", () => {
+    expect(isSameDay()).toBe(false)
+    expect(isSameDay("", "")).toBe(false)
+    expect(isSameDay([], [])).toBe(false)
+  })
+
+  it("should return true if dates are on the same day", () => {
+    expect(isSameDay("2026-08-14T09:00:00.000Z", "2026-08-14T15:30:00.000Z")).toBe(true)
+  })
+
+  it("should return false if dates are on different days", () => {
+    expect(isSameDay("2026-08-14T09:00:00.000Z", "2026-08-12T15:30:00.000Z")).toBe(false)
+  })
+})
+
+describe("getDateLabel", () => {
+  const mockT = (key) => key
+
+  beforeAll(() => {
+    // Freeze time
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2026-08-14T12:00:00.000Z"));
+  });
+
+  afterAll(() => {
+    // use real time again
+    jest.useRealTimers();
+  });
+
+  it("should return empty string on missing or invalid date", () => {
+    expect(getDateLabel("Friday", mockT, "en-US")).toBe("")
+    expect(getDateLabel("", mockT, "en-US")).toBe("")
+    expect(getDateLabel(undefined, mockT, "en-US")).toBe("")
+    expect(getDateLabel([], mockT, "en-US")).toBe("")
+    expect(getDateLabel({}, mockT, "en-US")).toBe("")
+  })
+
+  it("should return 'Today' if day difference is 0", () => {
+    expect(getDateLabel("2026-08-14T09:00:00.000Z", mockT, "en-US")).toBe("Today")
+  })
+
+  it("should return 'Yesterday' if day difference is 1", () => {
+    expect(getDateLabel("2026-08-13T09:00:00.000Z", mockT, "en-US")).toBe("Yesterday")
+  })
+
+  it("should return Weekday if day difference is between 1 to 7", () => {
+    expect(getDateLabel("2026-08-10T09:00:00.000Z", mockT, "en-US")).toBe("Monday")
+  })
+
+  it("should return long Date if day difference is more than 7", () => {
+    expect(getDateLabel("2026-08-06T09:00:00.000Z", mockT, "en-US")).toBe("Thu Aug 6")
   })
 })
