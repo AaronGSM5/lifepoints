@@ -1,6 +1,6 @@
 import { RANK_COLORS } from "@/constants/Ranks";
 
-import { getRankColor } from "./getRankColor";
+import { getRankColor } from "./rankHelpers";
 
 describe("getRankColor", () => {
   it("should return the first place color for rank index 0", () => {

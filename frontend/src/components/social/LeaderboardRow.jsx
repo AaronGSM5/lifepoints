@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
-import { getRankColor } from "@/utils/getRankColor";
+import { getRankColor } from "@/utils/rankHelpers";
 
 import AppText from "../ui/AppText";
 import Separator from "../ui/Separator";
