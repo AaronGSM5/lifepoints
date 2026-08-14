@@ -1,11 +1,5 @@
+import { CURRENCY_DROPS, RARITIES } from "@/constants/Loot";
 import { mockCustomizables } from "@/mocks/Customizables";
-
-export const RARITIES = {
-  COMMON: { id: 'common', color: '#B2BEC3', label: 'Common' },
-  RARE: { id: 'rare', color: '#0984E3', label: 'Rare' },
-  EPIC: { id: 'epic', color: '#6C5CE7', label: 'Epic' },
-  LEGENDARY: { id: 'legendary', color: '#F1C40F', label: 'Legendary' }
-};
 
 const COSMETIC_ITEMS = [
   ...mockCustomizables.frames,
@@ -22,20 +16,12 @@ const COSMETIC_ITEMS = [
 });
 
 export const generateTripleLoot = (unlockedCustomizables = []) => {
-  const currencyDrops = [
-    { type: 'XP', amount: 50, rarity: RARITIES.COMMON, name: '50 XP' },
-    { type: 'XP', amount: 100, rarity: RARITIES.RARE, name: '100 XP' },
-    { type: 'XP', amount: 500, rarity: RARITIES.EPIC, name: '500 XP' },
-    { type: 'LP', amount: 5, rarity: RARITIES.COMMON, name: '5 LP' },
-    { type: 'LP', amount: 10, rarity: RARITIES.RARE, name: '10 LP' },
-    { type: 'LP', amount: 50, rarity: RARITIES.EPIC, name: '50 LP' },
-  ];
-
+  // every not unlocked COSMETIC
   const availableCosmetics = COSMETIC_ITEMS.filter(
     item => !unlockedCustomizables.includes(item.id)
   );
 
-  const allPossibleDrops = [...currencyDrops, ...availableCosmetics];
+  const allPossibleDrops = [...CURRENCY_DROPS, ...availableCosmetics];
 
   const shuffled = allPossibleDrops.sort(() => 0.5 - Math.random());
   const selectedLoot = shuffled.slice(0, 3);
