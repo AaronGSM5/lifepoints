@@ -12,7 +12,7 @@ import AppText from "@/components/ui/AppText";
 import BaseBottomSheet from "@/components/ui/BaseBottomSheet";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 export default function TaskCompletedScreen() {
   const router = useRouter();

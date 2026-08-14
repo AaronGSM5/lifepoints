@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const AppCheckbox = memo(({ checked, onPress, borderColor, size = 24, style }) => {
   const MyTheme = useAppTheme();

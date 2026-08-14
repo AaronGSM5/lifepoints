@@ -1,4 +1,4 @@
-import { addOpacity } from "./addOpacity";
+import { addOpacity } from "./colorHelpers"
 
 describe("addOpacity", () => {
   it("should return 'transparent' if no color is provided", () => {

@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { LightTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import AppLoadingSpinner from "./AppLoadingSpinner";
 import AppText from "./AppText";

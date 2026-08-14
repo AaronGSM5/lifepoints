@@ -6,7 +6,7 @@ import { BlurView } from "expo-blur";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import { Icon } from "../icons/Icon";
 

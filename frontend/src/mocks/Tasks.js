@@ -1,4 +1,4 @@
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 export const mockActiveTasks = [
   {

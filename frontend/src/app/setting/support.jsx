@@ -11,7 +11,7 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const handleContactSupport = (type) => {
   if (type === "email") {

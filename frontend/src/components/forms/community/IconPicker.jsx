@@ -8,7 +8,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const IconPicker = memo(({ icons = [], selectedIcon, onSelectIcon }) => {
   const MyTheme = useAppTheme();

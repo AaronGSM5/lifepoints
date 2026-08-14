@@ -10,7 +10,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 export default function TermsScreen() {
   const MyTheme = useAppTheme();

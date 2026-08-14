@@ -13,7 +13,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const handlePasswordChange = () => {
   Alert.alert("Erfolg", "Dein Passwort wurde erfolgreich aktualisiert.");

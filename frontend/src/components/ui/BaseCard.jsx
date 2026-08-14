@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false, isSelected = false }) => {
   const MyTheme = useAppTheme();

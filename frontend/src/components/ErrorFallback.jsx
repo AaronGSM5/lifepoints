@@ -9,7 +9,7 @@ import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 
 import ScreenWrapper from "./layout/ScreenWrapper";

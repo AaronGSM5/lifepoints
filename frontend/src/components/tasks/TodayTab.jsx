@@ -17,7 +17,7 @@ import { TASKS_HERO_DATA } from "@/mocks/HeroData";
 import { mockActiveTasks } from "@/mocks/Tasks";
 import { mockFYTasks } from "@/mocks/Tasks";
 import useStore from "@/store/useStore";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 
 import FYTaskCard from "./FYTaskCard";

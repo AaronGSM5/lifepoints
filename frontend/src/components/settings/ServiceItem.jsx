@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { addOpacity } from "@/utils/addOpacity";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import { Icon } from "../icons/Icon";
 import AppBadge from "../ui/AppBadge";
