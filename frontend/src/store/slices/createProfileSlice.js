@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { generateTripleLoot } from "@/utils/lootLogic";
 
-import { getXpThreshold } from "../../utils/xpHelpers";
+import { getRequiredXpForNextLevel } from "../../utils/xpHelpers";
 
 const initialUserState = {
   name: "New User",
@@ -179,8 +179,8 @@ export const createProfileSlice = (set, get) => ({
     let newLevel = profile.level;
     let hasLeveledUp = false;
 
-    while (newXP >= getXpThreshold(newLevel)) {
-      newXP -= getXpThreshold(newLevel);
+    while (newXP >= getRequiredXpForNextLevel(newLevel)) {
+      newXP -= getRequiredXpForNextLevel(newLevel);
       newLevel++;
       hasLeveledUp = true;
     }

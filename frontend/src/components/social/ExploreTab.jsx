@@ -17,7 +17,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { COMMUNITIES_HERO_DATA } from "@/mocks/HeroData";
 import useStore from "@/store/useStore";
-import { capitalize, extractId } from "@/utils/helpers";
+import { capitalize } from "@/utils/helpers";
 
 const SKELETON_DATA = [1, 2, 3];
 
@@ -37,7 +37,6 @@ const ExploreTab = ({ scrollY }) => {
   const isLoading = isLoadingRails;
 
   const myCommunities = useStore((state) => state.myCommunities);
-
   const loadedSections = useMemo(() => {
     if (!railsData) return [];
     return railsData.pages
@@ -49,7 +48,7 @@ const ExploreTab = ({ scrollY }) => {
         categoryKey: section.category,
         data: section.items.map((item) => ({
           ...item,
-          id: extractId(item)
+          id: item._id
         }))
       }));
   }, [railsData]);
@@ -71,8 +70,8 @@ const ExploreTab = ({ scrollY }) => {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const handleSearchPress = useCallback(() => router.push("/search"), []);
-  const handleCommunityPress = useCallback((community) => router.push(`/community/${extractId(community)}`), []);
-  const handleMyCommunityPress = useCallback((community) => router.push(`/mycommunity/${extractId(community)}`), []);
+  const handleCommunityPress = useCallback((community) => router.push(`/community/${community._id}`), []);
+  const handleMyCommunityPress = useCallback((community) => router.push(`/mycommunity/${community._id}`), []);
 
   const renderSkeletonItem = useCallback(() => <RecommendedCommunity isLoading={true} />, []);
 

@@ -6,9 +6,9 @@ export const getRequiredXpForNextLevel = (level) => {
   return baseXP + (level - 1) * increasePerLevel;
 };
 
-export const calculateLevelUp = (currentLevel, currentXP) => {
+export const calculateLevelUp = (currentLevel, currentXp) => {
   let level = currentLevel;
-  let xp = currentXP;
+  let xp = currentXp;
 
   let neededXP = getRequiredXpForNextLevel(level);
 
@@ -21,11 +21,7 @@ export const calculateLevelUp = (currentLevel, currentXP) => {
   return { level, xp };
 };
 
-export const getXpThreshold = (level) => {
-  return 1000 + (level - 1) * 300;
-};
-
-export const getLevelProgress = (currentXP, level) => {
-  const threshold = getXpThreshold(level);
-  return Math.min(currentXP / threshold, 1);
+export const getLevelProgress = (currentLevel, currentXp) => {
+  const reqXp = getRequiredXpForNextLevel(currentLevel);
+  return Math.min(currentXp / reqXp, 1);
 };

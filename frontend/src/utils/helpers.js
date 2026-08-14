@@ -1,7 +1,3 @@
-export const extractId = (item) => {
-  return item?._id?.$oid || item?._id || item?.id;
-};
-
 export const capitalize = (str) => {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);

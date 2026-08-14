@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
-import { extractId } from "@/utils/helpers";
 
 import MyCommunityCard from "./MyCommunityCard";
 import SectionHeader from "../ui/SectionHeader";
@@ -30,7 +29,7 @@ const MyCommunitiesSection = memo(({ data, isLoading, onPress }) => {
       <FlatList
         horizontal
         data={isLoading ? SKELETON_DATA : data}
-        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : extractId(item))}
+        keyExtractor={(item, index) => (isLoading ? `skel-${index}` : item._id)}
         renderItem={renderItem}
         contentContainerStyle={styles.horizontalScrollContentContainer}
         showsHorizontalScrollIndicator={false}

@@ -6,7 +6,6 @@ import RecommendedCommunity from "@/components/social/RecommendedCommunity";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { extractId } from "@/utils/helpers";
 
 import AppLoadingSpinner from "../ui/AppLoadingSpinner";
 
@@ -60,7 +59,7 @@ const HorizontalSectionList = memo(({ title, initialData, categoryKey, onPressIt
         horizontal
         data={flatData}
         renderItem={renderHorizontalItem}
-        keyExtractor={(item) => extractId(item)}
+        keyExtractor={(item) => item._id}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.horizontalScrollContentContainer}
         snapToInterval={SNAP_INTERVAL}

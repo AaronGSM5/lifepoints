@@ -1,12 +1,14 @@
+import { RANK_COLORS } from "@/constants/Ranks";
+
 export const getRankColor = (idx) => {
   switch (idx) {
     case 0:
-      return "#FFD700";
+      return RANK_COLORS.first;
     case 1:
-      return "#C0C0C0";
+      return RANK_COLORS.second;
     case 2:
-      return "#CD7F32";
+      return RANK_COLORS.third;
     default:
-      return "#b8b8b8";
+      return RANK_COLORS.default;
   }
 };
