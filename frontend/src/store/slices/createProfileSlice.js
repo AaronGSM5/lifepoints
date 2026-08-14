@@ -1,7 +1,7 @@
 import * as Haptics from "expo-haptics";
 
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
-import { generateTripleLoot } from "@/utils/lootLogic";
+import { generateTripleLoot } from "@/utils/lootHelpers";
 
 import { getRequiredXpForNextLevel } from "../../utils/xpHelpers";
 
