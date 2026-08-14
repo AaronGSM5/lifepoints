@@ -1,4 +1,3 @@
-
 export const getRequiredXpForNextLevel = (level) => {
   const baseXP = 1000;
   const increasePerLevel = 300;
