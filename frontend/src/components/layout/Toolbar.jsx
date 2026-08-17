@@ -117,7 +117,8 @@ const getStyles = (theme) => {
     container: {
       backgroundColor: theme.background,
       flexDirection: "row",
-      alignItems: "center"
+      alignItems: "center",
+      boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.45)"
     },
     sideSection: {
       flex: 1,

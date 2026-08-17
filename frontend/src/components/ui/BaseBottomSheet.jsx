@@ -160,7 +160,8 @@ const getStyles = (theme) =>
       overflow: "hidden",
       maxHeight: "80%",
       width: "100%",
-      paddingBottom: Platform.OS === "ios" ? 20 : 0
+      paddingBottom: Platform.OS === "ios" ? 20 : 0,
+      boxShadow: "0px -6px 10px rgba(0, 0, 0, 0.6)"
     },
     panResponderArea: {
       backgroundColor: theme.background,
