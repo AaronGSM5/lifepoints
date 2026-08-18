@@ -38,6 +38,13 @@ export default function ShopScreen() {
   const userLevel = useStore((state) => state.profile.level);
   const scrollY = useMemo(() => new Animated.Value(0), []);
 
+  const handleRewardPress = useCallback(
+    (item) => {
+      router.push(`/reward/${item.id}`);
+    },
+    [router]
+  );
+
   const renderHeader = useMemo(() => {
     const forYouRewards = rewards ? rewards.slice(0, 5) : [];
     return (
@@ -66,7 +73,7 @@ export default function ShopScreen() {
                   points={item.points}
                   icon={item.icon}
                   isLocked={userLevel < (item.requiredLevel || 0)}
-                  onPress={() => router.push(`/reward/${item.id}`)}
+                  onPress={() => handleRewardPress(item)}
                 />
               </View>
             )}
@@ -88,7 +95,7 @@ export default function ShopScreen() {
         </View>
       </View>
     );
-  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, router, styles]);
+  }, [activeCat, isLoading, categories, t, userLevel, rewards, setActiveCat, handleRewardPress, styles]);
 
   const renderEmptyState = useCallback(() => {
     const translatedCat = t(`categories.${activeCat.toLowerCase()}`);
@@ -138,7 +145,7 @@ export default function ShopScreen() {
               points={item.points}
               icon={item.icon}
               isLocked={userLevel < item.requiredLevel}
-              onPress={() => router.push(`/reward/${item.id}`)}
+              onPress={() => handleRewardPress(item)}
             />
           </View>
         )}

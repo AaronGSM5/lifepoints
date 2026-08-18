@@ -23,19 +23,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
-
-const formatHistoryDate = (isoString) => {
-  if (!isoString) return "";
-  const date = new Date(isoString);
-
-  const dateString = date.toLocaleDateString();
-  const timeString = date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  return `${dateString} • ${timeString}`;
-};
+import { formatHistoryDate } from "@/utils/dateHelpers";
 
 const mockSubSteps = [
   { title: "First things first", description: "This is first" },
@@ -173,7 +161,7 @@ export default function TaskDetailScreen() {
                   <HistoryCard
                     key={item.id}
                     title={t("Tracked")}
-                    subtitle={formatHistoryDate(item.time)}
+                    subtitle={() => formatHistoryDate(item.time)}
                     points={item.points}
                     type="earn"
                     pointsSuffix="LP"

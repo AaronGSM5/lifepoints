@@ -6,6 +6,7 @@ import { router } from "expo-router";
 
 import BaseCard from "@/components/ui/BaseCard";
 import { Spacing } from "@/constants/Spacing";
+import { calculateStepPoints } from "@/utils/taskHelpers";
 
 import ActiveTaskHeader from "./ActiveTaskHeader";
 import AddSubStepForm from "./AddSubStepForm";
@@ -31,6 +32,7 @@ const ActiveTaskCard = memo(
   }) => {
     const { t } = useTranslation("tasks");
     const [isExpanded, setIsExpanded] = useState(initialExpanded);
+    const stepPoints = calculateStepPoints(subSteps, lp);
 
     const handleGoToTask = useCallback(() => {
       router.push(`/task/${id}`);
@@ -39,8 +41,6 @@ const ActiveTaskCard = memo(
     if (isLoading) {
       return <AppSkeleton height={70} radius={Spacing.borderRadius.lg} />;
     }
-
-    const stepPoints = subSteps?.length > 0 ? lp / subSteps.length : 0;
 
     return (
       <BaseCard style={[styles.card, style]}>

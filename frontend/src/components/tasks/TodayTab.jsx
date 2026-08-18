@@ -19,6 +19,7 @@ import { mockFYTasks } from "@/mocks/Tasks";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
+import { calculateTaskProgress } from "@/utils/taskHelpers";
 
 import FYTaskCard from "./FYTaskCard";
 import EmptyView from "../ui/EmptyView";
@@ -139,9 +140,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
               ) : (
                 <View style={styles.tasksList}>
                   {activeTasks.map((task, i) => {
-                    const totalSteps = task.substeps?.length || 0;
-                    const completedSteps = task.substeps?.filter((step) => step.completed).length || 0;
-                    const calculatedProgress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+                    const calculatedProgress = calculateTaskProgress(task.substeps);
                     return (
                       <ActiveTaskCard
                         key={task.id}

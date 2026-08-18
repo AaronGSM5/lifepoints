@@ -1,12 +1,7 @@
 import React from "react";
 import Icon from "react-native-remix-icon";
 
-const getName = (baseName, outline) => {
-  const exceptions = ["spotify", "google", "apple", "facebook", "twitter"];
-  if (exceptions.includes(baseName)) return `${baseName}-fill`;
-
-  return outline ? `${baseName}-line` : `${baseName}-fill`;
-};
+import { getName } from "@/utils/iconHelpers";
 
 export const IconMap = {
   // Navigation Tabs

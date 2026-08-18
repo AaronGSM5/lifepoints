@@ -1,4 +1,4 @@
-import { formatTimeOrDate, getDateLabel, groupDataByDate, isSameDay } from "./dateHelpers";
+import { formatHistoryDate, formatTimeOrDate, getDateLabel, groupDataByDate, isSameDay } from "./dateHelpers";
 
 describe("formatTimeOrDate", () => {
   it("should return an empty string if no isoString is provided", () => {
@@ -122,5 +122,24 @@ describe("getDateLabel", () => {
 
   it("should return long Date if day difference is more than 7", () => {
     expect(getDateLabel("2026-08-06T09:00:00.000Z", mockT, "en-US")).toBe("Thu Aug 6")
+  })
+})
+
+describe("formatHistoryDate", () => {
+  it('should return "" on no isoString', () => {
+    expect(formatHistoryDate(undefined)).toBe("")
+    expect(formatHistoryDate(null)).toBe("")
+    expect(formatHistoryDate()).toBe("")
+  })
+
+  it('should return "" on invalid isoString', () => {
+    expect(formatHistoryDate("thisIsNotAnIsoString")).toBe("")
+    expect(formatHistoryDate(27)).toBe("")
+    expect(formatHistoryDate([])).toBe("")
+    expect(formatHistoryDate({})).toBe("")
+  })
+
+  it('should return date and time in correct format', () => {
+    expect(formatHistoryDate("2026-08-14T09:00:00.000Z")).toBe("14.8.2026 • 11:00")
   })
 })
