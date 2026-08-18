@@ -14,7 +14,9 @@ const logger = (config) => (set, get, api) => config(
     set(args, replace);
     const nextState = get();
 
-    if (__DEV__) {
+    const isTestEnvironment = process.env.NODE_ENV === 'test' || typeof jest !== 'undefined';
+
+    if (__DEV__ && !isTestEnvironment) {
       let label = actionName;
 
       if (!label) {
