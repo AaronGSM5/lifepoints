@@ -1,23 +1,32 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import { Icon } from "../icons/Icon";
 import AppIconButton from "../ui/AppIconButton";
 import AppInput from "../ui/AppInput";
-import AppText from "../ui/AppText";
+import AppPopupMenu from "../ui/AppPopupMenu";
+
+const menuItems = [
+      {
+        label: "Foto anhängen",
+        icon: "camera",
+      },
+      {
+        label: "Gewohnheit teilen",
+        icon: "leaf",
+      },
+      {
+        label: "Umfrage starten",
+        icon: "statsChart",
+      }
+    ]
 
 const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [showMenu, setShowMenu] = useState(false);
-
-  const handleSelectOption = useCallback((type) => {
-    setShowMenu(false);
-    console.log("Ausgewählt:", type);
-  }, []);
 
   const toggleMenu = useCallback(() => {
     setShowMenu((prev) => !prev);
@@ -32,28 +41,7 @@ const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) =>
 
   return (
     <View style={styles.wrapper}>
-      {showMenu && (
-        <>
-          <Pressable style={styles.backdrop} onPress={closeMenu} />
-
-          <View style={styles.menuCard}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => handleSelectOption("photo")}>
-              <Icon name="image-outline" size={20} />
-              <AppText style={styles.menuText}>Foto anhängen</AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={() => handleSelectOption("habit")}>
-              <Icon name="leaf-outline" size={20} />
-              <AppText style={styles.menuText}>Gewohnheit teilen</AppText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={() => handleSelectOption("poll")}>
-              <Icon name="stats-chart-outline" size={20} />
-              <AppText style={styles.menuText}>Umfrage starten</AppText>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
+      <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} placement="top" />
       <View style={styles.inputContainer}>
         <AppIconButton icon="add" color={MyTheme.muted} onPress={toggleMenu} style={styles.attachButton} />
         <AppInput
@@ -81,41 +69,6 @@ const getStyles = (theme) =>
   StyleSheet.create({
     wrapper: {
       position: "relative"
-    },
-    backdrop: {
-      position: "absolute",
-      top: -1000,
-      bottom: 0,
-      left: -1000,
-      right: -1000
-    },
-    menuCard: {
-      position: "absolute",
-      bottom: "100%",
-      left: Spacing.md,
-      marginBottom: Spacing.sm,
-      backgroundColor: theme.background,
-      borderWidth: 1,
-      borderColor: theme.separator,
-      borderRadius: 12,
-      padding: Spacing.xs,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 6,
-      elevation: 8,
-      minWidth: 200,
-      zIndex: 100
-    },
-    menuItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: Spacing.sm,
-      paddingHorizontal: Spacing.md,
-      gap: Spacing.sm
-    },
-    menuText: {
-      fontSize: 14
     },
     inputContainer: {
       flexDirection: "row",

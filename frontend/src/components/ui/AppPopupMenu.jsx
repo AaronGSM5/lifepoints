@@ -6,16 +6,21 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const AppPopupMenu = memo(({ visible, onClose, items }) => {
+const AppPopupMenu = memo(({ visible, onClose, items, placement = "bottom", containerStyle }) => {
   const theme = useAppTheme();
 
   if (!visible) return null;
+
+  const placementStyle =
+    placement === "top"
+      ? { bottom: "100%", left: 0, marginBottom: Spacing.xs, marginLeft: Spacing.sm }
+      : { top: "100%", right: 0, marginTop: Spacing.xs, marginRight: Spacing.sm };
 
   return (
     <>
       <Pressable style={styles.backdrop} onPress={onClose} />
 
-      <View style={[styles.menuCard, { backgroundColor: theme.background, borderColor: theme.separator }]}>
+      <View style={[styles.menuCard, { backgroundColor: theme.background, borderColor: theme.separator }, placementStyle, containerStyle]}>
         {items.map((item) => (
           <TouchableOpacity
             key={item.label}
@@ -37,18 +42,11 @@ AppPopupMenu.displayName = "AppPopupMenu";
 
 const styles = StyleSheet.create({
   backdrop: {
-    position: "absolute",
-    top: -1000,
-    bottom: -1000,
-    left: -1000,
-    right: -1000,
+    ...StyleSheet.absoluteFillObject,
     zIndex: 90
   },
   menuCard: {
     position: "absolute",
-    top: "100%",
-    right: 0,
-    marginTop: Spacing.xs,
     borderRadius: 12,
     padding: Spacing.xs,
     shadowColor: "#000",
