@@ -21,7 +21,7 @@ import CloseButton from "./CloseButton";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, children }) => {
+const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, children, containerStyle }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [showModal, setShowModal] = useState(isVisible);
@@ -123,7 +123,7 @@ const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, 
       >
         <AnimatedPressable onPress={handleClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
 
-        <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: slideAnim }] }]}>
+        <Animated.View style={[styles.sheetContainer, containerStyle, { transform: [{ translateY: slideAnim }] }]}>
           <View {...panResponder.panHandlers} style={styles.panResponderArea}>
             <View style={styles.dragHandleContainer}>
               <View style={styles.dragHandle} />

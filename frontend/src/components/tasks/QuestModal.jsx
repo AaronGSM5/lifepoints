@@ -21,7 +21,7 @@ const QuestModal = ({ mockQuests, visible, onClose }) => {
   const quests = mockQuests[activeTab] || [];
 
   return (
-    <BaseBottomSheet isVisible={visible} onClose={onClose} title={t("Challenges")}>
+    <BaseBottomSheet isVisible={visible} onClose={onClose} title={t("Challenges")} containerStyle={styles.bottomSheet}>
       <NavigationRow tabs={tabLabels} activeIndex={activeIndex} onTabChange={setActiveIndex} />
 
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -42,6 +42,9 @@ const getStyles = () =>
     },
     scrollContent: {
       paddingBottom: Spacing.xl
+    },
+    bottomSheet: {
+      height: "80%"
     }
   });
 
