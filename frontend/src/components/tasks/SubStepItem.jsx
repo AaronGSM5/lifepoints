@@ -58,7 +58,7 @@ const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
     </TouchableOpacity>
   );
 
-  if (step.isCustom) {
+  if (!isCompleted) {
     return (
       <ReanimatedSwipeable
         ref={swipeableRef}
