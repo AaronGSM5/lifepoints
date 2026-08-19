@@ -86,13 +86,13 @@ export const getDateLabel = (dateString, t, locale = "de-DE") => {
   return formatted.replace(",", "");
 };
 // To Test
-export const formatHistoryDate = (isoString) => {
+export const formatHistoryDate = (isoString, locale) => {
   if (!isoString || typeof isoString !== "string") return "";
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return ""
 
-  const dateString = date.toLocaleDateString();
-  const timeString = date.toLocaleTimeString([], {
+  const dateString = date.toLocaleDateString(locale);
+  const timeString = date.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit"
   });
