@@ -20,7 +20,14 @@ const AppPopupMenu = memo(({ visible, onClose, items, placement = "bottom", cont
     <>
       <Pressable style={styles.backdrop} onPress={onClose} />
 
-      <View style={[styles.menuCard, { backgroundColor: theme.background, borderColor: theme.separator }, placementStyle, containerStyle]}>
+      <View
+        style={[
+          styles.menuCard,
+          { backgroundColor: theme.background, borderColor: theme.separator },
+          placementStyle,
+          containerStyle
+        ]}
+      >
         {items.map((item) => (
           <TouchableOpacity
             key={item.label}
