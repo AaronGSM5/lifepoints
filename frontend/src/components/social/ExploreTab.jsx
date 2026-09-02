@@ -108,7 +108,7 @@ const ExploreTab = ({ scrollY }) => {
 
         case "section":
           const validSectionData = item.data?.filter(Boolean) || [];
-          if (validSectionData.length === 0 && !isLoading) return null;
+          if (!validSectionData.length && !isLoading) return null;
           if (isLoading) {
             return (
               <View style={styles.sectionContainer}>

@@ -36,7 +36,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
 
     const tasks = data?.data || [];
 
-    if (!isLoading && tasks.length === 0) {
+    if (!isLoading && !tasks.length) {
       return [{ id: "empty_state", type: "empty_state" }];
     }
     const topElements = [{ id: "search_bar", type: "search_bar" }];

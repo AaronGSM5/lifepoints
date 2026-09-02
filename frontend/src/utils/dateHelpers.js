@@ -13,7 +13,7 @@ export const formatTimeOrDate = (isoString) => {
 };
 
 export const groupDataByDate = (data, dateField, t) => {
-  if (!data || data.length === 0) return [];
+  if (!data?.length) return [];
 
   const groups = {};
   const today = new Date();

@@ -29,7 +29,7 @@ const ProfileTrophies = memo(({ isLoading, trophies = [] }) => {
     router.push("/trophies");
   }, []);
 
-  if (!isLoading && mergedTrophies.length === 0) return null;
+  if (!isLoading && !mergedTrophies.length) return null;
 
   return (
     <View style={styles.container}>

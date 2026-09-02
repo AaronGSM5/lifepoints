@@ -23,7 +23,7 @@ const JournalPage = () => {
   const activities = useMemo(() => profileData?.activities, [profileData?.activities]);
 
   const groupedActivities = useMemo(() => {
-    if (!activities || activities.length === 0) return [];
+    if (!activities?.length) return [];
 
     const processedActivities = [...activities]
       .sort((a, b) => new Date(b.time) - new Date(a.time))
@@ -74,7 +74,7 @@ const JournalPage = () => {
     );
   }
 
-  if (activities || activities.length === 0) {
+  if (!activities?.length) {
     return (
       <ScreenWrapper style={styles.wrapper}>
         <ScreenTitle title={t("My Impact Journal")} />

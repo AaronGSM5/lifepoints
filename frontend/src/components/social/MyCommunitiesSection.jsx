@@ -19,7 +19,7 @@ const MyCommunitiesSection = memo(({ data, isLoading, onPress }) => {
     [isLoading, onPress]
   );
 
-  if (!isLoading && (!data || data.length === 0)) return null;
+  if (!isLoading && !data?.length) return null;
 
   return (
     <View style={styles.myCommunitiesSection}>

@@ -27,7 +27,7 @@ const CustomizablesPreview = memo(({ isLoading, customizables }) => {
     router.push("/customizables");
   }, []);
 
-  if (!isLoading && (!customizables || customizables.length === 0)) {
+  if (!isLoading && !customizables?.length) {
     return null;
   }
 

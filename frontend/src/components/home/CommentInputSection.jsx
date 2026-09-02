@@ -21,7 +21,7 @@ const CommentInputSection = memo(({ inputRef, commentText = "", setCommentText, 
   const userName = useStore((state) => state.profile?.username);
 
   const safeComment = commentText || "";
-  const isInputEmpty = safeComment.trim().length === 0;
+  const isInputEmpty = !safeComment.trim().length;
 
   return (
     <>
