@@ -9,6 +9,7 @@ process.env.EXPO_PUBLIC_APPWRITE_PLATFORM = 'com.lifepoints.app';
 jest.mock('@react-native-async-storage/async-storage');
 jest.mock('react-native-safe-area-context');
 jest.mock('react-i18next');
+jest.mock('expo-router');
 
 const originalWarn = console.warn;
 console.warn = (...args) => {

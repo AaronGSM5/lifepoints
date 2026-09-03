@@ -7,10 +7,6 @@ import { router } from "expo-router";
 import { account } from "@/api/client/appwrite";
 import LoginScreen from "@/app/auth/login";
 
-jest.mock("expo-router", () => ({
-  router: { replace: jest.fn(), push: jest.fn() }
-}));
-
 jest.mock("@/api/client/appwrite", () => ({
   account: {
     createEmailPasswordSession: jest.fn().mockResolvedValue({}),
@@ -20,8 +16,7 @@ jest.mock("@/api/client/appwrite", () => ({
 
 jest.mock("@/api/auth/useSync", () => ({
   useSyncUser: () => ({
-    mutate: jest.fn((data, options) => {
-      // simulate a successful sync response
+    mutate: jest.fn((_, options) => {
       if (options && options.onSuccess) {
         options.onSuccess({ totalLifepoints: 100 });
       }
@@ -45,13 +40,33 @@ jest.mock("@/store/useStore", () => {
   };
 });
 
-const createTestQueryClient = () =>
-  new QueryClient({
+const setup = async () => {
+  const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false },
       mutations: { retry: false }
     }
   });
+
+  const utils = await render(
+    <QueryClientProvider client={queryClient}>
+      <LoginScreen />
+    </QueryClientProvider>
+  );
+
+  return {
+    ...utils,
+    mailInput: utils.getByPlaceholderText(/mail/i),
+    passwordInput: utils.getByPlaceholderText(/password/i),
+    loginButton: utils.getByRole("button", { name: /log in/i })
+  };
+};
+
+const fillAndSubmitForm = async (mailInput, passwordInput, loginButton) => {
+  await fireEvent.changeText(mailInput, "test@test.test");
+  await fireEvent.changeText(passwordInput, "Password123!");
+  await fireEvent.press(loginButton);
+};
 
 describe("LoginScreen", () => {
   beforeEach(() => {
@@ -67,29 +82,15 @@ describe("LoginScreen", () => {
   });
 
   it("should render the elements correctly", async () => {
-    const testQueryClient = createTestQueryClient();
-    const { getByRole, getByPlaceholderText } = await render(
-      <QueryClientProvider client={testQueryClient}>
-        <LoginScreen />
-      </QueryClientProvider>
-    );
+    const { mailInput, passwordInput, loginButton } = await setup();
 
-    expect(getByPlaceholderText(/mail/i)).toBeTruthy();
-    expect(getByPlaceholderText(/password/i)).toBeTruthy();
-    expect(getByRole("button", { name: /log in/i })).toBeDisabled();
+    expect(mailInput).toBeTruthy();
+    expect(passwordInput).toBeTruthy();
+    expect(loginButton).toBeDisabled();
   });
 
   it("should enable login button if the inputs contain text", async () => {
-    const testQueryClient = createTestQueryClient();
-    const { getByRole, getByPlaceholderText } = await render(
-      <QueryClientProvider client={testQueryClient}>
-        <LoginScreen />
-      </QueryClientProvider>
-    );
-
-    const mailInput = getByPlaceholderText(/mail/i);
-    const passwordInput = getByPlaceholderText(/password/i);
-    const loginButton = getByRole("button", { name: /log in/i });
+    const { mailInput, passwordInput, loginButton } = await setup();
 
     await fireEvent.changeText(mailInput, "test@test.test");
     expect(loginButton).toBeDisabled();
@@ -98,20 +99,8 @@ describe("LoginScreen", () => {
   });
 
   it("should successfully log in with valid credentials", async () => {
-    const testQueryClient = createTestQueryClient();
-    const { getByRole, getByPlaceholderText } = await render(
-      <QueryClientProvider client={testQueryClient}>
-        <LoginScreen />
-      </QueryClientProvider>
-    );
-
-    const mailInput = getByPlaceholderText(/mail/i);
-    const passwordInput = getByPlaceholderText(/password/i);
-    const loginButton = getByRole("button", { name: /log in/i });
-
-    await fireEvent.changeText(mailInput, "test@test.test");
-    await fireEvent.changeText(passwordInput, "Password123!");
-    await fireEvent.press(loginButton);
+    const { mailInput, passwordInput, loginButton } = await setup();
+    await fillAndSubmitForm(mailInput, passwordInput, loginButton);
 
     await waitFor(() => {
       expect(account.createEmailPasswordSession).toHaveBeenCalledWith("test@test.test", "Password123!");
@@ -124,20 +113,8 @@ describe("LoginScreen", () => {
     account.createEmailPasswordSession.mockRejectedValueOnce(
       new Error("Creation of a session is prohibited when a session is active")
     );
-    const testQueryClient = createTestQueryClient();
-    const { getByRole, getByPlaceholderText } = await render(
-      <QueryClientProvider client={testQueryClient}>
-        <LoginScreen />
-      </QueryClientProvider>
-    );
-
-    const mailInput = getByPlaceholderText(/mail/i);
-    const passwordInput = getByPlaceholderText(/password/i);
-    const loginButton = getByRole("button", { name: /log in/i });
-
-    await fireEvent.changeText(mailInput, "test@test.test");
-    await fireEvent.changeText(passwordInput, "Password123!");
-    await fireEvent.press(loginButton);
+    const { mailInput, passwordInput, loginButton } = await setup();
+    await fillAndSubmitForm(mailInput, passwordInput, loginButton);
 
     await waitFor(() => {
       expect(router.push).toHaveBeenCalledWith("/home");
@@ -147,20 +124,8 @@ describe("LoginScreen", () => {
 
   it("should show alert on generic login failure", async () => {
     account.createEmailPasswordSession.mockRejectedValueOnce(new Error("Invalid credentials"));
-    const testQueryClient = createTestQueryClient();
-    const { getByRole, getByPlaceholderText } = await render(
-      <QueryClientProvider client={testQueryClient}>
-        <LoginScreen />
-      </QueryClientProvider>
-    );
-
-    const mailInput = getByPlaceholderText(/mail/i);
-    const passwordInput = getByPlaceholderText(/password/i);
-    const loginButton = getByRole("button", { name: /log in/i });
-
-    await fireEvent.changeText(mailInput, "test@test.test");
-    await fireEvent.changeText(passwordInput, "Password123!");
-    await fireEvent.press(loginButton);
+    const { mailInput, passwordInput, loginButton } = await setup();
+    await fillAndSubmitForm(mailInput, passwordInput, loginButton);
 
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalled();
