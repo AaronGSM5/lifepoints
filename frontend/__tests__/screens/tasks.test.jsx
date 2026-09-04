@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { usePathname } from "expo-router";
 
 import TasksScreen from "@/app/(tabs)/tasks";
@@ -118,5 +118,33 @@ describe("TasksScreen", () => {
     expect(routinesTab).toBeNull();
     expect(instaTrackingModal).toBeNull();
     expect(questModal).toBeNull();
+  });
+
+  it("should render the Catalog tab when catalog button is pressed", async () => {
+    const { tabCatalogButton, getByTestId, queryByTestId } = await setup();
+
+    await fireEvent.press(tabCatalogButton);
+
+    expect(queryByTestId("today-tab")).toBeNull();
+    expect(getByTestId("catalog-tab")).toBeTruthy();
+    expect(queryByTestId("routines-tab")).toBeNull();
+  });
+
+  it("should render the Routines tab when routines button is pressed", async () => {
+    const { tabRoutinesButton, getByTestId, queryByTestId } = await setup();
+
+    await fireEvent.press(tabRoutinesButton);
+
+    expect(queryByTestId("today-tab")).toBeNull();
+    expect(queryByTestId("catalog-tab")).toBeNull();
+    expect(getByTestId("routines-tab")).toBeTruthy();
+  });
+
+  it("should open the QuestModal when triggered from the Today tab", async () => {
+    const { getByTestId } = await setup();
+
+    await fireEvent.press(getByTestId("trigger-quest"));
+
+    expect(getByTestId("quest-modal")).toBeTruthy();
   });
 });
