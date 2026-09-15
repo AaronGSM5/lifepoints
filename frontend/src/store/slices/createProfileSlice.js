@@ -23,11 +23,6 @@ const initialUserState = {
   justUnlockedTrophies: [],
   popupQueue: [],
   friends: [],
-  // Loot Game
-  isLootGameActive: false,
-  currentLootSet: [],
-  chosenLootIndex: null,
-  isLootRevealed: false,
   // Onboarding
   surveyAnswers: {
     goals: [],
@@ -41,6 +36,11 @@ const initialUserState = {
 
 export const createProfileSlice = (set, get) => ({
   profile: initialUserState,
+
+  isLootGameActive: false,
+  currentLootSet: [],
+  chosenLootIndex: null,
+  isLootRevealed: false,
 
   setNotificationPermissionSettings: (hasSeen, token = null) => set((state) => ({
     profile: {
