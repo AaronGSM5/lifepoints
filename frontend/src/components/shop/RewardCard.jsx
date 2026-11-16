@@ -21,30 +21,27 @@ const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPr
   if (isLoading) return <RewardCardSkeleton styles={styles} />;
 
   return (
-    <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
+    <BaseCard style={[styles.gridCard, isLocked && { borderColor: "transparent" }]} padding={0} onPress={onPress}>
       <View style={styles.cardImageContainer}>
         <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
         <AppBadge iconNode={<Icon name={icon} size={14} />} style={styles.badge} />
       </View>
 
       <View style={styles.cardContent}>
-        <AppText bold type="caption" style={styles.cardBrand}>
-          {brand}
-        </AppText>
-        <AppText bold type="body" numberOfLines={2} style={styles.titleText}>
-          {title}
-        </AppText>
+        <View style={styles.cardHeader}>
+          <AppText bold type="caption" style={styles.cardBrand}>
+            {brand}
+          </AppText>
+          <AppText bold type="body" numberOfLines={2} style={styles.titleText}>
+            {title}
+          </AppText>
+        </View>
 
         <View style={styles.cardFooter}>
-          <LpPoints points={points} />
-
           {isLocked ? (
             <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={styles.lockedBadge} />
           ) : (
-            <AppBadge
-              iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
-              style={styles.shoppingBadge}
-            />
+            <LpPoints points={points} />
           )}
         </View>
       </View>
@@ -61,10 +58,6 @@ const getStyles = (theme) =>
     gridCard: {
       flex: 1
     },
-    skeletonContent: {
-      padding: Spacing.sm,
-      gap: 6
-    },
     cardImageContainer: {
       height: 100,
       backgroundColor: theme.secondary
@@ -74,7 +67,12 @@ const getStyles = (theme) =>
       height: "100%"
     },
     cardContent: {
+      flex: 1,
+      justifyContent: "space-between",
       padding: Spacing.sm,
+      gap: Spacing.xs - 2
+    },
+    cardHeader: {
       gap: 2
     },
     cardBrand: {
@@ -87,14 +85,11 @@ const getStyles = (theme) =>
       minHeight: 40
     },
     cardFooter: {
+      height: 36,
       flexDirection: "row",
-      justifyContent: "space-between",
+      justifyContent: "flex-end",
       alignItems: "center",
-      marginLeft: Spacing.xs,
-      marginTop: Spacing.xs
-    },
-    pointsText: {
-      fontSize: 14
+      marginLeft: Spacing.xs
     },
     badge: {
       position: "absolute",
@@ -110,11 +105,10 @@ const getStyles = (theme) =>
       ...StyleSheet.absoluteFillObject,
       backgroundColor: "rgba(0, 0, 0, 0.5)"
     },
-    shoppingBadge: {
-      backgroundColor: theme.background,
-      borderColor: theme.secondary
-    },
-    lockedBadge: { backgroundColor: theme.muted }
+    lockedBadge: {
+      alignSelf: "center",
+      backgroundColor: theme.glas
+    }
   });
 
 export default RewardCard;

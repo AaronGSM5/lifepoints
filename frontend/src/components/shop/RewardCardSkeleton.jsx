@@ -9,10 +9,15 @@ const RewardCardSkeleton = ({ styles }) => {
   return (
     <BaseCard style={styles.gridCard} padding={0}>
       <AppSkeleton height={100} radius={0} />
-      <View style={styles.skeletonContent}>
-        <AppSkeleton width="40%" height={12} />
-        <AppSkeleton width="90%" height={16} />
-        <View style={[styles.cardFooter, { marginTop: Spacing.xs }]}>
+      <View style={styles.cardContent}>
+        <View style={styles.cardHeader}>
+          <AppSkeleton width="40%" height={12} />
+          <View style={styles.titleText}>
+            <AppSkeleton width="90%" height={16} />
+          </View>
+        </View>
+
+        <View style={[styles.cardFooter, { gap: Spacing.xs }]}>
           <AppSkeleton width="30%" height={14} />
           <AppSkeleton width={28} height={28} radius={14} />
         </View>
