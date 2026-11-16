@@ -43,7 +43,7 @@ export default function ScreenWrapper({
       paddingTop: withPaddingTop
         ? (withToolbar ? toolbarTopPadding : insets.top) + (withOffset ? Spacing.md : 0)
         : insets.top,
-      paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : 0
+      paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : insets.bottom
     },
     style
   ];

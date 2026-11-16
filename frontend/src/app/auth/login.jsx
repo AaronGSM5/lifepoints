@@ -30,10 +30,6 @@ export default function LoginScreen() {
     [emailInput, passwordInput, isLoading]
   );
 
-  // const maxLogoWidth = 330;
-  // const logoWidth = Math.min(screenWidth * 0.75, maxLogoWidth);
-  // const logoHeight = logoWidth / 3.75;
-
   // Appwrite Login Logic
 
   const syncUserMutation = useSyncUser();
@@ -48,7 +44,6 @@ export default function LoginScreen() {
       syncUserMutation.mutate(null, {
         onSuccess: (user) => {
           console.log("Logged in and synced! Lifepoints:", user.totalLifepoints);
-          // Navigate to dashboard here
         }
       });
 
@@ -71,7 +66,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, pointerEvents: "box-none" }}>
-        <ScreenWrapper scrollable withToolbar={false}>
+        <ScreenWrapper scrollable withToolbar={false} withPaddingBottom={false}>
           <AuthHeader showImageLogo={true} subtitle={t("Log in to continue")} />
 
           <BaseCard
@@ -103,7 +98,7 @@ export default function LoginScreen() {
             <AppButton
               title={isLoading ? "Logging in..." : "Log in"}
               disabled={isLoginDisabled}
-              onPress={handleLogin} // Attach the logic here
+              onPress={handleLogin}
             />
             <AppButton
               title={t("Forgot password?")}
@@ -112,8 +107,6 @@ export default function LoginScreen() {
               textStyle={{ color: MyTheme.primaryAccent }}
             />
           </BaseCard>
-
-          {/* Footer */}
           <AuthFooter text={t("Don't have an account?")} linkText={t("Register")} href="/auth/register" />
         </ScreenWrapper>
       </View>
