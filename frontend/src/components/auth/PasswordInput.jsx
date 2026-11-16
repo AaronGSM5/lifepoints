@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LayoutAnimation, View } from "react-native";
+import { LayoutAnimation, StyleSheet, View } from "react-native";
 
 import PasswordRules from "@/components/auth/PasswordRules";
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
+import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 const PasswordInput = memo(
@@ -97,11 +98,12 @@ const PasswordInput = memo(
           onFocus={handleFocus}
           onBlur={handleBlur}
           rightContent={
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={styles.rightContainer}>
               <AppButton
                 onPress={toggleVisibility}
                 size="sm"
                 variant="ghost"
+                accessibilityLabel={isVisible ? t("Hide password") : t("Show password")}
                 icon={
                   <Icon
                     name={isVisible ? "eyeClosed" : "eyeOpen"}
@@ -109,15 +111,9 @@ const PasswordInput = memo(
                     color={MyTheme.isDark ? MyTheme.text : "gray"}
                   />
                 }
-                iconPosition="center"
               />
               {variant === "new" && allRulesPassed && (
-                <AppButton
-                  variant="ghost"
-                  size="sm"
-                  icon={<Icon name={"checkmarkCircle"} size={22} color={MyTheme.primaryAccent} />}
-                  iconPosition="center"
-                />
+                <Icon name={"checkmarkCircle"} size={22} color={MyTheme.primaryAccent} />
               )}
             </View>
           }
@@ -131,5 +127,13 @@ const PasswordInput = memo(
   }
 );
 PasswordInput.displayName = "PasswordInput";
+
+const styles = StyleSheet.create({
+  rightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.xs
+  }
+});
 
 export default PasswordInput;

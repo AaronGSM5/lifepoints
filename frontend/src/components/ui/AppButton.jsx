@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,7 +25,8 @@ const AppButton = memo(
     fullWidth = false,
     textStyle,
     borderStyle,
-    bgColor
+    bgColor,
+    accessibilityLabel
   }) => {
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -53,6 +54,17 @@ const AppButton = memo(
     const isSecondary = variant === "secondary";
     const isOutline = variant === "outline";
     const isGhost = variant === "ghost";
+    const isDisabled = disabled || loading;
+    const isIconOnly = Boolean(icon) && !title;
+
+    useEffect(() => {
+      if (__DEV__ && isIconOnly && !accessibilityLabel) {
+        const iconName = icon?.props?.name ? ` (Icon: "${icon.props.name}")` : "";
+        console.warn(
+          `[AppButton] Icon-Only-Button${iconName} hat kein "accessibilityLabel". Bitte ergänze eine Beschreibung für Screenreader.`
+        );
+      }
+    }, [isIconOnly, accessibilityLabel, icon]);
 
     const getTextColor = () => {
       if (disabled) return MyTheme.muted;
@@ -69,21 +81,24 @@ const AppButton = memo(
           onPress={onPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          disabled={disabled || loading}
+          disabled={isDisabled}
+          hitSlop={isIconOnly && size === "sm" ? 8 : undefined}
           accessibilityRole="button"
-          accessibilityState={{ disabled: disabled || loading }}
-          style={() => [
+          accessibilityLabel={accessibilityLabel || title}
+          accessibilityState={{ disabled: isDisabled, busy: loading }}
+          style={[
             styles.base,
             styles[size],
+            isIconOnly && styles[`${size}IconOnly`],
             isSecondary && styles.secondary,
             isOutline && styles.outline,
             isGhost && styles.ghost,
             bgColor && { backgroundColor: bgColor },
             borderStyle && borderStyle,
-            (disabled || loading) && styles.disabled
+            isDisabled && styles.disabled
           ]}
         >
-          {isPrimary && !disabled && !loading && !bgColor && (
+          {isPrimary && !isDisabled && !bgColor && (
             <LinearGradient
               colors={[addOpacity(MyTheme.primaryAccent, 1), addOpacity(MyTheme.primaryAccent, 0.75)]}
               start={{ x: 0, y: 0 }}
@@ -98,17 +113,19 @@ const AppButton = memo(
             <View style={[styles.content, iconPosition === "right" && styles.contentReverse]}>
               {icon && icon}
 
-              <AppText
-                bold
-                style={[
-                  { color: getTextColor() },
-                  size === "sm" && { fontSize: 12 },
-                  size === "lg" && { fontSize: 16 },
-                  textStyle
-                ]}
-              >
-                {title}
-              </AppText>
+              {Boolean(title) && (
+                <AppText
+                  bold
+                  style={[
+                    { color: getTextColor() },
+                    size === "sm" && { fontSize: 12 },
+                    size === "lg" && { fontSize: 16 },
+                    textStyle
+                  ]}
+                >
+                  {title}
+                </AppText>
+              )}
             </View>
           )}
         </Pressable>
@@ -141,6 +158,9 @@ const getStyles = (theme) =>
     sm: { paddingVertical: Spacing.xs + 2, paddingHorizontal: Spacing.sm + 4 },
     md: { paddingVertical: Spacing.sm + 2, paddingHorizontal: Spacing.md },
     lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
+    smIconOnly: { width: 32, height: 32, paddingHorizontal: 0, paddingVertical: 0 },
+    mdIconOnly: { width: 42, height: 42, paddingHorizontal: 0, paddingVertical: 0 },
+    lgIconOnly: { width: 52, height: 52, paddingHorizontal: 0, paddingVertical: 0 },
     secondary: {
       backgroundColor: theme.glas
     },

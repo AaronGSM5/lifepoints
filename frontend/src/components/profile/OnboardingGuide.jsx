@@ -38,8 +38,8 @@ const OnboardingGuide = ({ tutorialSteps = [], isLoading }) => {
         <AppButton
           variant="ghost"
           icon={<Icon name={"close"} />}
-          iconPosition="center"
           size="sm"
+          accessibilityLabel="Close Guide"
           style={{ width: Spacing.lg }}
           onPress={() => setHasCompletedOnboarding(true)}
         />

@@ -13,8 +13,8 @@ const CreateCommunityCard = ({ onPress }) => {
     <BaseCard style={styles.createCard}>
       <AppButton
         icon={<Icon name="add" color={MyTheme.background} />}
-        iconPosition="center"
         size="sm"
+        accessibilityLabel="Community erstellen"
         onPress={onPress}
       />
     </BaseCard>

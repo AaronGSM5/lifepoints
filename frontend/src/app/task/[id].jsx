@@ -58,7 +58,7 @@ export default function TaskDetailScreen() {
           <AppLoadingSpinner />
         ) : (
           <>
-            <AppText type="h2">"Task nicht gefunden 😔</AppText>
+            <AppText type="h2">Task nicht gefunden 😔</AppText>
             <AppButton title="Zurück" onPress={() => router.back()} style={{ marginTop: Spacing.md }} />
           </>
         )}
@@ -195,15 +195,15 @@ export default function TaskDetailScreen() {
             title={task.isLocked ? t("Level up to unlock") : t("Track now")}
             size="lg"
             disabled={task.isLocked}
-            style={task.isLocked ? { flex: 1 } : { flex: 8 }}
+            style={{ flex: 1 }}
             onPress={() => startTask(task._id)}
           />
-          {task.isLocked === false && (
+          {!task.isLocked && (
             <AppButton
               variant="ghost"
+              size="lg"
               icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
-              iconPosition="center"
-              style={{ flex: 2 }}
+              accessibilityLabel={t("Complete task")}
             />
           )}
         </ScreenFooter>
@@ -261,6 +261,7 @@ const getStyles = (theme) =>
     },
     footer: {
       flexDirection: "row",
+      alignItems: "center",
       gap: Spacing.sm
     },
     historySection: {
