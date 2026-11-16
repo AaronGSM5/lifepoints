@@ -80,7 +80,7 @@ BadgePicker.displayName = "BadgePicker";
 const getStyles = (theme) =>
   StyleSheet.create({
     label: {
-      marginBottom: 8,
+      marginBottom: Spacing.md,
       opacity: 0.5,
       letterSpacing: 1,
       color: theme.text

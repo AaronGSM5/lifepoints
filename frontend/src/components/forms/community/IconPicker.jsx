@@ -85,7 +85,7 @@ IconPicker.displayName = "IconPicker";
 const getStyles = (theme) =>
   StyleSheet.create({
     label: {
-      marginBottom: Spacing.sm,
+      marginBottom: Spacing.md,
       opacity: 0.5,
       letterSpacing: 1,
       color: theme.text

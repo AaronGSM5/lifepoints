@@ -58,7 +58,7 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
             <OptionItem icon="mute" label={t("Nutzer stummschalten")} onPress={onClose} />
             <OptionItem icon="dislike" label={t("Interessiert mich nicht")} onPress={onClose} />
             <Separator />
-            <OptionItem icon="alert" label={t("Beitrag melden")} onPress={onClose} color={warningColor} />
+            <OptionItem icon="alert" label={t("Beitrag melden")} onPress={onClose} />
             <OptionItem icon="userX" label={t("Nutzer blockieren")} onPress={onClose} color={warningColor} />
           </>
         )}

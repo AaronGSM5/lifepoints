@@ -74,7 +74,7 @@ const CreateCommunityForm = memo(({ visible, onClose, onCreate }) => {
         {/* Name */}
         <View style={styles.section}>
           <AppText type="caption" style={styles.label}>
-            COMMUNITY-NAME (PERMANENT)
+            NAME
           </AppText>
           <AppInput
             placeholder={t("What should you name your community?")}
