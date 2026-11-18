@@ -136,7 +136,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
         allowsFullscreen={false}
       />
       <Pressable style={styles.videoPressable} onPress={handleContainerPress} />
-      <BackButton style={styles.backButton} />
+      <BackButton style={styles.backButton} withBackground />
 
       <Animated.View
         style={[
