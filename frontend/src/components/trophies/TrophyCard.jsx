@@ -102,8 +102,9 @@ const getStyles = (theme) =>
   StyleSheet.create({
     trophyItem: {
       alignItems: "center",
+      borderWidth: 0,
       backgroundColor: "transparent",
-      borderWidth: 0
+      shadowColor: "transparent"
     },
     trophyIconBox: {
       width: "95%",
