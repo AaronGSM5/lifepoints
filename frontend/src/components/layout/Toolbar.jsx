@@ -44,7 +44,9 @@ export default memo(function Toolbar({ scrollY }) {
   }, [activeScrollY, toolbarHeight]);
 
   const mainTabs = ["/home", "/tasks", "/social", "/shop", "/profile"];
+  const noBackRoutes = ["/"];
   const isMainTab = mainTabs.includes(pathname);
+  const showBackButton = !isMainTab && !noBackRoutes.includes(pathname);
 
   const screenWidth = Dimensions.get("window").width;
   const logoWidth = Math.min(screenWidth * 0.4, 110);
@@ -78,7 +80,11 @@ export default memo(function Toolbar({ scrollY }) {
       ]}
     >
       <View style={styles.sideSection}>
-        {isMainTab ? <LpPoints points={LP} onPress={() => router.push("/shop")} /> : <BackButton />}
+        {isMainTab ? (
+          <LpPoints points={LP} onPress={() => router.push("/shop")} />
+        ) : showBackButton ? (
+          <BackButton />
+        ) : null}
       </View>
 
       <View style={styles.centerSection}>
