@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   actionBar: {
     position: "absolute",
     right: Spacing.lg,
-    bottom: Spacing.lg,
+    bottom: 2 * Spacing.lg,
     alignItems: "center",
     gap: Spacing.md
   },
