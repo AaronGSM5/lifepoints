@@ -56,7 +56,7 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: Spacing.md,
-      paddingTop: Spacing.sm
+      paddingTop: Spacing.md
     },
     inputAvatar: {
       marginRight: 12,
