@@ -196,7 +196,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
           </View>
 
           <View style={styles.actionButton}>
-            <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={handleShare} />
+            <AppIconButton icon="forwardShare" iconSize={26} color="#FFFFFF" onPress={handleShare} />
           </View>
 
           <AppIconButton
