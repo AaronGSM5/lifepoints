@@ -69,7 +69,7 @@ const CreateCommunityForm = memo(({ visible, onClose, onCreate }) => {
   }, [formValid, name, description, selectedIcon, bannerUri, selectedBadges, selectedSize, onCreate, handleClose]);
 
   return (
-    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={t("New Community")}>
+    <BaseBottomSheet isVisible={visible} onClose={handleClose} title={t("New Community")} showCloseButton>
       <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
         {/* Name */}
         <View style={styles.section}>

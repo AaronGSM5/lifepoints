@@ -112,7 +112,11 @@ export default function TaskDetailScreen() {
               {t(task.title)}
             </AppText>
 
-            <LpPoints points={task.lifepoints} size="large" />
+            <LpPoints
+              points={task.lifepoints}
+              size="large"
+              style={{ alignSelf: "flex-end", marginBottom: Spacing.md }}
+            />
             <View style={styles.section}>
               <SectionHeader title={t("Description")} />
               <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
@@ -125,7 +129,7 @@ export default function TaskDetailScreen() {
                 <SectionHeader title={t("Ablauf")} />
 
                 {mockSubSteps.map((step, index) => {
-                  const isLast = index === task.subSteps.length - 1 || step.isLast;
+                  const isLast = index === task.subSteps?.length - 1 || step.isLast;
                   const stepTitle = typeof step === "string" ? step : step.title;
 
                   return (

@@ -21,125 +21,139 @@ import CloseButton from "./CloseButton";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const BaseBottomSheet = memo(({ isVisible, onClose, onAnimationComplete, title, children, containerStyle }) => {
-  const MyTheme = useAppTheme();
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const [showModal, setShowModal] = useState(isVisible);
+const BaseBottomSheet = memo(
+  ({ isVisible, onClose, onAnimationComplete, title, showCloseButton = false, children, containerStyle }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const [showModal, setShowModal] = useState(isVisible);
 
-  const [slideAnim] = useState(() => new Animated.Value(Dimensions.get("window").height));
-  const [fadeAnim] = useState(() => new Animated.Value(0));
+    const [slideAnim] = useState(() => new Animated.Value(Dimensions.get("window").height));
+    const [fadeAnim] = useState(() => new Animated.Value(0));
 
-  const handleClose = useCallback(() => {
-    Keyboard.dismiss();
-    onClose();
-  }, [onClose]);
+    const handleClose = useCallback(() => {
+      Keyboard.dismiss();
+      onClose();
+    }, [onClose]);
 
-  const panResponder = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: (_, gestureState) => {
-          return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
-        },
-        onPanResponderMove: (_, gestureState) => {
-          if (gestureState.dy > 0) {
-            slideAnim.setValue(gestureState.dy);
-          }
-        },
-        onPanResponderTerminationRequest: () => false,
-        onShouldBlockNativeResponder: () => true,
-        onPanResponderTerminate: () => {
-          Animated.spring(slideAnim, {
-            toValue: 0,
-            tension: 65,
-            friction: 11,
-            useNativeDriver: Platform.OS !== "web"
-          }).start();
-        },
-        onPanResponderRelease: (_, gestureState) => {
-          if (gestureState.dy > 150 || gestureState.vy > 1.5) {
-            Keyboard.dismiss();
-            onClose();
-          } else {
+    const panResponder = useMemo(
+      () =>
+        PanResponder.create({
+          onStartShouldSetPanResponder: () => true,
+          onMoveShouldSetPanResponder: (_, gestureState) => {
+            return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
+          },
+          onPanResponderMove: (_, gestureState) => {
+            if (gestureState.dy > 0) {
+              slideAnim.setValue(gestureState.dy);
+            }
+          },
+          onPanResponderTerminationRequest: () => false,
+          onShouldBlockNativeResponder: () => true,
+          onPanResponderTerminate: () => {
             Animated.spring(slideAnim, {
               toValue: 0,
               tension: 65,
               friction: 11,
               useNativeDriver: Platform.OS !== "web"
             }).start();
+          },
+          onPanResponderRelease: (_, gestureState) => {
+            if (gestureState.dy > 150 || gestureState.vy > 1.5) {
+              Keyboard.dismiss();
+              onClose();
+            } else {
+              Animated.spring(slideAnim, {
+                toValue: 0,
+                tension: 65,
+                friction: 11,
+                useNativeDriver: Platform.OS !== "web"
+              }).start();
+            }
           }
-        }
-      }),
-    [onClose, slideAnim]
-  );
-
-  useEffect(() => {
-    const currentScreenHeight = Dimensions.get("window").height;
-
-    if (isVisible) {
-      triggerHaptic();
-
-      setShowModal(true);
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: Platform.OS !== "web"
         }),
-        Animated.spring(slideAnim, {
-          toValue: 0,
-          tension: 65,
-          friction: 11,
-          useNativeDriver: Platform.OS !== "web"
-        })
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 250,
-          useNativeDriver: Platform.OS !== "web"
-        }),
-        Animated.timing(slideAnim, {
-          toValue: currentScreenHeight,
-          duration: 250,
-          useNativeDriver: Platform.OS !== "web"
-        })
-      ]).start(() => {
-        setShowModal(false);
-        if (onAnimationComplete) {
-          onAnimationComplete();
-        }
-      });
-    }
-  }, [isVisible, fadeAnim, slideAnim, onAnimationComplete]);
+      [onClose, slideAnim]
+    );
 
-  return (
-    <Modal visible={showModal} transparent={true} animationType="none" onRequestClose={onClose}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={styles.overlay}
-        keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
+    useEffect(() => {
+      const currentScreenHeight = Dimensions.get("window").height;
+
+      if (isVisible) {
+        triggerHaptic();
+
+        setShowModal(true);
+        Animated.parallel([
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: Platform.OS !== "web"
+          }),
+          Animated.spring(slideAnim, {
+            toValue: 0,
+            tension: 65,
+            friction: 11,
+            useNativeDriver: Platform.OS !== "web"
+          })
+        ]).start();
+      } else {
+        Animated.parallel([
+          Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: 250,
+            useNativeDriver: Platform.OS !== "web"
+          }),
+          Animated.timing(slideAnim, {
+            toValue: currentScreenHeight,
+            duration: 250,
+            useNativeDriver: Platform.OS !== "web"
+          })
+        ]).start(() => {
+          setShowModal(false);
+          if (onAnimationComplete) {
+            onAnimationComplete();
+          }
+        });
+      }
+    }, [isVisible, fadeAnim, slideAnim, onAnimationComplete]);
+
+    return (
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="none"
+        onRequestClose={showCloseButton ? undefined : handleClose}
       >
-        <AnimatedPressable onPress={handleClose} style={[styles.backdrop, { opacity: fadeAnim }]} />
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={styles.overlay}
+          keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
+        >
+          <AnimatedPressable
+            onPress={showCloseButton ? undefined : handleClose}
+            style={[styles.backdrop, { opacity: fadeAnim }]}
+          />
 
-        <Animated.View style={[styles.sheetContainer, containerStyle, { transform: [{ translateY: slideAnim }] }]}>
-          <View {...panResponder.panHandlers} style={styles.panResponderArea}>
-            <View style={styles.dragHandleContainer}>
-              <View style={styles.dragHandle} />
-            </View>
+          <Animated.View style={[styles.sheetContainer, containerStyle, { transform: [{ translateY: slideAnim }] }]}>
+            <View {...(!showCloseButton ? panResponder.panHandlers : {})} style={styles.panResponderArea}>
+              {!showCloseButton && (
+                <View style={styles.dragHandleContainer}>
+                  <View style={styles.dragHandle} />
+                </View>
+              )}
 
-            <View style={styles.header}>
-              {title ? <AppText type="h2">{title}</AppText> : <View />}
-              <CloseButton withBackground onPress={onClose} />
+              {(title || showCloseButton) && (
+                <View style={[styles.header, showCloseButton && styles.headerWithoutHandle]}>
+                  {title ? <AppText type="h2">{title}</AppText> : <View />}
+                  {showCloseButton && <CloseButton withBackground onPress={handleClose} />}
+                </View>
+              )}
             </View>
-          </View>
-          {children}
-        </Animated.View>
-      </KeyboardAvoidingView>
-    </Modal>
-  );
-});
+            {children}
+          </Animated.View>
+        </KeyboardAvoidingView>
+      </Modal>
+    );
+  }
+);
 
 BaseBottomSheet.displayName = "BaseBottomSheet";
 
@@ -183,16 +197,12 @@ const getStyles = (theme) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
+      minHeight: 36,
       paddingHorizontal: Spacing.lg,
       marginBottom: Spacing.sm
     },
-    closeButton: {
-      width: 36,
-      height: 36,
-      borderRadius: Spacing.borderRadius.full,
-      backgroundColor: theme.primary,
-      alignItems: "center",
-      justifyContent: "center"
+    headerWithoutHandle: {
+      paddingTop: Spacing.md
     }
   });
 
