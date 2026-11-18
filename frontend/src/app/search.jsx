@@ -116,8 +116,8 @@ const getStyles = () =>
     inputContainer: {
       flexDirection: "row",
       alignItems: "center",
-      paddingBottom: Spacing.lg,
-      paddingTop: Spacing.sm
+      paddingBottom: Spacing.md,
+      paddingTop: Spacing.md
     },
     filterContainer: {
       marginBottom: Spacing.lg
