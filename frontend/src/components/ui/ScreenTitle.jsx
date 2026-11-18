@@ -24,7 +24,8 @@ ScreenTitle.displayName = "ScreenTitle";
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      marginBottom: Spacing.lg
+      marginTop: Spacing.lg,
+      marginBottom: Spacing.md
     },
     left: {
       alignItems: "flex-start"
