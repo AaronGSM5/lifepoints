@@ -1,9 +1,12 @@
 import { forwardRef, memo } from "react";
+import { useTranslation } from "react-i18next";
 
 import AppIconButton from "./AppIconButton";
 
 const CloseButton = memo(
   forwardRef(({ onPress, iconSize, style, color, withBackground = false, ...rest }, ref) => {
+    const { t } = useTranslation("common");
+
     return (
       <AppIconButton
         ref={ref}
@@ -13,7 +16,7 @@ const CloseButton = memo(
         withBackground={withBackground}
         style={style}
         color={color}
-        accessibilityLabel={"Close"}
+        accessibilityLabel={t("close")}
         {...rest}
       />
     );

@@ -6,6 +6,7 @@ import { createDataSlice } from './slices/createDataSlice';
 import { createFeedSlice } from './slices/createFeedSlice';
 import { createProfileSlice } from './slices/createProfileSlice';
 import { createQuestSlice } from './slices/createQuestSlice';
+import { createRoutineSlice } from './slices/createRoutineSlice';
 import { createUISlice } from './slices/createUISlice';
 
 const logger = (config) => (set, get, api) => config(
@@ -46,6 +47,7 @@ const useStore = create(
         ...createProfileSlice(set, get, api),
         ...createQuestSlice(set, get, api),
         ...createFeedSlice(set, get, api),
+        ...createRoutineSlice(set, get, api),
       }),
       {
         name: 'lifepoints-storage',
@@ -56,6 +58,7 @@ const useStore = create(
           activeTaskIds: state.activeTaskIds,
           activities: state.activities,
           myCommunities: state.myCommunities,
+          routines: state.routines,
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isAuthenticated: state.isAuthenticated,
           isDarkMode: state.isDarkMode,

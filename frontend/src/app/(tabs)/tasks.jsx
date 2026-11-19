@@ -63,7 +63,7 @@ const TasksScreen = () => {
       case 1:
         return <CatalogTab scrollY={scrollY} onOpenInstaTracking={handleOpenInstaTracking} />;
       case 2:
-        return <RoutinesTab scrollY={scrollY} onOpenInstaTracking={handleOpenInstaTracking} />;
+        return <RoutinesTab scrollY={scrollY} />;
       default:
         return (
           <TodayTab

@@ -2,6 +2,16 @@
   "save": "Save",
   "cancel": "Cancel",
   "back": "Back",
+  // Accessibility labels (icon buttons)
+  "close": "Close",
+  "Like": "Like",
+  "Remove like": "Remove like",
+  "Open comments": "Open comments",
+  "Share": "Share",
+  "More options": "More options",
+  "Send message": "Send message",
+  "Open attachment menu": "Open attachment menu",
+  "Close attachment menu": "Close attachment menu",
   // ErrorView
   "Oops, that didn't go as planned.": "Oops, that didn't go as planned.",
   "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.": "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.",
