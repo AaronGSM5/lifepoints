@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { router, usePathname } from "expo-router";
@@ -18,9 +18,10 @@ import NotificationIcon from "../ui/NotificationsIcon";
 
 const MAIN_TABS = ["/home", "/tasks", "/social", "/shop", "/profile"];
 
-// Die Toolbar ist auf allen Tabs fest: LP-Guthaben, "+" und Suche bleiben immer erreichbar.
-// scrollY wird nur noch aus Kompatibilität mit ScreenWrapper entgegengenommen.
-export default memo(function Toolbar() {
+// Auf Home und Shop fährt die Toolbar beim Scrollen nach oben weg und kommt beim Zurückscrollen wieder
+const HIDE_ON_SCROLL_PATHS = ["/home", "/shop"];
+
+export default memo(function Toolbar({ scrollY }) {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
   const toolbarHeight = useToolbarPadding();
@@ -29,6 +30,25 @@ export default memo(function Toolbar() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("common");
+
+  const fallbackScrollY = useMemo(() => new Animated.Value(0), []);
+  const activeScrollY = scrollY || fallbackScrollY;
+
+  const translateY = useMemo(() => {
+    const safeScrollY = activeScrollY.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+      extrapolateLeft: "clamp"
+    });
+
+    const clamped = Animated.diffClamp(safeScrollY, 0, toolbarHeight);
+
+    return clamped.interpolate({
+      inputRange: [0, toolbarHeight],
+      outputRange: [0, -toolbarHeight],
+      extrapolate: "clamp"
+    });
+  }, [activeScrollY, toolbarHeight]);
 
   const isMainTab = MAIN_TABS.includes(pathname);
   const isProfile = pathname === "/profile";
@@ -45,14 +65,15 @@ export default memo(function Toolbar() {
   const handleToShop = useCallback(() => router.push("/shop"), []);
 
   return (
-    <View
+    <Animated.View
       style={[
         styles.container,
         {
           height: toolbarHeight,
           paddingTop: insets.top,
           paddingLeft: Math.max(Spacing.md, insets.left),
-          paddingRight: Math.max(Spacing.md, insets.right)
+          paddingRight: Math.max(Spacing.md, insets.right),
+          transform: [{ translateY: HIDE_ON_SCROLL_PATHS.includes(pathname) ? translateY : 0 }]
         }
       ]}
     >
@@ -89,7 +110,7 @@ export default memo(function Toolbar() {
           <View style={styles.placeholder} />
         )}
       </View>
-    </View>
+    </Animated.View>
   );
 });
 
