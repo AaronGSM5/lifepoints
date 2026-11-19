@@ -11,8 +11,10 @@ export const useHome = () => {
   const setFeedItems = useStore((state) => state.setFeedItems);
 
   useEffect(() => {
-    if (!feedItems || feedItems.length === 0) {
+    if (!feedItems?.length) {
+      setIsLoading(true)
       setFeedItems(mockFeedItems);
+      setIsLoading(false)
     }
   }, [feedItems, setFeedItems]);
 

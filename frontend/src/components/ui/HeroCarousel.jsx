@@ -30,7 +30,7 @@ const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
     [isLoading, handlePressItem]
   );
 
-  if (!data || data.length === 0) {
+  if (!data?.length) {
     return (
       <View>
         <AppText>No data found</AppText>

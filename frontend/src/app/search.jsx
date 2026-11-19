@@ -91,7 +91,7 @@ export default function SearchScreen() {
         </View>
       ) : (
         <View style={styles.resultsSection}>
-          {searchResults.length === 0 ? (
+          {!searchResults.length ? (
             <EmptyView
               icon="search"
               title={t("No results found")}

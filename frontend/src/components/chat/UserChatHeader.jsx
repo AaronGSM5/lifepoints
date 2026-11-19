@@ -31,12 +31,12 @@ const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }
     () => [
       {
         label: "Stummschalten",
-        icon: "notifications-off-outline",
+        icon: "mute",
         onPress: handleMute
       },
       {
         label: "Blockieren",
-        icon: "ban-outline",
+        icon: "ban",
         color: "#EF4444",
         isDanger: true,
         onPress: handleBlock

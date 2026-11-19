@@ -49,7 +49,7 @@ export default function RegisterScreen() {
 
       router.replace("/auth/verify-email");
     } catch (error) {
-      console.log("register error ", error);
+      console.error("register error ", error);
     } finally {
       setIsLoading(false);
     }

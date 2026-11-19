@@ -20,9 +20,9 @@ const JournalPreview = ({ activities, isLoading }) => {
 
   const previewData = activities?.slice(0, 3) || [];
 
-  if (!isLoading && previewData.length === 0) return null;
+  if (!isLoading && !previewData.length) return null;
 
-  const renderData = isLoading && previewData.length === 0 ? [1, 2, 3] : previewData;
+  const renderData = isLoading && !previewData.length ? [1, 2, 3] : previewData;
 
   if (isLoading) return <JournalPreviewSkeleton renderData={renderData} styles={styles} />;
 

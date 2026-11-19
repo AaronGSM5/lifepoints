@@ -13,9 +13,9 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
 
-  if (!isLoading && (!stats || stats.length === 0)) return null;
+  if (!isLoading && !stats?.length) return null;
 
-  const displayStats = isLoading && stats.length === 0 ? Array.from({ length: 4 }) : stats;
+  const displayStats = isLoading && !stats.length ? Array.from({ length: 4 }) : stats;
   return (
     <View style={styles.container}>
       <SectionHeader

@@ -47,9 +47,14 @@ export const createDataSlice = (set, get) => ({
   })),
 
   joinCommunity: (community) => set((state) => {
-    if (!community || !community._id) return state;
+    const communityId = community?._id || community?.id;
+    if (!communityId) return state;
 
-    if (state.myCommunities.some(c => c?.id === community._id)) return state;
+    const isAlreadyJoined = state.myCommunities.some(c =>
+      c?._id === communityId || c?.id === communityId
+    );
+
+    if (isAlreadyJoined) return state;
 
     return {
       myCommunities: [community, ...state.myCommunities]

@@ -1,11 +1,10 @@
-import { Activity } from "@/models/activity.model";
 import { User } from "@/models/user.model";
 import { checkParameters } from "@/services/utils";
 import { Client, Account } from "node-appwrite";
+import { Request, Response, NextFunction } from "express";
 
-export async function authMiddleware(req, res, next) {
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
-    // 1. Extract the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
@@ -16,29 +15,32 @@ export async function authMiddleware(req, res, next) {
     const APPWRITE_ENDPOINT = process.env.APPWRITE_ENDPOINT;
     const APPWRITE_PROJECT_ID = process.env.APPWRITE_PROJECT_ID;
 
+    if (!APPWRITE_ENDPOINT || !APPWRITE_PROJECT_ID) {
+      throw new Error("Missing required Appwrite environment variables");
+    }
+
     checkParameters({ APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID });
 
-    // 2. Initialize a fresh, isolated Appwrite Client for this request
     const client = new Client()
-      .setEndpoint(process.env.APPWRITE_ENDPOINT)
-      .setProject(process.env.APPWRITE_PROJECT_ID)
+      .setEndpoint(APPWRITE_ENDPOINT)
+      .setProject(APPWRITE_PROJECT_ID)
       .setJWT(jwt);
 
     const account = new Account(client);
 
-    // 3. Validate the token by fetching the user account
     // Appwrite will throw an error automatically if the JWT is invalid or expired
     const appwriteUser = await account.get();
 
     const mongoUser = await User.findOne({ external_id: appwriteUser.$id }).lean();
 
-    // 4. Attach the user data and the configured client to the request object
-    req.appwriteClient = client;
-
-    if (mongoUser) {
-      const userWithId = { mongoId: mongoUser?._id, ...appwriteUser };
-      req.user = userWithId;
+    if (!mongoUser) {
+      return res.status(401).json({ error: "Unauthorized: User profile not found in database" });
     }
+
+    // @ts-ignore
+    req.appwriteClient = client;
+    // @ts-ignore
+    req.user = { mongoId: mongoUser._id, ...appwriteUser };
 
     next();
   } catch (error: any) {

@@ -27,7 +27,7 @@ export const useCommentLogic = () => {
   }, []);
 
   const handlePostComment = () => {
-    if (commentText.trim().length === 0) return;
+    if (!commentText.trim().length) return;
     const newCommentData = {
       id: Date.now().toString(),
       username: t("You"),

@@ -35,7 +35,7 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
   }, []);
 
   const handleTitleSubmit = useCallback(() => {
-    if (titleRef.current.trim().length === 0) {
+    if (!titleRef.current.trim().length) {
       setIsAddingStep(false);
     } else {
       descriptionInputRef.current?.focus();

@@ -22,7 +22,7 @@ export default function NotificationsScreen() {
   const { data: rawNotifications, isLoading, isError, error } = useNotifications();
 
   const sections = useMemo(() => {
-    if (!rawNotifications || rawNotifications.length === 0) return [];
+    if (!rawNotifications?.length) return [];
     const sorted = [...rawNotifications].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const prozessed = sorted.map((item) => ({
@@ -53,7 +53,7 @@ export default function NotificationsScreen() {
         <AppLoadingSpinner centered />
       ) : isError ? (
         <ErrorFallback error={error} />
-      ) : sections.length === 0 ? (
+      ) : !sections.length ? (
         <EmptyView
           icon="bell"
           title={t("All caught up!")}

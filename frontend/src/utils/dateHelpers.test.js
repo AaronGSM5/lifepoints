@@ -139,7 +139,11 @@ describe("formatHistoryDate", () => {
     expect(formatHistoryDate({})).toBe("")
   })
 
-  it('should return date and time in correct format', () => {
-    expect(formatHistoryDate("2026-08-14T09:00:00.000Z")).toBe("14.8.2026 • 11:00")
-  })
+  it('should return date and time in correct English format', () => {
+    expect(formatHistoryDate("2026-08-14T09:00:00.000Z", "en-GB")).toBe("14/08/2026 • 11:00");
+  });
+
+  it('should return date and time in correct German format', () => {
+    expect(formatHistoryDate("2026-08-14T09:00:00.000Z", "de-DE")).toBe("14.8.2026 • 11:00");
+  });
 })

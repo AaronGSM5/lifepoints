@@ -28,16 +28,16 @@ const CommunityChatHeader = memo(({ community, onDetailsPress, onOptionsPress })
     if (onOptionsPress) onOptionsPress("block");
   }, [onOptionsPress]);
 
-  const menuItems = useCallback(
+  const menuItems = useMemo(
     () => [
       {
         label: "Stummschalten",
-        icon: "notifications-off-outline",
+        icon: "mute",
         onPress: handleMute
       },
       {
         label: "Blockieren",
-        icon: "ban-outline",
+        icon: "ban",
         color: "#EF4444",
         isDanger: true,
         onPress: handleBlock
