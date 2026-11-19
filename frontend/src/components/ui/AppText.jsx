@@ -19,6 +19,8 @@ const AppText = memo(
             fontFamily = "Inter-Bold";
             break;
           case "title":
+          case "label":
+          case "labelSm":
             fontFamily = "Inter-SemiBold";
             break;
           default:

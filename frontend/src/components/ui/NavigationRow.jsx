@@ -5,7 +5,13 @@ import { Animated, PanResponder, Platform, StyleSheet, TouchableOpacity, View } 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import AppText from "../ui/AppText";
+import AppText from "./AppText";
+
+// Höhe der Zeile inkl. oberem Abstand; Listen unter dem Segmented Control nutzen SEGMENT_OFFSET
+export const SEGMENT_ROW_HEIGHT = 56;
+export const SEGMENT_OFFSET = SEGMENT_ROW_HEIGHT + Spacing.sm + Spacing.sm;
+const PADDING = 2;
+const BORDER_WIDTH = 1;
 
 const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
   const MyTheme = useAppTheme();
@@ -22,8 +28,6 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
     return () => panX.removeListener(id);
   }, [panX]);
 
-  const PADDING = 2;
-  const BORDER_WIDTH = 1;
   const usableWidth = containerWidth - PADDING * 2 - BORDER_WIDTH * 2;
   const tabWidth = usableWidth > 0 ? usableWidth / tabs.length : 0;
 
@@ -84,8 +88,10 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
               style={styles.tabButton}
               onPress={() => onTabChange && onTabChange(index)}
               activeOpacity={0.9}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: isActive }}
             >
-              <AppText style={{ color: isActive ? MyTheme.primaryAccent : undefined }} bold={isActive}>
+              <AppText type="label" style={{ color: isActive ? MyTheme.primaryAccent : MyTheme.muted }}>
                 {t(tab)}
               </AppText>
             </TouchableOpacity>
@@ -100,11 +106,11 @@ NavigationRow.displayName = "NavigationRow";
 const getStyles = (theme) =>
   StyleSheet.create({
     wrapper: {
-      height: 56,
+      height: SEGMENT_ROW_HEIGHT,
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: Spacing.lg,
+      paddingHorizontal: Spacing.md,
       marginTop: Spacing.sm,
       gap: Spacing.sm
     },
@@ -115,7 +121,7 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderColor: theme.primary,
       borderRadius: Spacing.borderRadius.full,
-      padding: 2,
+      padding: PADDING,
       backgroundColor: theme.background
     },
     slider: {

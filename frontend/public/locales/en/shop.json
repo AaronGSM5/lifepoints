@@ -22,5 +22,16 @@
   // Empty State
   "No Rewards Found": "No Rewards Found",
   "We don't have any deals for": "We don't have any deals for \"{{category}}\" right now.",
-  "Reset filter": "Reset Filter"
+  "Reset filter": "Reset Filter",
+  // UI-Audit
+  "Redeemed!": "Redeemed!",
+  "You will find your reward in your journal.": "You will find your reward in your journal.",
+  "Redeem {{title}}?": "Redeem {{title}}?",
+  "Price": "Price",
+  "Your balance": "Your balance",
+  "From level {{level}}": "From level {{level}}",
+  "You need {{missing}} more LP.": "You need {{missing}} more LP.",
+  "{{missing}} LP missing": "{{missing}} LP to go",
+  "More rewards": "More rewards",
+  "{{category}} rewards": "{{category}} rewards"
 }

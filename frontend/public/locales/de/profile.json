@@ -77,5 +77,16 @@
   "Legend": "Legende",
   "Prodigy": "Unikat",
   "Phenomenon": "Phänomen",
-  "Myth": "Mythos"
+  "Myth": "Mythos",
+  // UI-Audit
+  "Check out {{name}} on LifePoints!": "Schau dir {{name}} auf LifePoints an!",
+  "I'm level {{level}} on LifePoints and collect points for good deeds. Join me!": "Ich bin Level {{level}} auf LifePoints und sammle Punkte für gute Taten. Mach mit!",
+  "Level {{level}}": "LEVEL {{level}}",
+  "Get the LifePoints app and we both receive a reward! Sign up here: {{url}}": "Hol dir die LifePoints App und wir beide bekommen eine Belohnung! Meld dich hier an: {{url}}",
+  "Invite friends to LifePoints": "Lade Freunde zu LifePoints ein",
+  "No customizables yet": "Noch keine Customizables",
+  "Complete tasks and open chests to unlock frames and badges.": "Erledige Aufgaben und öffne Truhen, um Rahmen und Badges freizuschalten.",
+  "Your journal is still empty": "Dein Journal ist noch leer",
+  "Every good deed you log shows up here.": "Jede gute Tat, die du einträgst, erscheint hier.",
+  "Find a task": "Aufgabe finden"
 }

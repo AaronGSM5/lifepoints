@@ -30,10 +30,10 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
             key={entry?.id || `stat-${index}`}
             isLoading={isLoading}
             label={entry?.label ? t(entry?.label) : ""}
-            value={index === 2 ? entry?.value.slice(3) : entry?.value}
+            value={entry?.value}
             icon={entry?.icon}
-            color={entry?.color}
-            style={{ width: "47%" }}
+            color={MyTheme[entry?.colorKey] ?? entry?.color ?? MyTheme.primaryAccent}
+            style={styles.statCard}
           />
         ))}
       </View>
@@ -46,7 +46,11 @@ ProfileStats.displayName = "ProfileStats";
 const getStyles = () =>
   StyleSheet.create({
     container: {
-      marginTop: Spacing.xl
+      marginTop: Spacing.lg
+    },
+    statCard: {
+      flexBasis: "45%",
+      flexGrow: 1
     },
     statsWrapper: {
       flexDirection: "row",

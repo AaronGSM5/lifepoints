@@ -7,94 +7,91 @@ import { router } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
-import HeroCarousel from "@/components/ui/HeroCarousel";
+import EmptyView from "@/components/ui/EmptyView";
+import EventCard from "@/components/ui/EventCard";
+import HistoryCard from "@/components/ui/HistoryCard";
+import { SEGMENT_OFFSET } from "@/components/ui/NavigationRow";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTasks } from "@/hooks/useTasks";
 import { TASKS_HERO_DATA } from "@/mocks/HeroData";
-import { mockActiveTasks } from "@/mocks/Tasks";
-import { mockFYTasks } from "@/mocks/Tasks";
+import { mockActiveTasks, mockFYTasks } from "@/mocks/Tasks";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 import { calculateTaskProgress } from "@/utils/taskHelpers";
 
 import FYTaskCard from "./FYTaskCard";
-import EmptyView from "../ui/EmptyView";
 
-const listData = [
-  { id: "event_banner", type: "event_banner" },
-  { id: "active_tasks", type: "active_tasks" },
-  { id: "done_tasks", type: "done_tasks" },
-  { id: "for_you", type: "for_you" }
-];
+const DONE_PREVIEW_COUNT = 5;
 
 const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const { t } = useTranslation(["tasks"]);
+  const { t } = useTranslation(["tasks", "common"]);
   const [isDoneTasksVisible, setIsDoneTasksVisible] = useState(true);
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
-  const { isLoading, isRefreshing, refreshTasks } = useTasks();
-  const activeTaskIds = useStore((state) => state.activeTaskIds);
+  const completedTaskIds = useStore((state) => state.completedTaskIds);
   const addExperience = useStore((state) => state.addExperience);
-  const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
   const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
+  const { isLoading, isRefreshing, refreshTasks } = useTasks();
 
   const [activeTasks, setActiveTasks] = useState(mockActiveTasks);
 
-  const handleToggleDoneTasks = () => {
-    setIsDoneTasksVisible((prev) => !prev);
-  };
+  const doneTasks = useMemo(() => {
+    const uniqueIds = [...new Set([...completedTaskIds].reverse().map(String))];
+    return uniqueIds
+      .map((id) => tasksCatalog.find((task) => String(task.id) === id))
+      .filter(Boolean)
+      .slice(0, DONE_PREVIEW_COUNT);
+  }, [completedTaskIds]);
 
-  const handleToggleSubStep = useCallback((taskId, subStepId) => {
-    console.log(`Substep ${subStepId} in Task ${taskId} geklickt!`);
-    triggerHaptic();
-  }, []);
-
-  const handleAddSubStep = useCallback((taskId, subStepText) => {
+  const updateSubSteps = useCallback((taskId, updater) => {
     setActiveTasks((prevTasks) =>
-      prevTasks.map((task) => {
-        if (task.id === taskId) {
-          return {
-            ...task,
-            substeps: [
-              ...task.substeps,
-              {
-                _id: Date.now().toString(),
-                title: subStepText.title,
-                description: subStepText.description,
-                completed: false,
-                isCustom: true
-              }
-            ]
-          };
-        }
-        return task;
-      })
+      prevTasks.map((task) => (task.id === taskId ? { ...task, substeps: updater(task.substeps) } : task))
     );
   }, []);
 
-  const handleDeleteSubStep = useCallback((taskId, subStepId) => {
-    setActiveTasks((prevTasks) =>
-      prevTasks.map((task) => {
-        if (task.id === taskId) {
-          return {
-            ...task,
-            substeps: task.substeps.filter((step) => step._id !== subStepId)
-          };
+  const handleToggleSubStep = useCallback(
+    (taskId, subStepId) => {
+      triggerHaptic();
+      updateSubSteps(taskId, (steps) =>
+        steps.map((step) => (step._id === subStepId ? { ...step, completed: !step.completed } : step))
+      );
+    },
+    [updateSubSteps]
+  );
+
+  const handleAddSubStep = useCallback(
+    (taskId, subStepText) => {
+      updateSubSteps(taskId, (steps) => [
+        ...steps,
+        {
+          _id: Date.now().toString(),
+          title: subStepText.title,
+          description: subStepText.description,
+          completed: false,
+          isCustom: true
         }
-        return task;
-      })
-    );
-  }, []);
+      ]);
+    },
+    [updateSubSteps]
+  );
+
+  const handleDeleteSubStep = useCallback(
+    (taskId, subStepId) => {
+      updateSubSteps(taskId, (steps) => steps.filter((step) => step._id !== subStepId));
+    },
+    [updateSubSteps]
+  );
 
   const handleTaskFinished = useCallback(
     (task) => {
       completeTask(task.id);
+      setActiveTasks((prevTasks) => prevTasks.filter((item) => item.id !== task.id));
       triggerHaptic("success");
       notifyQuestSystem("TASK_COMPLETED", { category: task.category });
       addExperience(task.xp);
@@ -110,72 +107,127 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
     [addExperience, notifyQuestSystem, completeTask]
   );
 
+  const listData = useMemo(() => {
+    const items = [
+      { id: "event", type: "event" },
+      { id: "active_header", type: "active_header" }
+    ];
+
+    if (!activeTasks.length) {
+      items.push({ id: "active_empty", type: "active_empty" });
+    } else {
+      activeTasks.forEach((task, index) => items.push({ id: `active_${task.id}`, type: "active_task", task, index }));
+    }
+
+    items.push({ id: "done_header", type: "done_header" });
+    if (isDoneTasksVisible) {
+      if (!doneTasks.length) {
+        items.push({ id: "done_empty", type: "done_empty" });
+      } else {
+        doneTasks.forEach((task) => items.push({ id: `done_${task.id}`, type: "done_task", task }));
+      }
+    }
+
+    items.push({ id: "for_you", type: "for_you" });
+    return items;
+  }, [activeTasks, doneTasks, isDoneTasksVisible]);
+
   const renderItem = useCallback(
     ({ item }) => {
       switch (item.type) {
-        case "event_banner":
+        case "event":
           return (
-            <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
-              <HeroCarousel data={TASKS_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
+            <View style={[styles.paddedContent, styles.topOffset]}>
+              <EventCard event={TASKS_HERO_DATA[0]} label={t("common:Event")} />
             </View>
           );
 
-        case "active_tasks":
+        case "active_header":
+          return (
+            <SectionHeader
+              title={t("Active Tasks")}
+              counter={activeTasks.length || undefined}
+              rightLabel={t("Quests")}
+              onRightPress={onOpenQuestModal}
+              style={[styles.paddedContent, styles.sectionSpacing]}
+            />
+          );
+
+        case "active_empty":
           return (
             <View style={styles.paddedContent}>
-              <SectionHeader
-                title={t("Active Tasks")}
-                rightIcon={<Icon name={"survey"} />}
-                onRightPress={onOpenQuestModal}
+              <EmptyView
+                icon="flower"
+                iconColor={MyTheme.primaryAccent}
+                iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
+                iconSize={24}
+                title={t("No Active Tasks")}
+                description={t("common:EmptyTaskQuote1")}
               />
-              {myActiveTasks.length === 1 ? (
-                <EmptyView
-                  icon="flower"
-                  iconColor={MyTheme.primaryAccent}
-                  iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
-                  iconSize={24}
-                  title={t("No Active Tasks")}
-                  description={t("common:EmptyTaskQuote1")}
-                />
-              ) : (
-                <View style={styles.tasksList}>
-                  {activeTasks.map((task, i) => {
-                    const calculatedProgress = calculateTaskProgress(task.substeps);
-                    return (
-                      <ActiveTaskCard
-                        key={task.id}
-                        id={task.id}
-                        title={task.title}
-                        icon={task.icon}
-                        lp={task.lp}
-                        progress={calculatedProgress}
-                        isLoading={isLoading}
-                        initialExpanded={i === 0 ? true : false}
-                        subSteps={task.substeps}
-                        onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
-                        onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
-                        onDeleteSubStep={(subStepId) => handleDeleteSubStep(task.id, subStepId)}
-                        onAction={() => handleTaskFinished(task)}
-                      />
-                    );
-                  })}
-                </View>
-              )}
             </View>
           );
-        case "done_tasks":
+
+        case "active_task": {
+          const { task, index } = item;
+          return (
+            <View style={[styles.paddedContent, styles.itemSpacing]}>
+              <ActiveTaskCard
+                id={task.id}
+                title={task.title}
+                icon={task.icon}
+                lp={task.lp}
+                progress={calculateTaskProgress(task.substeps)}
+                isLoading={isLoading}
+                initialExpanded={index === 0}
+                subSteps={task.substeps}
+                onToggleSubStep={(subStepId) => handleToggleSubStep(task.id, subStepId)}
+                onAddSubStep={(subStepText) => handleAddSubStep(task.id, subStepText)}
+                onDeleteSubStep={(subStepId) => handleDeleteSubStep(task.id, subStepId)}
+                onAction={() => handleTaskFinished(task)}
+              />
+            </View>
+          );
+        }
+
+        case "done_header":
           return (
             <SectionHeader
               title={t("Done Tasks")}
-              rightIcon={<Icon name={isDoneTasksVisible ? "down" : "right"} color={MyTheme.muted} />}
-              onRightPress={handleToggleDoneTasks}
-              style={styles.paddedContent}
-              textStyle={{ color: MyTheme.muted }}
+              counter={doneTasks.length || undefined}
+              collapsible
+              isCollapsed={!isDoneTasksVisible}
+              onToggle={() => setIsDoneTasksVisible((prev) => !prev)}
+              style={[styles.paddedContent, styles.sectionSpacing]}
             />
           );
-        case "for_you":
+
+        case "done_empty":
           return (
             <View style={styles.paddedContent}>
+              <EmptyView
+                icon="checkmarkCircle"
+                iconSize={24}
+                title={t("Nothing done yet")}
+                description={t("Finished tasks show up here.")}
+                containerStyle={styles.compactEmpty}
+              />
+            </View>
+          );
+
+        case "done_task":
+          return (
+            <View style={[styles.paddedContent, styles.itemSpacingSm]}>
+              <HistoryCard
+                title={item.task.title}
+                points={item.task.lp}
+                iconNode={<Icon name="checkmark" size={20} color={MyTheme.primaryAccent} />}
+              />
+            </View>
+          );
+
+        case "for_you":
+          return (
+            <View style={[styles.paddedContent, styles.sectionSpacing]}>
               <SectionHeader title={t("For You")} />
               <View style={styles.tasksList}>
                 {mockFYTasks.map((task) => (
@@ -201,19 +253,19 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       }
     },
     [
-      isLoading,
-      onOpenQuestModal,
-      isDoneTasksVisible,
-      myActiveTasks,
-      MyTheme,
-      t,
       styles,
+      t,
+      activeTasks.length,
+      onOpenQuestModal,
+      MyTheme,
+      isLoading,
       handleToggleSubStep,
-      activeTasks,
-      trackTask,
       handleAddSubStep,
       handleDeleteSubStep,
-      handleTaskFinished
+      handleTaskFinished,
+      doneTasks.length,
+      isDoneTasksVisible,
+      trackTask
     ]
   );
 
@@ -235,9 +287,24 @@ const getStyles = () =>
     paddedContent: {
       paddingHorizontal: Spacing.md
     },
-    tasksList: {
-      gap: Spacing.md,
+    topOffset: {
+      marginTop: SEGMENT_OFFSET
+    },
+    sectionSpacing: {
+      marginTop: Spacing.lg
+    },
+    itemSpacing: {
       marginBottom: Spacing.md
+    },
+    itemSpacingSm: {
+      marginBottom: Spacing.sm
+    },
+    tasksList: {
+      gap: Spacing.md
+    },
+    compactEmpty: {
+      minHeight: 0,
+      paddingVertical: Spacing.md
     }
   });
 

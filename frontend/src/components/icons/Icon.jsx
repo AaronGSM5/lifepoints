@@ -8,7 +8,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { IconMap } from "./iconMap";
 
-export const Icon = memo(({ name, size = 24, color, outline = true, style, onPress, ...rest }) => {
+export const Icon = memo(({ name, size = 24, color, outline = true, style, onPress, accessibilityLabel, ...rest }) => {
   const MyTheme = useAppTheme();
   const iconColor = color ?? MyTheme.text;
   const IconComponent = IconMap[name];
@@ -25,7 +25,13 @@ export const Icon = memo(({ name, size = 24, color, outline = true, style, onPre
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} hitSlop={15} style={style}>
+      <Pressable
+        onPress={onPress}
+        hitSlop={15}
+        style={style}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel || name}
+      >
         {renderIcon()}
       </Pressable>
     );

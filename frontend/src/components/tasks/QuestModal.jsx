@@ -5,9 +5,9 @@ import { ScrollView, StyleSheet } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-import NavigationRow from "./NavigationRow";
 import QuestItem from "./QuestItem";
 import BaseBottomSheet from "../ui/BaseBottomSheet";
+import NavigationRow from "../ui/NavigationRow";
 
 const QuestModal = ({ mockQuests, visible, onClose }) => {
   const MyTheme = useAppTheme();

@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import AppText from "./AppText";
 
@@ -11,7 +12,7 @@ const AppBadge = memo(
     label,
     emoji,
     iconNode,
-    variant = "glas", // primary, secondary, outline, glas
+    variant = "glas", // primary (Status), hot (Live/Streak/Neu), premium (Plus/Level), outline, glas
     onPress,
     style,
     textStyle
@@ -19,6 +20,7 @@ const AppBadge = memo(
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
 
+    const variantKey = styles[variant] ? variant : "glas";
     let leftElement = null;
 
     if (iconNode) {
@@ -31,7 +33,7 @@ const AppBadge = memo(
       <>
         {leftElement}
         {label && (
-          <AppText type="caption" bold style={[styles.text, styles[`${variant}Text`], textStyle]}>
+          <AppText type="labelSm" style={[styles[`${variantKey}Text`], textStyle]}>
             {label}
           </AppText>
         )}
@@ -40,13 +42,13 @@ const AppBadge = memo(
 
     if (onPress) {
       return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variantKey], style]}>
           {content}
         </TouchableOpacity>
       );
     }
 
-    return <View style={[styles.badge, styles[variant], style]}>{content}</View>;
+    return <View style={[styles.badge, styles[variantKey], style]}>{content}</View>;
   }
 );
 AppBadge.displayName = "AppBadge";
@@ -70,28 +72,27 @@ const getStyles = (theme) =>
     emoji: {
       fontSize: 14
     },
-    text: {
-      fontSize: 13,
-      letterSpacing: 0.5,
-      textTransform: "uppercase"
-    },
-
     primary: {
       backgroundColor: theme.primaryAccent
     },
     primaryText: {
-      color: "#000"
+      color: theme.onPrimaryAccent
     },
 
-    secondary: {
-      backgroundColor: "rgba(0, 255, 127, 0.2)",
-      paddingVertical: 2,
-      borderRadius: Spacing.borderRadius.sm,
-      marginBottom: Spacing.xs,
-      borderColor: "rgba(0, 255, 127, 0.8)"
+    hot: {
+      backgroundColor: addOpacity(theme.secondaryAccent, 0.12),
+      borderColor: addOpacity(theme.secondaryAccent, 0.4)
     },
-    secondaryText: {
-      color: "#00FF7F"
+    hotText: {
+      color: theme.secondaryAccent
+    },
+
+    premium: {
+      backgroundColor: addOpacity(theme.gold, 0.12),
+      borderColor: addOpacity(theme.gold, 0.5)
+    },
+    premiumText: {
+      color: theme.gold
     },
 
     outline: {

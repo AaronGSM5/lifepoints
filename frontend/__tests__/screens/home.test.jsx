@@ -40,6 +40,13 @@ jest.mock("@/components/ui/HeroCarousel", () => {
   };
 });
 
+jest.mock("@/components/home/TodaySummaryCard", () => {
+  const { View } = require("react-native");
+  return function TodaySummaryCard() {
+    return <View testID="today-summary-card" />;
+  };
+});
+
 jest.mock("@/components/ui/SectionHeader", () => {
   const { Text } = require("react-native");
   return function SectionHeader({ title }) {

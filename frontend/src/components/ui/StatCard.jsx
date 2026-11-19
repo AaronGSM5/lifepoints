@@ -29,15 +29,7 @@ const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style })
             </AppText>
           </View>
 
-          {blurred && (
-            <AppBadge
-              variant="outline"
-              label={"GET +"}
-              onPress={handleGetPlus}
-              textStyle={styles.badgeText}
-              style={styles.badge}
-            />
-          )}
+          {blurred && <AppBadge variant="premium" label={"GET +"} onPress={handleGetPlus} style={styles.badge} />}
         </View>
         <Icon name={icon} size={16} color={color} />
       </View>
@@ -69,14 +61,7 @@ const getStyles = (theme) =>
       textShadowOffset: { width: 0, height: 0 },
       textShadowRadius: 10
     },
-    badgeText: {
-      color: theme.gold
-    },
     badge: {
-      borderColor: theme.gold,
-      borderRadius: Spacing.borderRadius.sm,
-      paddingHorizontal: Spacing.xs,
-      paddingVertical: 2,
       marginLeft: Spacing.sm
     }
   });

@@ -88,5 +88,16 @@
   "lifestyle": "Lifestyle",
   "mindfulness": "Achtsamkeit",
   "Mindset": "Mindset",
-  "Productivity": "Produktivität"
+  "Productivity": "Produktivität",
+  // UI-Audit
+  "No communities yet": "Noch keine Communities",
+  "Join a community to grow together with people who share your goals.": "Tritt einer Community bei und wachse mit Menschen, die deine Ziele teilen.",
+  "Discover communities": "Communities entdecken",
+  "Create community": "Community erstellen",
+  "Chats": "Chats",
+  "No chats yet": "Noch keine Chats",
+  "Start a conversation from a profile or community.": "Starte ein Gespräch über ein Profil oder eine Community.",
+  "online": "online",
+  "Find your first community": "Finde deine erste Community",
+  "Browse the topics below and join a group that motivates you.": "Stöbere in den Themen unten und tritt einer Gruppe bei, die dich motiviert."
 }

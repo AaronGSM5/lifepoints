@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
+import { Typography } from "@/constants/Typography";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
@@ -13,8 +14,8 @@ const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => 
   const { t } = useTranslation("home");
   return (
     <View style={styles.footer}>
-      <AppText bold style={styles.likesText}>
-        {likesCount} {likesCount === 1 ? "Like" : "Likes"}
+      <AppText type="label" style={styles.likesText}>
+        {t("likesCount", { count: likesCount })}
       </AppText>
       <AppText style={styles.descriptionText}>
         <AppText bold onPress={onPress}>
@@ -24,7 +25,7 @@ const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => 
       </AppText>
 
       <AppText type="caption" style={styles.timeAgo}>
-        {t("Vor")} 2 {t("Hours")}
+        {t("hoursAgo", { count: 2 })}
       </AppText>
     </View>
   );
@@ -38,15 +39,13 @@ const getStyles = () =>
       paddingBottom: Spacing.md
     },
     likesText: {
-      marginBottom: 4,
-      fontSize: 14
+      marginBottom: Spacing.xs
     },
     descriptionText: {
-      fontSize: 14,
-      lineHeight: 20
+      ...Typography.label,
+      fontFamily: "Inter-Regular"
     },
     timeAgo: {
-      fontSize: 12,
       marginTop: Spacing.xs
     }
   });

@@ -6,7 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
 
-const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
+const ConfirmableIcon = memo(({ icon, actionIconName, onAction, accessibilityLabel, confirmLabel }) => {
   const MyTheme = useAppTheme();
 
   const [isConfirming, setIsConfirming] = useState(false);
@@ -61,7 +61,14 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
   if (!icon) return null;
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={handlePress} style={styles.iconWrapper}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={handlePress}
+      style={styles.iconWrapper}
+      accessibilityRole="button"
+      accessibilityLabel={isConfirming ? confirmLabel || accessibilityLabel : accessibilityLabel}
+      accessibilityHint={isConfirming ? undefined : confirmLabel}
+    >
       <Animated.View
         style={[
           styles.iconFace,

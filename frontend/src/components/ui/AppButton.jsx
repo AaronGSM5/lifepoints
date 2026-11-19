@@ -3,7 +3,6 @@ import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-import { LightTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/colorHelpers";
@@ -56,7 +55,7 @@ const AppButton = memo(
 
     const getTextColor = () => {
       if (disabled) return MyTheme.muted;
-      if (isPrimary) return LightTheme.text;
+      if (isPrimary) return MyTheme.onPrimaryAccent;
       if (isSecondary) return MyTheme.text;
       if (isOutline) return MyTheme.primaryAccent;
       if (isGhost) return MyTheme.muted;
@@ -93,7 +92,7 @@ const AppButton = memo(
           )}
 
           {loading ? (
-            <AppLoadingSpinner size={"small"} color={isPrimary ? "#fff" : undefined} />
+            <AppLoadingSpinner size={"small"} color={isPrimary ? MyTheme.onPrimaryAccent : undefined} />
           ) : (
             <View style={[styles.content, iconPosition === "right" && styles.contentReverse]}>
               {icon && icon}
@@ -142,7 +141,9 @@ const getStyles = (theme) =>
     md: { paddingVertical: Spacing.sm + 2, paddingHorizontal: Spacing.md },
     lg: { paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl },
     secondary: {
-      backgroundColor: theme.glas
+      backgroundColor: theme.glas,
+      borderWidth: 1,
+      borderColor: theme.separator
     },
     outline: {
       borderWidth: 1,

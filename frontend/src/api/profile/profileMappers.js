@@ -19,16 +19,17 @@ export const mapUserProfileData = (data) => {
     })),
     stats: data.stats.map((stat) => ({
       label: stat.title.toUpperCase(),
-      value: stat.value,
+      // "Member since" kommt als "MM/YYYY", angezeigt wird nur das Jahr
+      value: stat.title.includes("Member since") ? String(stat.value).split("/").pop() : stat.value,
       icon: stat.title.includes("Streak") ? "fire" : stat.title.includes("Points") ? "gem" : "calendar",
-      color: stat.title.includes("Streak") ? "#FF5733" : "#007ec7"
+      // Farbschlüssel statt Hex-Wert; ProfileStats löst ihn über das Theme auf
+      colorKey: stat.title.includes("Streak") ? "secondaryAccent" : "primaryAccent"
     })),
     customizables: data.customizables.map((c) => ({
       id: c.id,
       name: c.title,
       unlocked: c.owned,
-      icon: "star",
-      color: "#fff"
+      icon: "star"
     })),
     trophies: data.trophies.map((t) => ({
       id: t.id,
@@ -43,5 +44,5 @@ export const mapUserProfileData = (data) => {
       points: j.lifepoints,
       type: "earn"
     }))
-  }
-}
+  };
+};

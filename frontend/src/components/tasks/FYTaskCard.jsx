@@ -20,7 +20,15 @@ const FYTaskCard = memo(({ title, icon, lp, isLoading, onNavigate, onAction, sty
   return (
     <BaseCard style={style}>
       <View style={styles.headerRow}>
-        {icon && <ConfirmableIcon icon={icon} actionIconName="add" onAction={onAction} />}
+        {icon && (
+          <ConfirmableIcon
+            icon={icon}
+            actionIconName="add"
+            onAction={onAction}
+            accessibilityLabel={t("Add {{title}} to active tasks", { title: t(title) })}
+            confirmLabel={t("Tap again to confirm")}
+          />
+        )}
         <TouchableOpacity activeOpacity={0.8} onPress={onNavigate} style={styles.navContainer}>
           <AppText bold type="title" numberOfLines={1} style={styles.titleText}>
             {t(title)}

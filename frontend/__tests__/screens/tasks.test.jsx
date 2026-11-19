@@ -32,7 +32,7 @@ jest.mock("@/hooks/useToolbarPadding", () => ({
   useToolbarPadding: () => 50
 }));
 
-jest.mock("@/components/tasks/NavigationRow", () => {
+jest.mock("@/components/ui/NavigationRow", () => {
   const { View, Button } = require("react-native");
   return function NavigationRow({ onTabChange }) {
     return (

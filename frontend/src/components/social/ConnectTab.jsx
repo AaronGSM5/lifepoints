@@ -1,91 +1,151 @@
 import { useCallback, useMemo, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
+import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
+import AppButton from "@/components/ui/AppButton";
+import EmptyView from "@/components/ui/EmptyView";
+import HorizontalRail, { RAIL_TILE_WIDTH } from "@/components/ui/HorizontalRail";
+import { SEGMENT_OFFSET } from "@/components/ui/NavigationRow";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { MOCK_CHATS } from "@/mocks/UserChat";
+import useStore from "@/store/useStore";
 
 import ChatListItem from "./ChatListItem";
 import CreateCommunityCard from "./CreateCommunityCard";
 import MyCommunityCard from "./MyCommunityCard";
 import CreateCommunityForm from "../forms/community/CreateCommunityForm";
 
-const MOCK_COMMUNITIES = [
-  { id: "1", title: "React Native Devs", members: 124, onlineCount: 21, icon: "leaf", hasUnread: false },
-  { id: "2", title: "Design Thinkers", members: 89, onlineCount: 4, icon: "music", hasUnread: true }
-];
+const CREATE_CARD = { id: "create-card-marker", isCreateCard: true };
 
-const ConnectTab = () => {
-  const MyTheme = useAppTheme();
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const toolbarHeight = useToolbarPadding();
+const getCommunityId = (community) => community?._id || community?.id;
+
+const ConnectTab = ({ scrollY, onExplore }) => {
+  const { t } = useTranslation("community");
+  const myCommunities = useStore((state) => state.myCommunities);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
-  const handleNavigation = useCallback((id) => router.push(`/mycommunity/${id}`), []);
+  const handleOpenCommunity = useCallback((community) => router.push(`/mycommunity/${getCommunityId(community)}`), []);
+  const handleOpenChat = useCallback((chat) => router.push(`/chat/${chat.id}`), []);
 
-  const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
+  const listData = useMemo(() => {
+    const items = [
+      { id: "communities", type: "communities" },
+      { id: "chats_header", type: "chats_header" }
+    ];
 
-  const data = useMemo(() => {
-    return [...MOCK_COMMUNITIES, { id: "create-card-marker", isCreateCard: true }];
+    if (!MOCK_CHATS.length) {
+      items.push({ id: "chats_empty", type: "chats_empty" });
+    } else {
+      MOCK_CHATS.forEach((chat) => items.push({ id: `chat_${chat.id}`, type: "chat", chat }));
+    }
+    return items;
   }, []);
 
-  const renderCommunityCard = ({ item }) => {
-    if (item.isCreateCard) {
-      return <CreateCommunityCard onPress={handleCreateCommunity} />;
-    }
+  const communityRailData = useMemo(() => [...myCommunities, CREATE_CARD], [myCommunities]);
 
-    return <MyCommunityCard item={item} onPress={() => handleNavigation(item.id)} />;
-  };
+  const renderCommunityCard = useCallback(
+    ({ item }) => {
+      if (item.isCreateCard) return <CreateCommunityCard onPress={handleCreateCommunity} />;
+      return <MyCommunityCard item={item} onPress={() => handleOpenCommunity(item)} />;
+    },
+    [handleCreateCommunity, handleOpenCommunity]
+  );
+
+  const renderItem = useCallback(
+    ({ item }) => {
+      switch (item.type) {
+        case "communities":
+          if (!myCommunities.length) {
+            return (
+              <View style={[styles.paddedContent, styles.topOffset]}>
+                <SectionHeader title={t("My Communities")} />
+                <EmptyView
+                  icon="globe"
+                  iconSize={24}
+                  title={t("No communities yet")}
+                  description={t("Join a community to grow together with people who share your goals.")}
+                  actionTitle={onExplore ? t("Discover communities") : undefined}
+                  onAction={onExplore}
+                  containerStyle={styles.compactEmpty}
+                >
+                  <AppButton
+                    variant="secondary"
+                    size="sm"
+                    title={t("Create community")}
+                    onPress={handleCreateCommunity}
+                  />
+                </EmptyView>
+              </View>
+            );
+          }
+          return (
+            <HorizontalRail
+              title={t("My Communities")}
+              style={styles.topOffset}
+              data={communityRailData}
+              itemWidth={RAIL_TILE_WIDTH}
+              keyExtractor={(community) => String(getCommunityId(community))}
+              renderItem={renderCommunityCard}
+            />
+          );
+
+        case "chats_header":
+          return <SectionHeader title={t("Chats")} style={styles.paddedContent} />;
+
+        case "chats_empty":
+          return (
+            <View style={styles.paddedContent}>
+              <EmptyView
+                icon="chat"
+                iconSize={24}
+                title={t("No chats yet")}
+                description={t("Start a conversation from a profile or community.")}
+              />
+            </View>
+          );
+
+        case "chat":
+          return (
+            <View style={styles.paddedContent}>
+              <ChatListItem chat={item.chat} onPress={() => handleOpenChat(item.chat)} />
+            </View>
+          );
+
+        default:
+          return null;
+      }
+    },
+    [myCommunities.length, t, onExplore, handleCreateCommunity, communityRailData, renderCommunityCard, handleOpenChat]
+  );
 
   return (
     <>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingTop: contentPaddingTop, paddingBottom: Spacing.xl }}
-      >
-        <View style={styles.section}>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id}
-            renderItem={renderCommunityCard}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horizontalListContent}
-            snapToInterval={150 + Spacing.md}
-            decelerationRate="fast"
-          />
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.chatList}>
-            {MOCK_CHATS.map((chat) => (
-              <ChatListItem key={chat.id} chat={chat} onPress={() => router.push(`/chat/${chat.id}`)} />
-            ))}
-          </View>
-        </View>
-      </ScrollView>
+      <AnimatedScreenList
+        scrollY={scrollY}
+        data={listData}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        withTopPadding={false}
+      />
       <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
     </>
   );
 };
 
-const getStyles = () =>
-  StyleSheet.create({
-    section: {
-      marginBottom: Spacing.lg
-    },
-    horizontalListContent: {
-      paddingHorizontal: Spacing.lg,
-      gap: Spacing.md
-    },
-    chatList: {
-      paddingHorizontal: Spacing.md,
-      paddingBottom: Spacing.xl
-    }
-  });
+const styles = StyleSheet.create({
+  paddedContent: {
+    paddingHorizontal: Spacing.md
+  },
+  topOffset: {
+    marginTop: SEGMENT_OFFSET
+  },
+  compactEmpty: {
+    minHeight: 0
+  }
+});
 
 export default ConnectTab;

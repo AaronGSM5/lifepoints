@@ -1,40 +1,46 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Share, StyleSheet, View } from "react-native";
 
+import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
+import AppText from "@/components/ui/AppText";
+import BaseCard from "@/components/ui/BaseCard";
+import CloseButton from "@/components/ui/CloseButton";
 import { Spacing } from "@/constants/Spacing";
-
-import AppButton from "../ui/AppButton";
-import AppText from "../ui/AppText";
-import BaseCard from "../ui/BaseCard";
-import CloseButton from "../ui/CloseButton";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 
 const InviteFriendCard = ({ referralCode }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const shareInvite = async () => {
+  const isDismissed = useStore((state) => state.isInviteCardDismissed);
+  const dismissInviteCard = useStore((state) => state.dismissInviteCard);
+
+  const shareInvite = useCallback(async () => {
     try {
       const inviteUrl = `https://lifepoints.app/invite/${referralCode}`;
-
       await Share.share({
-        message: `Hol dir die lifepoints App und wir beide bekommen eine fette Belohnung! Meld dich hier an: ${inviteUrl}`,
-        title: "Lade Freunde zu lifepoints ein"
+        message: t("Get the LifePoints app and we both receive a reward! Sign up here: {{url}}", { url: inviteUrl }),
+        title: t("Invite friends to LifePoints")
       });
     } catch (error) {
-      console.log("Fehler beim Teilen:", error.message);
+      console.warn("Share failed:", error?.message);
     }
-  };
+  }, [referralCode, t]);
 
-  if (!isVisible) return null;
+  if (isDismissed) return null;
 
   return (
     <BaseCard style={styles.card}>
-      <CloseButton style={styles.closeButton} onPress={() => setIsVisible(false)} />
+      <CloseButton style={styles.closeButton} onPress={dismissInviteCard} />
       <View style={styles.iconContainer}>
-        <AppText style={{ fontSize: 28 }}>🎁</AppText>
+        <Icon name="giftCat" size={28} color={MyTheme.primaryAccent} />
       </View>
 
-      <AppText type="title" style={{ marginBottom: 8 }}>
+      <AppText type="title" style={styles.title}>
         {t("Invite friends & earn rewards")}
       </AppText>
 
@@ -49,32 +55,36 @@ const InviteFriendCard = ({ referralCode }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginTop: Spacing.md,
-    marginHorizontal: Spacing.md,
-    alignItems: "center"
-  },
-  iconContainer: {
-    backgroundColor: "rgba(76, 150, 160, 0.08)",
-    width: 60,
-    height: 60,
-    borderRadius: Spacing.borderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.sm
-  },
-  description: {
-    textAlign: "center",
-    marginBottom: Spacing.md,
-    lineHeight: 20
-  },
-  closeButton: {
-    position: "absolute",
-    top: 5,
-    right: 5,
-    padding: Spacing.sm
-  }
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    card: {
+      marginTop: Spacing.lg,
+      alignItems: "center"
+    },
+    iconContainer: {
+      backgroundColor: addOpacity(theme.primaryAccent, 0.12),
+      width: 56,
+      height: 56,
+      borderRadius: Spacing.borderRadius.full,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: Spacing.sm
+    },
+    title: {
+      marginBottom: Spacing.sm,
+      textAlign: "center"
+    },
+    description: {
+      textAlign: "center",
+      marginBottom: Spacing.md
+    },
+    closeButton: {
+      position: "absolute",
+      top: Spacing.xs,
+      right: Spacing.xs,
+      padding: Spacing.sm,
+      zIndex: 1
+    }
+  });
 
 export default InviteFriendCard;

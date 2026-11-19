@@ -5,27 +5,48 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/colorHelpers";
 
-const BaseCard = memo(({ children, onPress, style, padding = Spacing.md, disabled = false, isSelected = false }) => {
-  const MyTheme = useAppTheme();
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const containerStyle = [styles.card, { padding }, isSelected && styles.selected, disabled && styles.disabled, style];
+// variant "default": Standardkarte (Radius lg, Rahmen, Schatten)
+// variant "flat": randlose Vollbreiten-Fläche ohne Radius/Rahmen (z. B. Feed-Posts)
+const BaseCard = memo(
+  ({
+    children,
+    onPress,
+    style,
+    padding = Spacing.md,
+    disabled = false,
+    isSelected = false,
+    variant = "default",
+    accessibilityLabel
+  }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const containerStyle = [
+      styles.card,
+      variant === "flat" && styles.flat,
+      { padding },
+      isSelected && styles.selected,
+      disabled && styles.disabled,
+      style
+    ];
 
-  if (onPress) {
-    return (
-      <Pressable
-        disabled={disabled}
-        onPress={onPress}
-        accessibilityRole="button"
-        accessibilityState={{ disabled }}
-        style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
-      >
-        {children}
-      </Pressable>
-    );
+    if (onPress) {
+      return (
+        <Pressable
+          disabled={disabled}
+          onPress={onPress}
+          accessibilityRole="button"
+          accessibilityLabel={accessibilityLabel}
+          accessibilityState={{ disabled }}
+          style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
+        >
+          {children}
+        </Pressable>
+      );
+    }
+
+    return <View style={containerStyle}>{children}</View>;
   }
-
-  return <View style={containerStyle}>{children}</View>;
-});
+);
 BaseCard.displayName = "BaseCard";
 
 const getStyles = (theme) =>
@@ -37,6 +58,12 @@ const getStyles = (theme) =>
       borderColor: addOpacity(theme.secondary, 0.7),
       overflow: "hidden",
       boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.2)"
+    },
+    flat: {
+      backgroundColor: theme.primary,
+      borderRadius: 0,
+      borderWidth: 0,
+      boxShadow: "none"
     },
     selected: {
       borderColor: theme.primaryAccent,

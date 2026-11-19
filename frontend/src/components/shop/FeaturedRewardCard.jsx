@@ -1,33 +1,42 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-import { LinearGradient } from "expo-linear-gradient";
-
 import { Icon } from "@/components/icons/Icon";
+import AppBadge from "@/components/ui/AppBadge";
 import AppButton from "@/components/ui/AppButton";
+import AppModal from "@/components/ui/AppModal";
+import AppSkeleton from "@/components/ui/AppSkeleton";
 import AppText from "@/components/ui/AppText";
-import { DarkTheme } from "@/constants/Colors";
+import BaseCard from "@/components/ui/BaseCard";
+import LpPoints from "@/components/ui/LpPoints";
 import { featuredRewards } from "@/constants/FeaturedRewards";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
+import { triggerHaptic } from "@/utils/haptics";
 
-import AppBadge from "../ui/AppBadge";
-import AppSkeleton from "../ui/AppSkeleton";
-import LpPoints from "../ui/LpPoints";
-
+// Ruhige Premium-Karte (Gold-Akzent) statt Werbebanner; Einlösen nur nach Bestätigung mit Guthaben-Check
 const FeaturedRewardCard = memo(({ isLoading }) => {
   const { t } = useTranslation("shop");
+  const MyTheme = useAppTheme();
+  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const redeemReward = useStore((state) => state.redeemReward);
+  const userLp = useStore((state) => state.profile.profileLp);
+  const userLevel = useStore((state) => state.profile.level);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+  const [isRedeemed, setIsRedeemed] = useState(false);
   const selectedReward = featuredRewards?.[0];
-  const styles = useMemo(() => getStyles(), []);
+
+  const handleOpenConfirm = useCallback(() => {
+    setIsRedeemed(false);
+    setIsConfirmVisible(true);
+  }, []);
+  const handleCloseConfirm = useCallback(() => setIsConfirmVisible(false), []);
 
   if (isLoading) {
-    return (
-      <View style={{ marginBottom: Spacing.md }}>
-        <AppSkeleton height={240} radius={Spacing.borderRadius.lg} />
-      </View>
-    );
+    return <AppSkeleton height={180} radius={Spacing.borderRadius.lg} />;
   }
 
   if (!selectedReward) return null;
@@ -35,96 +44,141 @@ const FeaturedRewardCard = memo(({ isLoading }) => {
   const isDiscounted = !!selectedReward.discount;
   const currentPrice = isDiscounted ? selectedReward.discount.newPrice : selectedReward.price;
   const oldPrice = isDiscounted ? selectedReward.discount.oldPrice : null;
+  const requiredLevel = selectedReward.requiredLevel || 0;
+  const isLocked = userLevel < requiredLevel;
+  const missingLp = Math.max(currentPrice - (userLp || 0), 0);
+  const canRedeem = !isLocked && missingLp === 0;
+
+  const handleConfirm = () => {
+    redeemReward(selectedReward.id);
+    triggerHaptic("success");
+    setIsRedeemed(true);
+  };
 
   return (
-    <View style={[styles.featuredWrapper, { marginBottom: Spacing.md }]}>
-      <LinearGradient
-        colors={["#8A2387", "#E94057", "#F27121"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.featuredCard, { padding: 0 }]}
-      >
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.75)"]}
-          start={{ x: 0.5, y: 0.0 }}
-          end={{ x: 0.5, y: 1.0 }}
-          style={styles.featuredCard}
-        >
-          <View style={styles.featuredIconContainer}>
-            <Icon name={selectedReward.icon} size={20} />
+    <>
+      <BaseCard style={styles.card}>
+        <View style={styles.headerRow}>
+          <View style={styles.iconCircle}>
+            <Icon name={selectedReward.icon} size={20} color={MyTheme.gold} />
           </View>
+          <AppBadge variant="premium" label={t("BEST VALUE")} />
+        </View>
 
-          <View style={styles.featuredContent}>
-            <AppBadge label={t("BEST VALUE")} variant="secondary" />
+        <View style={styles.textBlock}>
+          <AppText type="h2">{t(selectedReward.title)}</AppText>
+          <AppText type="caption">{t(selectedReward.description)}</AppText>
+        </View>
 
-            <AppText type="h2" style={{ color: DarkTheme.text }}>
-              {t(selectedReward.title)}
+        <View style={styles.footer}>
+          <View>
+            {isDiscounted && (
+              <AppText type="caption" style={styles.oldPrice}>
+                {oldPrice} LP
+              </AppText>
+            )}
+            <LpPoints points={currentPrice} />
+          </View>
+          <AppButton title={t("Redeem")} onPress={handleOpenConfirm} />
+        </View>
+      </BaseCard>
+
+      <AppModal visible={isConfirmVisible} onClose={handleCloseConfirm} contentStyle={styles.modal}>
+        {isRedeemed ? (
+          <>
+            <Icon name="checkmarkCircle" size={40} color={MyTheme.primaryAccent} />
+            <AppText type="title" style={styles.modalTitle}>
+              {t("Redeemed!")}
             </AppText>
-            <AppText type="caption" style={styles.featuredSubtitle}>
-              {t(selectedReward.description)}
+            <AppText type="caption" style={styles.modalText}>
+              {t("You will find your reward in your journal.")}
             </AppText>
-
-            <View style={styles.featuredFooter}>
-              <View>
-                {isDiscounted && (
-                  <AppText type="caption" style={[styles.oldPrice, { color: DarkTheme.muted }]}>
-                    {oldPrice}
-                  </AppText>
-                )}
-                <LpPoints points={currentPrice} />
-              </View>
-              <AppButton
-                title={t("Redeem")}
-                textStyle={{ color: "#E94057" }}
-                bgColor="white"
-                onPress={() => redeemReward(selectedReward.id)}
-              />
+            <AppButton title={t("common:close")} onPress={handleCloseConfirm} fullWidth />
+          </>
+        ) : (
+          <>
+            <AppText type="title" style={styles.modalTitle}>
+              {t("Redeem {{title}}?", { title: t(selectedReward.title) })}
+            </AppText>
+            <View style={styles.modalRow}>
+              <AppText type="caption">{t("Price")}</AppText>
+              <LpPoints points={currentPrice} size="xs" />
             </View>
-          </View>
-        </LinearGradient>
-      </LinearGradient>
-    </View>
+            <View style={styles.modalRow}>
+              <AppText type="caption">{t("Your balance")}</AppText>
+              <LpPoints points={userLp || 0} size="xs" />
+            </View>
+            {isLocked && <AppBadge variant="premium" label={t("From level {{level}}", { level: requiredLevel })} />}
+            {!isLocked && missingLp > 0 && (
+              <AppText type="caption" style={styles.modalText}>
+                {t("You need {{missing}} more LP.", { missing: missingLp })}
+              </AppText>
+            )}
+            <View style={styles.modalActions}>
+              <AppButton variant="ghost" title={t("common:cancel")} onPress={handleCloseConfirm} />
+              <AppButton title={t("Redeem")} onPress={handleConfirm} disabled={!canRedeem} />
+            </View>
+          </>
+        )}
+      </AppModal>
+    </>
   );
 });
 FeaturedRewardCard.displayName = "FeaturedRewardCard";
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
-    featuredWrapper: {
-      borderRadius: Spacing.borderRadius.lg,
-      boxShadow: `0px 4px 25px rgba(233, 64, 87, 0.7)`,
-      elevation: 10
+    card: {
+      gap: Spacing.md,
+      borderColor: addOpacity(theme.gold, 0.35)
     },
-    featuredCard: {
-      borderRadius: Spacing.borderRadius.lg,
-      padding: Spacing.md,
-      minHeight: 240,
+    headerRow: {
+      flexDirection: "row",
       justifyContent: "space-between",
-      overflow: "hidden"
+      alignItems: "center"
     },
-    featuredIconContainer: {
-      width: 36,
-      height: 36,
-      backgroundColor: "rgba(255,255,255,0.2)",
-      borderRadius: Spacing.borderRadius.sm,
+    iconCircle: {
+      width: 40,
+      height: 40,
+      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: addOpacity(theme.gold, 0.12),
       justifyContent: "center",
       alignItems: "center"
     },
-    featuredContent: {
-      marginTop: Spacing.md,
+    textBlock: {
       gap: Spacing.xs
     },
-    featuredSubtitle: {
-      color: "rgba(255,255,255,0.7)",
-      marginBottom: Spacing.md
-    },
-    featuredFooter: {
+    footer: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-end"
     },
     oldPrice: {
       textDecorationLine: "line-through"
+    },
+    modal: {
+      gap: Spacing.sm,
+      backgroundColor: theme.primary,
+      borderWidth: 1,
+      borderColor: theme.separator
+    },
+    modalTitle: {
+      textAlign: "center"
+    },
+    modalText: {
+      textAlign: "center"
+    },
+    modalRow: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
+    modalActions: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: Spacing.sm
     }
   });
 

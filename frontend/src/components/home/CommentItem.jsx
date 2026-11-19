@@ -63,7 +63,7 @@ const CommentItem = memo(({ item = {}, parentId, isReply = false, onReply, onLik
               outline={!item.isLiked}
               size={14}
               onPress={handleLike}
-              color={item.isLiked ? "#FF3B30" : MyTheme.muted}
+              color={item.isLiked ? MyTheme.secondaryAccent : MyTheme.muted}
               style={styles.likeButton}
             />
           )}

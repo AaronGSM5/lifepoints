@@ -1,12 +1,17 @@
-import React, { memo, useCallback, useMemo } from "react";
-import { Platform, useWindowDimensions, View } from "react-native";
+import React, { memo, useCallback, useMemo, useState } from "react";
+import { Platform, StyleSheet, useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
-import AppText from "./AppText";
+import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 import EventSlide from "../home/EventSlide";
 
+// Ruhiges Karussell: kein Autoplay, Pagination-Punkte, Tap nur wenn ein Ziel übergeben wird
 const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
   const { width } = useWindowDimensions();
+  const MyTheme = useAppTheme();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const itemDimensions = useMemo(
     () => ({
@@ -16,59 +21,84 @@ const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
     [width]
   );
 
-  const handlePressItem = useCallback(
-    (item) => {
-      if (onPressItem) onPressItem(item);
-    },
-    [onPressItem]
-  );
-
   const renderCarouselItem = useCallback(
-    ({ item }) => {
-      return <EventSlide imageSource={item.image} isLoading={isLoading} onPress={() => handlePressItem(item)} />;
-    },
-    [isLoading, handlePressItem]
+    ({ item }) => (
+      <EventSlide
+        imageSource={item.image}
+        isLoading={isLoading}
+        accessibilityLabel={item.title}
+        onPress={onPressItem ? () => onPressItem(item) : undefined}
+      />
+    ),
+    [isLoading, onPressItem]
   );
 
-  if (!data?.length) {
-    return (
-      <View>
-        <AppText>No data found</AppText>
-      </View>
-    );
-  }
+  if (!data?.length) return null;
 
   return (
-    <Carousel
-      loop
-      width={itemDimensions.width}
-      height={itemDimensions.height}
-      style={[
-        {
-          width: width,
-          justifyContent: "center",
-          alignItems: "center"
-        },
-        Platform.select({
-          web: { touchAction: "pan-y" },
-          default: {}
-        })
-      ]}
-      data={data}
-      mode="parallax"
-      modeConfig={{
-        parallaxScrollingScale: 0.85,
-        parallaxScrollingOffset: 40
-      }}
-      autoPlay={true}
-      autoPlayInterval={10000}
-      pagingEnabled={false}
-      snapEnabled={true}
-      scrollAnimationDuration={500}
-      renderItem={renderCarouselItem}
-    />
+    <View style={styles.container}>
+      <Carousel
+        loop={data.length > 1}
+        width={itemDimensions.width}
+        height={itemDimensions.height}
+        style={[
+          { width, justifyContent: "center", alignItems: "center" },
+          Platform.select({ web: { touchAction: "pan-y" }, default: {} })
+        ]}
+        data={data}
+        mode="parallax"
+        modeConfig={{
+          parallaxScrollingScale: 0.85,
+          parallaxScrollingOffset: 40
+        }}
+        autoPlay={false}
+        pagingEnabled={false}
+        snapEnabled
+        scrollAnimationDuration={500}
+        onSnapToItem={setActiveIndex}
+        renderItem={renderCarouselItem}
+      />
+      {data.length > 1 && (
+        <View
+          style={styles.dots}
+          accessibilityRole="adjustable"
+          accessibilityValue={{ now: activeIndex + 1, min: 1, max: data.length }}
+        >
+          {data.map((item, index) => (
+            <View
+              key={item.id ?? index}
+              style={[
+                styles.dot,
+                { backgroundColor: index === activeIndex ? MyTheme.primaryAccent : MyTheme.separator },
+                index === activeIndex && styles.dotActive
+              ]}
+            />
+          ))}
+        </View>
+      )}
+    </View>
   );
 });
 HeroCarousel.displayName = "HeroCarousel";
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: Spacing.lg
+  },
+  dots: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: Spacing.xs,
+    marginTop: -Spacing.sm
+  },
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: Spacing.borderRadius.full
+  },
+  dotActive: {
+    width: 16
+  }
+});
 
 export default HeroCarousel;

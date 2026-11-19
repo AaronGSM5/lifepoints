@@ -1,21 +1,22 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 
 import AppSkeleton from "../ui/AppSkeleton";
 import Separator from "../ui/Separator";
 
-const FeedItemSkeleton = ({ styles }) => {
+const FeedItemSkeleton = () => {
   return (
     <>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonHeader}>
-          <AppSkeleton radius="round" width={32} height={32} />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <AppSkeleton radius="round" width={40} height={40} />
           <AppSkeleton width={120} height={12} />
         </View>
-        <AppSkeleton height={350} />
-        <View style={styles.skeletonFooter}>
-          <View style={{ flexDirection: "row", gap: Spacing.lg }}>
+        <AppSkeleton height={350} radius={0} />
+        <View style={styles.footer}>
+          <View style={styles.actions}>
+            <AppSkeleton width={24} height={24} radius="round" />
             <AppSkeleton width={24} height={24} radius="round" />
             <AppSkeleton width={24} height={24} radius="round" />
           </View>
@@ -26,5 +27,27 @@ const FeedItemSkeleton = ({ styles }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: Spacing.md
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm
+  },
+  footer: {
+    paddingHorizontal: Spacing.md,
+    paddingTop: Spacing.sm,
+    gap: Spacing.sm
+  },
+  actions: {
+    flexDirection: "row",
+    gap: Spacing.lg
+  }
+});
 
 export default FeedItemSkeleton;

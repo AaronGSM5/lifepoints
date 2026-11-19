@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -9,8 +10,9 @@ import { Icon } from "../icons/Icon";
 
 const NavbarItem = memo(({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
+  const { t } = useTranslation("common");
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
+  const hasUnread = useStore((state) => state.profile?.hasUnreadNotifications ?? false);
   const [scale] = useState(() => new Animated.Value(1));
 
   const activeColor = MyTheme.primaryAccent;
@@ -28,10 +30,16 @@ const NavbarItem = memo(({ route, isFocused, onPress }) => {
   }, [animatePop, onPress]);
 
   return (
-    <Pressable onPress={handlePress} style={styles.tabButton}>
+    <Pressable
+      onPress={handlePress}
+      style={styles.tabButton}
+      accessibilityRole="tab"
+      accessibilityState={{ selected: isFocused }}
+      accessibilityLabel={t(`tab.${route.name}`)}
+    >
       <Animated.View style={{ transform: [{ scale }] }}>
         {route.name === "profile" && hasUnread && !isFocused && (
-          <View style={[styles.badge, { backgroundColor: MyTheme.warning || "#ff0000" }]} />
+          <View style={[styles.badge, { backgroundColor: MyTheme.warning }]} />
         )}
         <Icon
           name={route.name || "help"}

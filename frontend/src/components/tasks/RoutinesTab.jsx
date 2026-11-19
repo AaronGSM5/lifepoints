@@ -1,15 +1,16 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
-import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import PublicRoutineCard from "@/components/tasks/PublicRoutineCard";
 import RoutineCard from "@/components/tasks/RoutineCard";
 import AppInput from "@/components/ui/AppInput";
 import EmptyView from "@/components/ui/EmptyView";
+import HorizontalRail, { RAIL_CARD_WIDTH } from "@/components/ui/HorizontalRail";
+import { SEGMENT_OFFSET } from "@/components/ui/NavigationRow";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -18,8 +19,6 @@ import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 import { isRoutineCompletedOn, isRoutineDueOn } from "@/utils/routineHelpers";
-
-const PUBLIC_CARD_WIDTH = 260;
 
 const RoutinesTab = ({ scrollY }) => {
   const MyTheme = useAppTheme();
@@ -142,8 +141,10 @@ const RoutinesTab = ({ scrollY }) => {
         case "due_header":
           return (
             <SectionHeader
-              title={t("Due today {{done}}/{{total}}", { done: doneTodayCount, total: dueRoutines.length })}
-              rightIcon={<Icon name="add" />}
+              title={t("Due today")}
+              counter={dueRoutines.length ? `${doneTodayCount}/${dueRoutines.length}` : undefined}
+              rightIcon="add"
+              rightIconLabel={t("Create routine")}
               onRightPress={handleCreate}
               style={styles.paddedContent}
             />
@@ -180,33 +181,30 @@ const RoutinesTab = ({ scrollY }) => {
           return (
             <SectionHeader
               title={t("Other routines")}
-              rightIcon={<Icon name={isOtherVisible ? "down" : "right"} color={MyTheme.muted} />}
-              onRightPress={() => setIsOtherVisible((prev) => !prev)}
+              counter={otherRoutines.length}
+              collapsible
+              isCollapsed={!isOtherVisible}
+              onToggle={() => setIsOtherVisible((prev) => !prev)}
               style={[styles.paddedContent, styles.sectionSpacing]}
-              textStyle={{ color: MyTheme.muted }}
             />
           );
 
         case "recommended":
           return (
-            <View style={styles.sectionSpacing}>
-              <SectionHeader title={t("Recommended routines")} style={styles.paddedContent} />
-              <FlatList
-                horizontal
-                data={recommendedRoutines}
-                keyExtractor={(routine) => routine.id}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.carousel}
-                renderItem={({ item: routine }) => (
-                  <PublicRoutineCard
-                    routine={routine}
-                    style={styles.carouselCard}
-                    isAdopted={adoptedIds.has(routine.id)}
-                    onAdopt={() => handleAdopt(routine)}
-                  />
-                )}
-              />
-            </View>
+            <HorizontalRail
+              title={t("Recommended routines")}
+              style={styles.sectionSpacing}
+              data={recommendedRoutines}
+              itemWidth={RAIL_CARD_WIDTH}
+              keyExtractor={(routine) => routine.id}
+              renderItem={({ item: routine }) => (
+                <PublicRoutineCard
+                  routine={routine}
+                  isAdopted={adoptedIds.has(routine.id)}
+                  onAdopt={() => handleAdopt(routine)}
+                />
+              )}
+            />
           );
 
         default:
@@ -224,6 +222,7 @@ const RoutinesTab = ({ scrollY }) => {
       dueRoutines.length,
       MyTheme,
       routines.length,
+      otherRoutines.length,
       isOtherVisible,
       recommendedRoutines
     ]
@@ -252,20 +251,13 @@ const getStyles = () =>
       paddingHorizontal: Spacing.md
     },
     topOffset: {
-      marginTop: Spacing.md + 44 + Spacing.md
+      marginTop: SEGMENT_OFFSET
     },
     itemSpacing: {
       marginBottom: Spacing.md
     },
     sectionSpacing: {
-      marginTop: Spacing.sm
-    },
-    carousel: {
-      paddingHorizontal: Spacing.md,
-      gap: Spacing.md
-    },
-    carouselCard: {
-      width: PUBLIC_CARD_WIDTH
+      marginTop: Spacing.lg
     }
   });
 

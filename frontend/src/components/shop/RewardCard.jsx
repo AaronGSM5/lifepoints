@@ -13,46 +13,53 @@ import AppBadge from "../ui/AppBadge";
 import BaseCard from "../ui/BaseCard";
 import LpPoints from "../ui/LpPoints";
 
-const RewardCard = memo(({ id, image, brand, title, points, icon, isLocked, onPress, isLoading }) => {
-  const MyTheme = useAppTheme();
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const { t } = useTranslation("shop");
+const RewardCard = memo(
+  ({ id, image, brand, title, points, icon, isLocked, requiredLevel, userLp, onPress, isLoading }) => {
+    const MyTheme = useAppTheme();
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const { t } = useTranslation("shop");
 
-  if (isLoading) return <RewardCardSkeleton styles={styles} />;
+    if (isLoading) return <RewardCardSkeleton styles={styles} />;
 
-  return (
-    <BaseCard style={[styles.gridCard, isLocked && { borderWidth: 0 }]} padding={0} onPress={onPress}>
-      <View style={styles.cardImageContainer}>
-        <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
-        <AppBadge iconNode={<Icon name={icon} size={14} />} style={styles.badge} />
-      </View>
+    const missingLp = typeof userLp === "number" ? Math.max(points - userLp, 0) : 0;
 
-      <View style={styles.cardContent}>
-        <AppText bold type="caption" style={styles.cardBrand}>
-          {brand}
-        </AppText>
-        <AppText bold type="body" numberOfLines={2} style={styles.titleText}>
-          {title}
-        </AppText>
-
-        <View style={styles.cardFooter}>
-          <LpPoints points={points} />
-
-          {isLocked ? (
-            <AppBadge label={t("Locked")} textStyle={styles.badgeText} style={styles.lockedBadge} />
-          ) : (
+    return (
+      <BaseCard style={styles.gridCard} padding={0} onPress={onPress} accessibilityLabel={`${brand} ${title}`}>
+        <View style={styles.cardImageContainer}>
+          <Animated.Image source={{ uri: image }} style={styles.cardImage} sharedTransitionTag={`reward-image-${id}`} />
+          {isLocked && <View style={styles.lockedOverlay} />}
+          <AppBadge iconNode={<Icon name={icon} size={14} />} style={styles.categoryBadge} />
+          {isLocked && (
             <AppBadge
-              iconNode={<Icon name="shopping" size={16} color={MyTheme.primaryAccent} />}
-              style={styles.shoppingBadge}
+              variant="premium"
+              iconNode={<Icon name="lock" size={12} color={MyTheme.gold} />}
+              label={t("From level {{level}}", { level: requiredLevel })}
+              style={styles.lockedBadge}
             />
           )}
         </View>
-      </View>
 
-      {isLocked && <View style={styles.lockedOverlay} />}
-    </BaseCard>
-  );
-});
+        <View style={styles.cardContent}>
+          <AppText type="labelSm" style={styles.cardBrand}>
+            {brand}
+          </AppText>
+          <AppText bold type="body" numberOfLines={2} style={styles.titleText}>
+            {title}
+          </AppText>
+
+          <View style={styles.cardFooter}>
+            <LpPoints points={points} size="small" />
+          </View>
+          {!isLocked && missingLp > 0 && (
+            <AppText type="caption" numberOfLines={1}>
+              {t("{{missing}} LP missing", { missing: missingLp })}
+            </AppText>
+          )}
+        </View>
+      </BaseCard>
+    );
+  }
+);
 
 RewardCard.displayName = "RewardCard";
 
@@ -63,7 +70,7 @@ const getStyles = (theme) =>
     },
     skeletonContent: {
       padding: Spacing.sm,
-      gap: 6
+      gap: Spacing.xs
     },
     cardImageContainer: {
       height: 100,
@@ -78,43 +85,33 @@ const getStyles = (theme) =>
       gap: 2
     },
     cardBrand: {
-      color: theme.primaryAccent,
-      fontSize: 10,
-      textTransform: "uppercase",
-      letterSpacing: 0.5
+      color: theme.primaryAccent
     },
     titleText: {
-      minHeight: 40
+      minHeight: 44
     },
     cardFooter: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginLeft: Spacing.xs,
       marginTop: Spacing.xs
     },
-    pointsText: {
-      fontSize: 14
-    },
-    badge: {
+    categoryBadge: {
       position: "absolute",
       bottom: Spacing.sm,
       right: Spacing.sm,
       backgroundColor: theme.glas
     },
-    badgeText: {
-      fontSize: 10,
-      color: theme.text
+    lockedBadge: {
+      position: "absolute",
+      top: Spacing.sm,
+      left: Spacing.sm,
+      backgroundColor: theme.background
     },
     lockedOverlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.5)"
-    },
-    shoppingBadge: {
-      backgroundColor: theme.background,
-      borderColor: theme.secondary
-    },
-    lockedBadge: { backgroundColor: theme.muted }
+      backgroundColor: theme.backdrop
+    }
   });
 
 export default RewardCard;

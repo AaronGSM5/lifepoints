@@ -30,4 +30,21 @@
   "Collect Reward": "Collect Reward",
   "So close!": "So close!",
   "Crazy!": "Crazy!",
+  // UI-Audit
+  "Feed": "Feed",
+  "All routines done, great job!": "All routines done, great job!",
+  "{{done}} of {{total}} routines done": "{{done}} of {{total}} routines done",
+  "Ready for a good deed?": "Ready for a good deed?",
+  "Routine progress today": "Routine progress today",
+  "{{count}} active tasks": "{{count}} active task",
+  "{{count}} active tasks_plural": "{{count}} active tasks",
+  "Next good deed": "Next good deed",
+  "Your feed is still quiet": "Your feed is still quiet",
+  "Share your first good deed or follow people from your communities.": "Share your first good deed or follow people from your communities.",
+  "Create post": "Create post",
+  "Walk 10,000 steps": "Walk 10,000 steps",
+  "likesCount": "{{count}} like",
+  "likesCount_plural": "{{count}} likes",
+  "hoursAgo": "{{count}} hour ago",
+  "hoursAgo_plural": "{{count}} hours ago"
 }

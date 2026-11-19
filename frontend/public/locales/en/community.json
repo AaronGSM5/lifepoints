@@ -83,5 +83,16 @@
   "lifestyle": "Lifestyle",
   "mindfulness": "Mindfulness",
   "Mindset": "Mindset",
-  "Productivity": "Productivity"
+  "Productivity": "Productivity",
+  // UI-Audit
+  "No communities yet": "No communities yet",
+  "Join a community to grow together with people who share your goals.": "Join a community to grow together with people who share your goals.",
+  "Discover communities": "Discover communities",
+  "Create community": "Create community",
+  "Chats": "Chats",
+  "No chats yet": "No chats yet",
+  "Start a conversation from a profile or community.": "Start a conversation from a profile or community.",
+  "online": "online",
+  "Find your first community": "Find your first community",
+  "Browse the topics below and join a group that motivates you.": "Browse the topics below and join a group that motivates you."
 }

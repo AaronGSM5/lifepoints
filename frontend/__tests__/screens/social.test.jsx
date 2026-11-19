@@ -16,7 +16,7 @@ jest.mock("@/components/layout/ScreenWrapper", () => {
   };
 });
 
-jest.mock("@/components/tasks/NavigationRow", () => {
+jest.mock("@/components/ui/NavigationRow", () => {
   const { View, Button } = require("react-native");
   return function NavigationRow({ tabs, onTabChange }) {
     return (

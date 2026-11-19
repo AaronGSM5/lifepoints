@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -10,7 +10,8 @@ import SuggestTaskInput from "@/components/tasks/SuggestTaskInput";
 import TaskItem from "@/components/tasks/TaskItem";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import SectionHeader from "@/components/ui/SectionHeader";
+import HorizontalRail, { RAIL_CARD_WIDTH } from "@/components/ui/HorizontalRail";
+import { SEGMENT_OFFSET } from "@/components/ui/NavigationRow";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -28,18 +29,34 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { data, isLoading, isError, refetch } = useTasks();
+  const [searchQuery, setSearchQuery] = useState("");
+  const trimmedQuery = searchQuery.trim().toLowerCase();
 
   const listData = useMemo(() => {
     if (isError) {
       return [{ id: "error_state", type: "error_state" }];
     }
 
-    const tasks = data?.data || [];
+    const allTasks = data?.data || [];
 
-    if (!isLoading && !tasks.length) {
+    if (!isLoading && !allTasks.length) {
       return [{ id: "empty_state", type: "empty_state" }];
     }
     const topElements = [{ id: "search_bar", type: "search_bar" }];
+
+    const tasks = trimmedQuery
+      ? allTasks.filter((task) =>
+          [task.title, task.description, ...(Array.isArray(task.category) ? task.category : [task.category])]
+            .filter(Boolean)
+            .some(
+              (value) => t(value).toLowerCase().includes(trimmedQuery) || value.toLowerCase().includes(trimmedQuery)
+            )
+        )
+      : allTasks;
+
+    if (trimmedQuery && !tasks.length) {
+      return [...topElements, { id: "search_empty", type: "search_empty" }];
+    }
     const uniqueCategories = [
       ...new Set(
         tasks.flatMap((task) => {
@@ -59,47 +76,45 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
         return {
           id: `cat_row_${categoryName}`,
           type: "category_row",
-          title: capitalize(categoryName),
+          title: t(`categories.${categoryName}`, capitalize(categoryName)),
           data: categoryTasks
         };
       })
       .filter((cat) => cat.data.length > 0);
 
     return [...topElements, ...groupedCategories];
-  }, [data?.data, isError, isLoading]);
+  }, [data?.data, isError, isLoading, trimmedQuery, t]);
 
   const renderHorizontalTaskItem = useCallback(
     ({ item }) => (
-      <View style={styles.horizontalTaskContainer}>
-        <TaskItem
-          id={item._id}
-          isLoading={isLoading}
-          title={item.title}
-          description={item.description}
-          lp={item.lifepoints}
-          progress={item.progress}
-          status={item.limit}
-          icon={item.icon}
-          requiresInput={item.requiresInput}
-          onTrack={() => trackTask(item._id)}
-          onInstaTrack={() => {
-            if (showInstaTrackingModal) {
-              onOpenInstaTracking(item._id);
-            } else {
-              triggerHaptic();
-              completeTask(item._id);
-            }
-          }}
-          onNavigate={() => router.push(`task/${item._id}`)}
-        />
-      </View>
+      <TaskItem
+        id={item._id}
+        isLoading={isLoading}
+        title={item.title}
+        description={item.description}
+        lp={item.lifepoints}
+        progress={item.progress}
+        status={item.limit}
+        icon={item.icon}
+        requiresInput={item.requiresInput}
+        onTrack={() => trackTask(item._id)}
+        onInstaTrack={() => {
+          if (showInstaTrackingModal) {
+            onOpenInstaTracking(item._id);
+          } else {
+            triggerHaptic();
+            completeTask(item._id);
+          }
+        }}
+        onNavigate={() => router.push(`task/${item._id}`)}
+      />
     ),
-    [isLoading, showInstaTrackingModal, onOpenInstaTracking, trackTask, completeTask, router, styles]
+    [isLoading, showInstaTrackingModal, onOpenInstaTracking, trackTask, completeTask, router]
   );
 
   const renderItem = useCallback(
     ({ item }) => {
-      const topOffset = { marginTop: Spacing.md + 44 + Spacing.md };
+      const topOffset = { marginTop: SEGMENT_OFFSET };
       switch (item.type) {
         case "error_state":
           return (
@@ -132,32 +147,46 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
         case "search_bar":
           return (
             <View style={[styles.paddedContent, topOffset]}>
-              <AppInput icon="search" placeholder={t("Search...")} blur />
+              <AppInput
+                icon="search"
+                placeholder={t("Search...")}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                returnKeyType="search"
+                blur
+              />
+            </View>
+          );
+
+        case "search_empty":
+          return (
+            <View style={styles.paddedContent}>
+              <EmptyView
+                icon="search"
+                title={t("No tasks found")}
+                description={t("Try another word or suggest this task below.")}
+                actionTitle={t("Reset search")}
+                onAction={() => setSearchQuery("")}
+              />
             </View>
           );
 
         case "category_row":
           return (
-            <View style={styles.categoryRow}>
-              <SectionHeader title={item.title} isLoading={isLoading} style={styles.paddedContent} />
-              <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={item.data}
-                keyExtractor={(taskItem) => taskItem?._id.toString()}
-                renderItem={renderHorizontalTaskItem}
-                contentContainerStyle={styles.horizontalListPadding}
-                snapToInterval={280 + Spacing.md}
-                snapToAlignment="start"
-                decelerationRate="fast"
-              />
-            </View>
+            <HorizontalRail
+              title={item.title}
+              isLoading={isLoading}
+              data={item.data}
+              itemWidth={RAIL_CARD_WIDTH}
+              keyExtractor={(taskItem) => taskItem?._id.toString()}
+              renderItem={renderHorizontalTaskItem}
+            />
           );
         default:
           return null;
       }
     },
-    [isLoading, renderHorizontalTaskItem, t, styles, MyTheme, refetch]
+    [isLoading, renderHorizontalTaskItem, t, styles, MyTheme, refetch, searchQuery]
   );
 
   const renderFooter = () => {
@@ -180,6 +209,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
       renderItem={renderItem}
       ListFooterComponent={!isLoading ? renderFooter : null}
       withTopPadding={false}
+      keyboardShouldPersistTaps="handled"
     />
   );
 };
@@ -188,16 +218,6 @@ const getStyles = () =>
   StyleSheet.create({
     paddedContent: {
       paddingHorizontal: Spacing.md
-    },
-    categoryRow: {
-      marginBottom: Spacing.lg
-    },
-    horizontalListPadding: {
-      paddingHorizontal: Spacing.md
-    },
-    horizontalTaskContainer: {
-      width: 280,
-      marginRight: Spacing.md
     }
   });
 

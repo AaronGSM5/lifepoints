@@ -1,14 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, View } from "react-native";
+
+import { router } from "expo-router";
 
 import CommentSheet from "@/components/home/CommentSheet";
 import FeedItem from "@/components/home/FeedItem";
 import LootGameModal from "@/components/home/LootGameModal";
 import PostOptionsSheet from "@/components/home/PostOptionsSheet";
+import TodaySummaryCard from "@/components/home/TodaySummaryCard";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import LevelUpModal from "@/components/LevelUpModal";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
+import EmptyView from "@/components/ui/EmptyView";
 import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
@@ -17,8 +22,11 @@ import { HOME_HERO_DATA } from "@/mocks/HeroData";
 import useStore from "@/store/useStore";
 
 const SKELETON_ITEMS = [1, 2, 3];
+// Die Loot-Truhe erscheint nur einmal im Feed (am dritten Post), statt bei jedem zweiten
+const LOOT_POST_INDEX = 2;
 
 export default function HomeScreen() {
+  const { t } = useTranslation("home");
   const { feedItems, isLoading, isRefreshing, refreshHomeData } = useHome();
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [optionsPostData, setOptionsPostData] = useState(null);
@@ -68,15 +76,18 @@ export default function HomeScreen() {
   const renderHeader = useMemo(
     () => (
       <>
-        <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
-        <SectionHeader title={"Feed"} style={styles.paddedContent} />
+        <View style={styles.todayCard}>
+          <TodaySummaryCard />
+        </View>
+        <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} />
+        <SectionHeader title={t("Feed")} style={styles.paddedContent} />
       </>
     ),
-    [isLoading]
+    [isLoading, t]
   );
 
   const renderItem = useCallback(
-    ({ item }) => {
+    ({ item, index }) => {
       const isItemVisible = item?.id ? visibleItemIds.includes(String(item.id)) : false;
       return (
         <FeedItem
@@ -85,10 +96,27 @@ export default function HomeScreen() {
           onOpenComments={(id) => setSelectedPostId(id)}
           onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
           isReady={isItemVisible}
+          hasChest={index === LOOT_POST_INDEX}
         />
       );
     },
     [isLoading, visibleItemIds]
+  );
+
+  const renderEmpty = useCallback(
+    () =>
+      isLoading ? null : (
+        <View style={styles.paddedContent}>
+          <EmptyView
+            icon="flower"
+            title={t("Your feed is still quiet")}
+            description={t("Share your first good deed or follow people from your communities.")}
+            actionTitle={t("Create post")}
+            onAction={() => router.push("/post/create")}
+          />
+        </View>
+      ),
+    [isLoading, t]
   );
 
   const renderFooter = useCallback(
@@ -117,6 +145,7 @@ export default function HomeScreen() {
         keyExtractor={(item, index) => (isLoading ? `skel-${index}` : String(item.id))}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewConfig}
         onEndReached={loadMoreItems}
@@ -145,6 +174,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   paddedContent: {
     paddingHorizontal: Spacing.md
+  },
+  todayCard: {
+    paddingHorizontal: Spacing.md,
+    paddingTop: Spacing.md,
+    marginBottom: Spacing.lg
   },
   loadingFooter: {
     marginTop: Spacing.md

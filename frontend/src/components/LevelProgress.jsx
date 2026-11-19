@@ -10,7 +10,7 @@ import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, style }) => {
+const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, level, isLoading = false, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -21,10 +21,10 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, st
 
   const progressBarStyles = useMemo(
     () => ({
-      backgroundColor: !MyTheme.isDark ? MyTheme.background : "#333",
-      borderWidth: !MyTheme.isDark ? 0 : 1
+      backgroundColor: MyTheme.separator,
+      borderWidth: 0
     }),
-    [MyTheme.isDark, MyTheme.background]
+    [MyTheme.separator]
   );
 
   const widthInterpolation = animatedWidth.interpolate({
@@ -62,7 +62,7 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, st
     <View style={[styles.xpContainer, style]}>
       <View style={styles.xpHeader}>
         <AppText bold type="caption" style={!MyTheme.isDark && styles.text}>
-          {t("XP PROGRESS")}
+          {level ? t("Level {{level}}", { level }) : t("XP PROGRESS")}
         </AppText>
         {isLoading ? (
           <AppSkeleton width={60} height={12} />
@@ -79,7 +79,7 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, st
         ) : (
           <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
             <LinearGradient
-              colors={[MyTheme.primaryAccent, "#335399"]}
+              colors={[MyTheme.primaryAccent, MyTheme.success]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={StyleSheet.absoluteFill}
@@ -105,8 +105,7 @@ const getStyles = (theme) =>
     progressBarBg: {
       height: 8,
       borderRadius: Spacing.borderRadius.full,
-      overflow: "hidden",
-      borderColor: "#333"
+      overflow: "hidden"
     },
     progressBarFillContainer: {
       height: "100%",

@@ -7,25 +7,26 @@ export const createUISlice = (set, get) => ({
   isDarkMode: true,
   activeColorThemeId: "default_green",
   settings: settingsSections,
+  isInviteCardDismissed: false,
 
   toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
   setColorTheme: (themeId) => set({ activeColorThemeId: themeId }),
   setAppReady: (status) => set({ isAppReady: status }),
   setHasCompletedOnboarding: (value) => set({ hasCompletedOnboarding: value }),
+  dismissInviteCard: () => set({ isInviteCardDismissed: true }),
   login: () => set({ isAuthenticated: true }),
   logout: () => set({ isAuthenticated: false }),
 
-  completeTutorialStep: (stepId) => set((state) => {
-    const step = state.tutorialSteps.find(s => s.id === stepId);
+  completeTutorialStep: (stepId) =>
+    set((state) => {
+      const step = state.tutorialSteps.find((s) => s.id === stepId);
 
-    if (!step || step.completed) return state;
+      if (!step || step.completed) return state;
 
-    get().addLp(step.reward);
+      get().addLp(step.reward);
 
-    return {
-      tutorialSteps: state.tutorialSteps.map(s =>
-        s.id === stepId ? { ...s, completed: true } : s
-      )
-    };
-  }),
+      return {
+        tutorialSteps: state.tutorialSteps.map((s) => (s.id === stepId ? { ...s, completed: true } : s))
+      };
+    })
 });

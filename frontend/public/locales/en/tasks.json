@@ -147,5 +147,16 @@
     "4": "Thu",
     "5": "Fri",
     "6": "Sat"
-  }
+  },
+  // UI-Audit
+  "Quests": "Quests",
+  "Nothing done yet": "Nothing done yet",
+  "Finished tasks show up here.": "Finished tasks show up here.",
+  "{{done}}/{{total}} steps": "{{done}}/{{total}} steps",
+  "Add {{title}} to active tasks": "Add {{title}} to active tasks",
+  "Tap again to confirm": "Tap again to confirm",
+  "No tasks found": "No tasks found",
+  "Try another word or suggest this task below.": "Try another word or suggest this task below.",
+  "Reset search": "Reset search",
+  "Due today": "Due today"
 }

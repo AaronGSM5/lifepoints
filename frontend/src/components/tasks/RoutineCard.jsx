@@ -9,6 +9,7 @@ import RoutineTaskList from "@/components/tasks/RoutineTaskList";
 import AppIconButton from "@/components/ui/AppIconButton";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
+import ProgressBar from "@/components/ui/ProgressBar";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/colorHelpers";
@@ -81,9 +82,7 @@ const RoutineCard = memo(({ routine, initialExpanded = false }) => {
           />
         </View>
 
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
-        </View>
+        <ProgressBar variant="strip" progress={progressPercent} />
       </BaseCard>
 
       {isExpanded && <RoutineTaskList routine={routine} initialExpandedFirst style={styles.taskList} />}
@@ -145,16 +144,6 @@ const getStyles = (theme) =>
     },
     streakTextActive: {
       color: theme.text
-    },
-    progressTrack: {
-      height: 4,
-      backgroundColor: theme.separator
-    },
-    progressFill: {
-      height: "100%",
-      backgroundColor: theme.primaryAccent,
-      borderTopRightRadius: 2,
-      borderBottomRightRadius: 2
     },
     taskList: {
       paddingLeft: Spacing.md

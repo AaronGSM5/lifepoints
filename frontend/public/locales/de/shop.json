@@ -22,5 +22,16 @@
   // Empty State
   "No Rewards Found": "Keine Belohnungen gefunden",
   "We don't have any deals for": "Wir haben derzeit keine Angebote für \"{{category}}\"",
-  "Reset filter": "Filter zurücksetzen"
+  "Reset filter": "Filter zurücksetzen",
+  // UI-Audit
+  "Redeemed!": "Eingelöst!",
+  "You will find your reward in your journal.": "Deine Belohnung findest du in deinem Journal.",
+  "Redeem {{title}}?": "{{title}} einlösen?",
+  "Price": "Preis",
+  "Your balance": "Dein Guthaben",
+  "From level {{level}}": "Ab Level {{level}}",
+  "You need {{missing}} more LP.": "Dir fehlen noch {{missing}} LP.",
+  "{{missing}} LP missing": "Noch {{missing}} LP",
+  "More rewards": "Weitere Coupons",
+  "{{category}} rewards": "{{category}}-Coupons"
 }

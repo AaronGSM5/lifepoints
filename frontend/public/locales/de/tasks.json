@@ -147,5 +147,16 @@
     "4": "Do",
     "5": "Fr",
     "6": "Sa"
-  }
+  },
+  // UI-Audit
+  "Quests": "Quests",
+  "Nothing done yet": "Noch nichts erledigt",
+  "Finished tasks show up here.": "Erledigte Aufgaben erscheinen hier.",
+  "{{done}}/{{total}} steps": "{{done}}/{{total}} Schritte",
+  "Add {{title}} to active tasks": "{{title}} zu aktiven Aufgaben hinzufügen",
+  "Tap again to confirm": "Zum Bestätigen erneut tippen",
+  "No tasks found": "Keine Aufgaben gefunden",
+  "Try another word or suggest this task below.": "Versuch ein anderes Wort oder schlag die Aufgabe unten vor.",
+  "Reset search": "Suche zurücksetzen",
+  "Due today": "Heute fällig"
 }

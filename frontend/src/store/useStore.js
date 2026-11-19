@@ -1,42 +1,39 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-import { createDataSlice } from './slices/createDataSlice';
-import { createFeedSlice } from './slices/createFeedSlice';
-import { createProfileSlice } from './slices/createProfileSlice';
-import { createQuestSlice } from './slices/createQuestSlice';
-import { createRoutineSlice } from './slices/createRoutineSlice';
-import { createUISlice } from './slices/createUISlice';
+import { createDataSlice } from "./slices/createDataSlice";
+import { createFeedSlice } from "./slices/createFeedSlice";
+import { createProfileSlice } from "./slices/createProfileSlice";
+import { createQuestSlice } from "./slices/createQuestSlice";
+import { createRoutineSlice } from "./slices/createRoutineSlice";
+import { createUISlice } from "./slices/createUISlice";
 
-const logger = (config) => (set, get, api) => config(
-  (args, replace, actionName) => {
-    const prevState = get();
-    set(args, replace);
-    const nextState = get();
+const logger = (config) => (set, get, api) =>
+  config(
+    (args, replace, actionName) => {
+      const prevState = get();
+      set(args, replace);
+      const nextState = get();
 
-    const isTestEnvironment = process.env.NODE_ENV === 'test' || typeof jest !== 'undefined';
+      const isTestEnvironment = process.env.NODE_ENV === "test" || typeof jest !== "undefined";
 
-    if (__DEV__ && !isTestEnvironment) {
-      let label = actionName;
+      if (__DEV__ && !isTestEnvironment) {
+        let label = actionName;
 
-      if (!label) {
-        const changedKeys = Object.keys(nextState).filter(
-          (key) => prevState[key] !== nextState[key]
-        );
-        label = changedKeys.length > 0
-          ? `UPDATE: ${changedKeys.join(", ")}`
-          : "STATE_UPDATE";
+        if (!label) {
+          const changedKeys = Object.keys(nextState).filter((key) => prevState[key] !== nextState[key]);
+          label = changedKeys.length > 0 ? `UPDATE: ${changedKeys.join(", ")}` : "STATE_UPDATE";
+        }
+
+        console.groupCollapsed(`🚀 Zustand ➔ [${label}] Changes:`, args);
+        console.log("✅ Aktueller Zustand:", nextState);
+        console.groupEnd();
       }
-
-      console.groupCollapsed(`🚀 Zustand ➔ [${label}] Changes:`, args);
-      console.log('✅ Aktueller Zustand:', nextState);
-      console.groupEnd();
-    }
-  },
-  get,
-  api
-);
+    },
+    get,
+    api
+  );
 
 const useStore = create(
   logger(
@@ -47,10 +44,10 @@ const useStore = create(
         ...createProfileSlice(set, get, api),
         ...createQuestSlice(set, get, api),
         ...createFeedSlice(set, get, api),
-        ...createRoutineSlice(set, get, api),
+        ...createRoutineSlice(set, get, api)
       }),
       {
-        name: 'lifepoints-storage',
+        name: "lifepoints-storage",
         storage: createJSONStorage(() => AsyncStorage),
         partialize: (state) => ({
           profile: state.profile,
@@ -62,11 +59,12 @@ const useStore = create(
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isAuthenticated: state.isAuthenticated,
           isDarkMode: state.isDarkMode,
-          showInstaTrackingModal: state.showInstaTrackingModal
-        }),
+          showInstaTrackingModal: state.showInstaTrackingModal,
+          isInviteCardDismissed: state.isInviteCardDismissed
+        })
       }
     )
   )
 );
 
-export default useStore
+export default useStore;

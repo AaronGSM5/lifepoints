@@ -17,6 +17,8 @@ const OnboardingGuideItem = memo(({ quest, isClaimed }) => {
   const router = useRouter();
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled: quest.completed }}
       style={({ pressed }) => [
         styles.questItem,
         quest.completed && styles.questItemCompleted,
@@ -31,7 +33,7 @@ const OnboardingGuideItem = memo(({ quest, isClaimed }) => {
       <View style={styles.questIconContainer}>
         <Icon
           name={quest.completed ? "checkmark" : quest.icon}
-          color={quest.completed ? MyTheme.primaryAccent : "gray"}
+          color={quest.completed ? MyTheme.primaryAccent : MyTheme.muted}
         />
       </View>
 

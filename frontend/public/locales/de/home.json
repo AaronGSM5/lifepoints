@@ -30,4 +30,21 @@
   "Collect Reward": "Belohnung einsammeln",
   "So close!": "Knapp daneben!",
   "Crazy!": "Wahnsinn!",
+  // UI-Audit
+  "Feed": "Feed",
+  "All routines done, great job!": "Alle Routinen erledigt, stark!",
+  "{{done}} of {{total}} routines done": "{{done}} von {{total}} Routinen erledigt",
+  "Ready for a good deed?": "Bereit für eine gute Tat?",
+  "Routine progress today": "Routinen-Fortschritt heute",
+  "{{count}} active tasks": "{{count}} aktive Aufgabe",
+  "{{count}} active tasks_plural": "{{count}} aktive Aufgaben",
+  "Next good deed": "Nächste gute Tat",
+  "Your feed is still quiet": "Dein Feed ist noch ruhig",
+  "Share your first good deed or follow people from your communities.": "Teile deine erste gute Tat oder folge Leuten aus deinen Communities.",
+  "Create post": "Beitrag erstellen",
+  "Walk 10,000 steps": "Gehe 10.000 Schritte",
+  "likesCount": "{{count}} Like",
+  "likesCount_plural": "{{count}} Likes",
+  "hoursAgo": "vor {{count}} Stunde",
+  "hoursAgo_plural": "vor {{count}} Stunden"
 }

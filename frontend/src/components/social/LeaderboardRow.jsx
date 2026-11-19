@@ -2,6 +2,7 @@ import { memo, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
+import { addOpacity } from "@/utils/colorHelpers";
 import { getRankColor } from "@/utils/rankHelpers";
 
 import AppText from "../ui/AppText";
@@ -13,7 +14,7 @@ const LeaderboardRow = memo(({ member, index, theme }) => {
   if (!member) return null;
   return (
     <>
-      <View style={styles.memberRow}>
+      <View style={[styles.memberRow, index % 2 === 1 && styles.alternateRow]}>
         <View style={styles.rankContainer}>
           <AppText bold style={{ color: getRankColor(index) }}>
             {index + 1}
@@ -53,6 +54,11 @@ const getStyles = (theme) =>
       alignItems: "center",
       paddingVertical: Spacing.md - Spacing.xs,
       paddingHorizontal: Spacing.sm
+    },
+    // Abwechselnde Zeilen für bessere Lesbarkeit in Ranglisten
+    alternateRow: {
+      backgroundColor: addOpacity(theme.secondary, 0.35),
+      borderRadius: Spacing.borderRadius.sm
     },
     rankContainer: {
       width: 30

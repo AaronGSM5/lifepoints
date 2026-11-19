@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -8,15 +9,17 @@ import AppButton from "../ui/AppButton";
 import AppText from "../ui/AppText";
 import BaseCard from "../ui/BaseCard";
 import LpPoints from "../ui/LpPoints";
+import ProgressBar from "../ui/ProgressBar";
 
 const QuestItem = memo(({ quest, onStart }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("home");
   const current = quest.currentProgress || 0;
   const target = quest.target || 1;
   const progressPercent = Math.min((current / target) * 100, 100);
 
-  const buttonTitle = quest.completed ? (quest.collected ? "Done" : `+${quest.points} LP`) : "Start";
+  const buttonTitle = quest.completed ? (quest.collected ? t("Done") : `+${quest.points} LP`) : t("Start");
 
   return (
     <BaseCard style={styles.questCard}>
@@ -28,9 +31,7 @@ const QuestItem = memo(({ quest, onStart }) => {
           <LpPoints points={quest.points} />
         </View>
         <View style={styles.progressContainer}>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
-          </View>
+          <ProgressBar progress={progressPercent} style={styles.progress} />
           <AppText type="caption">
             {current}/{target}
           </AppText>
@@ -50,7 +51,7 @@ const QuestItem = memo(({ quest, onStart }) => {
 });
 QuestItem.displayName = "QuestItem";
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     questCard: {
       flexDirection: "row",
@@ -78,17 +79,9 @@ const getStyles = (theme) =>
       gap: Spacing.md,
       marginTop: Spacing.sm
     },
-    progressTrack: {
+    progress: {
       flex: 1,
-      height: 6,
-      backgroundColor: theme.separator,
-      borderRadius: Spacing.borderRadius.lg,
-      overflow: "hidden"
-    },
-    progressFill: {
-      height: "100%",
-      backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.lg
+      width: undefined
     }
   });
 

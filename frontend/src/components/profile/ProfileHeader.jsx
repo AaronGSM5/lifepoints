@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { Share, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 import { router } from "expo-router";
@@ -59,6 +59,20 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
     }
   }, [isExternUser, addFriend, profile.id]);
 
+  const handleShare = useCallback(async () => {
+    try {
+      await Share.share({
+        message: isExternUser
+          ? t("Check out {{name}} on LifePoints!", { name: profile.name || profile.username })
+          : t("I'm level {{level}} on LifePoints and collect points for good deeds. Join me!", {
+              level: profile.level || 1
+            })
+      });
+    } catch (error) {
+      console.warn("Share failed:", error?.message);
+    }
+  }, [isExternUser, profile.level, profile.name, profile.username, t]);
+
   const AvatarWrapper = isExternUser ? Animated.View : View;
   const wrapperProps = isExternUser ? { sharedTransitionTag: transitionTag } : {};
   return (
@@ -68,8 +82,9 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
           <Avatar source={avatarSource} size="big" />
         </AvatarWrapper>
 
-        {!isLoading && profile.level && (
-          <AppBadge label={`LVL ${profile.level}`} style={styles.levelBadge} textStyle={{ color: MyTheme.text }} />
+        {/* Eigenes Profil: Level steht am XP-Balken, hier nur bei fremden Profilen */}
+        {!isLoading && isExternUser && profile.level && (
+          <AppBadge variant="primary" label={`LVL ${profile.level}`} style={styles.levelBadge} />
         )}
       </View>
 
@@ -91,16 +106,17 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
             </AppText>
           </AppText>
 
-          <View style={{ height: Spacing.lg }}></View>
-
-          <AppText type="body" style={styles.descriptionText}>
-            {profile.description}
-          </AppText>
+          {Boolean(profile.description) && (
+            <AppText type="body" style={styles.descriptionText}>
+              {profile.description}
+            </AppText>
+          )}
 
           {!isExternUser && (
             <LevelProgress
               currentXp={profile?.profileXp || 0}
               maxXp={profile?.maxXp}
+              level={profile?.level}
               isLoading={isLoading}
               style={styles.levelProgress}
             />
@@ -110,23 +126,19 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
             <AppButton
               title={isExternUser ? (isFriend ? t("Message") : t("Add Friend")) : t("Edit Profile")}
               icon={
-                isExternUser ? (
-                  isFriend ? (
-                    <Icon name="chat" size={16} color={MyTheme.isDark ? "black" : "white"} />
-                  ) : (
-                    <Icon name="add" size={16} color={MyTheme.isDark ? "black" : "white"} />
-                  )
-                ) : (
-                  <Icon name="pencil" size={16} color={MyTheme.isDark ? "black" : "white"} />
-                )
+                <Icon
+                  name={isExternUser ? (isFriend ? "chat" : "add") : "pencil"}
+                  size={16}
+                  color={MyTheme.onPrimaryAccent}
+                />
               }
               onPress={handlePrimaryAction}
             />
             <AppButton
+              variant="secondary"
               title={isExternUser ? t("Share Profile") : t("Share Stats")}
-              icon={<Icon name="share" size={16} color={!MyTheme.isDark ? MyTheme.background : MyTheme.text} />}
-              bgColor={"#2a2a2acb"}
-              textStyle={{ color: !MyTheme.isDark ? MyTheme.background : MyTheme.text }}
+              icon={<Icon name="share" size={16} color={MyTheme.text} />}
+              onPress={handleShare}
             />
           </View>
         </>
@@ -164,7 +176,6 @@ const getStyles = (theme) =>
       position: "absolute",
       bottom: -Spacing.sm,
       alignSelf: "center",
-      backgroundColor: theme.primaryAccent,
       paddingVertical: 2,
       borderWidth: 2,
       borderColor: theme.background
@@ -182,7 +193,9 @@ const getStyles = (theme) =>
     },
     descriptionText: {
       color: theme.text,
-      opacity: 0.9
+      opacity: 0.9,
+      marginTop: Spacing.lg,
+      textAlign: "center"
     },
     levelProgress: {
       marginTop: Spacing.lg

@@ -23,17 +23,17 @@ const RecommendedCommunity = memo(({ item, isLoading, onPress }) => {
   const displayAvatars = item?.avatars ? item.avatars.slice(0, 3) : EMPTY_ARRAY;
 
   return (
-    <BaseCard style={styles.cardContainer} onPress={onPress}>
+    <BaseCard style={styles.cardContainer} onPress={onPress} accessibilityLabel={item.title}>
       <View style={styles.headerRow}>
-        <View style={[styles.iconBox, { backgroundColor: item.bgColor }]}>
-          <Icon name={item.icon} color={"#fff"} />
+        <View style={[styles.iconBox, { backgroundColor: item.bgColor || MyTheme.glas }]}>
+          <Icon name={item.icon} color={MyTheme.text} />
         </View>
 
-        {item.isLive && <AppBadge label={"LIVE"} textStyle={styles.liveBadgeText} style={styles.liveBadgeStyle} />}
+        {item.isLive && <AppBadge variant="hot" label={t("LIVE NOW")} />}
       </View>
 
       <View style={styles.contentArea}>
-        <AppText bold style={styles.cardTitle} numberOfLines={1}>
+        <AppText type="title" style={styles.cardTitle} numberOfLines={1}>
           {item.title}
         </AppText>
         <AppText type="caption" style={styles.description} numberOfLines={2}>
@@ -77,7 +77,6 @@ RecommendedCommunity.displayName = "RecommendedCommunity";
 const getStyles = (theme) =>
   StyleSheet.create({
     cardContainer: {
-      width: 260,
       height: 196,
       padding: Spacing.md,
       paddingBottom: Spacing.md - 4,
@@ -95,14 +94,6 @@ const getStyles = (theme) =>
       alignItems: "center",
       justifyContent: "center"
     },
-    liveBadgeStyle: {
-      backgroundColor: "rgba(239, 68, 68, 0.1)",
-      borderRadius: Spacing.borderRadius.sm,
-      borderColor: "rgba(239, 68, 68, 0.2)"
-    },
-    liveBadgeText: {
-      color: "#ef4444"
-    },
     contentArea: {
       flex: 1,
       justifyContent: "center",
@@ -115,8 +106,7 @@ const getStyles = (theme) =>
       height: Spacing.xs
     },
     cardTitle: {
-      fontSize: 18,
-      marginBottom: 4
+      marginBottom: Spacing.xs
     },
     description: {
       lineHeight: 20,

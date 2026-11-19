@@ -57,5 +57,25 @@
   "EmptyTaskQuote1": "Jeder Schritt zählt, egal wie klein. Lass uns gemeinsam wachsen und heute etwas Positives bewirken.",
   // SocialPage
   "Connect": "Verbinden",
-  "Explore": "Entdecken"
+  "Explore": "Entdecken",
+  // UI-Audit
+  "Reset profile": "Profil zurücksetzen",
+  "Settings": "Einstellungen",
+  "Create post": "Beitrag erstellen",
+  "Search": "Suchen",
+  "Notifications": "Benachrichtigungen",
+  "Expand": "aufklappen",
+  "Collapse": "zuklappen",
+  "Event": "Event",
+  "Could not load content": "Inhalte konnten nicht geladen werden",
+  "Please check your internet connection and try again.": "Bitte prüfe deine Internetverbindung und versuche es erneut.",
+  "Save post": "Beitrag speichern",
+  "Remove from saved": "Aus Gespeicherten entfernen",
+  "tab": {
+    "home": "Home",
+    "tasks": "Aufgaben",
+    "social": "Social",
+    "shop": "Shop",
+    "profile": "Profil"
+  }
 }

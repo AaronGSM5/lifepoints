@@ -1,126 +1,44 @@
 ---
 name: Lifepoints
+# Quelle der Wahrheit sind src/constants/Colors.js, Spacing.js und Typography.js.
+# Diese Werte spiegeln die Implementierung (DarkTheme). Bei Abweichungen gilt der Code.
 colors:
-  surface: "#0b1325"
-  surface-dim: "#0b1325"
-  surface-bright: "#31394c"
-  surface-container-lowest: "#060e1f"
-  surface-container-low: "#131b2d"
-  surface-container: "#171f32"
-  surface-container-high: "#222a3d"
-  surface-container-highest: "#2d3448"
-  on-surface: "#dbe2fb"
-  on-surface-variant: "#bbcac0"
-  inverse-surface: "#dbe2fb"
-  inverse-on-surface: "#283043"
-  outline: "#86948b"
-  outline-variant: "#3c4a43"
-  surface-tint: "#51deaa"
-  primary: "#55e0ac"
-  on-primary: "#003826"
-  primary-container: "#2fc492"
-  on-primary-container: "#004b35"
-  inverse-primary: "#006c4d"
-  secondary: "#ffabf3"
-  on-secondary: "#5b005b"
-  secondary-container: "#fe00fe"
-  on-secondary-container: "#500050"
-  tertiary: "#ecc700"
-  on-tertiary: "#3a3000"
-  tertiary-container: "#ccac00"
-  on-tertiary-container: "#4e4100"
-  error: "#F00000"
-  on-error: "#690005"
-  error-container: "#93000a"
-  on-error-container: "#ffdad6"
-  primary-fixed: "#71fbc4"
-  primary-fixed-dim: "#51deaa"
-  on-primary-fixed: "#002115"
-  on-primary-fixed-variant: "#005139"
-  secondary-fixed: "#ffd7f5"
-  secondary-fixed-dim: "#ffabf3"
-  on-secondary-fixed: "#380038"
-  on-secondary-fixed-variant: "#810081"
-  tertiary-fixed: "#ffe16d"
-  tertiary-fixed-dim: "#e9c400"
-  on-tertiary-fixed: "#221b00"
-  on-tertiary-fixed-variant: "#544600"
-  background: "#0b1325"
-  on-background: "#dbe2fb"
-  surface-variant: "#2d3448"
-  surface-deep: "#121212"
-  surface-primary: "#1A2235"
-  surface-secondary: "#243552"
-  text-primary: "#F8FAFC"
-  text-muted: rgba(248, 250, 252, 0.5)
-  success: "#00F0A0"
-  glass: rgba(255, 255, 255, 0.05)
-  border-standard: rgba(255, 255, 255, 0.08)
+  background: "rgb(15, 23, 41)"          # DarkTheme.background
+  background-bottom: "rgb(18, 18, 18)"   # DarkTheme.backgroundBottom (Verlauf unten)
+  surface-primary: "rgb(26, 34, 53)"     # DarkTheme.primary – Karten
+  surface-secondary: "rgb(36, 53, 82)"   # DarkTheme.secondary – Rahmen, Eingaben, Hover
+  text: "rgb(248, 250, 252)"             # DarkTheme.text
+  text-muted: "rgba(248, 250, 252, 0.5)" # DarkTheme.muted
+  primary-accent: "rgb(47, 196, 146)"    # DarkTheme.primaryAccent – CTAs, Erfolg, aktive Zustände
+  on-primary-accent: "rgb(15, 23, 41)"   # DarkTheme.onPrimaryAccent – Text/Icons auf Mint
+  secondary-accent: "rgb(255, 0, 255)"   # DarkTheme.secondaryAccent – "hot": Live, Streaks, Likes
+  gold: "#FFD700"                        # DarkTheme.gold – Premium, Level-Sperren, Trophäen
+  success: "rgb(0, 240, 160)"            # DarkTheme.success
+  warning: "rgb(240, 0, 0)"              # DarkTheme.warning – Fehler, Benachrichtigungspunkt
+  separator: "rgba(255, 255, 255, 0.08)" # DarkTheme.separator – Trennlinien, Progress-Tracks
+  input-border: "rgba(255, 255, 255, 0.1)"
+  glass: "rgba(255, 255, 255, 0.05)"     # DarkTheme.glas
+  backdrop: "rgba(0, 0, 0, 0.3)"
 typography:
-  headline-xl:
-    fontFamily: Inter
-    fontSize: 48px
-    fontWeight: "700"
-    lineHeight: "1.2"
-    letterSpacing: -0.02em
-  headline-lg:
-    fontFamily: Inter
-    fontSize: 32px
-    fontWeight: "700"
-    lineHeight: "1.25"
-    letterSpacing: -0.01em
-  headline-lg-mobile:
-    fontFamily: Inter
-    fontSize: 24px
-    fontWeight: "700"
-    lineHeight: "1.3"
-  headline-md:
-    fontFamily: Inter
-    fontSize: 24px
-    fontWeight: "600"
-    lineHeight: "1.4"
-  body-lg:
-    fontFamily: Inter
-    fontSize: 18px
-    fontWeight: "400"
-    lineHeight: "1.6"
-  body-md:
-    fontFamily: Inter
-    fontSize: 16px
-    fontWeight: "400"
-    lineHeight: "1.5"
-  label-md:
-    fontFamily: Inter
-    fontSize: 14px
-    fontWeight: "600"
-    lineHeight: "1.4"
-    letterSpacing: 0.01em
-  label-sm:
-    fontFamily: Inter
-    fontSize: 12px
-    fontWeight: "600"
-    lineHeight: "1.2"
-    letterSpacing: 0.05em
-  caption:
-    fontFamily: Inter
-    fontSize: 12px
-    fontWeight: "400"
-    lineHeight: "1.4"
+  # AppText-Typen (Inter). Gewicht: h1/h2 Bold, title/label/labelSm SemiBold, body/caption Regular
+  h1: { fontSize: 32px, lineHeight: 40px, fontWeight: "700" }
+  h2: { fontSize: 22px, lineHeight: 28px, fontWeight: "700" }
+  title: { fontSize: 18px, lineHeight: 24px, fontWeight: "600" }
+  body: { fontSize: 16px, lineHeight: 22px, fontWeight: "400" }
+  label: { fontSize: 14px, lineHeight: 20px, fontWeight: "600" }
+  labelSm: { fontSize: 12px, lineHeight: 16px, fontWeight: "600", letterSpacing: 0.6px, textTransform: uppercase }
+  caption: { fontSize: 13px, lineHeight: 18px, fontWeight: "400", color: text-muted }
 rounded:
-  sm: 0.25rem
-  DEFAULT: 0.5rem
-  md: 0.75rem
-  lg: 1rem
-  xl: 1.5rem
-  full: 9999px
+  sm: 8px
+  md: 12px
+  lg: 20px      # Standard für Karten (BaseCard)
+  full: 9999px  # Buttons, Chips, Badges, Navbar
 spacing:
-  base: 8px
-  container-margin: 24px
-  gutter: 16px
-  stack-sm: 4px
-  stack-md: 12px
-  stack-lg: 24px
-  section-padding: 64px
+  xs: 4px
+  sm: 8px
+  md: 16px      # Bildschirmrand und Karten-Padding
+  lg: 24px      # Abstand zwischen Sections
+  xl: 32px
 ---
 
 ## App Vision & Core Concept
@@ -178,51 +96,51 @@ Spacing between elements should be handled in multiples of 8px. Use larger "stac
 
 Hierarchy is achieved through **Tonal Layers** and **Glassmorphism**.
 
-1.  **Floor:** The `neutral` background (#0F1729).
-2.  **Surface:** `surface-primary` (#1A2235) is used for the majority of cards and containers.
-3.  **Raised:** `surface-secondary` (#243552) is used for interactive elements like hover states and input fields.
+1.  **Floor:** `background` (rgb 15/23/41) with a subtle gradient to `background-bottom`.
+2.  **Surface:** `surface-primary` (rgb 26/34/53) is used for the majority of cards and containers.
+3.  **Raised:** `surface-secondary` (rgb 36/53/82) is used for card borders, input fields and hover states.
 4.  **Overlay:** Floating elements (modals, tooltips, dropdowns) use the `glass` token with a `backdrop-filter: blur(12px)` to maintain context while appearing elevated.
 
 Shadows are used sparingly. When used, they should be "Ambient Shadows"—diffused, low-opacity, and slightly tinted toward the navy background to avoid a "muddy" gray look.
 
 ## Shapes
 
-The design system utilizes **Rounded** shapes (0.5rem base) to soften the "tech" aesthetic and make the interface feel more approachable and inviting, aligning with the "peaceful ecosystem" goal.
+The design system utilizes **Rounded** shapes to soften the "tech" aesthetic and make the interface feel more approachable and inviting, aligning with the "peaceful ecosystem" goal.
 
-- Standard components (Buttons, Inputs, Cards) use `rounded`.
-- Larger structural containers or sections may use `rounded-lg`.
-- Small utility items like Tags or Badges may transition to `rounded-xl` or "Pill-shaped" to distinguish them from interactive buttons.
+- Cards use `rounded.lg` (20px) via `BaseCard`. Full-bleed feed posts use `BaseCard variant="flat"` without radius.
+- Small boxes and icon tiles use `rounded.md` (12px).
+- Buttons, chips, badges and the navbar are pill-shaped (`rounded.full`).
 
 ## Components
 
-- **Buttons:** Primary CTAs use the `primaryAccent` background with the `neutral` (dark navy) text for high-contrast legibility. Secondary buttons use an outline of `border-standard` or a `glass` fill.
-- **Inputs:** Default state uses `surface-secondary` fill with `border-standard`. Upon focus, the border transitions to `primaryAccent` with a subtle outer glow (0px 0px 4px).
-- **Cards:** Use `surface-primary` as the fill. Apply a subtle 1px border using `border-standard`.
-- **Chips/Badges:** For "hot" or urgent items, use `secondaryAccent` (pink). For standard status, use `primaryAccent`.
-- **Glass Overlays:** Modals and sticky headers should use the `glass` token with backdrop blur. These should be framed with a light 1px border (`border-standard`) to define their edges against dark backgrounds.
-- **Lists:** Alternating rows should use `surface-secondary` for better scanability in data-dense community or ranking views.
+All reusable primitives live in `src/components/ui/`. New screens (e.g. the Routines tab) should only be composed from these.
+
+- **Buttons (`AppButton`):** `primary` uses a `primary-accent` gradient with `on-primary-accent` text. `secondary` uses `glass` with a `separator` border. `outline` and `ghost` for low-emphasis actions.
+- **Chips (`AppChip`):** Filters and selections. Calmer than a CTA: `glass` fill, `separator` border, tinted `primary-accent` when active.
+- **Badges (`AppBadge`):** `primary` (status), `hot` (`secondary-accent`: live, streak, new), `premium` (`gold`: Plus, level locks), `outline`, `glas`. Labels use `labelSm`.
+- **Inputs (`AppInput`):** `surface-secondary` fill with `input-border`; focus switches to `primary-accent`.
+- **Cards (`BaseCard`):** `surface-primary` fill (60 %), 1px `surface-secondary` border, ambient shadow, `rounded.lg`.
+- **Section headers (`SectionHeader`):** Title (`title`), optional icon and `counter` (e.g. "2/3"). Exactly two right-hand actions: a text link (`rightLabel`) or an icon button (`rightIcon` + mandatory `rightIconLabel`). Collapsible sections use `collapsible`.
+- **Progress (`ProgressBar`):** `strip` (4px, card edge) or `bar` (8px, rounded). Track `separator`, fill `primary-accent`.
+- **Horizontal lists (`HorizontalRail`):** Section header + snapping list with `md` padding and gap. Two card widths only: tile 160px, card 260px.
+- **Segmented control (`NavigationRow` + `SegmentedTabScreen`):** Sub-tabs inside a main tab (Tasks, Social). Content starts `SEGMENT_OFFSET` below it.
+- **States:** Every list shows a skeleton while loading, an `EmptyView` with a CTA when empty, and an `EmptyView` with "Try again" on errors.
+- **Lists:** Ranking views alternate rows with a tinted `surface-secondary` background.
+- **Modals:** `AppModal` on `backdrop`; confirmations for anything that spends LP.
 
 ## Global Components
 
-- **Component Name:** Global Application Header
+- **Component Name:** Global Application Header (`Toolbar`)
 - **Layout & Alignment:**
-  - **Far Left:** Counter text displaying points/currency (e.g., "0 LP") rendered in the primary color
-  - **Center:** Main custom logo—a stylized, 3D ribbon-like loop icon in gradient shades of mint and teal green.
-  - **Far Right:** Two action icons aligned horizontally: a plus sign (`+`) utility icon followed by a search magnifying glass (`🔍`) icon, both styled in solid white with clean, minimalist line weights.
-- **Behavior:** This header must remain persistent, fixed, and structurally identical across the top of all newly generated application screens.
+  - **Far Left:** LP balance (`LpPoints`) in `primary-accent`; tapping it opens the shop. On sub-pages this is a back button.
+  - **Center:** LifePoints logo.
+  - **Far Right:** On Home, Tasks, Social and Shop: create post (`+`) and search. On Profile: notifications and settings (plus a reset action in development builds only). All icons have accessibility labels.
+- **Behavior:** Fixed and always visible on all main tabs, so the LP balance and primary actions stay reachable while scrolling.
 
 - **Component Name:** Global Application Navbar
 - **Layout & Alignment:**
+  - Floating pill-shaped container (`rounded.full`) with a blurred glass background and a light 1px border.
+  - Five tabs in this order: Home, Tasks, Social, Shop, Profile. Inactive icons are outlined in `text`; the active icon is filled in `primary-accent`.
 - **Behavior:**
-
-- **Component Name:** Global Application Navbar
-- **Layout & Alignment:**
-  - The navbar sits within a pill-shaped container that uses a high rounded value, like `rounded-full`, to soften the tech aesthetic and make the interface feel inviting.
-  - It rests on a raised surface token, such as `surface-container` (#171f32) or `surface-primary` (#1A2235), creating subtle depth against the app's deep navy base background (#0b1325).
-  - The unselected icons (Home, Heart, Bag, Profile) are rendered in clean, minimalist line weights using a high-luminance neutral token—most likely `on-surface` (#dbe2fb) or `text-primary` (#F8FAFC)—to ensure maximum legibility.
-  - The center icon (Communities) is currently active and is filled with the vibrant mint-green primary accent color (#55e0ac).
-  - The far-right user profile icon features a bright red dot.
-- **Behavior:**
-  - The active state of an icon uses the primary accent color to perfectly highlight the user's current location in the app.
-  - The red notification dot on the profile icon acts as an attention-seeking alert, pulling from the `error` (#F00000), carefully designed to guide the user's eye without being overly aggressive.
-  - Interacting with the icons seamlessly bridges the user to the core gamified mechanics of LifePoints: viewing the communal main feed (Home), documenting good deeds to build a score (Heart +), engaging in positive peer pressure and group progress (Communities), redeeming value-driven rewards or viewing premium features (Shopping Bag), and checking personal digital status built purely through real-world positive impact (Profile).
+  - The red dot (`warning`) on the profile icon appears only when there are unread notifications.
+  - Each tab item exposes `accessibilityRole="tab"` and its selected state.

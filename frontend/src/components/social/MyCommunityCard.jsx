@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
@@ -13,18 +14,19 @@ import BaseCard from "../ui/BaseCard";
 const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("community");
 
   if (isLoading) return <MyCommunityCardSkeleton styles={styles} />;
 
   return (
-    <BaseCard style={styles.communityCard} onPress={onPress}>
+    <BaseCard style={styles.communityCard} onPress={onPress} accessibilityLabel={item.title}>
       <View style={styles.headerRow}>
-        <View style={[styles.iconBox, { backgroundColor: item.color }]}>
+        <View style={[styles.iconBox, { backgroundColor: item.color || item.bgColor || MyTheme.glas }]}>
           <Icon name={item.icon} />
           {item.hasUnread && <View style={styles.notificationDot} />}
         </View>
 
-        {item.isLive && <AppBadge label={"⏱"} style={styles.liveBadge} textStyle={styles.liveBadgeText} />}
+        {item.isLive && <AppBadge variant="hot" label={t("LIVE NOW")} />}
       </View>
 
       <View style={styles.bottomContent}>
@@ -40,11 +42,13 @@ const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
                 <AppText type="caption" bold style={styles.onlineCountText}>
                   {item.onlineCount}
                 </AppText>{" "}
-                online
+                {t("online")}
               </AppText>
             </>
           ) : (
-            <AppText type="caption">{item.members}</AppText>
+            <AppText type="caption">
+              {item.members ?? item.memberCount ?? 0} {t("Members")}
+            </AppText>
           )}
         </View>
       </View>
@@ -56,7 +60,6 @@ MyCommunityCard.displayName = "MyCommunityCard";
 const getStyles = (theme) =>
   StyleSheet.create({
     communityCard: {
-      width: 160,
       height: 140,
       padding: Spacing.md,
       justifyContent: "space-between"
@@ -106,15 +109,8 @@ const getStyles = (theme) =>
     skeletonSpacer: {
       height: Spacing.xs
     },
-    liveBadge: {
-      backgroundColor: "rgba(50, 211, 150, 0.05)",
-      borderWidth: 0
-    },
-    liveBadgeText: {
-      fontSize: 16
-    },
     onlineCountText: {
-      color: "#34d399"
+      color: theme.primaryAccent
     }
   });
 

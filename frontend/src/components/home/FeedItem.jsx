@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
 
 import { router } from "expo-router";
 
@@ -15,6 +16,7 @@ import FeedItemHeader from "./FeedItemHeader";
 import FeedItemSkeleton from "./FeedItemSkeleton";
 import FeedVideoContainer from "./FeedVideoContainer";
 import { LootGameTrigger } from "./LootGameTrigger";
+import BaseCard from "../ui/BaseCard";
 import Separator from "../ui/Separator";
 
 const FeedItem = memo(
@@ -32,15 +34,18 @@ const FeedItem = memo(
     onOpenComments,
     onOpenOptions,
     isLoading,
-    isReady
+    isReady,
+    hasChest = false,
+    taskName,
+    taskLp
   }) => {
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const { t } = useTranslation("home");
 
     const startLootGame = useStore((state) => state.startLootGame);
     const myUsername = useStore((state) => state.profile?.username);
     const isOwner = useMemo(() => username === myUsername, [username, myUsername]);
-    const hasChest = useMemo(() => id % 2 === 0, [id]);
     const {
       isLiked,
       isSaved,
@@ -68,17 +73,17 @@ const FeedItem = memo(
       if (onOpenComments) onOpenComments(id);
     }, [onOpenComments, id]);
 
-    if (isLoading) return <FeedItemSkeleton styles={styles} />;
-    const mockTask = `Gehe 10.000 Schritte`;
+    if (isLoading) return <FeedItemSkeleton />;
     return (
       <>
-        <View style={styles.card}>
+        <BaseCard variant="flat" padding={0} style={styles.card}>
           <FeedItemHeader
             id={id}
             username={username}
             avatar={avatar}
             badge={badge}
-            taskName={mockTask}
+            taskName={taskName || t("Walk 10,000 steps")}
+            taskLp={taskLp ?? 100}
             onPress={navigateToProfile}
             onOpenOptions={handleOpenOptions}
             onTaskPress={() => router.push("task/dasIstNurEinPlatzhalter")}
@@ -117,7 +122,7 @@ const FeedItem = memo(
             description={description}
             onPress={navigateToProfile}
           />
-        </View>
+        </BaseCard>
         <Separator />
       </>
     );
@@ -125,10 +130,9 @@ const FeedItem = memo(
 );
 FeedItem.displayName = "FeedItem";
 
-const getStyles = (theme) =>
+const getStyles = () =>
   StyleSheet.create({
     card: {
-      backgroundColor: theme.primary,
       paddingBottom: Spacing.sm
     }
   });

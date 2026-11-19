@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 
-import AppButton from "./AppButton";
+import AppChip, { CHIP_HEIGHT } from "./AppChip";
 import AppSkeleton from "./AppSkeleton";
 
 const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, isLoading }) => {
@@ -18,7 +18,7 @@ const CategoryButtons = memo(({ categories = [], activeCat, setActiveCat, isLoad
   const renderSkeletons = useMemo(
     () =>
       Array.from({ length: 4 }).map((_, i) => (
-        <AppSkeleton key={i} width={80} height={45} radius={Spacing.borderRadius.full} />
+        <AppSkeleton key={i} width={80} height={CHIP_HEIGHT} radius={Spacing.borderRadius.full} />
       )),
     []
   );
@@ -50,7 +50,7 @@ const CategoryItem = memo(({ category, isActive, onPress }) => {
     onPress(category.id);
   }, [onPress, category.id]);
 
-  return <AppButton title={category.label} variant={isActive ? "primary" : "secondary"} onPress={handleItemPress} />;
+  return <AppChip label={category.label} isActive={isActive} onPress={handleItemPress} />;
 });
 
 const styles = StyleSheet.create({

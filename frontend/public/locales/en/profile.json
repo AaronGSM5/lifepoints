@@ -77,5 +77,16 @@
   "Legend": "Legend",
   "Prodigy": "Prodigy",
   "Phenomenon": "Phenomenon",
-  "Myth": "Myth"
+  "Myth": "Myth",
+  // UI-Audit
+  "Check out {{name}} on LifePoints!": "Check out {{name}} on LifePoints!",
+  "I'm level {{level}} on LifePoints and collect points for good deeds. Join me!": "I'm level {{level}} on LifePoints and collect points for good deeds. Join me!",
+  "Level {{level}}": "LEVEL {{level}}",
+  "Get the LifePoints app and we both receive a reward! Sign up here: {{url}}": "Get the LifePoints app and we both receive a reward! Sign up here: {{url}}",
+  "Invite friends to LifePoints": "Invite friends to LifePoints",
+  "No customizables yet": "No customizables yet",
+  "Complete tasks and open chests to unlock frames and badges.": "Complete tasks and open chests to unlock frames and badges.",
+  "Your journal is still empty": "Your journal is still empty",
+  "Every good deed you log shows up here.": "Every good deed you log shows up here.",
+  "Find a task": "Find a task"
 }

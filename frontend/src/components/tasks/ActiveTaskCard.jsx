@@ -50,7 +50,8 @@ const ActiveTaskCard = memo(
           progress={progress}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
-          onAction={onAction}
+          doneSteps={subSteps.filter((step) => step.completed).length}
+          totalSteps={subSteps.length}
         />
         {isExpanded && (
           <>
