@@ -1,22 +1,31 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ProfileHeader from "@/components/profile/ProfileHeader";
+import PublicRoutineCard from "@/components/tasks/PublicRoutineCard";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppSkeleton from "@/components/ui/AppSkeleton";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { publicProfiles } from "@/mocks/PublicProfile";
+import { getPublicRoutinesByAuthor } from "@/mocks/PublicRoutines";
+import useStore from "@/store/useStore";
+import { triggerHaptic } from "@/utils/haptics";
 
 export default function PublicProfileScreen() {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("tasks");
   const { username, sourceId } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState(true);
+  const routines = useStore((state) => state.routines);
+  const adoptPublicRoutine = useStore((state) => state.adoptPublicRoutine);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
@@ -36,6 +45,20 @@ export default function PublicProfileScreen() {
       .filter(Boolean);
   }, [activePublicProfile]);
 
+  const authorRoutines = useMemo(() => getPublicRoutinesByAuthor(username), [username]);
+  const adoptedIds = useMemo(
+    () => new Set(routines.map((routine) => routine.source?.publicRoutineId).filter(Boolean)),
+    [routines]
+  );
+
+  const handleAdopt = useCallback(
+    (routine) => {
+      adoptPublicRoutine(routine);
+      triggerHaptic("success");
+    },
+    [adoptPublicRoutine]
+  );
+
   return (
     <ScreenWrapper scrollable>
       <ProfileHeader isLoading={isLoading} sourceId={sourceId} profileData={activePublicProfile} />
@@ -54,6 +77,23 @@ export default function PublicProfileScreen() {
               ))}
         </View>
       </View>
+
+      {!isLoading && authorRoutines.length > 0 && (
+        <View style={styles.routinesSection}>
+          <SectionHeader title={t("Routines")} />
+          <View style={styles.routinesList}>
+            {authorRoutines.map((routine) => (
+              <PublicRoutineCard
+                key={routine.id}
+                routine={routine}
+                showAuthor={false}
+                isAdopted={adoptedIds.has(routine.id)}
+                onAdopt={() => handleAdopt(routine)}
+              />
+            ))}
+          </View>
+        </View>
+      )}
     </ScreenWrapper>
   );
 }
@@ -71,5 +111,11 @@ const getStyles = () =>
     },
     trophyWrapper: {
       width: 80
+    },
+    routinesSection: {
+      marginBottom: Spacing.xl
+    },
+    routinesList: {
+      gap: Spacing.md
     }
   });
