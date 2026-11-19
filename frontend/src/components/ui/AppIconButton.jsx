@@ -24,6 +24,11 @@ const AppIconButton = memo(
     ) => {
       const MyTheme = useAppTheme();
 
+      // Icon-Buttons haben keinen sichtbaren Text: ohne Label liest der Screenreader nur den Icon-Namen vor
+      if (__DEV__ && !accessibilityLabel) {
+        console.warn(`AppIconButton "${icon}" hat kein accessibilityLabel.`);
+      }
+
       return (
         <Pressable
           ref={ref}

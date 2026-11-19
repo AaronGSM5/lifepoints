@@ -1,4 +1,5 @@
 import React, { forwardRef, memo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -10,6 +11,7 @@ import AppIconButton from "./AppIconButton";
 const BackButton = memo(
   forwardRef(({ onPress, style, iconColor, withBackground = false, ...rest }, ref) => {
     const router = useRouter();
+    const { t } = useTranslation("common");
 
     const handlePress = useCallback(() => {
       if (onPress) {
@@ -31,7 +33,7 @@ const BackButton = memo(
         color={iconColor}
         style={[styles.button, style]}
         withBackground={withBackground}
-        accessibilityLabel={"Back"}
+        accessibilityLabel={t("back")}
         {...rest}
       />
     );

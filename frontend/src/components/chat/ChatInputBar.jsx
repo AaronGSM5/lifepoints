@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -26,6 +27,7 @@ const menuItems = [
 const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("common");
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = useCallback(() => {
@@ -43,7 +45,14 @@ const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) =>
     <View style={styles.wrapper}>
       <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} placement="top" />
       <View style={styles.inputContainer}>
-        <AppIconButton icon="add" color={MyTheme.muted} onPress={toggleMenu} style={styles.attachButton} />
+        <AppIconButton
+          icon="add"
+          color={MyTheme.muted}
+          onPress={toggleMenu}
+          style={styles.attachButton}
+          accessibilityLabel={showMenu ? t("Close attachment menu") : t("Open attachment menu")}
+          accessibilityState={{ expanded: showMenu }}
+        />
         <AppInput
           placeholder={placeholder}
           value={safeValue}
@@ -58,6 +67,7 @@ const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) =>
           onPress={onSend}
           disabled={isTrimmedEmpty}
           style={styles.sendButton}
+          accessibilityLabel={t("Send message")}
         />
       </View>
     </View>

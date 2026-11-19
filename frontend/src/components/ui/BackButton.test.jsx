@@ -16,7 +16,8 @@ describe("BackButton", () => {
     const customOnPress = jest.fn();
     const { getByLabelText } = await render(<BackButton onPress={customOnPress} />);
 
-    await fireEvent.press(getByLabelText("Back"));
+    // i18n-Mock liefert den Key zurück
+    await fireEvent.press(getByLabelText("back"));
 
     expect(customOnPress).toHaveBeenCalledTimes(1);
     expect(router.back).not.toHaveBeenCalled();
@@ -27,7 +28,7 @@ describe("BackButton", () => {
     router.canGoBack.mockReturnValue(true);
     const { getByLabelText } = await render(<BackButton />);
 
-    await fireEvent.press(getByLabelText("Back"));
+    await fireEvent.press(getByLabelText("back"));
 
     expect(router.back).toHaveBeenCalledTimes(1);
     expect(router.replace).not.toHaveBeenCalled();
@@ -37,7 +38,7 @@ describe("BackButton", () => {
     router.canGoBack.mockReturnValue(false);
     const { getByLabelText } = await render(<BackButton />);
 
-    await fireEvent.press(getByLabelText("Back"));
+    await fireEvent.press(getByLabelText("back"));
 
     expect(router.replace).toHaveBeenCalledWith("/");
     expect(router.back).not.toHaveBeenCalled();

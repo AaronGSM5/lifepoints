@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
@@ -17,6 +18,7 @@ import BackButton from "../ui/BackButton";
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions }) => {
+  const { t } = useTranslation("common");
   const [isPlaying, setIsPlaying] = useState(true);
   const playerRef = useRef(null);
   const tapTimeout = useRef(null);
@@ -177,6 +179,8 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
               color={isLiked ? "#FF3B30" : "#FFFFFF"}
               onPress={handleLike}
               outline={!isLiked}
+              accessibilityLabel={isLiked ? t("Remove like") : t("Like")}
+              accessibilityState={{ selected: isLiked }}
             />
             <AppText bold style={styles.actionText}>
               {likesCount}
@@ -189,6 +193,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
               iconSize={26}
               color={"#FFFFFF"}
               onPress={() => onOpenComments && onOpenComments(item.id)}
+              accessibilityLabel={t("Open comments")}
             />
             <AppText bold style={styles.actionText}>
               {item.commentsCount || 0}
@@ -196,7 +201,13 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
           </View>
 
           <View style={styles.actionButton}>
-            <AppIconButton icon="share" iconSize={26} color="#FFFFFF" onPress={handleShare} />
+            <AppIconButton
+              icon="share"
+              iconSize={26}
+              color="#FFFFFF"
+              onPress={handleShare}
+              accessibilityLabel={t("Share")}
+            />
           </View>
 
           <AppIconButton
@@ -204,6 +215,7 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
             iconSize={26}
             color="#FFFFFF"
             onPress={() => onOpenOptions && onOpenOptions(item.id, item.isOwner)}
+            accessibilityLabel={t("More options")}
           />
         </View>
       </View>
