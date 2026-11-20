@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import SettingsSection from "@/components/settings/SettingsSection";
 import AppText from "@/components/ui/AppText";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import Separator from "@/components/ui/Separator";
@@ -33,24 +34,25 @@ export default function NotificationsScreen() {
 
   return (
     <ScreenWrapper>
-      <ScreenTitle title={t("Notifications")} />
-      {options.map((option, index) => {
-        const isFirst = index === 0;
-        const isLast = index === options.length - 1;
-        return (
-          <React.Fragment key={option.id}>
-            <View style={[styles.row, isFirst && { paddingTop: 0 }]}>
-              <AppText>{t(option.i18nKey)}</AppText>
-              <Switch
-                value={settings[option.id]}
-                onValueChange={() => toggleSwitch(option.id)}
-                trackColor={styles.switch}
-              />
-            </View>
-            {!isLast && <Separator />}
-          </React.Fragment>
-        );
-      })}
+      <ScreenTitle title={t("Notifications")} subtitle={t("Choose how and when LifePoints keeps you up to date.")} />
+      <SettingsSection cardProps={{ padding: 0 }}>
+        {options.map((option, index) => {
+          const isLast = index === options.length - 1;
+          return (
+            <React.Fragment key={option.id}>
+              <View style={styles.row}>
+                <AppText>{t(option.i18nKey)}</AppText>
+                <Switch
+                  value={settings[option.id]}
+                  onValueChange={() => toggleSwitch(option.id)}
+                  trackColor={styles.switch}
+                />
+              </View>
+              {!isLast && <Separator />}
+            </React.Fragment>
+          );
+        })}
+      </SettingsSection>
     </ScreenWrapper>
   );
 }
@@ -61,7 +63,8 @@ const getStyles = (theme) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingVertical: Spacing.md
+      paddingVertical: Spacing.sm,
+      paddingHorizontal: Spacing.md
     },
     switch: {
       false: theme.muted,

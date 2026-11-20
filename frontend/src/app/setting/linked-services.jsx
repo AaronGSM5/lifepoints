@@ -4,8 +4,8 @@ import { Alert, StyleSheet, View } from "react-native";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ServiceItem from "@/components/settings/ServiceItem";
+import SettingsSection from "@/components/settings/SettingsSection";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -48,8 +48,7 @@ export default function LinkedServicesScreen() {
         subtitle={t("Connect your favorite apps to automatically earn LifePoints through your activities.")}
       />
 
-      <View style={styles.section}>
-        <SectionHeader title={t("Fitness & Health")} />
+      <SettingsSection title={t("Fitness & Health")} card={false}>
         <ServiceItem
           id="appleHealth"
           name="Apple Health"
@@ -67,10 +66,9 @@ export default function LinkedServicesScreen() {
           isConnected={connections.strava}
           onPress={() => handleToggleService("strava", "Strava")}
         />
-      </View>
+      </SettingsSection>
 
-      <View style={styles.section}>
-        <SectionHeader title={t("Entertainment & Lifestyle")} />
+      <SettingsSection title={t("Entertainment & Lifestyle")} card={false}>
         <ServiceItem
           id="spotify"
           name="Spotify"
@@ -79,19 +77,13 @@ export default function LinkedServicesScreen() {
           isConnected={connections.spotify}
           onPress={() => handleToggleService("spotify", "Spotify")}
         />
-      </View>
+      </SettingsSection>
     </ScreenWrapper>
   );
 }
 
 const getStyles = () =>
   StyleSheet.create({
-    section: {
-      marginBottom: Spacing.md
-    },
-    sectionTitle: {
-      marginBottom: Spacing.md
-    },
     spacer: {
       height: Spacing.md
     }

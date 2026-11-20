@@ -83,7 +83,7 @@ export default function SubscriptionScreen() {
 const getStyles = (theme) =>
   StyleSheet.create({
     header: {
-      paddingVertical: Spacing.lg,
+      paddingBottom: Spacing.xl,
       alignItems: "center"
     },
     toggleContainer: {
@@ -99,7 +99,7 @@ const getStyles = (theme) =>
       paddingTop: Spacing.lg,
       paddingBottom: Spacing.xxl,
       borderTopWidth: 1,
-      borderTopColor: "#efeff4"
+      borderTopColor: theme.separator
     },
     restoreText: {
       color: theme.primaryAccent,

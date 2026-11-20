@@ -29,6 +29,7 @@
   "Saving...": "Saving...",
 
   // Security & Login
+  "Manage your password and how you sign in.": "Manage your password and how you sign in.",
   "Change Password": "Change Password",
   "Current Password": "Current Password",
   "New Password": "New Password",
@@ -54,6 +55,7 @@
   "Connect": "Connect",
 
   // Notifications
+  "Choose how and when LifePoints keeps you up to date.": "Choose how and when LifePoints keeps you up to date.",
   "Push Notifications": "Push Notifications",
   "Email": "Email",
   "Offers": "Offers",

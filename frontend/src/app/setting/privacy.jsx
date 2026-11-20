@@ -1,14 +1,17 @@
 import React from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppText from "@/components/ui/AppText";
+import ScreenTitle from "@/components/ui/ScreenTitle";
+import { Spacing } from "@/constants/Spacing";
 
 export default function PrivacyScreen() {
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
   return (
     <ScreenWrapper>
+      <ScreenTitle title={t("Privacy Policy")} />
       <View style={styles.container}>
         <Text style={styles.emoji}>🚧</Text>
         <AppText type="title">Privacy Work in Progress</AppText>
@@ -24,10 +27,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 10
+    gap: Spacing.sm,
+    marginTop: Spacing.xl
   },
   emoji: {
     fontSize: 48,
-    marginBottom: 16
+    marginBottom: Spacing.md
   }
 });

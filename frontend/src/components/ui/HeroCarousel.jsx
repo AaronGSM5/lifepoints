@@ -2,6 +2,8 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Platform, useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
+import { Spacing } from "@/constants/Spacing";
+
 import AppText from "./AppText";
 import EventSlide from "../home/EventSlide";
 
@@ -46,6 +48,7 @@ const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
       style={[
         {
           width: width,
+          marginBottom: Spacing.md,
           justifyContent: "center",
           alignItems: "center"
         },

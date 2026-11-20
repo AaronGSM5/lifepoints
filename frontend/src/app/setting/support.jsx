@@ -4,11 +4,11 @@ import { Linking, StyleSheet, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import SettingsSection from "@/components/settings/SettingsSection";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { addOpacity } from "@/utils/colorHelpers";
@@ -95,8 +95,7 @@ export default function SupportScreen() {
         ))}
       </View>
 
-      <View style={styles.section}>
-        <SectionHeader title={t("Topics")} />
+      <SettingsSection title={t("Topics")} card={false}>
         <View style={styles.categoryGrid}>
           {categories.map((entry) => (
             <BaseCard key={entry.id} style={styles.categoryItem}>
@@ -105,10 +104,9 @@ export default function SupportScreen() {
             </BaseCard>
           ))}
         </View>
-      </View>
+      </SettingsSection>
 
-      <View style={styles.section}>
-        <SectionHeader title={t("FAQ")} />
+      <SettingsSection title={t("FAQ")} card={false}>
         {faq.map((entry, index) => (
           <BaseCard key={index} style={styles.faqItem}>
             <View style={{ flex: 1 }}>
@@ -117,7 +115,7 @@ export default function SupportScreen() {
             <Icon name="right" size={18} color={MyTheme.muted} />
           </BaseCard>
         ))}
-      </View>
+      </SettingsSection>
 
       <View style={styles.statusBox}>
         <View style={styles.statusIndicator} />
@@ -138,7 +136,8 @@ const getStyles = (theme) =>
     contactRow: {
       flexDirection: "row",
       gap: Spacing.md,
-      marginVertical: Spacing.lg
+      marginTop: Spacing.lg,
+      marginBottom: Spacing.xl
     },
     contactCard: {
       flex: 1,
@@ -152,9 +151,6 @@ const getStyles = (theme) =>
       justifyContent: "center",
       alignItems: "center",
       marginBottom: Spacing.xs
-    },
-    section: {
-      marginBottom: Spacing.lg
     },
     categoryGrid: {
       flexDirection: "row",

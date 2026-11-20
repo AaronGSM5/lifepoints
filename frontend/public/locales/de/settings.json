@@ -30,6 +30,7 @@
   "Saving...": "Speichere...",
 
   // Security & Login
+  "Manage your password and how you sign in.": "Verwalte dein Passwort und wie du dich anmeldest.",
   "Change Password": "Passwort ändern",
   "Current Password": "Aktuelles Passwort",
   "New Password": "Neues Passwort",
@@ -55,6 +56,7 @@
   "Connect": "Verbinden",
 
   // Notifications
+  "Choose how and when LifePoints keeps you up to date.": "Lege fest, wie und wann LifePoints dich auf dem Laufenden hält.",
   "Push Notifications": "Push-Benachrichtigungen",
   "Email": "Email",
   "Offers": "Angebote",

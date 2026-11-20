@@ -61,25 +61,22 @@ export default function PublicProfileScreen() {
 
   return (
     <ScreenWrapper scrollable>
-      <ProfileHeader isLoading={isLoading} sourceId={sourceId} profileData={activePublicProfile} />
-      <View style={styles.trophySection}>
-        <View style={styles.pinnedGrid}>
+      <ProfileHeader isLoading={isLoading} isExternUser sourceId={sourceId} profileData={activePublicProfile} />
+      {/* Showroom: bis zu 3 ausgewählte Trophäen, zentriert präsentiert */}
+      {(isLoading || pinnedTrophies.length > 0) && (
+        <View style={styles.trophyShowroom}>
           {isLoading
-            ? [1, 2, 3].map((i) => (
-                <View key={i}>
-                  <AppSkeleton width={80} height={80} radius={Spacing.borderRadius.lg} />
-                </View>
-              ))
+            ? [1, 2, 3].map((i) => <AppSkeleton key={i} width={80} height={80} radius={Spacing.borderRadius.lg} />)
             : pinnedTrophies.map((selectedTrophy) => (
                 <View key={selectedTrophy.id} style={styles.trophyWrapper}>
                   <TrophyCard id={selectedTrophy.id} title={selectedTrophy.title} icon={selectedTrophy.icon} unlocked />
                 </View>
               ))}
         </View>
-      </View>
+      )}
 
       {!isLoading && authorRoutines.length > 0 && (
-        <View style={styles.routinesSection}>
+        <View style={[styles.routinesSection, !pinnedTrophies.length && styles.routinesSectionStandalone]}>
           <SectionHeader title={t("Routines")} />
           <View style={styles.routinesList}>
             {authorRoutines.map((routine) => (
@@ -100,20 +97,23 @@ export default function PublicProfileScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
-    trophySection: {
-      marginTop: Spacing.xl,
-      paddingHorizontal: Spacing.lg,
-      marginBottom: Spacing.xl
-    },
-    pinnedGrid: {
+    // Gleiche Sektionsabstände wie im eigenen Profil (xl)
+    trophyShowroom: {
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "center",
+      gap: Spacing.lg,
+      marginTop: Spacing.xl,
+      marginBottom: Spacing.xl
     },
     trophyWrapper: {
       width: 80
     },
     routinesSection: {
       marginBottom: Spacing.xl
+    },
+    // Ohne Trophy-Sektion fehlt sonst der Abstand zum ProfileHeader
+    routinesSectionStandalone: {
+      marginTop: Spacing.xl
     },
     routinesList: {
       gap: Spacing.md

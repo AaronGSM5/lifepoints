@@ -4,12 +4,11 @@ import { Alert, StyleSheet, Switch, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import SettingsSection from "@/components/settings/SettingsSection";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
-import SectionHeader from "@/components/ui/SectionHeader";
 import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -41,63 +40,57 @@ export default function SecurityScreen() {
 
   return (
     <ScreenWrapper scrollable>
-      <ScreenTitle title={t("Security & Login")} />
-      <View style={styles.section}>
-        <SectionHeader title={t("Change Password")} />
-        <BaseCard>
-          <AppInput
-            label={t("Current Password")}
-            placeholder="••••••••"
-            secureTextEntry
-            value={passwords.current}
-            onChangeText={(txt) => setPasswords({ ...passwords, current: txt })}
-          />
-          <View style={{ height: Spacing.md }} />
-          <AppInput
-            label={t("New Password")}
-            placeholder="••••••••"
-            secureTextEntry
-            value={passwords.new}
-            onChangeText={(txt) => setPasswords({ ...passwords, new: txt })}
-          />
-          <View style={{ height: Spacing.md }} />
-          <AppInput
-            label={t("Confirm Password")}
-            placeholder="••••••••"
-            secureTextEntry
-            value={passwords.confirm}
-            onChangeText={(txt) => setPasswords({ ...passwords, confirm: txt })}
-          />
-          <AppButton
-            title={t("Update Password")}
-            onPress={handlePasswordChange}
-            style={{ marginTop: Spacing.lg }}
-            disabled={!passwords.new || passwords.new !== passwords.confirm}
-            variant={"outline"}
-          />
-        </BaseCard>
-      </View>
+      <ScreenTitle title={t("Security & Login")} subtitle={t("Manage your password and how you sign in.")} />
+      <SettingsSection title={t("Change Password")}>
+        <AppInput
+          label={t("Current Password")}
+          placeholder="••••••••"
+          secureTextEntry
+          value={passwords.current}
+          onChangeText={(txt) => setPasswords({ ...passwords, current: txt })}
+        />
+        <View style={{ height: Spacing.md }} />
+        <AppInput
+          label={t("New Password")}
+          placeholder="••••••••"
+          secureTextEntry
+          value={passwords.new}
+          onChangeText={(txt) => setPasswords({ ...passwords, new: txt })}
+        />
+        <View style={{ height: Spacing.md }} />
+        <AppInput
+          label={t("Confirm Password")}
+          placeholder="••••••••"
+          secureTextEntry
+          value={passwords.confirm}
+          onChangeText={(txt) => setPasswords({ ...passwords, confirm: txt })}
+        />
+        <AppButton
+          title={t("Update Password")}
+          onPress={handlePasswordChange}
+          style={{ marginTop: Spacing.lg }}
+          disabled={!passwords.new || passwords.new !== passwords.confirm}
+          variant={"outline"}
+        />
+      </SettingsSection>
 
-      <View style={styles.section}>
-        <SectionHeader title={t("Security & Access")} />
-        <BaseCard>
-          <View style={styles.row}>
-            <View style={styles.rowContent}>
-              <AppText bold>{t("FaceID / Fingerprint")}</AppText>
-              <AppText type="caption">{t("Faster Login")}</AppText>
-            </View>
-            <Switch value={isBiometricsEnabled} onValueChange={setIsBiometricsEnabled} trackColor={styles.switch} />
+      <SettingsSection title={t("Security & Access")}>
+        <View style={styles.row}>
+          <View style={styles.rowContent}>
+            <AppText bold>{t("FaceID / Fingerprint")}</AppText>
+            <AppText type="caption">{t("Faster Login")}</AppText>
           </View>
-          <Separator />
-          <View style={styles.row}>
-            <View style={styles.rowContent}>
-              <AppText bold>{t("Two-factor authentication")}</AppText>
-              <AppText type="caption">{t("Additional protection via email")}</AppText>
-            </View>
-            <Switch value={isTwoFactorEnabled} onValueChange={setIsTwoFactorEnabled} trackColor={styles.switch} />
+          <Switch value={isBiometricsEnabled} onValueChange={setIsBiometricsEnabled} trackColor={styles.switch} />
+        </View>
+        <Separator />
+        <View style={styles.row}>
+          <View style={styles.rowContent}>
+            <AppText bold>{t("Two-factor authentication")}</AppText>
+            <AppText type="caption">{t("Additional protection via email")}</AppText>
           </View>
-        </BaseCard>
-      </View>
+          <Switch value={isTwoFactorEnabled} onValueChange={setIsTwoFactorEnabled} trackColor={styles.switch} />
+        </View>
+      </SettingsSection>
 
       <View style={styles.section}>
         <AppButton
@@ -128,7 +121,7 @@ const getStyles = (theme) =>
       flex: 1
     },
     switch: {
-      false: "#767577",
+      false: theme.muted,
       true: theme.primaryAccent
     }
   });

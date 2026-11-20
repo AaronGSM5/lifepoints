@@ -5,16 +5,16 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, View } 
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 
+import ScreenFooter from "@/components/layout/ScreenFooter";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import MediaUploader from "@/components/post/MediaUploader";
 import TaskSelector from "@/components/post/TaskSelector";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
-import BackButton from "@/components/ui/BackButton";
 import BaseCard from "@/components/ui/BaseCard";
+import ScreenTitle from "@/components/ui/ScreenTitle";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Separator from "@/components/ui/Separator";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -83,35 +83,19 @@ export default function CreatePost() {
   }, [router]);
 
   return (
-    <ScreenWrapper
-      scrollable={false}
-      withPaddingSides={false}
-      withPaddingBottom={false}
-      withPaddingTop={false}
-      withToolbar={false}
-    >
+    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-        <View style={styles.header}>
-          <BackButton />
-          <AppText style={styles.headerTitle} bold>
-            {t("Create Post")}
-          </AppText>
-          <AppText
-            bold
-            style={[styles.postButton, isPostButtonEnabled && { color: MyTheme.primaryAccent }]}
-            onPress={handlePost}
-            disabled={!isPostButtonEnabled}
-          >
-            {t("Post")}
-          </AppText>
-        </View>
-        <Separator />
+        <ScreenTitle title={t("Create Post")} />
 
-        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-          <BaseCard style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-            <View>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <BaseCard style={styles.visibilityCard}>
+            <View style={styles.visibilityText}>
               <AppText bold>{t("Share publicly")}</AppText>
-              <AppText type="caption" style={{ color: MyTheme.muted, marginTop: Spacing.xs }}>
+              <AppText type="caption" style={styles.visibilityCaption}>
                 {isPublic ? t("Visible to all users") : t("Only as progress for your friends")}
               </AppText>
             </View>
@@ -132,7 +116,7 @@ export default function CreatePost() {
                 onSelectTask={setSelectedTaskId}
               />
             ) : (
-              <BaseCard style={{ flexDirection: "column", alignItems: "center", gap: Spacing.md }}>
+              <BaseCard style={styles.emptyTasksCard}>
                 <AppText type="title">{t("No available tasks")}</AppText>
                 <AppButton title={t("Do a task")} variant="outline" onPress={() => router.push("/tasks")} />
               </BaseCard>
@@ -155,43 +139,39 @@ export default function CreatePost() {
             <MediaUploader isPublic={isPublic} media={media} setMedia={setMedia} pickMedia={pickMedia} />
           </View>
         </ScrollView>
+
+        <ScreenFooter breakOut>
+          <AppButton title={t("Post")} size="lg" onPress={handlePost} disabled={!isPostButtonEnabled} />
+        </ScreenFooter>
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );
 }
 
-const getStyles = () =>
+const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       flex: 1
     },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.sm
-    },
-    headerTitle: {
-      fontSize: 16
-    },
-    postButton: {
-      paddingHorizontal: Spacing.sm,
-      paddingVertical: Spacing.xs
-    },
-    postButtonDisabled: {
-      opacity: 0.5
-    },
     scrollContent: {
-      padding: Spacing.md,
+      paddingBottom: Spacing.md,
+      gap: Spacing.lg
+    },
+    visibilityCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       gap: Spacing.md
     },
-    inputContainer: {
-      minHeight: 100
+    visibilityText: {
+      flex: 1
     },
-    textInput: {
-      fontSize: 16,
-      lineHeight: 24,
-      textAlignVertical: "top"
+    visibilityCaption: {
+      color: theme.muted,
+      marginTop: Spacing.xs
+    },
+    emptyTasksCard: {
+      alignItems: "center",
+      gap: Spacing.md
     }
   });
