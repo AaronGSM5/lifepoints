@@ -71,11 +71,11 @@ const getStyles = (theme) =>
       alignItems: "baseline"
     },
     lpValue: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     lpLabel: {
       marginLeft: Spacing.xs,
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     }
   });
 

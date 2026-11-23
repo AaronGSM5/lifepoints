@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -8,13 +9,14 @@ import BaseCard from "../ui/BaseCard";
 
 const CreateCommunityCard = ({ onPress }) => {
   const MyTheme = useAppTheme();
+  const { t } = useTranslation("common");
 
   return (
     <BaseCard style={styles.createCard}>
       <AppButton
         icon={<Icon name="add" color={MyTheme.background} />}
         size="sm"
-        accessibilityLabel="Community erstellen"
+        accessibilityLabel={t("Create community")}
         onPress={onPress}
       />
     </BaseCard>

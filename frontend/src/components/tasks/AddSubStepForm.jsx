@@ -62,7 +62,12 @@ const AddSubStepForm = memo(({ onAddSubStep }) => {
 
   if (!isAddingStep) {
     return (
-      <TouchableOpacity activeOpacity={0.7} style={styles.subStepItem} onPress={() => setIsAddingStep(true)}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.subStepItem}
+        onPress={() => setIsAddingStep(true)}
+        accessibilityRole="button"
+      >
         <AppCheckbox checked={false} borderColor={"transparent"} style={styles.checkbox} />
         <AppText bold style={{ color: MyTheme.muted }}>
           {t("Add step...")}

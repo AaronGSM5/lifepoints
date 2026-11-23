@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -8,6 +9,7 @@ import useStore from "@/store/useStore";
 
 const NotificationIcon = memo(({ onPress }) => {
   const MyTheme = useAppTheme();
+  const { t: tc } = useTranslation("common");
   const hasUnread = useStore((state) => state.profile?.hasUnreadNotifications ?? false);
 
   const badgeStyle = useMemo(
@@ -21,7 +23,11 @@ const NotificationIcon = memo(({ onPress }) => {
   return (
     <View>
       {hasUnread && <View style={[styles.badge, badgeStyle]} />}
-      <Icon name="bell" onPress={onPress} />
+      <Icon
+        name="bell"
+        onPress={onPress}
+        accessibilityLabel={hasUnread ? `${tc("Notifications")}, ${tc("unread notifications")}` : tc("Notifications")}
+      />
     </View>
   );
 });

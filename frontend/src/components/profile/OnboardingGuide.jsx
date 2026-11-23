@@ -39,7 +39,7 @@ const OnboardingGuide = ({ tutorialSteps = [], isLoading }) => {
           variant="ghost"
           icon={<Icon name={"close"} />}
           size="sm"
-          accessibilityLabel="Close Guide"
+          accessibilityLabel={t("common:Close Guide")}
           style={{ width: Spacing.lg }}
           onPress={() => setHasCompletedOnboarding(true)}
         />

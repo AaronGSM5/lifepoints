@@ -58,7 +58,12 @@ const CommunityChatHeader = memo(({ community, onDetailsPress, onOptionsPress })
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
       <BackButton style={styles.headerIcon} />
 
-      <TouchableOpacity onPress={onDetailsPress} style={styles.headerTitleContainer} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={onDetailsPress}
+        style={styles.headerTitleContainer}
+        activeOpacity={0.7}
+        accessibilityRole="button"
+      >
         <View style={styles.titleRow}>
           {community?.icon && (
             <View style={[styles.iconBox, { backgroundColor: community?.color }]}>
@@ -71,7 +76,12 @@ const CommunityChatHeader = memo(({ community, onDetailsPress, onOptionsPress })
       </TouchableOpacity>
 
       <View style={styles.optionsWrapper}>
-        <Icon name="dots" onPress={toggleMenu} style={styles.headerIcon} />
+        <Icon
+          name="dots"
+          onPress={toggleMenu}
+          style={styles.headerIcon}
+          accessibilityLabel={t("common:More options")}
+        />
         <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} />
       </View>
     </View>

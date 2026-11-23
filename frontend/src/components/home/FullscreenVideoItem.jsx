@@ -137,7 +137,14 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
         nativeControls={false}
         allowsFullscreen={false}
       />
-      <Pressable style={styles.videoPressable} onPress={handleContainerPress} />
+      <Pressable
+        style={styles.videoPressable}
+        onPress={handleContainerPress}
+        accessibilityRole="button"
+        accessibilityLabel={isPlaying ? t("Pause video") : t("Play video")}
+        accessibilityActions={[{ name: "like", label: t("Like") }]}
+        onAccessibilityAction={(e) => e.nativeEvent.actionName === "like" && handleLike()}
+      />
       <BackButton style={styles.backButton} withBackground />
 
       <Animated.View
@@ -155,15 +162,20 @@ const FullscreenVideoItem = ({ item, isVisible, onOpenComments, onOpenOptions })
 
       <View style={styles.overlay} pointerEvents="box-none">
         <View style={styles.postDetails} pointerEvents="box-none">
-          <Pressable style={styles.avatarContainer} onPress={handleOpenProfile}>
+          <Pressable
+            style={styles.avatarContainer}
+            onPress={handleOpenProfile}
+            accessible={false}
+            importantForAccessibility="no-hide-descendants"
+          >
             <Avatar source={item.avatar} />
           </Pressable>
 
           <View style={styles.rightColumn}>
-            <Pressable onPress={handleOpenProfile} style={styles.usernamePressable}>
+            <Pressable onPress={handleOpenProfile} style={styles.usernamePressable} accessibilityRole="link">
               <AppText bold>@{item.username}</AppText>
             </Pressable>
-            <Pressable onPress={handleExpandDescription}>
+            <Pressable onPress={handleExpandDescription} accessibilityRole="button">
               <AppText type="caption" style={styles.description} numberOfLines={2}>
                 {item.description}
               </AppText>

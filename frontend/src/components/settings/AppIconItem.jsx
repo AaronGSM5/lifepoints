@@ -9,12 +9,16 @@ import AppImage from "../ui/AppImage";
 const AppIconItem = memo(({ icon, isSelected, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+
   return (
     <TouchableOpacity
       key={icon.id}
       activeOpacity={0.8}
       onPress={onPress}
       style={[styles.squareContainer, isSelected && styles.selectedSquare]}
+      accessibilityRole="radio"
+      accessibilityLabel={icon.name}
+      accessibilityState={{ checked: isSelected }}
     >
       <View style={styles.iconBox}>
         <AppImage source={icon.source} variant={"fill"} />

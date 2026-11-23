@@ -84,8 +84,10 @@ const NavigationRow = memo(({ tabs, activeIndex, onTabChange }) => {
               style={styles.tabButton}
               onPress={() => onTabChange && onTabChange(index)}
               activeOpacity={0.9}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: isActive }}
             >
-              <AppText style={{ color: isActive ? MyTheme.primaryAccent : undefined }} bold={isActive}>
+              <AppText style={{ color: isActive ? MyTheme.primaryAccentText : undefined }} bold={isActive}>
                 {t(tab)}
               </AppText>
             </TouchableOpacity>

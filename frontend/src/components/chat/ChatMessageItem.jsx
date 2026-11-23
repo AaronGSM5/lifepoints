@@ -93,7 +93,7 @@ const getStyles = (theme) =>
       borderBottomLeftRadius: Spacing.borderRadius.sm - 4
     },
     senderName: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       marginBottom: 2
     },
     nameWithBadge: {

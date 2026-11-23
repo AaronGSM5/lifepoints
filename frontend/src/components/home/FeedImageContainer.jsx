@@ -6,12 +6,12 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Icon } from "../icons/Icon";
 import AppImage from "../ui/AppImage";
 
-const FeedImageContainer = memo(({ image, heartOpacity, heartScale, onPress }) => {
+const FeedImageContainer = memo(({ image, heartOpacity, heartScale, onPress, alt }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.imageContainer}>
-      <Pressable style={styles.pressableFlex} onPress={onPress}>
+      <Pressable style={styles.pressableFlex} onPress={onPress} accessibilityRole="image" accessibilityLabel={alt}>
         <AppImage source={image} variant="fill" />
         <Animated.View
           style={[

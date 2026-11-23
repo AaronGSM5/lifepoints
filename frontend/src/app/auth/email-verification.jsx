@@ -87,7 +87,7 @@ const EmailVerification = ({ onResendEmail, onLogout }) => {
         <View style={{ flex: 1, justifyContent: "space-between" }}>
           <View>
             <View style={[styles.iconContainer, { backgroundColor: addOpacity(theme.primaryAccent, 0.1) }]}>
-              <Icon name="mail" size={48} color={theme.primaryAccent} />
+              <Icon name="mail" size={48} color={theme.primaryAccentText} />
             </View>
 
             <View style={styles.textContainer}>
@@ -126,7 +126,7 @@ const EmailVerification = ({ onResendEmail, onLogout }) => {
             </Svg>
 
             <View style={styles.timerTextContainer}>
-              <AppText bold style={[styles.timerText, { color: timeLeft > 0 ? theme.text : theme.primaryAccent }]}>
+              <AppText bold style={[styles.timerText, { color: timeLeft > 0 ? theme.text : theme.primaryAccentText }]}>
                 {timeLeft > 0 ? timeLeft : "0"}
               </AppText>
               <AppText style={styles.timerLabel}>sek</AppText>
@@ -143,7 +143,12 @@ const EmailVerification = ({ onResendEmail, onLogout }) => {
           />
 
           {onLogout && (
-            <TouchableOpacity activeOpacity={0.7} style={styles.secondaryButton} onPress={onLogout}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.secondaryButton}
+              onPress={onLogout}
+              accessibilityRole="button"
+            >
               <AppText style={[styles.secondaryButtonText, { color: theme.muted }]}>
                 {t("verification.logout", "Abmelden")}
               </AppText>

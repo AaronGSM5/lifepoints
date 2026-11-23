@@ -5,14 +5,19 @@ import { Spacing } from "@/constants/Spacing";
 
 import AppImage from "../ui/AppImage";
 
-const EventSlide = memo(({ imageSource, onPress, style }) => {
+const EventSlide = memo(({ imageSource, title, onPress, style }) => {
   const handlePress = useCallback(() => {
     if (onPress) {
       onPress();
     }
   }, [onPress]);
   return (
-    <Pressable onPress={handlePress} style={[styles.container, style]}>
+    <Pressable
+      onPress={handlePress}
+      style={[styles.container, style]}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+    >
       <View style={styles.heroSection}>
         <AppImage source={imageSource} variant={"fill"} contentFit={"contain"} />
       </View>

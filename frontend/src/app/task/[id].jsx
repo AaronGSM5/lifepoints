@@ -169,7 +169,7 @@ export default function TaskDetailScreen() {
                     points={item.points}
                     type="earn"
                     pointsSuffix="LP"
-                    iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccent} />}
+                    iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccentText} />}
                     containerStyle={{
                       backgroundColor: MyTheme.glas,
                       borderColor: MyTheme.glas,
@@ -206,7 +206,7 @@ export default function TaskDetailScreen() {
             <AppButton
               variant="ghost"
               size="lg"
-              icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccent} />}
+              icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccentText} />}
               accessibilityLabel={t("Complete task")}
             />
           )}

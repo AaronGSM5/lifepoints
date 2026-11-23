@@ -36,7 +36,7 @@ const AppIconButton = memo(
           disabled={disabled}
           hitSlop={15}
           accessibilityRole="button"
-          accessibilityLabel={accessibilityLabel || `Button: ${icon}`}
+          accessibilityLabel={accessibilityLabel}
           android_ripple={{ color: "rgba(150, 150, 150, 0.2)", borderless: true }}
           style={({ pressed }) => [
             styles.button,

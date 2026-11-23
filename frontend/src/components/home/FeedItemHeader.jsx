@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -13,11 +14,12 @@ import StatusBadge from "../ui/StatusBadge";
 
 const FeedItemHeader = memo(({ id, username, avatar, badge, taskName, onPress, onOpenOptions, onTaskPress }) => {
   const MyTheme = useAppTheme();
+  const { t: tc } = useTranslation("common");
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={username}>
           <View style={styles.headerUser}>
             <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
               <Avatar source={avatar} />
@@ -36,10 +38,22 @@ const FeedItemHeader = memo(({ id, username, avatar, badge, taskName, onPress, o
             )}
           </View>
         </Pressable>
-        <Icon name={"dots"} size={20} color={MyTheme.muted} onPress={onOpenOptions} />
+        <Icon
+          name={"dots"}
+          size={20}
+          color={MyTheme.muted}
+          onPress={onOpenOptions}
+          accessibilityLabel={tc("More options")}
+        />
       </View>
       {taskName && (
-        <Pressable style={styles.taskRow} onPress={onTaskPress} disabled={!onTaskPress}>
+        <Pressable
+          style={styles.taskRow}
+          onPress={onTaskPress}
+          disabled={!onTaskPress}
+          accessibilityRole={onTaskPress ? "link" : undefined}
+          accessibilityState={{ disabled: !onTaskPress }}
+        >
           <Icon name="target" size={14} color={MyTheme.muted} />
           <AppText style={styles.taskText} numberOfLines={1}>
             {taskName} • <LpPoints points={100} size="xs" />

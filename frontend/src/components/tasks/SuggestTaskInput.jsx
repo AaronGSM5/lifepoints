@@ -40,6 +40,7 @@ const SuggestTaskInput = memo(() => {
         onChangeText={setSuggestionInput}
         rightIcon="send"
         onRightIconPress={handleSendSuggestion}
+        rightIconLabel={t("common:Send message")}
       />
     </BaseCard>
   );

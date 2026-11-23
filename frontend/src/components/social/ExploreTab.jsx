@@ -92,7 +92,7 @@ const ExploreTab = ({ scrollY }) => {
         case "search":
           return (
             <View style={styles.paddedContent}>
-              <Pressable onPress={handleSearchPress}>
+              <Pressable onPress={handleSearchPress} accessibilityRole="search" accessibilityLabel={t("Search...")}>
                 <View pointerEvents="none">
                   <AppInput icon="search" placeholder={t("Search...")} bottomMargin={false} editable={false} blur />
                 </View>

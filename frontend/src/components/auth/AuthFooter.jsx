@@ -36,7 +36,7 @@ const getStyles = (theme) =>
       marginBottom: Spacing.lg
     },
     linkText: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     }
   });
 

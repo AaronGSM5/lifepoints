@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Icon } from "@/components/icons/Icon";
@@ -8,6 +9,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 const AppPopupMenu = memo(({ visible, onClose, items, placement = "bottom", containerStyle }) => {
   const theme = useAppTheme();
+  const { t } = useTranslation("common");
 
   if (!visible) return null;
 
@@ -18,7 +20,7 @@ const AppPopupMenu = memo(({ visible, onClose, items, placement = "bottom", cont
 
   return (
     <>
-      <Pressable style={styles.backdrop} onPress={onClose} />
+      <Pressable style={styles.backdrop} onPress={onClose} accessibilityRole="button" accessibilityLabel={t("close")} />
 
       <View
         style={[
@@ -27,11 +29,16 @@ const AppPopupMenu = memo(({ visible, onClose, items, placement = "bottom", cont
           placementStyle,
           containerStyle
         ]}
+        accessibilityRole="menu"
+        accessibilityViewIsModal
+        onAccessibilityEscape={onClose}
       >
         {items.map((item) => (
           <TouchableOpacity
             key={item.label}
             style={[styles.menuItem, item.isDanger && { borderTopWidth: 1, borderTopColor: theme.separator }]}
+            accessibilityRole="menuitem"
+            accessibilityLabel={item.label}
             onPress={() => {
               onClose();
               item.onPress();

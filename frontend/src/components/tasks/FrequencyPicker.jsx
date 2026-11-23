@@ -125,7 +125,7 @@ const getStyles = (theme) =>
       backgroundColor: addOpacity(theme.primaryAccent, 0.16)
     },
     dayTextActive: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     stepperRow: {
       flexDirection: "row",

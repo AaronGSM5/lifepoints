@@ -76,7 +76,7 @@ export default function RoutineDetailScreen() {
       >
         <View style={styles.hero}>
           <View style={styles.heroIcon}>
-            <Icon name={routine.icon} size={32} color={MyTheme.primaryAccent} />
+            <Icon name={routine.icon} size={32} color={MyTheme.primaryAccentText} />
           </View>
           <AppText type="h2" bold style={styles.centered}>
             {routine.title}
@@ -105,7 +105,7 @@ export default function RoutineDetailScreen() {
             label={t("Total runs")}
             value={getTotalRuns(routine)}
             icon="checkmarkCircle"
-            color={MyTheme.primaryAccent}
+            color={MyTheme.primaryAccentText}
           />
         </View>
 

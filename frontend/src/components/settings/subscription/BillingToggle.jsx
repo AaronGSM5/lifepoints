@@ -35,6 +35,8 @@ const BillingToggle = memo(({ billingCycle, onChange }) => {
             key={cycle}
             style={[styles.toggleButton, isActive && { backgroundColor: activeBackgroundColor }]}
             onPress={() => handlePress(cycle)}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: isActive }}
           >
             <AppText bold style={{ color: isActive ? MyTheme.background : MyTheme.text }}>
               {t(cycle === "monthly" ? "Monthly" : "Yearly")}

@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,11 +11,17 @@ import { Icon } from "../icons/Icon";
 const ColorThemeItem = memo(({ theme, isSelected, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("settings");
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={onPress}
       style={[styles.squareContainer, isSelected && styles.selectedSquare]}
+      accessibilityRole="radio"
+      accessibilityLabel={
+        theme.isLocked ? `${theme.id.replace(/_/g, " ")}, ${t("shop:Locked")}` : theme.id.replace(/_/g, " ")
+      }
+      accessibilityState={{ checked: isSelected }}
     >
       <View style={styles.colorBox}>
         <LinearGradient

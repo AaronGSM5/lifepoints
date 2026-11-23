@@ -15,7 +15,13 @@ const OptionItem = memo(({ icon, label, onPress, color, badge, disabled }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getOptionStyles(MyTheme), [MyTheme]);
   return (
-    <TouchableOpacity style={[styles.optionRow, disabled && styles.disabledRow]} onPress={onPress} disabled={disabled}>
+    <TouchableOpacity
+      style={[styles.optionRow, disabled && styles.disabledRow]}
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: Boolean(disabled) }}
+    >
       <View style={styles.optionContent}>
         <Icon name={icon} color={color || MyTheme.text} />
         <AppText bold style={color ? { color } : {}}>
@@ -52,7 +58,7 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
               icon="target"
               label={t("Zugehörige Aufgabe ansehen")}
               onPress={onClose}
-              color={MyTheme.primaryAccent}
+              color={MyTheme.primaryAccentText}
             />
             <Separator />
             <OptionItem icon="mute" label={t("Nutzer stummschalten")} onPress={onClose} />

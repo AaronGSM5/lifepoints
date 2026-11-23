@@ -59,11 +59,14 @@ const IconPicker = memo(({ icons = [], selectedIcon, onSelectIcon }) => {
               key={`${icon}-${index}`}
               onPress={() => handleSelect(icon)}
               style={[styles.iconItem, selectedIcon === icon && styles.iconItemActive]}
+              accessibilityRole="radio"
+              accessibilityLabel={icon.replace(/[-_]/g, " ")}
+              accessibilityState={{ checked: selectedIcon === icon }}
             >
               <MaterialIcons
                 name={icon}
                 size={28}
-                color={selectedIcon === icon ? MyTheme.primaryAccent : MyTheme.muted}
+                color={selectedIcon === icon ? MyTheme.primaryAccentText : MyTheme.muted}
               />
             </Pressable>
           ))}
@@ -121,7 +124,7 @@ const getStyles = (theme) =>
       marginTop: 2,
       gap: Spacing.xs,
       paddingVertical: Spacing.xs,
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     measureView: {
       position: "absolute",

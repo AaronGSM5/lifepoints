@@ -63,7 +63,7 @@ const ChatInputBar = memo(({ value = "", onChangeText, onSend, placeholder }) =>
         <AppIconButton
           icon="send"
           iconSize={20}
-          color={isTrimmedEmpty ? MyTheme.muted : MyTheme.primaryAccent}
+          color={isTrimmedEmpty ? MyTheme.muted : MyTheme.primaryAccentText}
           onPress={onSend}
           disabled={isTrimmedEmpty}
           style={styles.sendButton}

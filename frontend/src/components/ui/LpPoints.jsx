@@ -65,7 +65,7 @@ const getStyles = (theme) =>
     },
     textStyle: {
       letterSpacing: 0.5,
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     }
   });
 

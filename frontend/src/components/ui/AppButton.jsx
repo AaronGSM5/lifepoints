@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { LightTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { addOpacity } from "@/utils/colorHelpers";
 
 import AppLoadingSpinner from "./AppLoadingSpinner";
@@ -31,24 +32,27 @@ const AppButton = memo(
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
     const [scaleAnim] = useState(() => new Animated.Value(1));
+    const reduceMotion = useReducedMotion();
 
     const handlePressIn = useCallback(() => {
+      if (reduceMotion) return;
       Animated.spring(scaleAnim, {
         toValue: 0.95,
         speed: 500,
         bounciness: 10,
         useNativeDriver: Platform.OS !== "web"
       }).start();
-    }, [scaleAnim]);
+    }, [scaleAnim, reduceMotion]);
 
     const handlePressOut = useCallback(() => {
+      if (reduceMotion) return;
       Animated.spring(scaleAnim, {
         toValue: 1,
         speed: 20,
         bounciness: 10,
         useNativeDriver: Platform.OS !== "web"
       }).start();
-    }, [scaleAnim]);
+    }, [scaleAnim, reduceMotion]);
 
     const isPrimary = variant === "primary";
     const isSecondary = variant === "secondary";
@@ -108,7 +112,7 @@ const AppButton = memo(
           )}
 
           {loading ? (
-            <AppLoadingSpinner size={"small"} color={isPrimary ? "#fff" : undefined} />
+            <AppLoadingSpinner size={"small"} color={isPrimary ? LightTheme.text : undefined} />
           ) : (
             <View style={[styles.content, iconPosition === "right" && styles.contentReverse]}>
               {icon && icon}

@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   Dimensions,
@@ -25,6 +26,7 @@ const BaseBottomSheet = memo(
   ({ isVisible, onClose, onAnimationComplete, title, showCloseButton = false, children, containerStyle }) => {
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(isVisible);
 
     const [slideAnim] = useState(() => new Animated.Value(Dimensions.get("window").height));
@@ -130,9 +132,16 @@ const BaseBottomSheet = memo(
           <AnimatedPressable
             onPress={showCloseButton ? undefined : handleClose}
             style={[styles.backdrop, { opacity: fadeAnim }]}
+            accessible={!showCloseButton}
+            accessibilityRole="button"
+            accessibilityLabel={t("close")}
           />
 
-          <Animated.View style={[styles.sheetContainer, containerStyle, { transform: [{ translateY: slideAnim }] }]}>
+          <Animated.View
+            style={[styles.sheetContainer, containerStyle, { transform: [{ translateY: slideAnim }] }]}
+            accessibilityViewIsModal
+            onAccessibilityEscape={handleClose}
+          >
             <View {...(!showCloseButton ? panResponder.panHandlers : {})} style={styles.panResponderArea}>
               {!showCloseButton && (
                 <View style={styles.dragHandleContainer}>

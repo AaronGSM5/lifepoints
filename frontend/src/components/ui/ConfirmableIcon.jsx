@@ -1,13 +1,17 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { AccessibilityInfo, Animated, Platform, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { announce } from "@/utils/a11yHelpers";
 
 import { Icon } from "../icons/Icon";
 
-const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
+const ConfirmableIcon = memo(({ icon, actionIconName, onAction, accessibilityLabel, confirmLabel }) => {
   const MyTheme = useAppTheme();
+  const reduceMotion = useReducedMotion();
+  const duration = reduceMotion ? 0 : 300;
 
   const [isConfirming, setIsConfirming] = useState(false);
 
@@ -24,12 +28,12 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
     setIsConfirming(false);
     Animated.timing(flipAnim, {
       toValue: 0,
-      duration: 300,
+      duration,
       useNativeDriver: Platform.OS !== "web"
     }).start();
-  }, [flipAnim]);
+  }, [flipAnim, duration]);
 
-  const handlePress = useCallback(() => {
+  const handlePress = useCallback(async () => {
     if (isConfirming) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       onAction();
@@ -38,15 +42,21 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
       setIsConfirming(true);
       Animated.timing(flipAnim, {
         toValue: 1,
-        duration: 300,
+        duration,
         useNativeDriver: Platform.OS !== "web"
       }).start();
 
-      timeoutRef.current = setTimeout(() => {
-        resetFlip();
-      }, 2500);
+      // Screenreader-Nutzer brauchen mehr Zeit für den zweiten Tipp (WCAG 2.2.1).
+      const screenReaderOn = await AccessibilityInfo.isScreenReaderEnabled?.().catch(() => false);
+      if (screenReaderOn && confirmLabel) announce(confirmLabel);
+      timeoutRef.current = setTimeout(
+        () => {
+          resetFlip();
+        },
+        screenReaderOn ? 10000 : 2500
+      );
     }
-  }, [flipAnim, isConfirming, onAction, resetFlip]);
+  }, [flipAnim, isConfirming, onAction, resetFlip, duration, confirmLabel]);
 
   const { frontRotateY, backRotateY, frontOpacity, backOpacity } = useMemo(
     () => ({
@@ -61,7 +71,13 @@ const ConfirmableIcon = memo(({ icon, actionIconName, onAction }) => {
   if (!icon) return null;
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={handlePress} style={styles.iconWrapper}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={handlePress}
+      style={styles.iconWrapper}
+      accessibilityRole="button"
+      accessibilityLabel={isConfirming && confirmLabel ? confirmLabel : accessibilityLabel}
+    >
       <Animated.View
         style={[
           styles.iconFace,

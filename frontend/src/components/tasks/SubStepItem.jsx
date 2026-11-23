@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
@@ -14,6 +15,7 @@ const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const swipeableRef = useRef(null);
+  const { t } = useTranslation("tasks");
 
   const isCompleted = step.completed;
   const stepId = step._id;
@@ -31,15 +33,29 @@ const SubStepItem = memo(({ step, stepPoints, onToggle, onDelete }) => {
 
   const renderRightActions = useCallback(
     () => (
-      <TouchableOpacity activeOpacity={0.8} style={styles.deleteAction} onPress={handleDelete}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.deleteAction}
+        onPress={handleDelete}
+        accessibilityRole="button"
+        accessibilityLabel={t("Delete step")}
+      >
         <Icon name="trash" size={20} color="#FFFFFF" />
       </TouchableOpacity>
     ),
-    [handleDelete, styles.deleteAction]
+    [handleDelete, styles.deleteAction, t]
   );
 
   const content = (
-    <TouchableOpacity activeOpacity={0.7} style={styles.subStepItem} onPress={handleToggle}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.subStepItem}
+      onPress={handleToggle}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: isCompleted }}
+      accessibilityActions={onDelete ? [{ name: "delete", label: t("Delete step") }] : undefined}
+      onAccessibilityAction={(e) => e.nativeEvent.actionName === "delete" && handleDelete()}
+    >
       <AppCheckbox checked={isCompleted} style={styles.checkbox} />
 
       <View style={styles.subStepTextContainer}>

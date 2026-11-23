@@ -12,7 +12,7 @@ const HistoryItem = memo(({ title, onPress }) => {
   const MyTheme = useAppTheme();
   const { t } = useTranslation("common");
   return (
-    <TouchableOpacity style={styles.historyItem} onPress={onPress}>
+    <TouchableOpacity style={styles.historyItem} onPress={onPress} accessibilityRole="button">
       <Icon name="history" size={20} color={MyTheme.muted} />
       <AppText>{t(title)}</AppText>
     </TouchableOpacity>

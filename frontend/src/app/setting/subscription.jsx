@@ -102,7 +102,7 @@ const getStyles = (theme) =>
       borderTopColor: theme.separator
     },
     restoreText: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       marginBottom: Spacing.md
     },
     legalText: {

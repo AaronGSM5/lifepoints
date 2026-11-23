@@ -1,19 +1,35 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Easing, Platform, StyleSheet, View } from "react-native";
 
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { announce } from "@/utils/a11yHelpers";
 
 import LpLogo from "./LpLogo";
 
 export default function AnimatedLpReward({ points }) {
   const MyTheme = useAppTheme();
+  const { t } = useTranslation("common");
+  const reduceMotion = useReducedMotion();
 
   const [flyAnim] = useState(() => new Animated.Value(0));
   const [stackAnim] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
+    const amount = String(points ?? "").replace(/[^\d]/g, "");
+    if (amount) announce(t("LP earned", { count: Number(amount) }));
+  }, [points, t]);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      flyAnim.setValue(1);
+      stackAnim.setValue(1);
+      return undefined;
+    }
+
     const timeout = setTimeout(() => {
       Animated.sequence([
         Animated.timing(flyAnim, {
@@ -32,7 +48,7 @@ export default function AnimatedLpReward({ points }) {
     }, 800);
 
     return () => clearTimeout(timeout);
-  }, [flyAnim, stackAnim]);
+  }, [flyAnim, stackAnim, reduceMotion]);
 
   const { numberTranslateX, numberScale, numberOpacity, iconScale, scatter1X, scatter1Y, stackOpacity } = useMemo(
     () => ({
@@ -79,7 +95,7 @@ export default function AnimatedLpReward({ points }) {
           }
         ]}
       >
-        <AppText type={"caption"} bold style={[styles.pointsText, { color: MyTheme.primaryAccent }]}>
+        <AppText type={"caption"} bold style={[styles.pointsText, { color: MyTheme.primaryAccentText }]}>
           {points}
         </AppText>
       </Animated.View>

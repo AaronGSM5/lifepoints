@@ -113,7 +113,7 @@ const PasswordInput = memo(
                 }
               />
               {variant === "new" && allRulesPassed && (
-                <Icon name={"checkmarkCircle"} size={22} color={MyTheme.primaryAccent} />
+                <Icon name={"checkmarkCircle"} size={22} color={MyTheme.primaryAccentText} />
               )}
             </View>
           }

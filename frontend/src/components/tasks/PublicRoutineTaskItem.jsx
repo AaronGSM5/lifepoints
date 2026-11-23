@@ -83,7 +83,7 @@ const getStyles = (theme) =>
       gap: 2
     },
     stepsHint: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     steps: {
       marginTop: Spacing.md,

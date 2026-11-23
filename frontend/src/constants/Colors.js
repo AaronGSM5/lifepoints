@@ -9,7 +9,7 @@ export const DarkTheme = {
   gold: '#FFD700',
   muted: 'rgba(248, 250, 252, 0.5)',
   success: 'rgb(0, 240, 160)',
-  warning: 'rgb(240, 0, 0)',
+  warning: 'rgb(255, 90, 90)', // ≥4.5:1 auf background (WCAG AA)
   separator: "rgba(255, 255, 255, 0.08)",
   inputBorder: "rgba(255, 255, 255, 0.1)",
   glas: "rgba(255,255,255,0.05)",
@@ -27,7 +27,7 @@ export const LightTheme = {
   primaryAccent: 'rgb(47, 196, 146)',
   secondaryAccent: 'rgb(255, 0, 255)',
   gold: '#FFD700',
-  muted: 'rgba(15, 23, 41, 0.5)',
+  muted: 'rgba(15, 23, 41, 0.65)', // ≥4.5:1 auf background (WCAG AA)
   success: 'rgb(0, 200, 130)',
   warning: 'rgb(220, 38, 38)',
   separator: "rgba(0, 0, 0, 0.06)",

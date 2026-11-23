@@ -40,7 +40,7 @@ const CommentInputSection = memo(({ inputRef, commentText = "", setCommentText, 
             textAlignVertical="center"
             accessibilityRole="text"
           />
-          <AppText bold onPress={onPost} disabled={isInputEmpty} style={{ color: MyTheme.primaryAccent }}>
+          <AppText bold onPress={onPost} disabled={isInputEmpty} style={{ color: MyTheme.primaryAccentText }}>
             {t("Post")}
           </AppText>
         </View>

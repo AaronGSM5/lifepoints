@@ -76,7 +76,7 @@ const getStyles = (theme) =>
       gap: 2
     },
     cardBrand: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       fontSize: 10,
       textTransform: "uppercase",
       letterSpacing: 0.5

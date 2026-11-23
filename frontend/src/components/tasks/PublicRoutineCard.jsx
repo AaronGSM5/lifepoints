@@ -48,7 +48,7 @@ const PublicRoutineCard = memo(({ routine, isAdopted, onAdopt, showAuthor = true
             {formatFrequency(routine.frequency, t)} • {t("{{count}} tasks", { count: routine.tasks.length })}
           </AppText>
         </View>
-        <Icon name={routine.icon} size={22} color={MyTheme.primaryAccent} />
+        <Icon name={routine.icon} size={22} color={MyTheme.primaryAccentText} />
       </Pressable>
 
       <View style={styles.footer}>

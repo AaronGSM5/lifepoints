@@ -1,9 +1,11 @@
 import React, { memo, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Platform, Pressable, StyleSheet } from "react-native";
 
 import AppImage from "../ui/AppImage";
 
 export const LootGameTrigger = memo(({ isReady, onPress }) => {
+  const { t } = useTranslation("common");
   const [translateX] = useState(() => new Animated.Value(120));
   const hasAppeared = useRef(false);
 
@@ -25,7 +27,7 @@ export const LootGameTrigger = memo(({ isReady, onPress }) => {
 
   return (
     <Animated.View style={[styles.mascotContainer, { transform: [{ translateX }] }]}>
-      <Pressable onPress={onPress}>
+      <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={t("Open loot game")}>
         <AppImage
           source={require("@/../public/assets/CapybaraFace.png")}
           variant={"lootGameTrigger"}

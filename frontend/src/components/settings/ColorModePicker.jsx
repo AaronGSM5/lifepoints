@@ -28,7 +28,7 @@ const ColorModePicker = memo(() => {
         <Icon
           name="sun"
           size={36}
-          color={MyTheme.isDark ? MyTheme.muted : MyTheme.primaryAccent}
+          color={MyTheme.isDark ? MyTheme.muted : MyTheme.primaryAccentText}
           outline={MyTheme.isDark}
         />
       </SelectableOptionCard>
@@ -37,7 +37,7 @@ const ColorModePicker = memo(() => {
         <Icon
           name="moon"
           size={36}
-          color={MyTheme.isDark ? MyTheme.primaryAccent : MyTheme.muted}
+          color={MyTheme.isDark ? MyTheme.primaryAccentText : MyTheme.muted}
           outline={!MyTheme.isDark}
         />
       </SelectableOptionCard>

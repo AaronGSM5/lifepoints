@@ -35,8 +35,14 @@ const AppText = memo(
 
     const TextComponent = animated ? Animated.Text : Text;
 
+    const isHeading = type === "h1" || type === "h2" || type === "title";
+
     const content = (
-      <TextComponent style={[fontStyle, style]} {...props}>
+      <TextComponent
+        style={[fontStyle, style]}
+        accessibilityRole={!onPress && isHeading ? "header" : undefined}
+        {...props}
+      >
         {children}
       </TextComponent>
     );

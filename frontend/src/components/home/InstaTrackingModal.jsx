@@ -29,7 +29,12 @@ const InstaTrackingModal = memo(({ visible, onClose, onConfirm }) => {
           Nutzen Sie Insta-Tracking nur bei erfüllten Aufgaben
         </AppText>
 
-        <Pressable style={styles.checkboxContainer} onPress={toggleDontShowAgain}>
+        <Pressable
+          style={styles.checkboxContainer}
+          onPress={toggleDontShowAgain}
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: dontShowAgain }}
+        >
           <AppCheckbox checked={dontShowAgain} />
           <AppText style={styles.checkboxText}>Nicht wieder anzeigen</AppText>
         </Pressable>

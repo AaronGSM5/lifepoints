@@ -30,6 +30,7 @@ const AppImage = memo(
     variant = "custom", // "avatarSmall", "feed", "hero", "custom"
     showSkeleton = true, // if false it shows blurhash
     fallbackSource,
+    alt, // Alternativtext für Screenreader; ohne alt gilt das Bild als dekorativ
     ...props
   }) => {
     const theme = useAppTheme();
@@ -44,7 +45,13 @@ const AppImage = memo(
     const skeletonRadius = combinedStyle.borderRadius || 0;
 
     return (
-      <View style={combinedStyle}>
+      <View
+        style={combinedStyle}
+        accessible={Boolean(alt)}
+        accessibilityRole={alt ? "image" : undefined}
+        accessibilityLabel={alt}
+        importantForAccessibility={alt ? "yes" : "no-hide-descendants"}
+      >
         <Image
           style={StyleSheet.absoluteFillObject}
           source={finalSource}

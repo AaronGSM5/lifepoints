@@ -27,6 +27,10 @@ const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
       <Pressable
         onPress={handlePress}
         style={({ pressed }) => [styles.item, pressed && setting.type !== "info" && { backgroundColor: MyTheme.glas }]}
+        disabled={setting.type === "info"}
+        accessibilityRole={setting.type === "toggle" ? "switch" : setting.type === "info" ? "text" : "button"}
+        accessibilityLabel={setting.value ? `${t(setting.label)}, ${setting.value}` : t(setting.label)}
+        accessibilityState={setting.type === "toggle" ? { checked: !!value } : undefined}
       >
         <View style={styles.itemLeft}>
           <Icon name={setting.icon} color={setting.danger ? MyTheme.warning : MyTheme.text} />
@@ -44,6 +48,8 @@ const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
 
           {setting.type === "toggle" && (
             <Switch
+              accessible={false}
+              importantForAccessibility="no-hide-descendants"
               value={!!value}
               onValueChange={onToggle}
               trackColor={{ false: "#3f3f46", true: MyTheme.primaryAccent }}

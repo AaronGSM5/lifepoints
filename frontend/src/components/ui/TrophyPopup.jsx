@@ -8,6 +8,7 @@ import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { announce } from "@/utils/a11yHelpers";
 
 import { Icon } from "../icons/Icon";
 
@@ -26,13 +27,14 @@ const TrophyPopup = memo(() => {
 
   useEffect(() => {
     if (currentTrophyId && trophy) {
+      announce(t("common:Trophy unlocked", { name: t(trophy.title) }));
       const timer = setTimeout(() => {
         shiftPopupQueue();
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [currentTrophyId, shiftPopupQueue, trophy]);
+  }, [currentTrophyId, shiftPopupQueue, trophy, t]);
 
   if (!currentTrophyId || !trophy) return null;
 
@@ -47,6 +49,9 @@ const TrophyPopup = memo(() => {
           top: (insets?.top || 10) + Spacing.sm
         }
       ]}
+      accessible
+      accessibilityRole="alert"
+      accessibilityLiveRegion="polite"
     >
       <Icon name="trophy" size={24} color={MyTheme.gold} />
       <View style={styles.textContainer}>

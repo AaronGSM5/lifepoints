@@ -19,7 +19,7 @@ const AppCheckbox = memo(({ checked, onPress, borderColor, size = 24, style }) =
         style
       ]}
     >
-      {checked && <Icon name="checkmark" size={size * 0.65} color={MyTheme.primaryAccent} />}
+      {checked && <Icon name="checkmark" size={size * 0.65} color={MyTheme.primaryAccentText} />}
     </View>
   );
 

@@ -79,7 +79,7 @@ export default function PublicRoutineDetailScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.hero}>
           <View style={styles.heroIcon}>
-            <Icon name={routine.icon} size={32} color={MyTheme.primaryAccent} />
+            <Icon name={routine.icon} size={32} color={MyTheme.primaryAccentText} />
           </View>
           <AppText type="h2" bold style={styles.centered}>
             {routine.title}

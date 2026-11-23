@@ -226,3 +226,12 @@ The design system utilizes **Rounded** shapes (0.5rem base) to soften the "tech"
   - The active state of an icon uses the primary accent color to perfectly highlight the user's current location in the app.
   - The red notification dot on the profile icon acts as an attention-seeking alert, pulling from the `error` (#F00000), carefully designed to guide the user's eye without being overly aggressive.
   - Interacting with the icons seamlessly bridges the user to the core gamified mechanics of LifePoints: viewing the communal main feed (Home), documenting good deeds to build a score (Heart +), engaging in positive peer pressure and group progress (Communities), redeeming value-driven rewards or viewing premium features (Shopping Bag), and checking personal digital status built purely through real-world positive impact (Profile).
+
+## Accessibility (WCAG 2.2 AA)
+
+- **Contrast:** Text needs at least 4.5:1, large text and icons at least 3:1. `src/constants/Colors.test.js` checks the theme tokens automatically.
+- **Accent as text:** For text, links and icons in the accent color, use `theme.primaryAccentText`, not `primaryAccent`. In light mode the token is automatically darkened until it reaches 4.5:1. `primaryAccent` stays reserved for surfaces, borders and gradients.
+- **Screen readers:** Every pressable element needs `accessibilityRole` and, for icon-only buttons, an `accessibilityLabel` via i18n. Clickable `Icon`s and `AppButton`/`AppIconButton` without a label warn in dev mode. Images get `alt` on `AppImage`; images without `alt` count as decorative.
+- **Headings:** `AppText` with `type="h1" | "h2" | "title"` is automatically announced as a heading.
+- **Reduce motion:** Decorative animations, autoplay and carousels check `useReducedMotion()` and are switched off when the system setting is on.
+- **Announcements:** Important events (LP, level-up, trophy) are announced via `announce()` from `src/utils/a11yHelpers.js`.

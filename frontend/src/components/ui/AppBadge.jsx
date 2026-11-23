@@ -14,7 +14,8 @@ const AppBadge = memo(
     variant = "glas", // primary, secondary, outline, glas
     onPress,
     style,
-    textStyle
+    textStyle,
+    accessibilityLabel
   }) => {
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -40,13 +41,23 @@ const AppBadge = memo(
 
     if (onPress) {
       return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.badge, styles[variant], style]}>
+        <TouchableOpacity
+          onPress={onPress}
+          activeOpacity={0.7}
+          style={[styles.badge, styles[variant], style]}
+          accessibilityRole="button"
+          accessibilityLabel={accessibilityLabel || label}
+        >
           {content}
         </TouchableOpacity>
       );
     }
 
-    return <View style={[styles.badge, styles[variant], style]}>{content}</View>;
+    return (
+      <View style={[styles.badge, styles[variant], style]} accessible accessibilityLabel={accessibilityLabel || label}>
+        {content}
+      </View>
+    );
   }
 );
 AppBadge.displayName = "AppBadge";
@@ -107,7 +118,7 @@ const getStyles = (theme) =>
       borderColor: theme.separator
     },
     glasText: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     }
   });
 

@@ -130,11 +130,15 @@ export default function MyCommunityDetailScreen() {
             </BaseCard>
 
             {!isExpanded && sortedMembers.length > 5 && (
-              <TouchableOpacity style={styles.expandButton} onPress={() => setIsExpanded(true)}>
+              <TouchableOpacity
+                style={styles.expandButton}
+                onPress={() => setIsExpanded(true)}
+                accessibilityRole="button"
+              >
                 <AppText bold style={styles.expandButtonText}>
                   {t("Show all the")} {sortedMembers.length} {t("Members")}
                 </AppText>
-                <Icon name="down" size={16} color={MyTheme.primaryAccent} />
+                <Icon name="down" size={16} color={MyTheme.primaryAccentText} />
               </TouchableOpacity>
             )}
           </View>
@@ -190,7 +194,7 @@ const getStyles = (theme) =>
       gap: 4
     },
     expandButtonText: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       fontSize: 14
     }
   });

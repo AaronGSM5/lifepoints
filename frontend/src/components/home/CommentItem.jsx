@@ -35,7 +35,11 @@ const CommentItem = memo(({ item = {}, parentId, isReply = false, onReply, onLik
   return (
     <View style={[styles.commentRow, isReply && styles.replyRow]}>
       <View style={styles.avatarColumn}>
-        <Pressable onPress={() => onNavigate(item.username)}>
+        <Pressable
+          onPress={() => onNavigate(item.username)}
+          accessibilityRole="button"
+          accessibilityLabel={item.username}
+        >
           <Avatar source={item.avatar} size="small" style={isReply && styles.replyAvatar} />
         </Pressable>
       </View>

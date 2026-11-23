@@ -51,7 +51,12 @@ const BannerUploader = memo(({ bannerUri, onBannerSelect, onBannerClear }) => {
           <CloseButton withBackground onPress={handleClear} style={styles.clearImageIcon} />
         </View>
       ) : (
-        <Pressable onPress={pickImage} style={styles.bannerPlaceholder}>
+        <Pressable
+          onPress={pickImage}
+          style={styles.bannerPlaceholder}
+          accessibilityRole="button"
+          accessibilityLabel={t("Tap to select (16:9 recommended)")}
+        >
           <Icon name="camera" color={MyTheme.muted} />
           <AppText type="caption" style={styles.placeholderText}>
             {t("Tap to select (16:9 recommended)")}

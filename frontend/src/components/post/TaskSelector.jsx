@@ -45,7 +45,13 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
 
   return (
     <BaseCard padding={0}>
-      <TouchableOpacity style={styles.header} onPress={toggleExpand} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.header}
+        onPress={toggleExpand}
+        activeOpacity={0.7}
+        accessibilityRole="button"
+        accessibilityState={{ expanded }}
+      >
         <View style={styles.headerLeft}>
           <View
             style={[styles.iconBox, selectedTask && { backgroundColor: MyTheme.primaryAccent || selectedTask.color }]}
@@ -74,14 +80,20 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
               const isSelected = task.id === selectedTaskId;
               return (
                 <>
-                  <TouchableOpacity key={task.id} style={styles.taskItem} onPress={() => handleSelect(task.id)}>
+                  <TouchableOpacity
+                    key={task.id}
+                    style={styles.taskItem}
+                    onPress={() => handleSelect(task.id)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: isSelected }}
+                  >
                     <View style={styles.taskItemLeft}>
-                      <Icon name={task.icon} size={20} color={isSelected ? MyTheme.primaryAccent : MyTheme.text} />
-                      <AppText bold style={[styles.taskTitle, isSelected && { color: MyTheme.primaryAccent }]}>
+                      <Icon name={task.icon} size={20} color={isSelected ? MyTheme.primaryAccentText : MyTheme.text} />
+                      <AppText bold style={[styles.taskTitle, isSelected && { color: MyTheme.primaryAccentText }]}>
                         {t(task.title)}
                       </AppText>
                     </View>
-                    {isSelected && <Icon name="checkmark" size={20} color={MyTheme.primaryAccent} />}
+                    {isSelected && <Icon name="checkmark" size={20} color={MyTheme.primaryAccentText} />}
                   </TouchableOpacity>
                   <Separator />
                 </>

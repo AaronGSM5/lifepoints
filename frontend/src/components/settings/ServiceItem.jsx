@@ -20,7 +20,7 @@ const ServiceItem = memo(({ name, description, icon, isConnected, onPress }) => 
     <BaseCard style={styles.serviceCard}>
       <View style={styles.cardMain}>
         <View style={styles.iconBox}>
-          <Icon name={icon} size={28} color={MyTheme.primaryAccent} />
+          <Icon name={icon} size={28} color={MyTheme.primaryAccentText} />
         </View>
 
         <View style={styles.infoContainer}>
@@ -79,7 +79,7 @@ const getStyles = (theme) =>
       marginBottom: Spacing.xs
     },
     activeBadgeText: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       fontSize: 10
     },
     activeBadge: {

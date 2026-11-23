@@ -1,5 +1,6 @@
 // src/components/LevelUpModal.js
-import React, { memo, useMemo } from "react";
+import React, { memo, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, StyleSheet, View } from "react-native";
 
 import LottieView from "lottie-react-native";
@@ -8,12 +9,20 @@ import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { announce } from "@/utils/a11yHelpers";
 
 import { Icon } from "./icons/Icon";
 
 const LevelUpModal = memo(({ visible, level, unlockedItems = [], onTransitionEnd }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("common");
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (visible) announce(t("Level reached", { level }));
+  }, [visible, level, t]);
 
   const resolvedItems = useMemo(
     () =>
@@ -30,15 +39,19 @@ const LevelUpModal = memo(({ visible, level, unlockedItems = [], onTransitionEnd
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onTransitionEnd}>
       <View style={styles.overlay}>
-        <LottieView
-          source={{ uri: "https://assets9.lottiefiles.com/packages/lf20_u4yrau.json" }}
-          autoPlay
-          loop={false}
-          pointerEvents="none"
-          style={styles.lottie}
-        />
+        {!reduceMotion && (
+          <LottieView
+            source={{ uri: "https://assets9.lottiefiles.com/packages/lf20_u4yrau.json" }}
+            autoPlay
+            loop={false}
+            pointerEvents="none"
+            style={styles.lottie}
+            accessible={false}
+            importantForAccessibility="no-hide-descendants"
+          />
+        )}
 
-        <View style={styles.card}>
+        <View style={styles.card} accessibilityViewIsModal>
           <AppText type="h1" bold style={styles.title}>
             LEVEL UP!
           </AppText>
@@ -89,7 +102,7 @@ const getStyles = (theme) =>
     },
     title: {
       fontSize: 40,
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       marginBottom: Spacing.lg
     },
     badge: {

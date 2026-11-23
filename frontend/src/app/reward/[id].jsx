@@ -66,7 +66,7 @@ export default function RewardDetailScreen() {
             <View style={styles.headerRow}>
               <AppBadge
                 label={reward.brand}
-                iconNode={<Icon name={reward.icon} size={14} color={MyTheme.primaryAccent} />}
+                iconNode={<Icon name={reward.icon} size={14} color={MyTheme.primaryAccentText} />}
               />
 
               {isLocked && (

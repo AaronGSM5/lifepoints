@@ -1,8 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
@@ -10,29 +12,40 @@ import { Icon } from "../icons/Icon";
 const NavbarItem = memo(({ route, isFocused, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications || true);
+  const hasUnread = useStore((state) => state.profile.hasUnreadNotifications ?? false);
   const [scale] = useState(() => new Animated.Value(1));
+  const { t } = useTranslation("common");
+  const reduceMotion = useReducedMotion();
 
   const activeColor = MyTheme.primaryAccent;
   const inactiveColor = MyTheme.text;
 
   const animatePop = useCallback(() => {
+    if (reduceMotion) return;
     Animated.timing(scale, { toValue: 1.15, duration: 150, useNativeDriver: Platform.OS !== "web" }).start(() => {
       Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: Platform.OS !== "web" }).start();
     });
-  }, [scale]);
+  }, [scale, reduceMotion]);
 
   const handlePress = useCallback(() => {
     onPress();
     animatePop();
   }, [animatePop, onPress]);
 
+  const showBadge = route.name === "profile" && hasUnread && !isFocused;
+  const label = t(`tab_${route.name}`, { defaultValue: route.name });
+
   return (
-    <Pressable onPress={handlePress} style={styles.tabButton}>
+    <Pressable
+      onPress={handlePress}
+      style={styles.tabButton}
+      accessibilityRole="tab"
+      accessibilityLabel={showBadge ? `${label}, ${t("unread notifications")}` : label}
+      accessibilityState={{ selected: isFocused }}
+      testID={`tab-${route.name}`}
+    >
       <Animated.View style={{ transform: [{ scale }] }}>
-        {route.name === "profile" && hasUnread && !isFocused && (
-          <View style={[styles.badge, { backgroundColor: MyTheme.warning || "#ff0000" }]} />
-        )}
+        {showBadge && <View style={[styles.badge, { backgroundColor: MyTheme.warning || "#ff0000" }]} />}
         <Icon
           name={route.name || "help"}
           size={26}

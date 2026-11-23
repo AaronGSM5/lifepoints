@@ -75,7 +75,12 @@ const CustomizablesCard = memo(
     }, [onPress]);
 
     return (
-      <Pressable onPress={handlePress}>
+      <Pressable
+        onPress={handlePress}
+        accessibilityRole="button"
+        accessibilityLabel={unlocked ? t(name) : `${t(name)}, ${t("shop:Locked")}`}
+        accessibilityState={{ selected: isActive, disabled: !unlocked }}
+      >
         <View style={[styles.cardContainer, isActive && styles.cardContainerActive]}>
           <RNAnimated.View style={[styles.iconBox, { transform: [{ scale }] }]}>
             <RNAnimated.View style={[styles.iconWrapper, { opacity: itemOpacity, borderColor: color }]}>

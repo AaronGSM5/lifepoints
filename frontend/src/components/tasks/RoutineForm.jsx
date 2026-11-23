@@ -117,7 +117,7 @@ const RoutineForm = ({ title, initialRoutine, submitLabel, onSubmit, onDelete })
                     accessibilityState={{ selected: isActive }}
                     style={[styles.iconOption, isActive && styles.iconOptionActive]}
                   >
-                    <Icon name={iconName} size={22} color={isActive ? MyTheme.primaryAccent : MyTheme.text} />
+                    <Icon name={iconName} size={22} color={isActive ? MyTheme.primaryAccentText : MyTheme.text} />
                   </Pressable>
                 );
               })}

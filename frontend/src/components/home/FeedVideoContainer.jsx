@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Image, Pressable, StyleSheet } from "react-native";
 
 import { router } from "expo-router";
@@ -6,6 +7,7 @@ import { useVideoPlayer, VideoView } from "expo-video";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import useStore from "@/store/useStore";
 
 import { Icon } from "../icons/Icon";
@@ -18,6 +20,8 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [isMuted, setIsMuted] = useState(true);
+  const { t } = useTranslation("common");
+  const reduceMotion = useReducedMotion();
   const [isPlaying, setIsPlaying] = useState(false);
 
   const videoProgress = useStore((state) => state.videoProgress);
@@ -81,12 +85,13 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
   }, [player]);
 
   useEffect(() => {
-    if (isReady) {
+    // Bei "Bewegung reduzieren" kein Autoplay im Feed (WCAG 2.2.2); Video startet im Vollbild.
+    if (isReady && !reduceMotion) {
       player.play();
     } else {
       player.pause();
     }
-  }, [isReady, player]);
+  }, [isReady, player, reduceMotion]);
 
   useEffect(() => {
     player.muted = isMuted;
@@ -127,7 +132,12 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
   const showThumbnail = !isPlaying && thumbnail;
 
   return (
-    <Pressable style={styles.videoContainer} onPress={handleContainerPress}>
+    <Pressable
+      style={styles.videoContainer}
+      onPress={handleContainerPress}
+      accessibilityRole="button"
+      accessibilityLabel={t("Play video")}
+    >
       <VideoView
         style={styles.video}
         player={player}
@@ -136,7 +146,9 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
         allowsFullscreen={false}
       />
 
-      {showThumbnail && <Image source={thumbnail} style={styles.thumbnail} resizeMode="cover" />}
+      {showThumbnail && (
+        <Image source={thumbnail} style={styles.thumbnail} resizeMode="cover" accessibilityIgnoresInvertColors />
+      )}
 
       <Animated.View
         style={[
@@ -150,7 +162,13 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
       >
         <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
       </Animated.View>
-      <Pressable style={styles.muteButton} onPress={toggleMute}>
+      <Pressable
+        style={styles.muteButton}
+        onPress={toggleMute}
+        hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel={isMuted ? t("Unmute") : t("Mute")}
+      >
         <Icon name={isMuted ? "volumeMute" : "volumeHigh"} size={20} />
       </Pressable>
     </Pressable>

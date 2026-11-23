@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -23,6 +24,7 @@ export default memo(function Toolbar({ scrollY }) {
   const resetProfile = useStore((state) => state.resetProfile);
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t: tc } = useTranslation("common");
 
   const fallbackScrollY = useMemo(() => new Animated.Value(0), []);
   const activeScrollY = scrollY || fallbackScrollY;
@@ -88,7 +90,11 @@ export default memo(function Toolbar({ scrollY }) {
       </View>
 
       <View style={styles.centerSection}>
-        <Pressable onPress={() => router.push("/dev")}>
+        <Pressable
+          onPress={() => router.push("/dev")}
+          accessibilityRole="button"
+          accessibilityLabel={`LifePoints, ${tc("Open developer menu")}`}
+        >
           <AppImage
             source={require("@/../public/assets/lifepointsLogo.png")}
             style={{ width: logoWidth, height: logoHeight }}
@@ -100,14 +106,14 @@ export default memo(function Toolbar({ scrollY }) {
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
           <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-            <Icon name="reset" onPress={handleResetProfile} />
+            <Icon name="reset" onPress={handleResetProfile} accessibilityLabel={tc("Reset profile")} />
             <NotificationIcon onPress={handleToNotifications} />
-            <Icon name="settings" onPress={handleToSettings} />
+            <Icon name="settings" onPress={handleToSettings} accessibilityLabel={tc("Settings")} />
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
-            <Icon name="add" onPress={handleToCreatePost} />
-            <Icon name="search" onPress={handleToSearch} />
+            <Icon name="add" onPress={handleToCreatePost} accessibilityLabel={tc("Create post")} />
+            <Icon name="search" onPress={handleToSearch} accessibilityLabel={tc("Search")} />
           </View>
         ) : (
           /* Placeholder for centered Logo */

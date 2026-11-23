@@ -3,12 +3,14 @@ import { Platform, useWindowDimensions, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 import { Spacing } from "@/constants/Spacing";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 import AppText from "./AppText";
 import EventSlide from "../home/EventSlide";
 
 const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
   const { width } = useWindowDimensions();
+  const reduceMotion = useReducedMotion();
 
   const itemDimensions = useMemo(
     () => ({
@@ -27,7 +29,14 @@ const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
 
   const renderCarouselItem = useCallback(
     ({ item }) => {
-      return <EventSlide imageSource={item.image} isLoading={isLoading} onPress={() => handlePressItem(item)} />;
+      return (
+        <EventSlide
+          imageSource={item.image}
+          title={item.title}
+          isLoading={isLoading}
+          onPress={() => handlePressItem(item)}
+        />
+      );
     },
     [isLoading, handlePressItem]
   );
@@ -63,7 +72,7 @@ const HeroCarousel = memo(({ data, isLoading, onPressItem }) => {
         parallaxScrollingScale: 0.85,
         parallaxScrollingOffset: 40
       }}
-      autoPlay={true}
+      autoPlay={!reduceMotion}
       autoPlayInterval={10000}
       pagingEnabled={false}
       snapEnabled={true}

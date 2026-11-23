@@ -25,7 +25,7 @@ const featureStyles = StyleSheet.create({
 
 const FeatureItem = memo(({ text, isLight, theme }) => (
   <View style={featureStyles.item}>
-    <Icon name="checkmark" size={20} color={isLight ? DarkTheme.text : theme.primaryAccent} />
+    <Icon name="checkmark" size={20} color={isLight ? DarkTheme.text : theme.primaryAccentText} />
     <AppText style={[featureStyles.text, { color: isLight ? DarkTheme.text : theme.text }]}>{text}</AppText>
   </View>
 ));

@@ -62,7 +62,7 @@ export default function TermsScreen() {
             onPress={() => router.push(`/setting/legal-detail?type=${item.id}`)}
           >
             <View style={[styles.iconBackground, { backgroundColor: addOpacity(MyTheme.primaryAccent, 0.1) }]}>
-              <Icon name={item.icon} color={MyTheme.primaryAccent} />
+              <Icon name={item.icon} color={MyTheme.primaryAccentText} />
             </View>
 
             <View style={styles.textContainer}>

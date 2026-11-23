@@ -104,7 +104,7 @@ const getStyles = (theme) =>
       justifyContent: "center",
       marginTop: 2,
       paddingVertical: Spacing.xs,
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     measureView: {
       position: "absolute",

@@ -68,7 +68,7 @@ export default function Navbar({ state, navigation }) {
       <View style={styles.borderOverlay} />
 
       {/* Button Wrapper */}
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer} accessibilityRole="tablist">
         {orderedRoutes.map((route) => {
           const isFocused = state.routes[state.index].key === route.key;
 

@@ -94,6 +94,7 @@ export default function LoginScreen() {
               bottomMargin={false}
               rightIcon={passwordIsShown ? "eyeOpen" : "eyeClosed"}
               onRightIconPress={() => setPasswordIsShown(!passwordIsShown)}
+              rightIconLabel={passwordIsShown ? t("Show password") : t("Hide password")}
             />
             <AppButton
               title={isLoading ? "Logging in..." : "Log in"}
@@ -104,7 +105,7 @@ export default function LoginScreen() {
               title={t("Forgot password?")}
               variant="ghost"
               size="sm"
-              textStyle={{ color: MyTheme.primaryAccent }}
+              textStyle={{ color: MyTheme.primaryAccentText }}
             />
           </BaseCard>
           <AuthFooter text={t("Don't have an account?")} linkText={t("Register")} href="/auth/register" />

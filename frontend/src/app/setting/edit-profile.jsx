@@ -104,7 +104,12 @@ export default function EditProfileScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.avatarSection}>
-            <TouchableOpacity onPress={handleChangeAvatar} style={styles.avatarContainer}>
+            <TouchableOpacity
+              onPress={handleChangeAvatar}
+              style={styles.avatarContainer}
+              accessibilityRole="button"
+              accessibilityLabel={t("common:Change profile picture")}
+            >
               <Avatar source={avatarSource} size={"big"} style={styles.avatar} />
               <View style={styles.editBadge}>
                 <Icon name="camera" size={18} color="#fff" />

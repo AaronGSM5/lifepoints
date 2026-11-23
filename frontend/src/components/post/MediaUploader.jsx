@@ -51,7 +51,14 @@ const MediaUploader = memo(({ isPublic, media, setMedia, pickMedia }) => {
               <AppText style={styles.videoBadgeText}>Video</AppText>
             </View>
           )}
-          <Icon name="trash" size={16} color="#fff" onPress={() => setMedia(null)} style={styles.removeBtn} />
+          <Icon
+            name="trash"
+            size={16}
+            color="#fff"
+            onPress={() => setMedia(null)}
+            style={styles.removeBtn}
+            accessibilityLabel={t("common:Remove media")}
+          />
         </>
       )}
     </BaseCard>

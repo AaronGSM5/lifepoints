@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,6 +15,7 @@ import BackButton from "../ui/BackButton";
 const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }) => {
   const insets = useSafeAreaInsets();
   const MyTheme = useAppTheme();
+  const { t: tc } = useTranslation("common");
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -57,7 +59,13 @@ const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }
     <View style={[styles.customHeader, { paddingTop: insets.top }]}>
       <BackButton style={styles.headerIcon} />
 
-      <TouchableOpacity onPress={onProfilePress} style={styles.headerTitleContainer} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={onProfilePress}
+        style={styles.headerTitleContainer}
+        activeOpacity={0.7}
+        accessibilityRole="button"
+        accessibilityLabel={mockChatPartner.name}
+      >
         <Avatar source={mockChatPartner.avatar} name={mockChatPartner.name} />
         <View>
           <AppText bold>{mockChatPartner.name}</AppText>
@@ -69,7 +77,7 @@ const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }
         </View>
       </TouchableOpacity>
       <View style={styles.optionsWrapper}>
-        <Icon name="dots" onPress={toggleMenu} style={styles.headerIcon} />
+        <Icon name="dots" onPress={toggleMenu} style={styles.headerIcon} accessibilityLabel={tc("More options")} />
         <AppPopupMenu visible={showMenu} items={menuItems} onClose={closeMenu} />
       </View>
     </View>
@@ -100,7 +108,7 @@ const getStyles = (theme) =>
       gap: Spacing.sm
     },
     onlineStatus: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     },
     optionsWrapper: {
       position: "relative"

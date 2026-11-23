@@ -23,6 +23,7 @@ const AppInput = memo(
         inputStyle,
         rightIcon,
         onRightIconPress,
+        rightIconLabel,
         rightContent,
         bottomMargin = true,
         blur = false,
@@ -68,7 +69,7 @@ const AppInput = memo(
             <Icon
               name={icon}
               size={20}
-              color={isFocused ? MyTheme.primaryAccent : MyTheme.muted}
+              color={isFocused ? MyTheme.primaryAccentText : MyTheme.muted}
               style={styles.leftIcon}
             />
           )}
@@ -81,7 +82,9 @@ const AppInput = memo(
             underlineColorAndroid="transparent"
             cursorColor={MyTheme.primaryAccent}
             textAlignVertical={isMultiline ? "top" : "center"}
-            accessibilityRole="text"
+            accessibilityLabel={label || props.placeholder}
+            accessibilityHint={typeof error === "string" ? error : undefined}
+            accessibilityState={{ disabled: props.editable === false }}
             value={value}
             maxLength={maxLength}
             {...props}
@@ -92,7 +95,13 @@ const AppInput = memo(
           {rightContent ? (
             rightContent
           ) : rightIcon ? (
-            <TouchableOpacity onPress={onRightIconPress} style={styles.rightIcon}>
+            <TouchableOpacity
+              onPress={onRightIconPress}
+              style={styles.rightIcon}
+              accessibilityRole="button"
+              accessibilityLabel={rightIconLabel}
+              hitSlop={12}
+            >
               <Icon name={rightIcon} size={20} />
             </TouchableOpacity>
           ) : null}
@@ -116,7 +125,7 @@ const AppInput = memo(
       return (
         <View style={[styles.wrapper, containerStyle, { marginBottom: bottomMargin ? Spacing.lg : 0 }]}>
           {label && (
-            <AppText style={styles.label} bold>
+            <AppText style={styles.label} bold importantForAccessibility="no" accessibilityElementsHidden>
               {label}
             </AppText>
           )}
@@ -136,7 +145,13 @@ const AppInput = memo(
 
           {hasFooter && (
             <View style={styles.footerContainer}>
-              {typeof error === "string" ? <AppText style={styles.errorText}>{error}</AppText> : <View />}
+              {typeof error === "string" ? (
+                <AppText style={styles.errorText} accessibilityRole="alert" accessibilityLiveRegion="polite">
+                  {error}
+                </AppText>
+              ) : (
+                <View />
+              )}
 
               {showCharCount && maxLength && (
                 <AppText style={[styles.charCount, currentLength >= maxLength && styles.charCountWarning]}>
@@ -170,7 +185,7 @@ const getStyles = (theme) =>
       borderRadius: Spacing.borderRadius.lg,
       borderWidth: 1,
       borderColor: theme.inputBorder,
-      height: 54,
+      minHeight: 54,
       paddingHorizontal: Spacing.md,
       boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.25)"
     },

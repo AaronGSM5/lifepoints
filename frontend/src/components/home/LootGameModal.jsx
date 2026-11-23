@@ -114,6 +114,9 @@ const LootGameModal = memo(() => {
                   disabled={!canInteract || chosenLootIndex !== null}
                   onPress={() => handlePick(index)}
                   style={[styles.chestCard, { borderColor: borderColor }, isChosen && styles.chosenCard]}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("common:Chest", { number: index + 1 })}
+                  accessibilityState={{ disabled: !canInteract || chosenLootIndex !== null, selected: isChosen }}
                 >
                   <AppImage source={chestSource} variant={"fill"} contentFit="contain" />
 
@@ -160,7 +163,7 @@ const getStyles = (theme) =>
       padding: Spacing.md
     },
     mainTitle: {
-      color: theme.primaryAccent,
+      color: theme.primaryAccentText,
       fontSize: 28,
       marginBottom: 60,
       letterSpacing: 2,

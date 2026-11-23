@@ -24,8 +24,22 @@ const ActiveTaskHeader = memo(({ title, icon, progress, isExpanded, setIsExpande
   return (
     <View>
       <View style={styles.headerRow}>
-        {icon && <ConfirmableIcon icon={icon} actionIconName="checkmark" onAction={onAction} />}
-        <TouchableOpacity activeOpacity={0.8} onPress={toggleExpand} style={styles.expandableContainer}>
+        {icon && (
+          <ConfirmableIcon
+            icon={icon}
+            actionIconName="checkmark"
+            onAction={onAction}
+            accessibilityLabel={t("Complete task")}
+            confirmLabel={t("Tap again to confirm")}
+          />
+        )}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={toggleExpand}
+          style={styles.expandableContainer}
+          accessibilityRole="button"
+          accessibilityState={{ expanded: isExpanded }}
+        >
           <View style={styles.contentColumn}>
             <AppText bold type="title" numberOfLines={1} style={styles.titleText}>
               {t(title)}

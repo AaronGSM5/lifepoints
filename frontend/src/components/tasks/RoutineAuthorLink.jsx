@@ -60,7 +60,7 @@ const getStyles = (theme) =>
       flexShrink: 1
     },
     username: {
-      color: theme.primaryAccent
+      color: theme.primaryAccentText
     }
   });
 

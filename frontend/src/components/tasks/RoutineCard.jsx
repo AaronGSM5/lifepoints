@@ -49,7 +49,7 @@ const RoutineCard = memo(({ routine, initialExpanded = false }) => {
               <Icon
                 name={isDoneToday ? "checkmark" : routine.icon}
                 size={20}
-                color={isDoneToday ? MyTheme.primaryAccent : MyTheme.text}
+                color={isDoneToday ? MyTheme.primaryAccentText : MyTheme.text}
               />
             </View>
 
