@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -10,6 +11,7 @@ import BaseCard from "../ui/BaseCard";
 const SurveyOptionCard = memo(({ option, isSelected, handleSelect }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation();
   const handlePress = useCallback(() => {
     handleSelect(option.value);
   }, [handleSelect, option.value]);
@@ -17,7 +19,7 @@ const SurveyOptionCard = memo(({ option, isSelected, handleSelect }) => {
     <BaseCard key={option.value} isSelected={isSelected} style={styles.optionCard} onPress={handlePress}>
       <AppText style={styles.icon}>{option.icon}</AppText>
       <AppText type="body" bold style={styles.label}>
-        {option.label}
+        {t(option.label)}
       </AppText>
     </BaseCard>
   );

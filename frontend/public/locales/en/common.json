@@ -2,7 +2,6 @@
   "save": "Save",
   "cancel": "Cancel",
   "back": "Back",
-  // Accessibility labels (icon buttons)
   "close": "Close",
   "Like": "Like",
   "Remove like": "Remove like",
@@ -12,7 +11,6 @@
   "Send message": "Send message",
   "Open attachment menu": "Open attachment menu",
   "Close attachment menu": "Close attachment menu",
-  // ErrorView
   "Oops, that didn't go as planned.": "Oops, that didn't go as planned.",
   "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.": "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.",
   "Reload app": "Reload app",
@@ -20,7 +18,6 @@
   "Unknown error": "Unknown error",
   "Something went wrong": "Something went wrong",
   "Try again": "Try again",
-  // Search Page
   "Search...": "Search...",
   "User": "User",
   "Community": "Community",
@@ -35,7 +32,6 @@
   "No results found": "No results found",
   "We couldn't find anything matching your search. Try a different keyword.": "We couldn't find anything matching your search. Try a different keyword.",
   "Clear search": "Clear search",
-  // Notifications
   "Announcements": "Announcements",
   "All caught up!": "All caught up!",
   "You have no new notifications right now. Check back later!": "You have no new notifications right now. Check back later!",
@@ -49,13 +45,10 @@
   "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.": "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.",
   "Badge Earned": "Badge Earned",
   "You unlocked the 'Eco-Protector' badge! 🌿": "You unlocked the 'Eco-Protector' badge! 🌿",
-  // TaskPage
   "Today": "Today",
   "Catalog": "Catalog",
   "Routines": "Routines",
-  // Today
   "EmptyTaskQuote1": "Every step counts, no matter how small. Let's grow together and make a positive impact today.",
-  // SocialPage
   "Connect": "Connect",
   "Explore": "Explore",
   "Routine": "Routine",
@@ -69,5 +62,18 @@
     "errorTitle": "Error",
     "errorMessage": "The email could not be sent. Please try again later.",
     "logout": "Log out"
-  }
+  },
+  "Make the world a little better": "Make the world a little better",
+  "Small deeds, big impact. Collect points for every good gesture in everyday life.": "Small deeds, big impact. Collect points for every good gesture in everyday life.",
+  "With LifePoints": "With LifePoints",
+  "Turn your commitment into valuable rewards and level up.": "Turn your commitment into valuable rewards and level up.",
+  "Be good": "Be good",
+  "Become part of a community that makes a difference together. Start now!": "Become part of a community that makes a difference together. Start now!",
+  "What is your goal?": "What is your goal?",
+  "What matters to you?": "What matters to you?",
+  "Environment": "Environment",
+  "Social": "Social",
+  "Animal welfare": "Animal welfare",
+  "Neighborhood": "Neighborhood",
+  "Let's go": "Let's go"
 }

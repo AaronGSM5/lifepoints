@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { useRouter } from "expo-router";
@@ -13,6 +14,7 @@ import { onboardingSlides } from "@/constants/OnboardingContent";
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
   const router = useRouter();
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const slidesRef = useRef(null);
 
@@ -71,7 +73,7 @@ export default function OnboardingScreen() {
           <SlidePaginator data={onboardingSlides} currentIndex={currentIndex} />
 
           <AppButton
-            title={currentIndex === onboardingSlides.length - 1 ? "Los geht's" : "Weiter"}
+            title={currentIndex === onboardingSlides.length - 1 ? t("Let's go") : t("Continue")}
             onPress={scrollToNext}
           />
         </ScreenFooter>

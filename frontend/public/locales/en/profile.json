@@ -1,12 +1,10 @@
 {
-  // Profile Header
   "XP PROGRESS": "XP PROGRESS",
   "Message": "Message",
   "Add Friend": "Add Friend",
   "Edit Profile": "Edit Profile",
   "Share Profile": "Share",
   "Share Stats": "Share Stats",
-  // OnboardingGuide
   "Your Guide": "Your Guide",
   "of": "of",
   "done": "done",
@@ -15,25 +13,20 @@
   "Log your first task": "Log your first task",
   "Add a description": "Add a description",
   "Received LP": "Received LP",
-  // ProfileStats
   "Your Stats": "Your Stats",
   "DAY STREAK": "DAY STREAK",
   "TOTAL POINTS": "TOTAL POINTS",
   "HABITS AVOIDED": "HABITS AVOIDED",
   "MEMBER SINCE": "MEMBER SINCE",
-  // ProfileCustomizables
   "Customizables": "Customizables",
   "See all": "See all",
   "Frames": "Frames",
   "Title": "Title",
-  // Frames
   "Default": "Default",
   "Neon Glow": "Neon Glow",
   "Solar Flare": "Solar Flare",
-  // Titles
   "The Beginner": "The Beginner",
   "Eco-Hero": "Eco-Hero",
-  // My Impact Journal
   "My Impact Journal": "My Impact Journal",
   "No activity recorded": "No activity recorded",
   "Your past achievements will appear here once you completed tasks regularly.": "Your past achievements will appear here once you completed tasks regularly.",
@@ -41,11 +34,9 @@
   "More": "More",
   "Today": "Today",
   "Yesterday": "Yesterday",
-  // InviteFriendCard
   "Invite friends & earn rewards": "Invite friends & earn rewards",
   "Share your link. As soon as a friend signs up, you'll both instantly receive extra Lifepoints in your account!": "Share your link. As soon as a friend signs up, you'll both instantly receive extra Lifepoints in your account!",
   "Send invitation link": "Send invitation link",
-  // Leagues & Ranks
   "Couch": "Couch",
   "Rising": "Rising",
   "Boost": "Boost",
@@ -77,5 +68,11 @@
   "Legend": "Legend",
   "Prodigy": "Prodigy",
   "Phenomenon": "Phenomenon",
-  "Myth": "Myth"
+  "Myth": "Myth",
+  "Log 2 tasks": "Log 2 tasks",
+  "Invite a friend": "Invite a friend",
+  "Reach a 5-day streak": "Reach a 5-day streak",
+  "Collect 1000 LifePoints in total": "Collect 1000 LifePoints in total",
+  "Complete 3 tasks": "Complete 3 tasks",
+  "Founder Aura": "Founder Aura"
 }

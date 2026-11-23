@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,10 +7,11 @@ import SurveyOptionCard from "./SurveyOptionCard";
 import AppText from "../ui/AppText";
 
 const SurveyQuestion = ({ question, answers, onSelect }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.content}>
       <AppText type="h1" style={styles.title}>
-        {question.title}
+        {t(question.title)}
       </AppText>
 
       <View style={styles.optionsGrid}>

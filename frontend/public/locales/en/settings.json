@@ -1,5 +1,4 @@
 {
-  // Menu & Tabs
   "Settings": "Settings",
   "Your Account": "Your Account",
   "App Experience": "App Experience",
@@ -16,7 +15,6 @@
   "Privacy Policy": "Privacy Policy",
   "Terms of Service": "Terms of Service",
   "Delete Account": "Delete Account",
-  // Edit Profile
   "Permission needed": "Permission needed",
   "We need access to your photos to change your profile picture.": "We need access to your photos to change your profile picture.",
   "Tap to change": "Tap to change",
@@ -27,8 +25,6 @@
   "MyDescription": "Tell me something about yourself...",
   "Save changes": "Save changes",
   "Saving...": "Saving...",
-
-  // Security & Login
   "Manage your password and how you sign in.": "Manage your password and how you sign in.",
   "Change Password": "Change Password",
   "Current Password": "Current Password",
@@ -41,8 +37,6 @@
   "Two-factor authentication": "Two-factor authentication",
   "Additional protection via email": "Additional protection via email",
   "Permanently delete account": "Permanently delete account",
-
-  // Linked Services
   "Connect your favorite apps to automatically earn LifePoints through your activities.": "Connect your favorite apps to automatically earn LifePoints through your activities.",
   "Fitness & Health": "Fitness & Health",
   "Entertainment & Lifestyle": "Entertainment & Lifestyle",
@@ -53,14 +47,10 @@
   "Use Focus Playlists for Tasks": "Use Focus Playlists for Tasks",
   "Manage": "Manage",
   "Connect": "Connect",
-
-  // Notifications
   "Choose how and when LifePoints keeps you up to date.": "Choose how and when LifePoints keeps you up to date.",
   "Push Notifications": "Push Notifications",
   "Email": "Email",
   "Offers": "Offers",
-
-  // Subscription
   "Reach the next level": "Reach the next level",
   "Unlock exclusive features and earn LifePoints even faster.": "Unlock exclusive features and earn LifePoints even faster.",
   "Monthly": "Monthly",
@@ -89,15 +79,11 @@
   "Smart Community Administration": "Smart Community Administration",
   "Custom Themes": "Custom Themes",
   "... and many more benefits": "... and many more benefits",
-
-  // Appearance
   "Bright": "Bright",
   "Dark": "Dark",
   "Select the language in which you want LifePoints to be displayed.": "Select the language in which you want LifePoints to be displayed.",
   "German": "German",
   "English": "English",
-
-  // Support
   "How can we help?": "How can we help?",
   "Describe the problem...": "Describe the problem...",
   "Search our FAQs or contact us directly.": "Search our FAQs or contact us directly.",

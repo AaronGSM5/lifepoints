@@ -1,18 +1,15 @@
 {
-  // Daily- / Weekly-Quests
   "Challenges": "Challenges",
   "Today": "Today",
   "This Week": "This Week",
   "Start": "Start",
   "Done": "Done",
-  // Feed
-  "Vor": "",
+  "{{count}} hours ago": "{{count}} hours ago",
   "Hour": "Hour ago",
   "Hours": "Hours ago",
   "Minutes": "Minutes ago",
   "Second": "Second ago",
   "Seconds": "Seconds ago",
-  // Commentsheet
   "You": "You",
   "Comments": "Comments",
   "Reply": "Reply",
@@ -21,7 +18,6 @@
   "Just now": "Just now",
   "Leave a comment...": "Leave a comment...",
   "No comments yet. Be the first to leave one!": "No comments yet. Be the first to leave one!",
-  // LootGame
   "Select a card": "Select a Card",
   "Common": "Common",
   "Rare": "Rare",

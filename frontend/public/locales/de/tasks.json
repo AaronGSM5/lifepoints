@@ -1,5 +1,4 @@
 {
-  // Sections & Layout
   "Active Tasks": "Aktive Aufgaben",
   "Done Tasks": "Erledigte Aufgaben",
   "No Active Tasks": "Keine Aufgaben aktiv",
@@ -22,7 +21,6 @@
   "LOCKED": "GESPERRT",
   "Finish": "Fertig",
   "Go to Task": "Zur Aufgabe",
-  // Task titles
   "Bed Boost": "Bett-Boost",
   "One-Item Tidy": "1-Teil-Ordnung",
   "Plant Daddy": "Pflanzen-Vati",
@@ -38,7 +36,6 @@
   "Spread Joy": "Freude schenken",
   "Unfollow Clutter": "Unfollow-Ballast",
   "App Spring Cleaning": "App-Frühjahrsputz",
-  // Task descriptions
   "Shake out your blanket and make your bed.": "Schüttle deine Decke auf und mache dein Bett ordentlich.",
   "Put exactly one item back in its proper place.": "Räume genau einen Gegenstand an seinen richtigen Platz.",
   "Water a plant that looks a little thirsty right now.": "Gieße eine Pflanze, die gerade etwas durstig aussieht.",
@@ -54,7 +51,6 @@
   "Bring a little joy to a homeless person (a smile, a kind word, or a small donation).": "Bereite einem Obdachlosen eine kleine Freude (ein Lächeln, ein nettes Wort oder eine kleine Spende)",
   "Unfollow an account that doesn't make you feel good.": "Entfolge einem Account, der dir kein gutes Gefühl gibt.",
   "Delete an app that you haven't opened in over a month.": "Lösche eine App, die du seit über einem Monat nicht geöffnet hast.",
-  // Task Categories
   "categories": {
     "all": "Alle",
     "selfcare": "Selbstliebe",
@@ -63,7 +59,6 @@
     "digital": "Digitales",
     "special": "Spezial"
   },
-  // Task dedicated page
   "Description": "Beschreibung",
   "History": "Verlauf",
   "Tracked": "Getrackt",
@@ -71,8 +66,7 @@
   "Level up to unlock": "Aufleveln zum Freischalten",
   "Complete task": "Aufgabe tracken",
   "Track now": "Jetzt tracken",
-  // Task optional Input
-  "Anzahl": "Anzahl",
+  "Amount": "Anzahl",
   "minutes": "Minuten",
   "glasses": "Gläser",
   "breaths": "Atemzüge",
@@ -80,18 +74,15 @@
   "reps": "Wiederholungen",
   "accounts": "Accounts",
   "apps": "Apps",
-  "eingeben...": "eingeben...",
-  // TaskSelector
+  "Enter...": "eingeben...",
   "Related task": "Zugehörige Aufgabe",
   "Select task": "Aufgabe auswählen",
-  // Empty / Error
   "Could not load tasks": "Aufgaben konnten nicht geladen werden",
   "Please check your internet connection and try again.": "Bitte überprüfe deine Internetverbindung und versuche es erneut.",
   "No tasks available": "Keine Aufgaben verfügbar",
   "We are currently updating our challenges. But hey, you can shape LifePoints by suggesting a task.": "Wir updaten gerade unsere Challenges. Aber hey, du kannst LifePoints mitgestalten indem du eine Aufgabe vorschlägst.",
   "Try again": "Erneut versuchen",
   "Refresh": "Aktualisieren",
-  // Routines
   "Search routines": "Routinen suchen",
   "Due today {{done}}/{{total}}": "Heute fällig {{done}}/{{total}}",
   "Other routines": "Weitere Routinen",
@@ -152,5 +143,11 @@
   "Process": "Ablauf",
   "Add step...": "Schritt hinzufügen...",
   "Title...": "Titel...",
-  "Description (optional)...": "Beschreibung (optional)..."
+  "Description (optional)...": "Beschreibung (optional)...",
+  "Log 2 tasks": "Logge 2 Tasks",
+  "Invite a friend": "Lade einen Freund ein",
+  "Reach a 5-day streak": "Erreiche einen 5-Tage Streak",
+  "Collect 1000 LifePoints in total": "Sammle insgesamt 1000 Lifepoints",
+  "Complete 3 tasks": "Schließe 3 Tasks ab",
+  "Start": "Start"
 }
