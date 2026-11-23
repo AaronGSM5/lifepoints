@@ -80,7 +80,7 @@
   "reps": "reps",
   "accounts": "accounts",
   "apps": "apps",
-  "eingeben...": "",
+  "eingeben...": "enter...",
   // TaskSelector
   "Related task": "Related task",
   "Select task": "Select task",
@@ -148,5 +148,9 @@
     "4": "Thu",
     "5": "Fri",
     "6": "Sat"
-  }
+  },
+  "Process": "Process",
+  "Add step...": "Add step...",
+  "Title...": "Title...",
+  "Description (optional)...": "Description (optional)..."
 }

@@ -40,7 +40,7 @@
   "Faster Login": "Faster Login",
   "Two-factor authentication": "Two-factor authentication",
   "Additional protection via email": "Additional protection via email",
-  "Permanently delete account": "Konto dauerhaft löschen",
+  "Permanently delete account": "Permanently delete account",
 
   // Linked Services
   "Connect your favorite apps to automatically earn LifePoints through your activities.": "Connect your favorite apps to automatically earn LifePoints through your activities.",
@@ -113,5 +113,11 @@
   "Go to your account page and select the “My Coupons” tab...": "Go to your account page and select the “My Coupons” tab...",
   "Can I transfer LifePoints to friends?": "Can I transfer LifePoints to friends?",
   "This feature is currently still in development...": "This feature is currently still in development...",
-  "All systems are operating normally": "All systems are operating normally"
+  "All systems are operating normally": "All systems are operating normally",
+  "Customize the app's design to suit your preferences.": "Customize the app's design to suit your preferences.",
+  "Error": "Error",
+  "Failed to save profile.": "Failed to save profile.",
+  "Cache Cleared": "Cache Cleared",
+  "Temporary files have been removed.": "Temporary files have been removed.",
+  "Color Theme": "Color Theme"
 }

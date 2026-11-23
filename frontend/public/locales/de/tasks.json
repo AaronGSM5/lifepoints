@@ -148,5 +148,9 @@
     "4": "Do",
     "5": "Fr",
     "6": "Sa"
-  }
+  },
+  "Process": "Ablauf",
+  "Add step...": "Schritt hinzufügen...",
+  "Title...": "Titel...",
+  "Description (optional)...": "Beschreibung (optional)..."
 }

@@ -114,8 +114,13 @@
   "Why haven't my LifePoints been credited?": "Warum wurden meine LifePoints nicht gutgeschrieben?",
   "It may take up to 24 hours for the synchronization to complete...": "Es kann bis zu 24 Stunden dauern, bis die Synchronisierung abgeschlossen ist...",
   "How do I redeem a coupon?": "Wie löse ich einen Gutschein ein?",
-  "Gehe in deinen Shop-Bereich und wähle den Reiter 'Meine Gutscheine'...": "Go to your account page and select the “My Coupons” tab...",
+  "Go to your account page and select the “My Coupons” tab...": "Gehe in deinen Shop-Bereich und wähle den Reiter „Meine Gutscheine“...",
   "Can I transfer LifePoints to friends?": "Kann ich LifePoints auf Freunde übertragen?",
   "This feature is currently still in development...": "Aktuell ist dieses Feature noch in der Entwicklung...",
-  "All systems are operating normally": "Alle Systeme laufen normal"
+  "All systems are operating normally": "Alle Systeme laufen normal",
+  "Error": "Fehler",
+  "Failed to save profile.": "Profil konnte nicht gespeichert werden.",
+  "Cache Cleared": "Cache geleert",
+  "Temporary files have been removed.": "Temporäre Dateien wurden entfernt.",
+  "Color Theme": "Farbthema"
 }

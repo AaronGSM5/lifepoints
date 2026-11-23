@@ -57,5 +57,17 @@
   "EmptyTaskQuote1": "Every step counts, no matter how small. Let's grow together and make a positive impact today.",
   // SocialPage
   "Connect": "Connect",
-  "Explore": "Explore"
+  "Explore": "Explore",
+  "Routine": "Routine",
+  "Task Complete!": "Task Complete!",
+  "Continue": "Continue",
+  "verification": {
+    "title": "Verify your email",
+    "subtitle": "We've sent you a verification link. Please check your inbox and click the link to fully activate your account.",
+    "successTitle": "Success",
+    "successMessage": "We've sent you a new verification email.",
+    "errorTitle": "Error",
+    "errorMessage": "The email could not be sent. Please try again later.",
+    "logout": "Log out"
+  }
 }

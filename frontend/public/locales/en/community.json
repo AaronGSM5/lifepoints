@@ -27,7 +27,7 @@
   "Tap to select (16:9 recommended)": "Tap to select (16:9 recommended)",
   "COMMUNITY-SIZE": "COMMUNITY-SIZE",
   "Gratis": "Free",
-  "Erstellen": "",
+  "Erstellen": "Create",
   "Für": "Create for",
   "Create now": "Create now",
   // Community Badges
@@ -83,5 +83,12 @@
   "lifestyle": "Lifestyle",
   "mindfulness": "Mindfulness",
   "Mindset": "Mindset",
-  "Productivity": "Productivity"
+  "Productivity": "Productivity",
+  "Show all": "Show more",
+  "Show all the": "Show all",
+  "Show less": "Show less",
+  "Leaderboard": "Leaderboard",
+  "Leave Community": "Leave",
+  "Community not found": "Community not found",
+  "Go Back": "Go Back"
 }

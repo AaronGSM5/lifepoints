@@ -126,7 +126,7 @@ export default function TaskDetailScreen() {
 
             {mockSubSteps && mockSubSteps.length > 0 && (
               <View style={styles.section}>
-                <SectionHeader title={t("Ablauf")} />
+                <SectionHeader title={t("Process")} />
 
                 {mockSubSteps.map((step, index) => {
                   const isLast = index === task.subSteps?.length - 1 || step.isLast;
