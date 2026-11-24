@@ -28,7 +28,7 @@ const AuthHeader = memo(({ title, subtitle, showImageLogo = false }) => {
       </View>
 
       {showImageLogo ? (
-        <Pressable onPress={handleNavToDev} accessibilityRole="image" accessibilityLabel="LifePoints">
+        <Pressable onPress={handleNavToDev} accessibilityRole="button" accessibilityLabel="LifePoints">
           <AppImage
             source={require("@/../public/assets/lifepointsLogo.png")}
             style={styles.logoImage}

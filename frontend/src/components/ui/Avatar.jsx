@@ -49,7 +49,11 @@ const Avatar = memo(
             style
           ]}
         >
-          <AppText type={"title"} style={{ fontSize: currentDimensions.fontSize, color: MyTheme.primaryAccentText }}>
+          <AppText
+            type={"title"}
+            accessibilityRole="text"
+            style={{ fontSize: currentDimensions.fontSize, color: MyTheme.primaryAccentText }}
+          >
             {getInitial(name)}
           </AppText>
         </View>

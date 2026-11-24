@@ -50,6 +50,7 @@ export const Icon = memo(
         accessibilityLabel={accessibilityLabel}
         accessibilityRole={accessibilityLabel ? "image" : undefined}
         importantForAccessibility={accessibilityLabel ? "auto" : "no-hide-descendants"}
+        accessibilityElementsHidden={!accessibilityLabel}
       >
         {renderIcon()}
       </View>

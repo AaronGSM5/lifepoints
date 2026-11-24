@@ -51,6 +51,7 @@ const AppImage = memo(
         accessibilityRole={alt ? "image" : undefined}
         accessibilityLabel={alt}
         importantForAccessibility={alt ? "yes" : "no-hide-descendants"}
+        accessibilityElementsHidden={!alt}
       >
         <Image
           style={StyleSheet.absoluteFillObject}

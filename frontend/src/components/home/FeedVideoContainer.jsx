@@ -136,7 +136,7 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
       style={styles.videoContainer}
       onPress={handleContainerPress}
       accessibilityRole="button"
-      accessibilityLabel={t("Play video")}
+      accessibilityLabel={t("Open video")}
     >
       <VideoView
         style={styles.video}

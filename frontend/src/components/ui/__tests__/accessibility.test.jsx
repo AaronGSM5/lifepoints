@@ -1,5 +1,5 @@
 import React from "react";
-import { AccessibilityInfo, Text } from "react-native";
+import { AccessibilityInfo, Pressable, Text } from "react-native";
 
 import { fireEvent, render, renderHook, waitFor } from "@testing-library/react-native";
 
@@ -32,7 +32,7 @@ describe("Barrierefreiheit der UI-Primitive", () => {
     const tab = getByRole("tab", { name: "tab_tasks" });
     expect(tab.props.accessibilityState).toEqual(expect.objectContaining({ selected: true }));
 
-    fireEvent.press(tab);
+    await fireEvent.press(tab);
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
@@ -67,19 +67,27 @@ describe("Barrierefreiheit der UI-Primitive", () => {
       />
     );
 
-    fireEvent.press(getByRole("button", { name: "Passwort anzeigen" }));
+    await fireEvent.press(getByRole("button", { name: "Passwort anzeigen" }));
     expect(onRightIconPress).toHaveBeenCalledTimes(1);
   });
 
   it("AppModal markiert den Inhalt als modal und bietet ein beschriftetes Backdrop", async () => {
     const onClose = jest.fn();
+    const onConfirm = jest.fn();
     const { getByRole, toJSON } = await render(
       <AppModal visible onClose={onClose}>
         <Text>Inhalt</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel="Verstanden" onPress={onConfirm} />
       </AppModal>
     );
 
-    fireEvent.press(getByRole("button", { name: "close" }));
+    // Neben dem modalen Inhalt ist das Backdrop für Screenreader ausgeblendet (Schließen per Escape-Geste).
+    await fireEvent.press(getByRole("button", { name: "close", includeHiddenElements: true }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    // Buttons im Inhalt dürfen nicht im Backdrop-Element aufgehen.
+    await fireEvent.press(getByRole("button", { name: "Verstanden" }));
+    expect(onConfirm).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalledTimes(1);
 
     const modalContent = findInTree(toJSON(), (props) => props.accessibilityViewIsModal === true);
@@ -95,7 +103,7 @@ describe("Barrierefreiheit der UI-Primitive", () => {
       </>
     );
 
-    fireEvent.press(getByRole("button", { name: "Einstellungen" }));
+    await fireEvent.press(getByRole("button", { name: "Einstellungen" }));
     expect(onPress).toHaveBeenCalledTimes(1);
     const hidden = findInTree(toJSON(), (props) => props.importantForAccessibility === "no-hide-descendants");
     expect(hidden.length).toBe(1);
