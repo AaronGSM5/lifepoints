@@ -2,7 +2,7 @@ export const communityTiers = [
   {
     id: "tier_free",
     slots: 50,
-    price: "Gratis",
+    price: "Free",
     isRecommended: false
   },
   {

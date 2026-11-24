@@ -137,7 +137,9 @@ const CreateCommunityForm = memo(({ visible, onClose, onCreate }) => {
       <ScreenFooter>
         <AppButton
           title={
-            selectedSize.price === "Gratis" ? t("Create now") : `${t("Für")} ${selectedSize.price} ${t("Erstellen")}`
+            selectedSize.price === "Free"
+              ? t("Create now")
+              : t("Create for {{price}}", { price: selectedSize.price })
           }
           onPress={handleCreate}
           disabled={!formValid}

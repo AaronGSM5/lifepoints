@@ -2,7 +2,6 @@
   "save": "Speichern",
   "cancel": "Abbrechen",
   "back": "Zurück",
-  // Accessibility labels (icon buttons)
   "close": "Schließen",
   "Like": "Gefällt mir",
   "Remove like": "Gefällt mir entfernen",
@@ -12,7 +11,6 @@
   "Send message": "Nachricht senden",
   "Open attachment menu": "Anhangmenü öffnen",
   "Close attachment menu": "Anhangmenü schließen",
-  // Accessibility: Navigation & Screenreader
   "tab_home": "Startseite",
   "tab_tasks": "Aufgaben",
   "tab_social": "Community",
@@ -41,7 +39,6 @@
   "LP earned": "{{count}} LP erhalten",
   "Level reached": "Level {{level}} erreicht",
   "Trophy unlocked": "Trophäe freigeschaltet: {{name}}",
-  // ErrorView
   "Oops, that didn't go as planned.": "Hoppla, das lief nicht nach Plan.",
   "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored.": "Ein unerwarteter Fehler ist aufgetreten. Keine Sorge, dein Fortschritt in LifePoints ist sicher gespeichert.",
   "Reload app": "App neu laden",
@@ -49,7 +46,6 @@
   "Unknown error": "Unbekannter Fehler",
   "Something went wrong": "Da ist was schiefgelaufen.",
   "Try again": "Erneut versuchen",
-  // Search Page
   "Search...": "Suchen...",
   "User": "Nutzer",
   "Community": "Community",
@@ -64,7 +60,6 @@
   "No results found": "Keine Ergebnisse gefunden",
   "We couldn't find anything matching your search. Try a different keyword.": "Wir konnten nichts zu deiner Suche finden. Versuche ein anderes Stichwort.",
   "Clear search": "Suche zurücksetzen",
-  // Notifications
   "Announcements": "Mitteilungen",
   "All caught up!": "Alles auf dem neuesten Stand!",
   "You have no new notifications right now. Check back later!": "Du hast momentan keine neuen Benachrichtigungen. Schau später nochmal vorbei!",
@@ -78,13 +73,35 @@
   "With your 500 LP, you've risen from 'Helper' to 'Ray of Hope'.": "Durch deine 500 LP bist du jetzt vom „Helfer“ zum „Lichtblick“ aufgestiegen.",
   "Badge Earned": "Abzeichen verdient",
   "You unlocked the 'Eco-Protector' badge! 🌿": "Du hast das Badge „Umwelt-Schützer“ freigeschaltet! 🌿",
-  // TaskPage
   "Today": "Heute",
   "Catalog": "Katalog",
   "Routines": "Routinen",
-  // Today
   "EmptyTaskQuote1": "Jeder Schritt zählt, egal wie klein. Lass uns gemeinsam wachsen und heute etwas Positives bewirken.",
-  // SocialPage
   "Connect": "Verbinden",
-  "Explore": "Entdecken"
+  "Explore": "Entdecken",
+  "Routine": "Routine",
+  "Task Complete!": "Aufgabe erledigt!",
+  "Continue": "Weiter",
+  "verification": {
+    "title": "E-Mail bestätigen",
+    "subtitle": "Wir haben dir einen Bestätigungslink geschickt. Bitte schaue in deinem Postfach nach und klicke auf den Link, um deinen Account vollständig zu aktivieren.",
+    "successTitle": "Erfolgreich",
+    "successMessage": "Wir haben dir eine neue Bestätigungs-E-Mail gesendet.",
+    "errorTitle": "Fehler",
+    "errorMessage": "E-Mail konnte nicht gesendet werden. Bitte versuche es später noch einmal.",
+    "logout": "Abmelden"
+  },
+  "Make the world a little better": "Mach die Welt etwas besser",
+  "Small deeds, big impact. Collect points for every good gesture in everyday life.": "Kleine Taten, große Wirkung. Sammle Punkte für jede gute Geste im Alltag.",
+  "With LifePoints": "Mit LifePoints",
+  "Turn your commitment into valuable rewards and level up.": "Verwandle dein Engagement in wertvolle Belohnungen und steigere dein Level.",
+  "Be good": "Be good",
+  "Become part of a community that makes a difference together. Start now!": "Werde Teil einer Community, die gemeinsam den Unterschied macht. Starte jetzt!",
+  "What is your goal?": "Was ist dein Ziel?",
+  "What matters to you?": "Was liegt dir am Herzen?",
+  "Environment": "Umwelt",
+  "Social": "Soziales",
+  "Animal welfare": "Tierschutz",
+  "Neighborhood": "Nachbarschaft",
+  "Let's go": "Los geht's"
 }

@@ -2,14 +2,14 @@ export const questCatalog = {
   today: [
     {
       id: "q_daily_01",
-      title: "Logge 2 Tasks",
+      title: "Log 2 tasks",
       points: 50,
       target: 2,
       trigger: "TASK_COMPLETED"
     },
     {
       id: "q_daily_02",
-      title: "Lade einen Freund ein",
+      title: "Invite a friend",
       points: 200,
       target: 1
     }
@@ -17,19 +17,19 @@ export const questCatalog = {
   week: [
     {
       id: "q_weekly_01",
-      title: "Erreiche einen 5-Tage Streak",
+      title: "Reach a 5-day streak",
       points: 500,
       target: 5
     },
     {
       id: "q_weekly_02",
-      title: "Sammle insgesamt 1000 Lifepoints",
+      title: "Collect 1000 LifePoints in total",
       points: 1000,
       target: 1000
     },
     {
       id: "q_weekly_03",
-      title: "Schließe 3 Tasks ab",
+      title: "Complete 3 tasks",
       points: 300,
       target: 3,
       trigger: "TASK_COMPLETED"

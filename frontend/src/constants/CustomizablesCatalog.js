@@ -8,14 +8,14 @@ export const customizables = [
   },
   {
     id: "cust_02",
-    name: "Eco-Held",
+    name: "Eco-Hero",
     icon: "leaf",
     color: "#4CAF50",
     type: "title"
   },
   {
     id: "cust_03",
-    name: "Gründer-Aura",
+    name: "Founder Aura",
     icon: "fire",
     color: "#FF9800",
     type: "frame"

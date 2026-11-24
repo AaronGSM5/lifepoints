@@ -1,5 +1,4 @@
 {
-  // CategoryButtons
   "categories": {
     "all": "All",
     "fashion": "Fashion",
@@ -8,19 +7,47 @@
     "entertainment": "Entertainment",
     "rewards": "Rewards"
   },
-  // FeaturedRewardCard
   "BEST VALUE": "BEST VALUE",
   "$10 Gift Card": "$10 Gift Card",
   "Spotify Individual Plan": "Spotify Individual Plan",
   "Redeem": "Redeem",
-  // Catalog
   "For You": "For You",
   "Rewards": "Rewards",
   "Locked": "Locked",
   "Description": "Description",
   "Redeem Now": "Redeem Now",
-  // Empty State
   "No Rewards Found": "No Rewards Found",
   "We don't have any deals for": "We don't have any deals for \"{{category}}\" right now.",
-  "Reset filter": "Reset Filter"
+  "Reset filter": "Reset Filter",
+  "15% Off Storewide": "15% Off Storewide",
+  "Free Tall Coffee": "Free Tall Coffee",
+  "20% Off Shoes": "20% Off Shoes",
+  "1 Month Premium": "1 Month Premium",
+  "25% Off Whey": "25% Off Whey",
+  "20% Off Storewide": "20% Off Storewide",
+  "15€ App Store Card": "15€ App Store Card",
+  "1 Free Recipe Box": "1 Free Recipe Box",
+  "10% Off Smartwatches": "10% Off Smartwatches",
+  "Free 15cm Sub": "Free 15cm Sub",
+  "1 Free Audiobook": "1 Free Audiobook",
+  "Free Shipping + 10%": "Free Shipping + 10%",
+  "10€ PSN Card": "10€ PSN Card",
+  "5€ Voucher": "5€ Voucher",
+  "15% Off Running Gear": "15% Off Running Gear",
+  "Get 15% off the entire range in all official Adidas stores and online. Not valid for limited sneaker releases.": "Get 15% off the entire range in all official Adidas stores and online. Not valid for limited sneaker releases.",
+  "Start your day right! Redeem this coupon for a free Tall filter coffee or Caffè Americano at participating stores.": "Start your day right! Redeem this coupon for a free Tall filter coffee or Caffè Americano at participating stores.",
+  "A $10 gift card for your next tech upgrade. The code will be stored directly in your profile.": "A $10 gift card for your next tech upgrade. The code will be stored directly in your profile.",
+  "Time for new kicks. Get 20% off all regular running and training shoes.": "Time for new kicks. Get 20% off all regular running and training shoes.",
+  "Get one month of Premium for free. Perfect for your house rap or Latin reggaeton playlists while training.": "Get one month of Premium for free. Perfect for your house rap or Latin reggaeton playlists while training.",
+  "Refuel after your good deeds. 25% off all whey protein powders.": "Refuel after your good deeds. 25% off all whey protein powders.",
+  "Upgrade your workout outfit with 20% off the entire Gymshark online store.": "Upgrade your workout outfit with 20% off the entire Gymshark online store.",
+  "Get new premium apps, subscriptions or in-app purchases in the Apple ecosystem.": "Get new premium apps, subscriptions or in-app purchases in the Apple ecosystem.",
+  "Don't feel like shopping? Get a free recipe box with 3 meals for 2 people.": "Don't feel like shopping? Get a free recipe box with 3 meals for 2 people.",
+  "Track your LifePoints and workouts even better. 10% off selected Forerunner and Fenix models.": "Track your LifePoints and workouts even better. 10% off selected Forerunner and Fenix models.",
+  "A quick snack in between. Choose your favorite sub (15cm) at all participating restaurants.": "A quick snack in between. Choose your favorite sub (15cm) at all participating restaurants.",
+  "Learn something new or relax. A free audiobook of your choice that you can keep forever.": "Learn something new or relax. A free audiobook of your choice that you can keep forever.",
+  "Free shipping on your next order plus an extra 10% off all sale items.": "Free shipping on your next order plus an extra 10% off all sale items.",
+  "€10 store credit. Invest it in new games or boost your nightclub business in Los Santos.": "€10 store credit. Invest it in new games or boost your nightclub business in Los Santos.",
+  "Simply scan at the checkout on your next purchase and save €5 on your entire basket.": "Simply scan at the checkout on your next purchase and save €5 on your entire basket.",
+  "Get the most out of your next run. 15% off the current running collection.": "Get the most out of your next run. 15% off the current running collection."
 }

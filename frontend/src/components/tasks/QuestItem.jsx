@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -12,18 +13,19 @@ import LpPoints from "../ui/LpPoints";
 const QuestItem = memo(({ quest, onStart }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+  const { t } = useTranslation("tasks");
   const current = quest.currentProgress || 0;
   const target = quest.target || 1;
   const progressPercent = Math.min((current / target) * 100, 100);
 
-  const buttonTitle = quest.completed ? (quest.collected ? "Done" : `+${quest.points} LP`) : "Start";
+  const buttonTitle = quest.completed ? (quest.collected ? t("Done") : `+${quest.points} LP`) : t("Start");
 
   return (
     <BaseCard style={styles.questCard}>
       <View style={styles.leftContainer}>
         <View style={styles.titleRow}>
           <AppText bold style={styles.titleText}>
-            {quest.title}
+            {t(quest.title)}
           </AppText>
           <LpPoints points={quest.points} />
         </View>

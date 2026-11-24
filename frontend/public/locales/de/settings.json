@@ -1,5 +1,4 @@
 {
-  // Menu & Tabs
   "Settings": "Einstellungen",
   "Your Account": "Dein Konto",
   "App Experience": "App Darstellung",
@@ -16,8 +15,6 @@
   "Privacy Policy": "Datenschutzrichtlinie",
   "Terms of Service": "Nutzungsbedingungen",
   "Delete Account": "Konto löschen",
-
-  // Edit Profile
   "Permission needed": "Berechtigung benötigt",
   "We need access to your photos to change your profile picture.": "Wir brauchen Zugriff auf deine Fotos, um dein Profilbild zu ändern.",
   "Tap to change": "Tippen zum Ändern",
@@ -28,8 +25,6 @@
   "MyDescription": "Erzähl etwas über dich...",
   "Save changes": "Änderungen speichern",
   "Saving...": "Speichere...",
-
-  // Security & Login
   "Manage your password and how you sign in.": "Verwalte dein Passwort und wie du dich anmeldest.",
   "Change Password": "Passwort ändern",
   "Current Password": "Aktuelles Passwort",
@@ -42,8 +37,6 @@
   "Two-factor authentication": "Zwei-Faktor-Authentifizierung",
   "Additional protection via email": "Zusätzlicher Schutz per E-Mail",
   "Permanently delete account": "Konto dauerhaft löschen",
-
-  // Linked Services
   "Connect your favorite apps to automatically earn LifePoints through your activities.": "Verbinde deine Lieblings-Apps, um LifePoints automatisch durch Aktivitäten zu sammeln.",
   "Fitness & Health": "Fitness & Gesundheit",
   "Entertainment & Lifestyle": "Entertainment & Lifestyle",
@@ -54,14 +47,10 @@
   "Use Focus Playlists for Tasks": "Focus-Playlists für Aufgaben nutzen",
   "Manage": "Verwalten",
   "Connect": "Verbinden",
-
-  // Notifications
   "Choose how and when LifePoints keeps you up to date.": "Lege fest, wie und wann LifePoints dich auf dem Laufenden hält.",
   "Push Notifications": "Push-Benachrichtigungen",
   "Email": "Email",
   "Offers": "Angebote",
-
-  // Subscription
   "Reach the next level": "Erreiche das nächste Level",
   "Unlock exclusive features and earn LifePoints even faster.": "Schalte exklusive Funktionen frei und sammle LifePoints noch schneller.",
   "Monthly": "Monatlich",
@@ -90,18 +79,12 @@
   "Smart Community Administration": "Intelligente Community Verwaltung",
   "Custom Themes": "Benutzerdefinierte Designs",
   "... and many more benefits": "... und viele weitere Vorteile",
-
-  // Appearance
   "Customize the app's design to suit your preferences.": "Passe das Design der App an deine Vorlieben an.",
   "Bright": "Hell",
   "Dark": "Dunkel",
-
-  // Language
   "Select the language in which you want LifePoints to be displayed.": "Wähle die Sprache aus, in der LifePoints angezeigt werden soll.",
   "German": "Deutsch",
   "English": "Englisch",
-
-  // Support
   "How can we help?": "Wie können wir helfen?",
   "Search our FAQs or contact us directly.": "Suche in unseren FAQs oder kontaktiere uns direkt.",
   "Describe the problem...": "Problem beschreiben...",
@@ -114,8 +97,13 @@
   "Why haven't my LifePoints been credited?": "Warum wurden meine LifePoints nicht gutgeschrieben?",
   "It may take up to 24 hours for the synchronization to complete...": "Es kann bis zu 24 Stunden dauern, bis die Synchronisierung abgeschlossen ist...",
   "How do I redeem a coupon?": "Wie löse ich einen Gutschein ein?",
-  "Gehe in deinen Shop-Bereich und wähle den Reiter 'Meine Gutscheine'...": "Go to your account page and select the “My Coupons” tab...",
+  "Go to your account page and select the “My Coupons” tab...": "Gehe in deinen Shop-Bereich und wähle den Reiter „Meine Gutscheine“...",
   "Can I transfer LifePoints to friends?": "Kann ich LifePoints auf Freunde übertragen?",
   "This feature is currently still in development...": "Aktuell ist dieses Feature noch in der Entwicklung...",
-  "All systems are operating normally": "Alle Systeme laufen normal"
+  "All systems are operating normally": "Alle Systeme laufen normal",
+  "Error": "Fehler",
+  "Failed to save profile.": "Profil konnte nicht gespeichert werden.",
+  "Cache Cleared": "Cache geleert",
+  "Temporary files have been removed.": "Temporäre Dateien wurden entfernt.",
+  "Color Theme": "Farbthema"
 }

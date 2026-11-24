@@ -1,5 +1,4 @@
 {
-  // CategoryButtons
   "categories": {
     "all": "Alle",
     "fashion": "Mode",
@@ -8,19 +7,47 @@
     "entertainment": "Unterhaltung",
     "rewards": "Coupons"
   },
-  // FeaturedRewardCard
   "BEST VALUE": "BESTES PREIS-LEISTUNGS-VERHÄLTNIS",
   "$10 Gift Card": "10€ Geschenkkarte",
   "Spotify Individual Plan": "Spotify-Einzelabonnement",
   "Redeem": "Einlösen",
-  // Catalog
   "For You": "Für dich",
   "Rewards": "Coupons",
   "Locked": "Gesperrt",
   "Description": "Beschreibung",
   "Redeem Now": "Jetzt einlösen",
-  // Empty State
   "No Rewards Found": "Keine Belohnungen gefunden",
   "We don't have any deals for": "Wir haben derzeit keine Angebote für \"{{category}}\"",
-  "Reset filter": "Filter zurücksetzen"
+  "Reset filter": "Filter zurücksetzen",
+  "15% Off Storewide": "15% Rabatt auf alles",
+  "Free Tall Coffee": "Gratis Tall Coffee",
+  "20% Off Shoes": "20% Rabatt auf Schuhe",
+  "1 Month Premium": "1 Monat Premium",
+  "25% Off Whey": "25% Rabatt auf Whey",
+  "20% Off Storewide": "20% Rabatt auf alles",
+  "15€ App Store Card": "15€ App Store Karte",
+  "1 Free Recipe Box": "1 gratis Kochbox",
+  "10% Off Smartwatches": "10% Rabatt auf Smartwatches",
+  "Free 15cm Sub": "Gratis 15cm Sub",
+  "1 Free Audiobook": "1 gratis Hörbuch",
+  "Free Shipping + 10%": "Gratis Versand + 10%",
+  "10€ PSN Card": "10€ PSN Karte",
+  "5€ Voucher": "5€ Gutschein",
+  "15% Off Running Gear": "15% Rabatt auf Laufausrüstung",
+  "Get 15% off the entire range in all official Adidas stores and online. Not valid for limited sneaker releases.": "Hol dir 15% Rabatt auf das gesamte Sortiment in allen offiziellen Adidas Stores und online. Gilt nicht für limitierte Sneaker-Releases.",
+  "Start your day right! Redeem this coupon for a free Tall filter coffee or Caffè Americano at participating stores.": "Starte deinen Tag richtig! Löse diesen Coupon für einen kostenlosen Tall Filterkaffee oder Caffè Americano in teilnehmenden Filialen ein.",
+  "A $10 gift card for your next tech upgrade. The code will be stored directly in your profile.": "Eine 10$ Geschenkkarte für dein nächstes Tech-Upgrade. Der Code wird direkt in deinem Profil hinterlegt.",
+  "Time for new kicks. Get 20% off all regular running and training shoes.": "Zeit für neue Kicks. Erhalte 20% auf alle regulären Lauf- und Trainingsschuhe.",
+  "Get one month of Premium for free. Perfect for your house rap or Latin reggaeton playlists while training.": "Hol dir einen Monat Premium kostenlos. Perfekt für deine House Rap oder Latino Reggaeton Playlists beim Training.",
+  "Refuel after your good deeds. 25% off all whey protein powders.": "Fülle deine Reserven nach den Good Deeds auf. 25% Rabatt auf alle Whey-Proteinpulver.",
+  "Upgrade your workout outfit with 20% off the entire Gymshark online store.": "Upgrade dein Workout-Outfit mit 20% Rabatt auf den gesamten Gymshark Online-Store.",
+  "Get new premium apps, subscriptions or in-app purchases in the Apple ecosystem.": "Hol dir neue Premium-Apps, Abos oder In-App-Käufe im Apple Ökosystem.",
+  "Don't feel like shopping? Get a free recipe box with 3 meals for 2 people.": "Keine Lust einzukaufen? Sichere dir eine kostenlose Kochbox mit 3 Gerichten für 2 Personen.",
+  "Track your LifePoints and workouts even better. 10% off selected Forerunner and Fenix models.": "Tracke deine LifePoints und Workouts noch besser. 10% Rabatt auf ausgewählte Forerunner- und Fenix-Modelle.",
+  "A quick snack in between. Choose your favorite sub (15cm) at all participating restaurants.": "Ein schneller Snack für zwischendurch. Wähle dein Lieblings-Sub (15cm) in allen teilnehmenden Restaurants.",
+  "Learn something new or relax. A free audiobook of your choice that you can keep forever.": "Bilde dich weiter oder entspanne. Ein kostenloses Hörbuch deiner Wahl, das du für immer behalten darfst.",
+  "Free shipping on your next order plus an extra 10% off all sale items.": "Kostenloser Versand für deine nächste Bestellung plus 10% on top auf alle Sale-Artikel.",
+  "€10 store credit. Invest it in new games or boost your nightclub business in Los Santos.": "10€ Guthaben für den Store. Investiere es in neue Spiele oder booste dein Nightclub-Business in Los Santos.",
+  "Simply scan at the checkout on your next purchase and save €5 on your entire basket.": "Einfach beim nächsten Einkauf an der Kasse scannen und 5€ auf den gesamten Warenkorb sparen.",
+  "Get the most out of your next run. 15% off the current running collection.": "Hol das Maximum aus deinem nächsten Lauf. 15% auf die aktuelle Running-Kollektion."
 }

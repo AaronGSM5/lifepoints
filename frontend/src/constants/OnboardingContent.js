@@ -1,20 +1,20 @@
 export const onboardingSlides = [
   {
     id: "1",
-    title: "Mach die Welt etwas besser",
-    description: "Kleine Taten, große Wirkung. Sammle Punkte für jede gute Geste im Alltag.",
+    title: "Make the world a little better",
+    description: "Small deeds, big impact. Collect points for every good gesture in everyday life.",
     icon: '🌍'
   },
   {
     id: "2",
-    title: "Mit LifePoints",
-    description: "Verwandle dein Engagement in wertvolle Belohnungen und steigere dein Level.",
+    title: "With LifePoints",
+    description: "Turn your commitment into valuable rewards and level up.",
     icon: '✨'
   },
   {
     id: "3",
     title: "Be good",
-    description: "Werde Teil einer Community, die gemeinsam den Unterschied macht. Starte jetzt!",
+    description: "Become part of a community that makes a difference together. Start now!",
     icon: '🌱'
   },
 ];

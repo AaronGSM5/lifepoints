@@ -1,23 +1,23 @@
 export const mockSurveyOptions = [
   {
     id: "goals",
-    title: "Was ist dein Ziel?",
+    title: "What is your goal?",
     options: [
-      { label: "Umwelt", icon: "🌱", value: "eco" },
-      { label: "Soziales", icon: "🤝", value: "social" },
-      { label: "Tierschutz", icon: "🐾", value: "animals" },
-      { label: "Nachbarschaft", icon: "🏠", value: "community" }
+      { label: "Environment", icon: "🌱", value: "eco" },
+      { label: "Social", icon: "🤝", value: "social" },
+      { label: "Animal welfare", icon: "🐾", value: "animals" },
+      { label: "Neighborhood", icon: "🏠", value: "community" }
     ],
     multiple: true
   },
   {
     id: "interests",
-    title: "Was liegt dir am Herzen?",
+    title: "What matters to you?",
     options: [
-      { label: "Umwelt", icon: "🌱", value: "eco" },
-      { label: "Soziales", icon: "🤝", value: "social" },
-      { label: "Tierschutz", icon: "🐾", value: "animals" },
-      { label: "Nachbarschaft", icon: "🏠", value: "community" }
+      { label: "Environment", icon: "🌱", value: "eco" },
+      { label: "Social", icon: "🤝", value: "social" },
+      { label: "Animal welfare", icon: "🐾", value: "animals" },
+      { label: "Neighborhood", icon: "🏠", value: "community" }
     ],
     multiple: true
   }

@@ -67,7 +67,7 @@ export default function SubscriptionScreen() {
       {!isLoading && (
         <View style={styles.footer}>
           <AppText bold style={styles.restoreText} onPress={handleRestore}>
-            {t("Käufe wiederherstellen")}
+            {t("Restore purchases")}
           </AppText>
           <AppText type="caption" style={styles.legalText}>
             {t(

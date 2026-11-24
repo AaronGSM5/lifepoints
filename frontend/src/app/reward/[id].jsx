@@ -79,7 +79,7 @@ export default function RewardDetailScreen() {
             </View>
 
             <AppText type="h1" style={{ marginBottom: Spacing.sm }}>
-              {reward.title}
+              {t(reward.title)}
             </AppText>
 
             <LpPoints points={reward.points} size="large" />
@@ -88,7 +88,7 @@ export default function RewardDetailScreen() {
               {t("Description")}
             </AppText>
             <AppText type="body" style={{ color: MyTheme.muted, lineHeight: 22 }}>
-              {reward.description}
+              {t(reward.description)}
             </AppText>
           </View>
         </ScrollView>

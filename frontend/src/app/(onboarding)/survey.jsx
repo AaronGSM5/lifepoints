@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
@@ -12,6 +13,7 @@ import { mockSurveyOptions } from "@/constants/OnboardingSurvey";
 import useStore from "@/store/useStore";
 
 export default function SurveyScreen() {
+  const { t } = useTranslation();
   const completeOnboarding = useStore((state) => state.setHasCompletedOnboarding);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -61,7 +63,7 @@ export default function SurveyScreen() {
         <SurveyQuestion question={currentQuestion} answers={answers} onSelect={handleSelect} />
       </View>
       <ScreenFooter breakOut>
-        <AppButton title={"Weiter"} disabled={!isCompleted} onPress={handleNext} />
+        <AppButton title={t("Continue")} disabled={!isCompleted} onPress={handleNext} />
       </ScreenFooter>
     </ScreenWrapper>
   );
