@@ -11,9 +11,7 @@
   "Trending Right Now": "Gerade im Trend",
   "Discover": "Entdecken",
   "Topic": "Thema",
-  // Recommended Community Card
   "Members": "Mitglieder",
-  // Dedicated Community Page
   "Join Community": "Jetzt beitreten",
   "LIVE NOW": "LIVE",
   "About": "Über uns",
@@ -21,7 +19,6 @@
   "Preview of what's waiting for you.": "Ein Vorgeschmack darauf, was dich erwartet.",
   "Leaderboard": "Rangliste",
   "Leave Community": "Verlassen",
-  // CreateCommunityForm
   "New Community": "Neue Community",
   "What should you name your community?": "Wie soll deine Community heißen?",
   "Choose carefully. You won't be able to change the name later.": "Wähle weise. Der Name kann später nicht mehr geändert werden.",
@@ -31,11 +28,9 @@
   "We need access to your photos in order to upload a banner.": "Wir brauchen Zugriff auf deine Fotos, um ein Banner hochzuladen.",
   "Tap to select (16:9 recommended)": "Tippen zum Auswählen (16:9 empfohlen)",
   "COMMUNITY-SIZE": "COMMUNITY-GRÖßE",
-  "Gratis": "Gratis",
-  "Erstellen": "Erstellen",
-  "Für": "Für",
+  "Free": "Gratis",
+  "Create for {{price}}": "Für {{price}} erstellen",
   "Create now": "Jetzt erstellen",
-  // Community Badges
   "Friendly": "freundlich",
   "Chill": "chillig",
   "Helpful": "hilfsbereit",
@@ -78,7 +73,6 @@
   "Text Only": "text-only",
   "Real-Life Meetups": "real-life meetups",
   "Events": "events",
-  // Sections
   "Computers": "Technik",
   "Creativity": "Kreativität",
   "Early": "Frühaufsteher",
@@ -88,5 +82,7 @@
   "lifestyle": "Lifestyle",
   "mindfulness": "Achtsamkeit",
   "Mindset": "Mindset",
-  "Productivity": "Produktivität"
+  "Productivity": "Produktivität",
+  "Community not found": "Community nicht gefunden",
+  "Go Back": "Zurück"
 }

@@ -45,12 +45,12 @@ export const ErrorFallback = memo(({ error, resetError }) => {
         </View>
 
         <AppText type="h2" style={styles.title} bold>
-          {t("Hoppla, das lief nicht nach Plan.")}
+          {t("Oops, that didn't go as planned.")}
         </AppText>
 
         <AppText type="caption" style={styles.description}>
           {t(
-            "Ein unerwarteter Fehler ist aufgetreten.\nKeine Sorge, dein Fortschritt in LifePoints ist sicher gespeichert."
+            "An unexpected error occurred. Don't worry, your progress in LifePoints is safely stored."
           )}
         </AppText>
 
@@ -65,8 +65,8 @@ export const ErrorFallback = memo(({ error, resetError }) => {
         )}
 
         <View style={styles.buttonGroup}>
-          <AppButton title={t("App neu laden")} onPress={handleReload} />
-          <AppButton title={t("Support kontaktieren")} onPress={handleSupport} variant="outline" />
+          <AppButton title={t("Reload app")} onPress={handleReload} />
+          <AppButton title={t("Contact support")} onPress={handleSupport} variant="outline" />
         </View>
       </ScrollView>
     </ScreenWrapper>

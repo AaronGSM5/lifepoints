@@ -46,26 +46,26 @@ export default function PostOptionsSheet({ isVisible, onClose, isOwner }) {
       <View style={styles.container}>
         {isOwner ? (
           <>
-            <OptionItem icon="pencil" label={t("Beitrag bearbeiten")} onPress={onClose} />
-            <OptionItem icon="archive" label={t("Archivieren")} onPress={onClose} />
-            <OptionItem icon="statsChart" label={t("Insights")} disabled badge={"Coming Soon"} />
+            <OptionItem icon="pencil" label={t("Edit post")} onPress={onClose} />
+            <OptionItem icon="archive" label={t("Archive")} onPress={onClose} />
+            <OptionItem icon="statsChart" label={t("Insights")} disabled badge={t("Coming Soon")} />
             <Separator />
-            <OptionItem icon="trash" label={t("Beitrag löschen")} onPress={onClose} color={warningColor} />
+            <OptionItem icon="trash" label={t("Delete post")} onPress={onClose} color={warningColor} />
           </>
         ) : (
           <>
             <OptionItem
               icon="target"
-              label={t("Zugehörige Aufgabe ansehen")}
+              label={t("View related task")}
               onPress={onClose}
               color={MyTheme.primaryAccentText}
             />
             <Separator />
-            <OptionItem icon="mute" label={t("Nutzer stummschalten")} onPress={onClose} />
-            <OptionItem icon="dislike" label={t("Interessiert mich nicht")} onPress={onClose} />
+            <OptionItem icon="mute" label={t("Mute user")} onPress={onClose} />
+            <OptionItem icon="dislike" label={t("Not interested")} onPress={onClose} />
             <Separator />
-            <OptionItem icon="alert" label={t("Beitrag melden")} onPress={onClose} />
-            <OptionItem icon="userX" label={t("Nutzer blockieren")} onPress={onClose} color={warningColor} />
+            <OptionItem icon="alert" label={t("Report post")} onPress={onClose} />
+            <OptionItem icon="userX" label={t("Block user")} onPress={onClose} color={warningColor} />
           </>
         )}
       </View>

@@ -24,7 +24,7 @@ const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => 
       </AppText>
 
       <AppText type="caption" style={styles.timeAgo}>
-        {t("Vor")} 2 {t("Hours")}
+        {t("{{count}} hours ago", { count: 2 })}
       </AppText>
     </View>
   );

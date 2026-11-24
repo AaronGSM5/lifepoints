@@ -1,5 +1,4 @@
 {
-  // Sections & Layout
   "Active Tasks": "Active Tasks",
   "Done Tasks": "Done Tasks",
   "No Active Tasks": "No Active Tasks",
@@ -22,7 +21,6 @@
   "LOCKED": "LOCKED",
   "Finish": "Finish",
   "Go to Task": "Go to Task",
-  // Task titles
   "Bed Boost": "Bed Boost",
   "One-Item Tidy": "One-Item Tidy",
   "Plant Daddy": "Plant Daddy",
@@ -38,7 +36,6 @@
   "Spread Joy": "Spread Joy",
   "Unfollow Clutter": "Unfollow Clutter",
   "App Spring Cleaning": "App Spring Cleaning",
-  // Task descriptions
   "Shake out your blanket and make your bed.": "Shake out your blanket and make your bed.",
   "Put exactly one item back in its proper place.": "Put exactly one item back in its proper place.",
   "Water a plant that looks a little thirsty right now.": "Water a plant that looks a little thirsty right now.",
@@ -54,7 +51,6 @@
   "Bring a little joy to a homeless person (a smile, a kind word, or a small donation).": "Bring a little joy to a homeless person (a smile, a kind word, or a small donation).",
   "Unfollow an account that doesn't make you feel good.": "Unfollow an account that doesn't make you feel good.",
   "Delete an app that you haven't opened in over a month.": "Delete an app that you haven't opened in over a month.",
-  // Task Categories
   "categories": {
     "all": "All",
     "selfcare": "Selfcare",
@@ -63,7 +59,6 @@
     "digital": "Digital",
     "special": "Special"
   },
-  // Task dedicated page
   "Description": "Description",
   "History": "History",
   "Tracked": "Tracked",
@@ -71,8 +66,7 @@
   "Level up to unlock": "Level up to unlock",
   "Complete task": "Complete task",
   "Track now": "Track now",
-  // Task optional Input
-  "Anzahl": "How many",
+  "Amount": "How many",
   "minutes": "minutes",
   "glasses": "glasses",
   "breaths": "breaths",
@@ -80,18 +74,15 @@
   "reps": "reps",
   "accounts": "accounts",
   "apps": "apps",
-  "eingeben...": "",
-  // TaskSelector
+  "Enter...": "Enter...",
   "Related task": "Related task",
   "Select task": "Select task",
-  // Empty / Error
   "Could not load tasks": "Could not load tasks",
   "Please check your internet connection and try again.": "Please check your internet connection and try again.",
   "No tasks available": "No tasks available",
   "We are currently updating our challenges. But hey, you can shape LifePoints by suggesting a task.": "We are currently updating our challenges. But hey, you can shape LifePoints! Scroll down and suggest a task.",
   "Try again": "Try again",
   "Refresh": "Refresh",
-  // Routines
   "Search routines": "Search routines",
   "Due today {{done}}/{{total}}": "Due today {{done}}/{{total}}",
   "Other routines": "Other routines",
@@ -151,5 +142,15 @@
     "4": "Thu",
     "5": "Fri",
     "6": "Sat"
-  }
+  },
+  "Process": "Process",
+  "Add step...": "Add step...",
+  "Title...": "Title...",
+  "Description (optional)...": "Description (optional)...",
+  "Log 2 tasks": "Log 2 tasks",
+  "Invite a friend": "Invite a friend",
+  "Reach a 5-day streak": "Reach a 5-day streak",
+  "Collect 1000 LifePoints in total": "Collect 1000 LifePoints in total",
+  "Complete 3 tasks": "Complete 3 tasks",
+  "Start": "Start"
 }

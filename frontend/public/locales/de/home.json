@@ -1,18 +1,15 @@
 {
-  // Daily- / Weekly-Quests
   "Challenges": "Herausforderungen",
   "Today": "Heute",
   "This Week": "Diese Woche",
   "Start": "Starten",
   "Done": "Erledigt",
-  // Feed
-  "Vor": "Vor",
+  "{{count}} hours ago": "vor {{count}} Stunden",
   "Hour": "Stunde",
   "Hours": "Stunden",
   "Minutes": "Minuten",
   "Second": "Sekunde",
   "Seconds": "Sekunden",
-  // CommentSheet
   "You": "Du",
   "Comments": "Kommentare",
   "Reply": "Antworten",
@@ -21,7 +18,6 @@
   "Just now": "Gerade eben",
   "Leave a comment...": "Kommentieren...",
   "No comments yet. Be the first to leave one!": "Noch keine Kommentare. Schreib den ersten!",
-  // LootGame
   "Select a card": "Wähle eine Karte",
   "Common": "Gewöhnlich",
   "Rare": "Selten",
@@ -30,4 +26,14 @@
   "Collect Reward": "Belohnung einsammeln",
   "So close!": "Knapp daneben!",
   "Crazy!": "Wahnsinn!",
+  "Edit post": "Beitrag bearbeiten",
+  "Archive": "Archivieren",
+  "Insights": "Insights",
+  "Delete post": "Beitrag löschen",
+  "View related task": "Zugehörige Aufgabe ansehen",
+  "Mute user": "Nutzer stummschalten",
+  "Not interested": "Interessiert mich nicht",
+  "Report post": "Beitrag melden",
+  "Block user": "Nutzer blockieren",
+  "Coming Soon": "Demnächst"
 }

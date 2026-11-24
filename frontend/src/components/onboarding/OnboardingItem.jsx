@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
@@ -6,6 +7,7 @@ import AppText from "../ui/AppText";
 
 const OnboardingItem = ({ item }) => {
   const { width } = useWindowDimensions();
+  const { t } = useTranslation();
   return (
     <View style={[styles.slide, { width }]}>
       <View style={styles.imageContainer}>
@@ -16,10 +18,10 @@ const OnboardingItem = ({ item }) => {
 
       <View style={styles.textContainer}>
         <AppText type="h1" style={styles.title}>
-          {item.title}
+          {t(item.title)}
         </AppText>
         <AppText type="body" style={styles.description}>
-          {item.description}
+          {t(item.description)}
         </AppText>
       </View>
     </View>
