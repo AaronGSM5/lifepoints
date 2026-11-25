@@ -1,6 +1,11 @@
 import { DarkTheme, LightTheme } from "@/constants/Colors";
-import { getDesignPreset } from "@/constants/DesignPresets";
-import { buildThemeTokens } from "@/constants/DesignTokens";
+import {
+  getAccentOption,
+  getBackgroundOption,
+  getShapeOption,
+  isDesignSelectionActive
+} from "@/constants/DesignOptions";
+import { buildThemeTokens, composeDesignTheme } from "@/constants/DesignTokens";
 import useStore from "@/store/useStore";
 import { ensureContrast } from "@/utils/colorHelpers";
 
@@ -15,15 +20,22 @@ const colorThemes = {
 // Fertige Themes werden gecacht: gleiche Referenz bei gleichem Zustand, damit `useMemo(getStyles)` greift.
 const themeCache = new Map();
 
-const resolveTheme = (isDarkMode, activeColorThemeId, designPresetId) => {
-  const preset = getDesignPreset(designPresetId);
-  const key = preset ? `preset:${preset.id}` : `${isDarkMode}|${activeColorThemeId}`;
+const resolveTheme = (isDarkMode, activeColorThemeId, selection) => {
+  const isPlayground = isDesignSelectionActive(selection);
+  const key = isPlayground
+    ? `design:${selection.backgroundId}|${selection.shapeId}|${selection.accentId}`
+    : `${isDarkMode}|${activeColorThemeId}`;
 
   if (themeCache.has(key)) return themeCache.get(key);
 
   let theme;
-  if (preset) {
-    theme = buildThemeTokens(preset.theme, preset.isDark);
+  if (isPlayground) {
+    // Design-Playground: Background + Shape + Accent frei kombiniert (fehlende Section = Current)
+    theme = composeDesignTheme(
+      getBackgroundOption(selection.backgroundId),
+      getShapeOption(selection.shapeId),
+      getAccentOption(selection.accentId)
+    );
   } else {
     const baseTheme = isDarkMode ? DarkTheme : LightTheme;
     const accentTheme = colorThemes[activeColorThemeId] || colorThemes["default_green"];
@@ -32,7 +44,7 @@ const resolveTheme = (isDarkMode, activeColorThemeId, designPresetId) => {
 
   // Für Text, Links und Icons in Akzentfarbe verwenden; primaryAccent bleibt für Flächen (WCAG 1.4.3).
   theme.primaryAccentText = ensureContrast(theme.primaryAccent, theme.background, 4.5);
-  theme.designPresetId = preset?.id ?? null;
+  theme.isDesignPlayground = isPlayground;
 
   themeCache.set(key, theme);
   return theme;
@@ -41,7 +53,9 @@ const resolveTheme = (isDarkMode, activeColorThemeId, designPresetId) => {
 export const useAppTheme = () => {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeColorThemeId = useStore((state) => state.activeColorThemeId) || "orange_light";
-  const designPresetId = useStore((state) => state.designPresetId);
+  const backgroundId = useStore((state) => state.backgroundId);
+  const shapeId = useStore((state) => state.shapeId);
+  const accentId = useStore((state) => state.accentId);
 
-  return resolveTheme(isDarkMode, activeColorThemeId, designPresetId);
+  return resolveTheme(isDarkMode, activeColorThemeId, { backgroundId, shapeId, accentId });
 };

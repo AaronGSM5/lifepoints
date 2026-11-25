@@ -62,7 +62,9 @@ const useStore = create(
           hasCompletedOnboarding: state.hasCompletedOnboarding,
           isAuthenticated: state.isAuthenticated,
           isDarkMode: state.isDarkMode,
-          designPresetId: state.designPresetId,
+          backgroundId: state.backgroundId,
+          shapeId: state.shapeId,
+          accentId: state.accentId,
           showInstaTrackingModal: state.showInstaTrackingModal
         }),
       }

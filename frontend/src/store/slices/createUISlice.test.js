@@ -92,33 +92,40 @@ describe("createUISlice", () => {
   });
 
   describe("design playground", () => {
-    it("starts without an active design preset", () => {
-      expect(store.getState().designPresetId).toBeNull();
+    it("starts with the regular theme (no section selected)", () => {
+      const { backgroundId, shapeId, accentId } = store.getState();
+      expect([backgroundId, shapeId, accentId]).toEqual([null, null, null]);
     });
 
-    it("sets and resets a design preset", () => {
-      store.getState().setDesignPreset("linear");
-      expect(store.getState().designPresetId).toBe("linear");
-
-      store.getState().setDesignPreset(null);
-      expect(store.getState().designPresetId).toBeNull();
+    it("fills the other sections with 'current' on the first selection", () => {
+      store.getState().setDesignSection("shapeId", "soft-pill");
+      const { backgroundId, shapeId, accentId } = store.getState();
+      expect([backgroundId, shapeId, accentId]).toEqual(["current", "soft-pill", "current"]);
     });
 
-    it("cycles forward from no preset to the first preset and wraps around", () => {
-      store.getState().cycleDesignPreset(1);
-      expect(store.getState().designPresetId).toBe("current");
-
-      store.getState().setDesignPreset("nordic");
-      store.getState().cycleDesignPreset(1);
-      expect(store.getState().designPresetId).toBe("current");
+    it("changes sections independently", () => {
+      store.getState().setDesignSection("backgroundId", "obsidian");
+      store.getState().setDesignSection("accentId", "warm-coral");
+      store.getState().setDesignSection("backgroundId", "warm-charcoal");
+      const { backgroundId, shapeId, accentId } = store.getState();
+      expect([backgroundId, shapeId, accentId]).toEqual(["warm-charcoal", "current", "warm-coral"]);
     });
 
-    it("cycles backward from no preset to the last preset", () => {
-      store.getState().cycleDesignPreset(-1);
-      expect(store.getState().designPresetId).toBe("nordic");
+    it("ignores unknown section keys", () => {
+      store.getState().setDesignSection("isAuthenticated", true);
+      expect(store.getState().isAuthenticated).toBe(false);
+      expect(store.getState().backgroundId).toBeNull();
+    });
 
-      store.getState().cycleDesignPreset(-1);
-      expect(store.getState().designPresetId).toBe("apple-health");
+    it("resets to the current combo and can be turned off", () => {
+      store.getState().setDesignSection("accentId", "whoop-teal");
+      store.getState().resetDesignSelection();
+      const reset = store.getState();
+      expect([reset.backgroundId, reset.shapeId, reset.accentId]).toEqual(["current", "current", "current"]);
+
+      store.getState().disableDesignPlayground();
+      const off = store.getState();
+      expect([off.backgroundId, off.shapeId, off.accentId]).toEqual([null, null, null]);
     });
   });
 });

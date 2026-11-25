@@ -1,62 +1,144 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import * as Clipboard from "expo-clipboard";
+
 import { Icon } from "@/components/icons/Icon";
+import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
-import { DesignPresets, getDesignPreset } from "@/constants/DesignPresets";
+import {
+  AccentOptions,
+  BackgroundOptions,
+  DEFAULT_DESIGN_SELECTION,
+  getAccentOption,
+  getBackgroundOption,
+  getShapeOption,
+  ShapeOptions
+} from "@/constants/DesignOptions";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/colorHelpers";
+import { buildDesignSelectionSummary } from "@/utils/designHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 
 const FAB_SIZE = 40;
 // Floating-Navbar sitzt bei bottom 25 + 65px Höhe → Button knapp darüber platzieren
 const FAB_BOTTOM_OFFSET = 100;
+const CHIP_WIDTH = 132;
 
-const getSwatches = (theme) => [
-  theme.background,
-  theme.cardBackground ?? theme.primary,
-  theme.primaryAccent,
-  theme.secondaryAccent,
-  theme.gold
-];
+// --- Mini-Vorschauen pro Section -------------------------------------------
 
-const PresetRow = memo(({ preset, isActive, onSelect, styles, MyTheme }) => {
-  const handlePress = useCallback(() => onSelect(preset.id), [onSelect, preset.id]);
+const BackgroundPreview = ({ tokens }) => (
+  <View style={[previewStyles.bgFrame, { backgroundColor: tokens.background, borderColor: tokens.borderStrong }]}>
+    <View style={[previewStyles.bgCard, { backgroundColor: tokens.primary }]}>
+      <View style={[previewStyles.bgLine, { backgroundColor: tokens.text }]} />
+      <View style={[previewStyles.bgLineShort, { backgroundColor: tokens.muted }]} />
+    </View>
+  </View>
+);
+
+const ShapePreview = ({ tokens, bg, ac }) => (
+  <View style={previewStyles.shapeFrame}>
+    <View
+      style={[
+        previewStyles.shapeCard,
+        {
+          borderRadius: tokens.radius.lg / 2,
+          borderWidth: tokens.cardBorderWidth,
+          borderBottomWidth: tokens.cardBorderBottomWidth,
+          borderColor:
+            tokens.cardBorderTone === "none"
+              ? "transparent"
+              : tokens.cardBorderTone === "strong"
+                ? bg.borderStrong
+                : bg.border,
+          backgroundColor: tokens.cardFill === "raised" ? bg.raised : bg.primary
+        }
+      ]}
+    />
+    <View
+      style={[
+        previewStyles.shapeButton,
+        {
+          borderRadius: Math.min(tokens.buttonRadius, 7),
+          backgroundColor: ac.primaryAccent,
+          borderBottomWidth: tokens.buttonDepth > 0 ? 3 : 0,
+          borderBottomColor: ac.buttonDepthColor
+        }
+      ]}
+    />
+  </View>
+);
+
+const AccentPreview = ({ tokens }) => (
+  <View style={previewStyles.accentRow}>
+    <View style={[previewStyles.accentDotLarge, { backgroundColor: tokens.primaryAccent }]} />
+    <View style={[previewStyles.accentDot, { backgroundColor: tokens.secondaryAccent }]} />
+    <View style={[previewStyles.accentDot, { backgroundColor: tokens.gold }]} />
+    <View style={[previewStyles.xpBar, { backgroundColor: tokens.xpGradient[0] }]}>
+      <View style={[previewStyles.xpBarEnd, { backgroundColor: tokens.xpGradient[1] }]} />
+    </View>
+  </View>
+);
+
+// --- Section ------------------------------------------------------------------
+
+const OptionChip = memo(({ option, isActive, onSelect, styles, children }) => {
+  const handlePress = useCallback(() => onSelect(option.id), [onSelect, option.id]);
 
   return (
     <Pressable
       onPress={handlePress}
       accessibilityRole="radio"
       accessibilityState={{ checked: isActive }}
-      accessibilityLabel={preset.name}
-      style={({ pressed }) => [styles.row, isActive && styles.rowActive, pressed && styles.rowPressed]}
+      accessibilityLabel={option.name}
+      style={({ pressed }) => [styles.chip, isActive && styles.chipActive, pressed && styles.pressed]}
     >
-      <View style={styles.swatches}>
-        {preset.swatches.map((color, index) => (
-          <View key={`${preset.id}-${index}`} style={[styles.swatch, { backgroundColor: color }]} />
-        ))}
-      </View>
-      <View style={styles.rowText}>
-        <AppText bold numberOfLines={1} style={styles.rowTitle}>
-          {preset.name}
-        </AppText>
-        <AppText type="caption" numberOfLines={1}>
-          {preset.description}
-        </AppText>
-      </View>
-      {isActive && <Icon name="checkmark" size={18} color={MyTheme.primaryAccentText} />}
+      {children}
+      <AppText bold numberOfLines={1} style={styles.chipTitle}>
+        {option.name}
+      </AppText>
+      <AppText type="caption" numberOfLines={1} style={styles.chipDescription}>
+        {option.description}
+      </AppText>
     </Pressable>
   );
 });
-PresetRow.displayName = "PresetRow";
+OptionChip.displayName = "OptionChip";
+
+const DesignSection = memo(({ title, options, activeId, onSelect, renderPreview, styles }) => (
+  <View style={styles.section}>
+    <AppText type="caption" bold style={styles.sectionTitle}>
+      {title}
+    </AppText>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.chipRow}
+      accessibilityRole="radiogroup"
+    >
+      {options.map((option) => (
+        <OptionChip
+          key={option.id}
+          option={option}
+          isActive={option.id === activeId}
+          onSelect={onSelect}
+          styles={styles}
+        >
+          {renderPreview(option)}
+        </OptionChip>
+      ))}
+    </ScrollView>
+  </View>
+));
+DesignSection.displayName = "DesignSection";
 
 /**
- * Design-Playground: Floating-Button + kompaktes Bottom-Sheet zum Live-Wechsel der 10 Design-Presets.
- * Das Sheet bedeckt nur den unteren Bereich, damit der Screen darüber direkt sichtbar bleibt (A/B-Vergleich).
+ * Design-Playground: Floating-Button + kompaktes Bottom-Sheet, in dem Background, Haptik/Form und Akzente
+ * unabhängig voneinander live kombiniert werden.
  */
 const DesignSwitcher = memo(() => {
   const MyTheme = useAppTheme();
@@ -64,33 +146,34 @@ const DesignSwitcher = memo(() => {
   const { t } = useTranslation("design");
   const insets = useSafeAreaInsets();
 
-  const designPresetId = useStore((state) => state.designPresetId);
-  const setDesignPreset = useStore((state) => state.setDesignPreset);
-  const cycleDesignPreset = useStore((state) => state.cycleDesignPreset);
+  const backgroundId = useStore((state) => state.backgroundId);
+  const shapeId = useStore((state) => state.shapeId);
+  const accentId = useStore((state) => state.accentId);
+  const setDesignSection = useStore((state) => state.setDesignSection);
+  const resetDesignSelection = useStore((state) => state.resetDesignSelection);
+  const disableDesignPlayground = useStore((state) => state.disableDesignPlayground);
 
   const [isOpen, setIsOpen] = useState(false);
   const [side, setSide] = useState("left");
+  const [copied, setCopied] = useState(false);
 
-  const presetList = useMemo(
-    () => [
-      {
-        id: null,
-        name: t("Standard theme"),
-        description: t("Standard theme description"),
-        swatches: getSwatches(MyTheme.designPresetId ? getDesignPreset("current").theme : MyTheme)
-      },
-      ...DesignPresets.map((preset) => ({
-        id: preset.id,
-        name: preset.name,
-        description: t(preset.description),
-        swatches: getSwatches(preset.theme)
-      }))
-    ],
-    [t, MyTheme]
+  const background = getBackgroundOption(backgroundId);
+  const shape = getShapeOption(shapeId);
+  const accent = getAccentOption(accentId);
+
+  useEffect(() => {
+    if (!copied) return undefined;
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+  const translateOptions = useCallback(
+    (options) => options.map((option) => ({ ...option, description: t(option.description) })),
+    [t]
   );
-
-  const activePreset = getDesignPreset(designPresetId);
-  const activeIndex = activePreset ? DesignPresets.indexOf(activePreset) + 1 : 0;
+  const backgroundOptions = useMemo(() => translateOptions(BackgroundOptions), [translateOptions]);
+  const shapeOptions = useMemo(() => translateOptions(ShapeOptions), [translateOptions]);
+  const accentOptions = useMemo(() => translateOptions(AccentOptions), [translateOptions]);
 
   const open = useCallback(() => {
     triggerHaptic();
@@ -102,21 +185,60 @@ const DesignSwitcher = memo(() => {
     setSide((prev) => (prev === "left" ? "right" : "left"));
   }, []);
 
-  const select = useCallback(
+  const selectBackground = useCallback(
     (id) => {
       triggerHaptic();
-      setDesignPreset(id);
+      setDesignSection("backgroundId", id);
     },
-    [setDesignPreset]
+    [setDesignSection]
   );
-  const previous = useCallback(() => {
-    triggerHaptic();
-    cycleDesignPreset(-1);
-  }, [cycleDesignPreset]);
-  const next = useCallback(() => {
-    triggerHaptic();
-    cycleDesignPreset(1);
-  }, [cycleDesignPreset]);
+  const selectShape = useCallback(
+    (id) => {
+      triggerHaptic();
+      setDesignSection("shapeId", id);
+    },
+    [setDesignSection]
+  );
+  const selectAccent = useCallback(
+    (id) => {
+      triggerHaptic();
+      setDesignSection("accentId", id);
+    },
+    [setDesignSection]
+  );
+
+  const handleReset = useCallback(() => {
+    triggerHaptic("medium");
+    resetDesignSelection();
+  }, [resetDesignSelection]);
+
+  const handleDisable = useCallback(() => {
+    triggerHaptic("medium");
+    disableDesignPlayground();
+  }, [disableDesignPlayground]);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await Clipboard.setStringAsync(buildDesignSelectionSummary({ background, shape, accent }));
+      triggerHaptic("success");
+      setCopied(true);
+    } catch (error) {
+      console.warn("Design-Kombi konnte nicht kopiert werden", error);
+    }
+  }, [background, shape, accent]);
+
+  const renderBackgroundPreview = useCallback((option) => <BackgroundPreview tokens={option.tokens} />, []);
+  const renderShapePreview = useCallback(
+    (option) => <ShapePreview tokens={option.tokens} bg={background.tokens} ac={accent.tokens} />,
+    [background, accent]
+  );
+  const renderAccentPreview = useCallback((option) => <AccentPreview tokens={option.tokens} />, []);
+
+  const isCurrentCombo =
+    MyTheme.isDesignPlayground &&
+    background.id === DEFAULT_DESIGN_SELECTION.backgroundId &&
+    shape.id === DEFAULT_DESIGN_SELECTION.shapeId &&
+    accent.id === DEFAULT_DESIGN_SELECTION.accentId;
 
   return (
     <>
@@ -145,7 +267,27 @@ const DesignSwitcher = memo(() => {
             <View style={styles.handle} />
 
             <View style={styles.header}>
-              <AppText type="title">{t("Design Playground")}</AppText>
+              <View style={styles.headerText}>
+                <AppText type="title">{t("Design Playground")}</AppText>
+                <AppText type="caption" numberOfLines={1}>
+                  {MyTheme.isDesignPlayground
+                    ? `${background.name} · ${shape.name} · ${accent.name}`
+                    : t("Standard theme description")}
+                </AppText>
+              </View>
+              {MyTheme.isDesignPlayground && (
+                <Pressable
+                  onPress={handleDisable}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("Turn off playground")}
+                  style={({ pressed }) => [styles.textButton, pressed && styles.pressed]}
+                >
+                  <AppText type="caption" bold>
+                    {t("Off")}
+                  </AppText>
+                </Pressable>
+              )}
               <Pressable
                 onPress={close}
                 hitSlop={12}
@@ -157,48 +299,54 @@ const DesignSwitcher = memo(() => {
               </Pressable>
             </View>
 
-            {/* Schneller A/B-Switch */}
-            <View style={styles.switchRow}>
-              <Pressable
-                onPress={previous}
-                accessibilityRole="button"
-                accessibilityLabel={t("Previous design")}
-                style={({ pressed }) => [styles.stepButton, pressed && styles.rowPressed]}
-              >
-                <Icon name="back" size={22} color={MyTheme.text} />
-              </Pressable>
-
-              <View style={styles.switchLabel}>
-                <AppText bold numberOfLines={1} style={styles.centerText}>
-                  {activePreset ? activePreset.name : t("Standard theme")}
-                </AppText>
-                <AppText type="caption" style={styles.centerText}>
-                  {activeIndex} / {DesignPresets.length}
-                </AppText>
-              </View>
-
-              <Pressable
-                onPress={next}
-                accessibilityRole="button"
-                accessibilityLabel={t("Next design")}
-                style={({ pressed }) => [styles.stepButton, pressed && styles.rowPressed]}
-              >
-                <Icon name="right" size={22} color={MyTheme.text} />
-              </Pressable>
-            </View>
-
-            <ScrollView style={styles.list} contentContainerStyle={styles.listContent} accessibilityRole="radiogroup">
-              {presetList.map((preset) => (
-                <PresetRow
-                  key={preset.id ?? "standard"}
-                  preset={preset}
-                  isActive={preset.id === (activePreset?.id ?? null)}
-                  onSelect={select}
-                  styles={styles}
-                  MyTheme={MyTheme}
-                />
-              ))}
+            <ScrollView style={styles.sections} showsVerticalScrollIndicator={false}>
+              <DesignSection
+                title={t("Background & Surfaces")}
+                options={backgroundOptions}
+                activeId={MyTheme.isDesignPlayground ? background.id : null}
+                onSelect={selectBackground}
+                renderPreview={renderBackgroundPreview}
+                styles={styles}
+              />
+              <DesignSection
+                title={t("Haptics & Shape")}
+                options={shapeOptions}
+                activeId={MyTheme.isDesignPlayground ? shape.id : null}
+                onSelect={selectShape}
+                renderPreview={renderShapePreview}
+                styles={styles}
+              />
+              <DesignSection
+                title={t("Accents")}
+                options={accentOptions}
+                activeId={MyTheme.isDesignPlayground ? accent.id : null}
+                onSelect={selectAccent}
+                renderPreview={renderAccentPreview}
+                styles={styles}
+              />
             </ScrollView>
+
+            <View style={styles.actions}>
+              <AppButton
+                title={copied ? t("Copied") : t("Copy current combo")}
+                variant="secondary"
+                size="sm"
+                onPress={handleCopy}
+                disabled={!MyTheme.isDesignPlayground}
+                icon={<Icon name={copied ? "checkmark" : "forwardShare"} size={16} color={MyTheme.text} />}
+                style={styles.actionButton}
+              />
+              <AppButton
+                title={t("Reset to Current")}
+                variant="outline"
+                size="sm"
+                onPress={handleReset}
+                disabled={isCurrentCombo}
+                icon={<Icon name="reset" size={16} color={MyTheme.primaryAccentText} />}
+                textStyle={{ color: MyTheme.primaryAccentText }}
+                style={styles.actionButton}
+              />
+            </View>
           </View>
         </View>
       </Modal>
@@ -206,6 +354,75 @@ const DesignSwitcher = memo(() => {
   );
 });
 DesignSwitcher.displayName = "DesignSwitcher";
+
+const previewStyles = StyleSheet.create({
+  bgFrame: {
+    height: 30,
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 4,
+    justifyContent: "flex-end"
+  },
+  bgCard: {
+    height: 16,
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    justifyContent: "center",
+    gap: 3
+  },
+  bgLine: {
+    height: 3,
+    width: "70%",
+    borderRadius: 2
+  },
+  bgLineShort: {
+    height: 3,
+    width: "40%",
+    borderRadius: 2
+  },
+  shapeFrame: {
+    height: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6
+  },
+  shapeCard: {
+    flex: 1,
+    height: 26
+  },
+  shapeButton: {
+    width: 30,
+    height: 16
+  },
+  accentRow: {
+    height: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4
+  },
+  accentDotLarge: {
+    width: 22,
+    height: 22,
+    borderRadius: 11
+  },
+  accentDot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7
+  },
+  xpBar: {
+    flex: 1,
+    height: 6,
+    borderRadius: 3,
+    marginLeft: 4,
+    overflow: "hidden",
+    alignItems: "flex-end"
+  },
+  xpBarEnd: {
+    width: "45%",
+    height: "100%"
+  }
+});
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -233,13 +450,12 @@ const getStyles = (theme) =>
       justifyContent: "flex-end"
     },
     sheet: {
-      maxHeight: "55%",
+      maxHeight: "58%",
       backgroundColor: theme.background,
       borderTopLeftRadius: theme.radius.lg,
       borderTopRightRadius: theme.radius.lg,
-      borderTopWidth: theme.cardBorderWidth,
-      borderColor: theme.cardBorderColor,
-      paddingHorizontal: Spacing.md,
+      borderTopWidth: 1,
+      borderColor: theme.cardBorderColor === "transparent" ? theme.separator : theme.cardBorderColor,
       boxShadow: theme.sheetShadow
     },
     handle: {
@@ -253,8 +469,16 @@ const getStyles = (theme) =>
     header: {
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
+      gap: Spacing.sm,
+      paddingHorizontal: Spacing.md,
       marginBottom: Spacing.sm
+    },
+    headerText: {
+      flex: 1
+    },
+    textButton: {
+      paddingHorizontal: Spacing.sm,
+      paddingVertical: Spacing.xs
     },
     iconButton: {
       width: 32,
@@ -264,69 +488,58 @@ const getStyles = (theme) =>
       justifyContent: "center",
       backgroundColor: theme.glas
     },
-    switchRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.sm,
-      marginBottom: Spacing.md
-    },
-    stepButton: {
-      width: 48,
-      height: 48,
-      borderRadius: theme.radius.md,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: theme.cardBackground,
-      borderWidth: theme.cardBorderWidth,
-      borderColor: theme.cardBorderColor
-    },
-    switchLabel: {
-      flex: 1,
-      alignItems: "center"
-    },
-    centerText: {
-      textAlign: "center"
-    },
-    list: {
+    sections: {
       flexGrow: 0
     },
-    listContent: {
-      gap: Spacing.sm,
-      paddingBottom: Spacing.sm
+    section: {
+      marginBottom: Spacing.sm + 4
     },
-    row: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: Spacing.md,
-      padding: Spacing.sm + 4,
+    sectionTitle: {
+      paddingHorizontal: Spacing.md,
+      marginBottom: Spacing.xs + 2,
+      textTransform: "uppercase",
+      letterSpacing: 0.6
+    },
+    chipRow: {
+      gap: Spacing.sm,
+      paddingHorizontal: Spacing.md
+    },
+    chip: {
+      width: CHIP_WIDTH,
+      padding: Spacing.sm,
+      gap: 2,
       borderRadius: theme.radius.md,
       backgroundColor: theme.cardBackground,
       borderWidth: 1,
       borderColor: theme.cardBorderColor === "transparent" ? theme.separator : theme.cardBorderColor
     },
-    rowActive: {
+    chipActive: {
+      borderWidth: 2,
       borderColor: theme.primaryAccent,
-      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
+      backgroundColor: addOpacity(theme.primaryAccent, 0.12)
     },
-    rowPressed: {
+    chipTitle: {
+      fontSize: 13,
+      lineHeight: 17,
+      marginTop: 2
+    },
+    chipDescription: {
+      fontSize: 11,
+      lineHeight: 14
+    },
+    pressed: {
       opacity: 0.8
     },
-    rowText: {
+    actions: {
+      flexDirection: "row",
+      gap: Spacing.sm,
+      paddingHorizontal: Spacing.md,
+      paddingTop: Spacing.sm,
+      borderTopWidth: 1,
+      borderTopColor: theme.separator
+    },
+    actionButton: {
       flex: 1
-    },
-    rowTitle: {
-      fontSize: 15
-    },
-    swatches: {
-      flexDirection: "row"
-    },
-    swatch: {
-      width: 16,
-      height: 16,
-      borderRadius: 8,
-      marginLeft: -4,
-      borderWidth: 1,
-      borderColor: "rgba(128, 128, 128, 0.35)"
     }
   });
 

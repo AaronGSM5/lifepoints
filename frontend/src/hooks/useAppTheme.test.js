@@ -47,19 +47,38 @@ describe("useAppTheme", () => {
     expect(result.current.primaryAccent).toBe("rgb(47, 196, 146)")
   })
 
-  it("should use the full design preset when one is active", async () => {
+  it("should compose the theme from the three design sections", async () => {
     useStore.mockImplementation((selector) =>
       selector({
-        isDarkMode: true,
+        isDarkMode: false,
         activeColorThemeId: "default_green",
-        designPresetId: "headspace"
+        backgroundId: "whoop-oled",
+        shapeId: "duolingo-tactile",
+        accentId: "linear-indigo"
       }))
     const { result } = await renderHook(() => useAppTheme())
 
+    expect(result.current.isDesignPlayground).toBe(true)
+    expect(result.current.isDark).toBe(true)
+    expect(result.current.background).toBe("#050709")
+    expect(result.current.radius.lg).toBe(18)
+    expect(result.current.buttonDepth).toBe(4)
+    expect(result.current.primaryAccent).toBe("#6366F1")
+  })
+
+  it("should use the regular theme while no design section is selected", async () => {
+    useStore.mockImplementation((selector) =>
+      selector({
+        isDarkMode: false,
+        activeColorThemeId: "default_green",
+        backgroundId: null,
+        shapeId: null,
+        accentId: null
+      }))
+    const { result } = await renderHook(() => useAppTheme())
+
+    expect(result.current.isDesignPlayground).toBe(false)
     expect(result.current.isDark).toBe(false)
-    expect(result.current.background).toBe("#F7F4EE")
-    expect(result.current.radius.lg).toBe(24)
-    expect(result.current.designPresetId).toBe("headspace")
   })
 
   it("should return a stable theme reference for the same state", async () => {
@@ -67,7 +86,9 @@ describe("useAppTheme", () => {
       selector({
         isDarkMode: true,
         activeColorThemeId: "default_green",
-        designPresetId: "linear"
+        backgroundId: "obsidian",
+        shapeId: "current",
+        accentId: "current"
       }))
     const { result, rerender } = await renderHook(() => useAppTheme())
     const first = result.current

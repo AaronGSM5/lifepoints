@@ -1,4 +1,4 @@
-import { addOpacity } from "@/utils/colorHelpers";
+import { addOpacity, ensureContrast } from "@/utils/colorHelpers";
 
 /**
  * Ergänzt ein Farb-Theme um vollständige Design-Tokens (Surfaces, Borders, Radius, Schatten, Buttons, XP).
@@ -30,6 +30,8 @@ export const buildThemeTokens = (theme, isDark) => {
     buttonRadius: radius.full,
     buttonGradient: true,
     buttonDepth: 0,
+    // none | primary (nur Primary-CTA) | all (alle Varianten außer ghost)
+    buttonDepthScope: theme.buttonDepth ? "primary" : "none",
     buttonDepthColor: "rgba(0, 0, 0, 0.35)",
 
     // Navbar
@@ -44,6 +46,7 @@ export const buildThemeTokens = (theme, isDark) => {
 
     // Completion / XP
     completion: theme.success,
+    completionText: ensureContrast(theme.completion ?? theme.success, theme.background, 4.5),
     xpGradient: [theme.primaryAccent, "#335399"],
     xpTrack: isDark ? "#333333" : theme.background,
     xpTrackBorder: isDark ? "#333333" : "transparent",
@@ -60,4 +63,61 @@ export const buildThemeTokens = (theme, isDark) => {
     radius,
     isDark
   };
+};
+
+const resolveCardBorderColor = (bg, tone) => {
+  if (tone === "none") return "transparent";
+  if (tone === "strong") return bg.borderStrong;
+  return bg.border;
+};
+
+const resolveCardBackground = (bg, fill) => {
+  if (fill === "glass") return addOpacity(bg.primary, 0.6);
+  if (fill === "raised") return bg.raised;
+  return bg.primary;
+};
+
+/**
+ * Design-Playground: kombiniert die drei unabhängigen Sections (Background, Shape, Accent)
+ * zu einem vollständigen Theme-Objekt.
+ */
+export const composeDesignTheme = (background, shape, accent) => {
+  const bg = background.tokens;
+  const sh = shape.tokens;
+  const ac = accent.tokens;
+
+  const cardBorderColor = resolveCardBorderColor(bg, sh.cardBorderTone);
+  const isGlassNavbar = sh.navbarStyle === "glass";
+
+  const base = {
+    // Background-Defaults (können pro Background überschrieben werden)
+    separator: bg.border,
+    inputBorder: bg.border,
+    glas: "rgba(255, 255, 255, 0.05)",
+    backdrop: "rgba(0, 0, 0, 0.5)",
+    darkBg: bg.primary,
+    bubbleOther: bg.secondary,
+    xpTrack: bg.secondary,
+    progressTrack: bg.secondary,
+    switchTrackOff: bg.borderStrong,
+    mediaPlaceholder: bg.secondary,
+    navbarBorderColor: bg.border,
+    ...bg,
+
+    ...ac,
+
+    // Shape
+    ...sh,
+    cardBackground: resolveCardBackground(bg, sh.cardFill),
+    cardBorderColor,
+    navbarTint: "dark",
+    navbarBackground: isGlassNavbar ? (bg.navbarBackground ?? "transparent") : addOpacity(bg.primary, 0.94),
+    navbarShadow: isGlassNavbar ? "0px 8px 20px rgba(0, 0, 0, 0.4)" : sh.subtleShadow,
+    // Tactile-Shapes: Sheet-Kante in Border-Farbe statt Schatten
+    sheetShadow: sh.cardBorderTone === "strong" ? `0px -2px 0px ${bg.borderStrong}` : sh.sheetShadow,
+    bubbleMe: ac.primaryAccent,
+    xpTrackBorder: sh.cardBorderTone === "none" ? "transparent" : (bg.xpTrackBorder ?? bg.border)
+  };
+
+  return buildThemeTokens(base, true);
 };

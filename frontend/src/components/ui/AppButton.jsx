@@ -60,6 +60,14 @@ const AppButton = memo(
     const isDisabled = disabled || loading;
     const isIconOnly = Boolean(icon) && !title;
 
+    // Haptik-Token: optionale 3D-Unterkante (z. B. "Duolingo Tactile" für alle, "Hybrid Tactile" nur Primary)
+    const depthScope = MyTheme.buttonDepthScope;
+    const hasDepth =
+      MyTheme.buttonDepth > 0 &&
+      !isDisabled &&
+      !isGhost &&
+      (depthScope === "all" || (depthScope === "primary" && isPrimary));
+
     useEffect(() => {
       if (__DEV__ && isIconOnly && !accessibilityLabel) {
         const iconName = icon?.props?.name ? ` (Icon: "${icon.props.name}")` : "";
@@ -89,15 +97,17 @@ const AppButton = memo(
           accessibilityRole="button"
           accessibilityLabel={accessibilityLabel || title}
           accessibilityState={{ disabled: isDisabled, busy: loading }}
-          style={[
+          style={({ pressed }) => [
             styles.base,
             styles[size],
             isIconOnly && styles[`${size}IconOnly`],
             isPrimary && !bgColor && styles.primary,
-            isPrimary && !isDisabled && MyTheme.buttonDepth > 0 && styles.primaryDepth,
             isSecondary && styles.secondary,
             isOutline && styles.outline,
             isGhost && styles.ghost,
+            hasDepth && (isPrimary ? styles.depthPrimary : styles.depthNeutral),
+            // Taktiles Eindrücken: Unterkante schrumpft, Button rutscht nach unten (Höhe bleibt stabil)
+            hasDepth && pressed && styles.depthPressed,
             bgColor && { backgroundColor: bgColor },
             borderStyle && borderStyle,
             isDisabled && styles.disabled
@@ -169,9 +179,17 @@ const getStyles = (theme) =>
     primary: {
       backgroundColor: theme.primaryAccent
     },
-    primaryDepth: {
+    depthPrimary: {
       borderBottomWidth: theme.buttonDepth,
       borderBottomColor: theme.buttonDepthColor
+    },
+    depthNeutral: {
+      borderBottomWidth: theme.buttonDepth,
+      borderBottomColor: theme.borderStrong ?? theme.separator
+    },
+    depthPressed: {
+      borderBottomWidth: 1,
+      marginTop: Math.max(theme.buttonDepth - 1, 0)
     },
     secondary: {
       backgroundColor: theme.glas,

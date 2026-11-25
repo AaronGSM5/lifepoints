@@ -19,7 +19,7 @@ const AppCheckbox = memo(({ checked, onPress, borderColor, size = 24, style }) =
         style
       ]}
     >
-      {checked && <Icon name="checkmark" size={size * 0.65} color={MyTheme.primaryAccentText} />}
+      {checked && <Icon name="checkmark" size={size * 0.65} color={MyTheme.completionText} />}
     </View>
   );
 
@@ -50,7 +50,7 @@ const getStyles = (theme, size) => {
     checkbox: {
       width: size,
       height: size,
-      borderRadius: 7,
+      borderRadius: Math.max(theme.radius.sm - 1, 3),
       borderWidth: 2,
       justifyContent: "center",
       alignItems: "center"
@@ -59,8 +59,8 @@ const getStyles = (theme, size) => {
       backgroundColor: "transparent"
     },
     checked: {
-      borderColor: theme.primaryAccent,
-      backgroundColor: addOpacity(theme.primaryAccent, 0.1)
+      borderColor: theme.completion,
+      backgroundColor: addOpacity(theme.completion, 0.12)
     }
   });
 };
