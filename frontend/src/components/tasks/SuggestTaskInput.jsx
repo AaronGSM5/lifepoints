@@ -58,7 +58,7 @@ const getStyles = (theme) =>
       width: 40,
       height: 40,
       backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       justifyContent: "center",
       alignItems: "center",
       marginRight: Spacing.sm

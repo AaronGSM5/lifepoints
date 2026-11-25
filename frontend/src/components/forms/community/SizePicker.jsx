@@ -53,7 +53,7 @@ const getStyles = (theme) =>
     sizeCard: {
       flex: 1,
       padding: 12,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       alignItems: "center"
     }
   });

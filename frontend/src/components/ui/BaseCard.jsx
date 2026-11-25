@@ -31,12 +31,13 @@ BaseCard.displayName = "BaseCard";
 const getStyles = (theme) =>
   StyleSheet.create({
     card: {
-      backgroundColor: addOpacity(theme.primary, 0.6),
-      borderRadius: Spacing.borderRadius.lg,
-      borderWidth: 1,
-      borderColor: addOpacity(theme.secondary, 0.7),
+      backgroundColor: theme.cardBackground,
+      borderRadius: theme.radius.lg,
+      borderWidth: theme.cardBorderWidth,
+      borderBottomWidth: theme.cardBorderBottomWidth,
+      borderColor: theme.cardBorderColor,
       overflow: "hidden",
-      boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.2)"
+      boxShadow: theme.cardShadow
     },
     selected: {
       borderColor: theme.primaryAccent,

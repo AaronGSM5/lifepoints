@@ -77,8 +77,8 @@ const getStyles = (theme) =>
     },
     progressBar: {
       height: 8,
-      backgroundColor: "#eee",
-      borderRadius: Spacing.borderRadius.sm,
+      backgroundColor: theme.progressTrack,
+      borderRadius: theme.radius.sm,
       marginBottom: Spacing.sm,
       overflow: "hidden"
     },

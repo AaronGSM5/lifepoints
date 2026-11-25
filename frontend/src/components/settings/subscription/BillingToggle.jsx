@@ -8,16 +8,11 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
-const ACTIVE_BG_COLORS = {
-  light: "rgb(26, 34, 53)",
-  dark: "rgb(233, 233, 233)"
-};
-
 const BillingToggle = memo(({ billingCycle, onChange }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("settings");
-  const activeBackgroundColor = MyTheme.isDark ? ACTIVE_BG_COLORS.dark : ACTIVE_BG_COLORS.light;
+  const activeBackgroundColor = MyTheme.text;
   const handlePress = useCallback(
     (cycle) => {
       triggerHaptic();

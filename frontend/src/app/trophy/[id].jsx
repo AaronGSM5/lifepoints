@@ -85,7 +85,7 @@ const getStyles = (theme) =>
     infoBox: {
       backgroundColor: theme.primary,
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       marginTop: Spacing.xl,
       width: "100%"
     },
@@ -95,14 +95,14 @@ const getStyles = (theme) =>
     },
     progressBarBg: {
       height: 12,
-      backgroundColor: "#e5e7eb",
-      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.progressTrack,
+      borderRadius: theme.radius.full,
       overflow: "hidden",
       marginBottom: Spacing.sm
     },
     progressBarFill: {
       height: "100%",
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.primaryAccent
     },
     progressTextRow: {

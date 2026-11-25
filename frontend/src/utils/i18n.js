@@ -9,6 +9,7 @@ import deAuth from '@/../public/locales/de/auth.json';
 import deChat from '@/../public/locales/de/chat.json';
 import deCommon from '@/../public/locales/de/common.json';
 import deCommunity from '@/../public/locales/de/community.json';
+import deDesign from '@/../public/locales/de/design.json';
 import deHome from '@/../public/locales/de/home.json';
 import dePost from '@/../public/locales/de/post.json';
 import deProfile from '@/../public/locales/de/profile.json';
@@ -21,6 +22,7 @@ import enAuth from '@/../public/locales/en/auth.json';
 import enChat from '@/../public/locales/en/chat.json';
 import enCommon from '@/../public/locales/en/common.json';
 import enCommunity from '@/../public/locales/en/community.json';
+import enDesign from '@/../public/locales/en/design.json';
 import enHome from '@/../public/locales/en/home.json';
 import enPost from '@/../public/locales/en/post.json';
 import enProfile from '@/../public/locales/en/profile.json';
@@ -66,6 +68,7 @@ i18n
         auth: deAuth,
         common: deCommon,
         community: deCommunity,
+        design: deDesign,
         home: deHome,
         profile: deProfile,
         settings: deSettings,
@@ -79,6 +82,7 @@ i18n
         auth: enAuth,
         common: enCommon,
         community: enCommunity,
+        design: enDesign,
         home: enHome,
         profile: enProfile,
         settings: enSettings,

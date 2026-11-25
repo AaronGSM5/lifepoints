@@ -3,7 +3,6 @@ import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-import { LightTheme } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -72,7 +71,7 @@ const AppButton = memo(
 
     const getTextColor = () => {
       if (disabled) return MyTheme.muted;
-      if (isPrimary) return LightTheme.text;
+      if (isPrimary) return MyTheme.onAccent;
       if (isSecondary) return MyTheme.text;
       if (isOutline) return MyTheme.primaryAccent;
       if (isGhost) return MyTheme.muted;
@@ -94,6 +93,8 @@ const AppButton = memo(
             styles.base,
             styles[size],
             isIconOnly && styles[`${size}IconOnly`],
+            isPrimary && !bgColor && styles.primary,
+            isPrimary && !isDisabled && MyTheme.buttonDepth > 0 && styles.primaryDepth,
             isSecondary && styles.secondary,
             isOutline && styles.outline,
             isGhost && styles.ghost,
@@ -102,7 +103,7 @@ const AppButton = memo(
             isDisabled && styles.disabled
           ]}
         >
-          {isPrimary && !isDisabled && !bgColor && (
+          {isPrimary && !isDisabled && !bgColor && MyTheme.buttonGradient && (
             <LinearGradient
               colors={[addOpacity(MyTheme.primaryAccent, 1), addOpacity(MyTheme.primaryAccent, 0.75)]}
               start={{ x: 0, y: 0 }}
@@ -112,7 +113,7 @@ const AppButton = memo(
           )}
 
           {loading ? (
-            <AppLoadingSpinner size={"small"} color={isPrimary ? LightTheme.text : undefined} />
+            <AppLoadingSpinner size={"small"} color={isPrimary ? MyTheme.onAccent : undefined} />
           ) : (
             <View style={[styles.content, iconPosition === "right" && styles.contentReverse]}>
               {icon && icon}
@@ -142,7 +143,7 @@ AppButton.displayName = "AppButton";
 const getStyles = (theme) =>
   StyleSheet.create({
     base: {
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.buttonRadius,
       justifyContent: "center",
       alignItems: "center",
       overflow: "hidden",
@@ -165,8 +166,17 @@ const getStyles = (theme) =>
     smIconOnly: { width: 32, height: 32, paddingHorizontal: 0, paddingVertical: 0 },
     mdIconOnly: { width: 42, height: 42, paddingHorizontal: 0, paddingVertical: 0 },
     lgIconOnly: { width: 52, height: 52, paddingHorizontal: 0, paddingVertical: 0 },
+    primary: {
+      backgroundColor: theme.primaryAccent
+    },
+    primaryDepth: {
+      borderBottomWidth: theme.buttonDepth,
+      borderBottomColor: theme.buttonDepthColor
+    },
     secondary: {
-      backgroundColor: theme.glas
+      backgroundColor: theme.glas,
+      borderWidth: theme.cardBorderWidth,
+      borderColor: theme.cardBorderColor
     },
     outline: {
       borderWidth: 1,

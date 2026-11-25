@@ -91,4 +91,34 @@ describe("createUISlice", () => {
     expect(mockAddLp).not.toHaveBeenCalled()
   });
 
+  describe("design playground", () => {
+    it("starts without an active design preset", () => {
+      expect(store.getState().designPresetId).toBeNull();
+    });
+
+    it("sets and resets a design preset", () => {
+      store.getState().setDesignPreset("linear");
+      expect(store.getState().designPresetId).toBe("linear");
+
+      store.getState().setDesignPreset(null);
+      expect(store.getState().designPresetId).toBeNull();
+    });
+
+    it("cycles forward from no preset to the first preset and wraps around", () => {
+      store.getState().cycleDesignPreset(1);
+      expect(store.getState().designPresetId).toBe("current");
+
+      store.getState().setDesignPreset("nordic");
+      store.getState().cycleDesignPreset(1);
+      expect(store.getState().designPresetId).toBe("current");
+    });
+
+    it("cycles backward from no preset to the last preset", () => {
+      store.getState().cycleDesignPreset(-1);
+      expect(store.getState().designPresetId).toBe("nordic");
+
+      store.getState().cycleDesignPreset(-1);
+      expect(store.getState().designPresetId).toBe("apple-health");
+    });
+  });
 });

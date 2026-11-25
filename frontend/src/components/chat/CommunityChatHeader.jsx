@@ -38,12 +38,12 @@ const CommunityChatHeader = memo(({ community, onDetailsPress, onOptionsPress })
       {
         label: "Blockieren",
         icon: "ban",
-        color: "#EF4444",
+        color: MyTheme.danger,
         isDanger: true,
         onPress: handleBlock
       }
     ],
-    [handleMute, handleBlock]
+    [handleMute, handleBlock, MyTheme.danger]
   );
 
   const toggleMenu = useCallback(() => {
@@ -118,7 +118,7 @@ const getStyles = (theme) =>
     iconBox: {
       width: 32,
       height: 32,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       alignItems: "center",
       justifyContent: "center"
     },

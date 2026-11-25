@@ -146,7 +146,7 @@ const getStyles = (theme) =>
     heroIcon: {
       width: 72,
       height: 72,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: addOpacity(theme.primaryAccent, 0.12),
       borderWidth: 1,
       borderColor: addOpacity(theme.primaryAccent, 0.4),

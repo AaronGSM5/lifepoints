@@ -1,0 +1,20 @@
+{
+  "Design Playground": "Design Playground",
+  "Open design switcher": "Open design switcher",
+  "Previous design": "Previous design",
+  "Next design": "Next design",
+  "Close": "Close",
+  "Standard theme": "Standard (settings)",
+  "Standard theme description": "Light/dark mode and accent color from settings",
+  "Long press to move": "Long press to move",
+  "Aktuelles Design als Baseline": "Current design as baseline",
+  "Neutral-Grau, 1px-Borders, Indigo/Cyan": "Neutral gray, 1px borders, indigo/cyan",
+  "OLED-Schwarz, harte Kontraste, Teal/Amber": "OLED black, hard contrast, teal/amber",
+  "Slate-Navy, runde Cards, tactile Borders, Lime/Gold": "Slate navy, round cards, tactile borders, lime/gold",
+  "Echtes Dunkelgrau, neutrale Cards, knalliger CTA": "True dark gray, neutral cards, bold CTA",
+  "Espresso-Charcoal, warme Borders, Terrakotta/Salbei": "Espresso charcoal, warm borders, terracotta/sage",
+  "Schwarz-Anthrazit, Hairlines, Violet/Emerald": "Black anthracite, hairlines, violet/emerald",
+  "Warmes Sand/Off-White, Tangerine/Salbei": "Warm sand/off-white, tangerine/sage",
+  "Neutral-Grau, weiße gruppierte Cards, Koralle/Mint": "Neutral gray, white grouped cards, coral/mint",
+  "Tannen-Slate, Moos-Surfaces, Salbei/Sand": "Fir slate, moss surfaces, sage/sand"
+}

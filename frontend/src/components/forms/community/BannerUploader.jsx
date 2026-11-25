@@ -78,7 +78,7 @@ const getStyles = (theme) =>
     },
     bannerPlaceholder: {
       height: 150,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       backgroundColor: theme.glas,
       borderStyle: "dashed",
       borderWidth: 1,
@@ -89,7 +89,7 @@ const getStyles = (theme) =>
     },
     bannerImageWrapper: {
       height: 150,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       overflow: "hidden",
       position: "relative"
     },

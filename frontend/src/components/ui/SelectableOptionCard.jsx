@@ -11,7 +11,10 @@ const SelectableOptionCard = memo(({ children, label, isSelected, onPress }) => 
   const MyTheme = useAppTheme();
 
   return (
-    <BaseCard style={[styles.card, isSelected && { borderColor: MyTheme.primaryAccent }]} onPress={onPress}>
+    <BaseCard
+      style={[styles.card, { borderColor: isSelected ? MyTheme.primaryAccent : "transparent" }]}
+      onPress={onPress}
+    >
       {children}
       <AppText bold={isSelected} disabled={!isSelected} style={styles.cardText}>
         {label}
@@ -26,12 +29,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: Spacing.xl,
     paddingHorizontal: Spacing.md,
-    borderRadius: Spacing.borderRadius.lg,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "transparent",
-    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)"
+    borderWidth: 2
   },
   cardText: {
     marginTop: Spacing.md

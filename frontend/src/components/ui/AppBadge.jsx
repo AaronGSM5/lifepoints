@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import AppText from "./AppText";
 
@@ -91,18 +92,18 @@ const getStyles = (theme) =>
       backgroundColor: theme.primaryAccent
     },
     primaryText: {
-      color: "#000"
+      color: theme.onAccent
     },
 
     secondary: {
-      backgroundColor: "rgba(0, 255, 127, 0.2)",
+      backgroundColor: addOpacity(theme.completion, 0.2),
       paddingVertical: 2,
-      borderRadius: Spacing.borderRadius.sm,
+      borderRadius: theme.radius.sm,
       marginBottom: Spacing.xs,
-      borderColor: "rgba(0, 255, 127, 0.8)"
+      borderColor: addOpacity(theme.completion, 0.8)
     },
     secondaryText: {
-      color: "#00FF7F"
+      color: theme.completion
     },
 
     outline: {

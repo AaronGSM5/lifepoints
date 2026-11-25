@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import MyCommunityCardSkeleton from "./MyCommunityCardSkeleton";
 import { Icon } from "../icons/Icon";
@@ -69,7 +70,7 @@ const getStyles = (theme) =>
     iconBox: {
       width: 44,
       height: 44,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       alignItems: "center",
       justifyContent: "center",
       position: "relative"
@@ -80,7 +81,7 @@ const getStyles = (theme) =>
       right: -2,
       width: 12,
       height: 12,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.warning,
       borderWidth: 2,
       borderColor: theme.primary
@@ -96,7 +97,7 @@ const getStyles = (theme) =>
     onlineIndicator: {
       width: 6,
       height: 6,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.primaryAccent
     },
     skeletonBottomContainer: {
@@ -107,14 +108,14 @@ const getStyles = (theme) =>
       height: Spacing.xs
     },
     liveBadge: {
-      backgroundColor: "rgba(50, 211, 150, 0.05)",
+      backgroundColor: addOpacity(theme.completion, 0.05),
       borderWidth: 0
     },
     liveBadgeText: {
       fontSize: 16
     },
     onlineCountText: {
-      color: "#34d399"
+      color: theme.completion
     }
   });
 

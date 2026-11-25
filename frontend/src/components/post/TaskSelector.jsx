@@ -59,7 +59,7 @@ export default function TaskSelector({ taskIds, selectedTaskId, onSelectTask }) 
             <Icon
               name={selectedTask ? selectedTask.icon : "target"}
               size={20}
-              color={selectedTask ? "#FFF" : MyTheme.muted}
+              color={selectedTask ? MyTheme.onAccent : MyTheme.muted}
             />
           </View>
           <View>

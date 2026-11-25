@@ -130,7 +130,7 @@ const getStyles = (theme) => {
       backgroundColor: theme.background,
       flexDirection: "row",
       alignItems: "center",
-      boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.45)"
+      boxShadow: theme.subtleShadow
     },
     sideSection: {
       flex: 1,

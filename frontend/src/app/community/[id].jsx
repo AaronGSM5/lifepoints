@@ -6,20 +6,23 @@ import { router, Stack, useLocalSearchParams } from "expo-router";
 
 // import { apiRequest } from "@/api/client/api";
 import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 // import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/social/CommunityDetailsHeader";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 
 export default function CommunityDetailScreen() {
   const { id } = useLocalSearchParams();
   const { data } = useCommunityDetail(id);
   const { t } = useTranslation("community");
+  const MyTheme = useAppTheme();
   const myCommunities = useStore((state) => state.myCommunities);
   const joinCommunity = useStore((state) => state.joinCommunity);
 
@@ -53,8 +56,13 @@ export default function CommunityDetailScreen() {
 
           {/* Live Section */}
           {data?.isLive && (
-            <View style={styles.liveContainer}>
-              <AppText bold style={{ color: "#ef4444" }}>
+            <View
+              style={[
+                styles.liveContainer,
+                { backgroundColor: addOpacity(MyTheme.danger, 0.1), borderColor: addOpacity(MyTheme.danger, 0.2) }
+              ]}
+            >
+              <AppText bold style={{ color: MyTheme.danger }}>
                 🔴 {t("LIVE NOW")}
               </AppText>
               <AppText type="caption">{data?.liveTitle || ""}</AppText>
@@ -105,11 +113,9 @@ const styles = StyleSheet.create({
     opacity: 0.8
   },
   liveContainer: {
-    backgroundColor: "rgba(239, 68, 68, 0.1)",
     padding: Spacing.md,
     borderRadius: Spacing.borderRadius.md,
     borderWidth: 1,
-    borderColor: "rgba(239, 68, 68, 0.2)",
     marginBottom: Spacing.lg
   }
 });

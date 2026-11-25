@@ -6,7 +6,6 @@ import Animated from "react-native-reanimated";
 import { router } from "expo-router";
 
 import AppText from "@/components/ui/AppText";
-import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import { Icon } from "../icons/Icon";
@@ -109,7 +108,7 @@ const getStyles = (theme) =>
     trophyIconBox: {
       width: "95%",
       aspectRatio: 1,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       justifyContent: "center",
       alignItems: "center",
       position: "relative"
@@ -125,7 +124,7 @@ const getStyles = (theme) =>
       width: 15,
       height: 15,
       backgroundColor: theme.background,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 1,

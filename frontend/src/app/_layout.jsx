@@ -10,6 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 
 import { account } from "@/api/client/appwrite";
+import DesignSwitcher from "@/components/dev/DesignSwitcher";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import TrophyPopup from "@/components/ui/TrophyPopup";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -75,6 +76,15 @@ const TopNotchMask = memo(() => {
   );
 });
 TopNotchMask.displayName = "TopNotchMask";
+
+// Statusleiste folgt dem aktiven Theme (z. B. helle Presets im Design-Playground)
+const ThemedStatusBar = memo(() => {
+  const MyTheme = useAppTheme();
+  return <StatusBar style={MyTheme.isDark ? "light" : "dark"} translucent backgroundColor="transparent" />;
+});
+ThemedStatusBar.displayName = "ThemedStatusBar";
+
+const isDesignPlaygroundEnabled = process.env.EXPO_PUBLIC_DESIGN_PLAYGROUND !== "false";
 
 const queryClient = new QueryClient();
 
@@ -166,7 +176,7 @@ export default function RootLayout() {
     <View style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={Platform.OS === "web" ? initialMetrics : undefined}>
         <QueryClientProvider client={queryClient}>
-          <StatusBar style={"auto"} translucent backgroundColor="transparent" />
+          <ThemedStatusBar />
 
           <TopNotchMask />
           <TrophyPopup />
@@ -194,6 +204,8 @@ export default function RootLayout() {
               }}
             />
           </Stack>
+
+          {isDesignPlaygroundEnabled && <DesignSwitcher />}
         </QueryClientProvider>
       </SafeAreaProvider>
     </View>

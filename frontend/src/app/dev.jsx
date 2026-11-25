@@ -71,7 +71,7 @@ const getStyles = (theme) =>
     button: {
       backgroundColor: theme.primary,
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       borderWidth: 1,
       borderColor: theme.secondary,
       alignItems: "center"

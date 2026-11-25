@@ -178,18 +178,18 @@ const getStyles = (theme) =>
     },
     sheetContainer: {
       backgroundColor: theme.background,
-      borderTopLeftRadius: Spacing.borderRadius.lg,
-      borderTopRightRadius: Spacing.borderRadius.lg,
+      borderTopLeftRadius: theme.radius.lg,
+      borderTopRightRadius: theme.radius.lg,
       overflow: "hidden",
       maxHeight: "80%",
       width: "100%",
       paddingBottom: Platform.OS === "ios" ? 20 : 0,
-      boxShadow: "0px -6px 10px rgba(0, 0, 0, 0.6)"
+      boxShadow: theme.sheetShadow
     },
     panResponderArea: {
       backgroundColor: theme.background,
-      borderTopLeftRadius: Spacing.borderRadius.lg,
-      borderTopRightRadius: Spacing.borderRadius.lg
+      borderTopLeftRadius: theme.radius.lg,
+      borderTopRightRadius: theme.radius.lg
     },
     dragHandleContainer: {
       alignItems: "center",

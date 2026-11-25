@@ -182,12 +182,12 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       backgroundColor: theme.glas,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       borderWidth: 1,
       borderColor: theme.inputBorder,
       minHeight: 54,
       paddingHorizontal: Spacing.md,
-      boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.25)"
+      boxShadow: theme.inputShadow
     },
     containerMultiline: {
       height: "auto",
@@ -218,7 +218,7 @@ const getStyles = (theme) =>
     rightIcon: {
       width: 40,
       height: 40,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       alignItems: "center",
       justifyContent: "center",
       marginRight: -Spacing.sm

@@ -32,7 +32,7 @@ const getStyles = (theme) =>
       backgroundColor: theme.isDark ? theme.darkBg : theme.glas,
       paddingHorizontal: Spacing.md,
       paddingVertical: Spacing.xs - 2,
-      borderRadius: Spacing.borderRadius.md
+      borderRadius: theme.radius.md
     },
     text: {
       color: theme.text

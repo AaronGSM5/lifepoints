@@ -93,8 +93,8 @@ const getStyles = (theme) =>
     card: {
       width: "80%",
       maxWidth: 400,
-      backgroundColor: theme.primary || "#1e293b",
-      borderRadius: Spacing.borderRadius.lg,
+      backgroundColor: theme.surface,
+      borderRadius: theme.radius.lg,
       padding: Spacing.lg,
       alignItems: "center",
       borderWidth: 2,
@@ -129,7 +129,7 @@ const getStyles = (theme) =>
     itemBox: {
       width: 40,
       height: 40,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       alignItems: "center",
       justifyContent: "center"
     }

@@ -67,7 +67,7 @@ const getStyles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       backgroundColor: theme.glas,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       paddingHorizontal: Spacing.md,
       minHeight: 36,
       maxHeight: 120

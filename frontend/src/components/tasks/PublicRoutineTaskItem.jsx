@@ -73,7 +73,7 @@ const getStyles = (theme) =>
     iconCircle: {
       width: 40,
       height: 40,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.glas,
       alignItems: "center",
       justifyContent: "center"
@@ -99,7 +99,7 @@ const getStyles = (theme) =>
       width: 8,
       height: 8,
       marginTop: 6,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.primaryAccent
     }
   });

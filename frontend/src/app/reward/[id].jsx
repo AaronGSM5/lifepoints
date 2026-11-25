@@ -19,6 +19,7 @@ import { rewardsCatalog } from "@/constants/RewardsCatalog";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 
 export default function RewardDetailScreen() {
   const MyTheme = useAppTheme();
@@ -57,7 +58,7 @@ export default function RewardDetailScreen() {
             <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
 
             <LinearGradient
-              colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}
+              colors={["transparent", addOpacity(MyTheme.background, 0.6), MyTheme.background]}
               style={styles.gradientOverlay}
             />
           </View>

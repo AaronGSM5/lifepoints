@@ -113,7 +113,7 @@ const getStyles = (theme) =>
     dayPill: {
       flex: 1,
       height: 40,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

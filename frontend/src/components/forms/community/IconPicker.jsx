@@ -102,7 +102,7 @@ const getStyles = (theme) =>
     iconItem: {
       width: 50,
       height: 50,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       backgroundColor: theme.glas,
       alignItems: "center",
       justifyContent: "center",

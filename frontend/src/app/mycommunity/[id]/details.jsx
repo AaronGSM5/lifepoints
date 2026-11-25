@@ -16,6 +16,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 
 const MOCK_MEMBERS = [
@@ -98,7 +99,7 @@ export default function MyCommunityDetailScreen() {
 
           {community?.isLive && (
             <View style={styles.liveContainer}>
-              <AppText bold style={{ color: "#ef4444" }}>
+              <AppText bold style={{ color: MyTheme.danger }}>
                 {t("LIVE NOW")}
               </AppText>
               <AppText type="caption">Morning Meditation with Sarah</AppText>
@@ -173,11 +174,11 @@ const getStyles = (theme) =>
       opacity: 0.8
     },
     liveContainer: {
-      backgroundColor: "rgba(239, 68, 68, 0.1)",
+      backgroundColor: addOpacity(theme.danger, 0.1),
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius?.md || 8,
+      borderRadius: theme.radius.md,
       borderWidth: 1,
-      borderColor: "rgba(239, 68, 68, 0.2)",
+      borderColor: addOpacity(theme.danger, 0.2),
       marginBottom: Spacing.lg
     },
     badgeContainer: {

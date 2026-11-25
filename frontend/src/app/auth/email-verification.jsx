@@ -171,7 +171,7 @@ const getStyles = (theme) =>
     iconContainer: {
       width: 96,
       height: 96,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
@@ -222,7 +222,7 @@ const getStyles = (theme) =>
     },
     primaryButton: {
       height: 50,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       justifyContent: "center",
       alignItems: "center"
     },

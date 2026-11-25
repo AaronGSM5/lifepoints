@@ -48,7 +48,7 @@ const getStyles = (theme) =>
     iconBox: {
       width: 80,
       height: 80,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 4,

@@ -185,7 +185,7 @@ const getStyles = (theme) =>
     iconOption: {
       width: 48,
       height: 48,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,

@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
@@ -34,9 +33,11 @@ export default function Navbar({ state, navigation }) {
     >
       <BlurView
         intensity={80}
-        tint={MyTheme.isDark ? "systemChromeMaterialDark" : "light"}
+        tint={MyTheme.navbarTint}
         style={styles.blurBackground}
       />
+
+      <View style={styles.solidBackground} />
 
       <LinearGradient
         colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)", "rgba(255,255,255,0.05)"]}
@@ -100,14 +101,19 @@ const getStyles = (theme) =>
       right: 20,
       height: 65,
       borderRadius: 35,
-      boxShadow: theme.isDark ? "0px 8px 20px rgba(0, 0, 0, 0.4)" : "0px 8px 15px rgba(0, 0, 0, 0.2)",
+      boxShadow: theme.navbarShadow,
       elevation: 10,
       backgroundColor: "transparent"
     },
     blurBackground: {
       ...StyleSheet.absoluteFillObject,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       overflow: "hidden"
+    },
+    solidBackground: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 35,
+      backgroundColor: theme.navbarBackground
     },
     buttonContainer: {
       flex: 1,
@@ -123,10 +129,7 @@ const getStyles = (theme) =>
       ...StyleSheet.absoluteFillObject,
       borderRadius: 35,
       borderWidth: 1,
-      borderTopColor: "rgba(255, 255, 255, 0.1)",
-      borderLeftColor: "rgba(255, 255, 255, 0.075)",
-      borderRightColor: "rgba(255, 255, 255, 0.075)",
-      borderBottomColor: "rgba(255, 255, 255, 0.04)"
+      borderColor: theme.navbarBorderColor
     },
     gradientOverlay: {
       ...StyleSheet.absoluteFillObject,

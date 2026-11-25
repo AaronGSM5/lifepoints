@@ -46,4 +46,33 @@ describe("useAppTheme", () => {
 
     expect(result.current.primaryAccent).toBe("rgb(47, 196, 146)")
   })
+
+  it("should use the full design preset when one is active", async () => {
+    useStore.mockImplementation((selector) =>
+      selector({
+        isDarkMode: true,
+        activeColorThemeId: "default_green",
+        designPresetId: "headspace"
+      }))
+    const { result } = await renderHook(() => useAppTheme())
+
+    expect(result.current.isDark).toBe(false)
+    expect(result.current.background).toBe("#F7F4EE")
+    expect(result.current.radius.lg).toBe(24)
+    expect(result.current.designPresetId).toBe("headspace")
+  })
+
+  it("should return a stable theme reference for the same state", async () => {
+    useStore.mockImplementation((selector) =>
+      selector({
+        isDarkMode: true,
+        activeColorThemeId: "default_green",
+        designPresetId: "linear"
+      }))
+    const { result, rerender } = await renderHook(() => useAppTheme())
+    const first = result.current
+    await rerender()
+
+    expect(result.current).toBe(first)
+  })
 })

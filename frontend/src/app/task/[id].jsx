@@ -23,6 +23,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 import { formatHistoryDate } from "@/utils/dateHelpers";
 
 const mockSubSteps = [
@@ -85,7 +86,7 @@ export default function TaskDetailScreen() {
             <BackButton withBackground style={{ position: "absolute", top: 20, left: Spacing.md }} />
 
             <LinearGradient
-              colors={["transparent", "rgba(18,18,18,0.6)", MyTheme.background]}
+              colors={["transparent", addOpacity(MyTheme.background, 0.6), MyTheme.background]}
               style={styles.gradientOverlay}
             />
           </View>
@@ -102,7 +103,7 @@ export default function TaskDetailScreen() {
                 <AppBadge
                   label={t("LOCKED")}
                   textStyle={{ fontSize: 10, color: MyTheme.muted }}
-                  style={{ backgroundColor: "#2A2A2A" }}
+                  style={{ backgroundColor: MyTheme.mediaPlaceholder }}
                 />
               </View>
             )}
@@ -285,7 +286,7 @@ const getStyles = (theme) =>
     stepDot: {
       width: 12,
       height: 12,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.primaryAccent,
       zIndex: 2
     },

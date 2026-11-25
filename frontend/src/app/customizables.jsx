@@ -75,7 +75,7 @@ export default function CustomizablesScreen() {
 
           {categories.map((category) => (
             <View key={category.key} style={styles.categorySection}>
-              <AppText type="h2" style={styles.categoryTitle}>
+              <AppText type="h2" disabled style={styles.categoryTitle}>
                 {t(category.title)}
               </AppText>
 
@@ -119,8 +119,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md
   },
   categoryTitle: {
-    marginBottom: Spacing.md,
-    color: "#afafaf"
+    marginBottom: Spacing.md
   },
   gridContainer: {
     flexDirection: "row",

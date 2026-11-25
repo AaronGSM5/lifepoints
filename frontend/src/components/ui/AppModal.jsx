@@ -40,7 +40,7 @@ const getStyles = (theme) =>
     modalContent: {
       backgroundColor: theme.background,
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       width: "80%",
       maxWidth: 340,
       alignItems: "center"

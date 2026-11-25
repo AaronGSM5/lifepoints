@@ -41,7 +41,7 @@ const getStyles = (theme) =>
   StyleSheet.create({
     chartCard: {
       backgroundColor: theme.primary,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       padding: Spacing.lg,
       minHeight: 200
     },
@@ -60,8 +60,8 @@ const getStyles = (theme) =>
     chartBar: {
       width: "70%",
       backgroundColor: theme.primaryAccent,
-      borderTopLeftRadius: Spacing.borderRadius.sm,
-      borderTopRightRadius: Spacing.borderRadius.sm
+      borderTopLeftRadius: theme.radius.sm,
+      borderTopRightRadius: theme.radius.sm
     },
     chartDay: {
       fontSize: 9,

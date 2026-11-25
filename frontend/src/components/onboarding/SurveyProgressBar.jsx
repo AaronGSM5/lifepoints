@@ -19,14 +19,14 @@ const getStyles = (theme) =>
   StyleSheet.create({
     progressBar: {
       height: 6,
-      backgroundColor: "#121212",
-      borderRadius: Spacing.borderRadius.full,
+      backgroundColor: theme.progressTrack,
+      borderRadius: theme.radius.full,
       marginVertical: Spacing.lg
     },
     progressInner: {
       height: "100%",
       backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.full
+      borderRadius: theme.radius.full
     }
   });
 

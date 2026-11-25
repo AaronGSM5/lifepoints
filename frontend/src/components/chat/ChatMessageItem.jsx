@@ -43,8 +43,8 @@ const ChatMessageItem = memo(({ item = {}, showSenderName = true }) => {
               {item.senderName}
             </AppText>
           ))}
-        <AppText style={{ color: isMe ? "#000" : MyTheme.text }}>{item.text}</AppText>
-        <AppText type="caption" style={[styles.timeText, isMe && { color: "#000" }]}>
+        <AppText style={{ color: isMe ? MyTheme.onAccent : MyTheme.text }}>{item.text}</AppText>
+        <AppText type="caption" style={[styles.timeText, isMe && { color: MyTheme.onAccent }]}>
           {item.time}
         </AppText>
       </View>
@@ -63,7 +63,7 @@ const getStyles = (theme) =>
       backgroundColor: theme.glas,
       paddingHorizontal: Spacing.md,
       paddingVertical: 4,
-      borderRadius: Spacing.borderRadius.md
+      borderRadius: theme.radius.md
     },
     messageRow: {
       flexDirection: "row",
@@ -82,15 +82,17 @@ const getStyles = (theme) =>
     messageBubble: {
       maxWidth: "80%",
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.lg
+      borderRadius: theme.radius.lg
     },
     messageBubbleMe: {
-      backgroundColor: theme.primaryAccent,
-      borderBottomRightRadius: Spacing.borderRadius.sm - 4
+      backgroundColor: theme.bubbleMe,
+      borderBottomRightRadius: theme.radius.sm - 4
     },
     messageBubbleOther: {
-      backgroundColor: theme.primary,
-      borderBottomLeftRadius: Spacing.borderRadius.sm - 4
+      backgroundColor: theme.bubbleOther,
+      borderWidth: theme.cardBorderWidth,
+      borderColor: theme.cardBorderColor,
+      borderBottomLeftRadius: theme.radius.sm - 4
     },
     senderName: {
       color: theme.primaryAccentText,

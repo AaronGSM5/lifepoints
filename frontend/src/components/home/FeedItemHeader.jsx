@@ -85,7 +85,7 @@ const getStyles = (theme) =>
     avatar: {
       width: 40,
       height: 40,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.primaryAccent,
       justifyContent: "center",
       alignItems: "center"

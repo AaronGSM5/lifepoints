@@ -75,7 +75,7 @@ const getStyles = (theme) =>
     iconCircle: {
       width: 64,
       height: 64,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.glas,
       justifyContent: "center",
       alignItems: "center",

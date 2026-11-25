@@ -5,6 +5,7 @@ import { Image, StyleSheet, View } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import RecommendedCommunitySkeleton from "./RecommendedCommunitySkeleton";
 import { Icon } from "../icons/Icon";
@@ -91,17 +92,17 @@ const getStyles = (theme) =>
     iconBox: {
       width: 40,
       height: 40,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       alignItems: "center",
       justifyContent: "center"
     },
     liveBadgeStyle: {
-      backgroundColor: "rgba(239, 68, 68, 0.1)",
-      borderRadius: Spacing.borderRadius.sm,
-      borderColor: "rgba(239, 68, 68, 0.2)"
+      backgroundColor: addOpacity(theme.danger, 0.1),
+      borderRadius: theme.radius.sm,
+      borderColor: addOpacity(theme.danger, 0.2)
     },
     liveBadgeText: {
-      color: "#ef4444"
+      color: theme.danger
     },
     contentArea: {
       flex: 1,

@@ -8,6 +8,7 @@ import * as Haptics from "expo-haptics";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
+import { addOpacity } from "@/utils/colorHelpers";
 
 import AppButton from "../ui/AppButton";
 import AppImage from "../ui/AppImage";
@@ -157,7 +158,7 @@ const getStyles = (theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: "rgba(2, 6, 23, 0.95)",
+      backgroundColor: addOpacity(theme.background, 0.95),
       justifyContent: "center",
       alignItems: "center",
       padding: Spacing.md
@@ -182,8 +183,8 @@ const getStyles = (theme) =>
     chestCard: {
       width: "100%",
       aspectRatio: 0.7,
-      backgroundColor: "#1e293b",
-      borderRadius: 20,
+      backgroundColor: theme.surface,
+      borderRadius: theme.radius.lg,
       borderWidth: 3,
       padding: 10,
       alignItems: "center",
@@ -191,7 +192,7 @@ const getStyles = (theme) =>
     },
     chosenCard: {
       transform: [{ scale: 1.1 }],
-      backgroundColor: "#334155"
+      backgroundColor: theme.surfaceElevated
     },
     rewardInfo: {
       position: "absolute",
@@ -200,7 +201,7 @@ const getStyles = (theme) =>
       width: "100%"
     },
     rewardName: {
-      color: "#fff",
+      color: theme.text,
       fontSize: 12,
       textAlign: "center",
       marginTop: 1
@@ -211,7 +212,7 @@ const getStyles = (theme) =>
       alignItems: "center"
     },
     nearMissText: {
-      color: "#94a3b8",
+      color: theme.muted,
       marginBottom: 20,
       textAlign: "center",
       fontSize: 16

@@ -77,7 +77,7 @@ const getStyles = (theme) =>
     },
     unreadBadge: {
       backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       minWidth: 24,
       height: 24,
       justifyContent: "center",

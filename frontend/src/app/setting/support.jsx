@@ -174,7 +174,7 @@ const getStyles = (theme) =>
       borderWidth: 1,
       borderColor: addOpacity(theme.primaryAccent, 0.5),
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       gap: Spacing.sm,
       marginBottom: Spacing.xl
     },

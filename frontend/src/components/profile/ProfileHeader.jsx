@@ -112,21 +112,20 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
               icon={
                 isExternUser ? (
                   isFriend ? (
-                    <Icon name="chat" size={16} color={MyTheme.isDark ? "black" : "white"} />
+                    <Icon name="chat" size={16} color={MyTheme.onAccent} />
                   ) : (
-                    <Icon name="add" size={16} color={MyTheme.isDark ? "black" : "white"} />
+                    <Icon name="add" size={16} color={MyTheme.onAccent} />
                   )
                 ) : (
-                  <Icon name="pencil" size={16} color={MyTheme.isDark ? "black" : "white"} />
+                  <Icon name="pencil" size={16} color={MyTheme.onAccent} />
                 )
               }
               onPress={handlePrimaryAction}
             />
             <AppButton
               title={isExternUser ? t("Share Profile") : t("Share Stats")}
-              icon={<Icon name="share" size={16} color={!MyTheme.isDark ? MyTheme.background : MyTheme.text} />}
-              bgColor={"#2a2a2acb"}
-              textStyle={{ color: !MyTheme.isDark ? MyTheme.background : MyTheme.text }}
+              variant="secondary"
+              icon={<Icon name="share" size={16} color={MyTheme.text} />}
             />
           </View>
         </>

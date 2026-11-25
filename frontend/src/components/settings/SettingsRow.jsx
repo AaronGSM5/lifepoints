@@ -52,7 +52,7 @@ const SettingsRow = memo(({ setting, isLast, onPress, onToggle, value }) => {
               importantForAccessibility="no-hide-descendants"
               value={!!value}
               onValueChange={onToggle}
-              trackColor={{ false: "#3f3f46", true: MyTheme.primaryAccent }}
+              trackColor={{ false: MyTheme.switchTrackOff, true: MyTheme.primaryAccent }}
               thumbColor={"#fff"}
             />
           )}

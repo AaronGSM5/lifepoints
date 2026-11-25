@@ -1,4 +1,6 @@
 import { DarkTheme, LightTheme } from "@/constants/Colors";
+import { getDesignPreset } from "@/constants/DesignPresets";
+import { buildThemeTokens } from "@/constants/DesignTokens";
 import useStore from "@/store/useStore";
 import { ensureContrast } from "@/utils/colorHelpers";
 
@@ -10,27 +12,36 @@ const colorThemes = {
   pink_dark: { primaryAccent: "rgb(255, 0, 255)" }
 };
 
-// Akzentfarben als Text/Icon brauchen auf hellem Hintergrund oft eine dunklere Variante (WCAG 1.4.3).
-const accentTextCache = new Map();
-const getAccentText = (accent, background) => {
-  const key = `${accent}|${background}`;
-  if (!accentTextCache.has(key)) accentTextCache.set(key, ensureContrast(accent, background, 4.5));
-  return accentTextCache.get(key);
+// Fertige Themes werden gecacht: gleiche Referenz bei gleichem Zustand, damit `useMemo(getStyles)` greift.
+const themeCache = new Map();
+
+const resolveTheme = (isDarkMode, activeColorThemeId, designPresetId) => {
+  const preset = getDesignPreset(designPresetId);
+  const key = preset ? `preset:${preset.id}` : `${isDarkMode}|${activeColorThemeId}`;
+
+  if (themeCache.has(key)) return themeCache.get(key);
+
+  let theme;
+  if (preset) {
+    theme = buildThemeTokens(preset.theme, preset.isDark);
+  } else {
+    const baseTheme = isDarkMode ? DarkTheme : LightTheme;
+    const accentTheme = colorThemes[activeColorThemeId] || colorThemes["default_green"];
+    theme = buildThemeTokens({ ...baseTheme, ...accentTheme }, isDarkMode);
+  }
+
+  // Für Text, Links und Icons in Akzentfarbe verwenden; primaryAccent bleibt für Flächen (WCAG 1.4.3).
+  theme.primaryAccentText = ensureContrast(theme.primaryAccent, theme.background, 4.5);
+  theme.designPresetId = preset?.id ?? null;
+
+  themeCache.set(key, theme);
+  return theme;
 };
 
 export const useAppTheme = () => {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const activeColorThemeId = useStore((state) => state.activeColorThemeId) || "orange_light";
+  const designPresetId = useStore((state) => state.designPresetId);
 
-  const baseTheme = isDarkMode ? DarkTheme : LightTheme;
-
-  const accentTheme = colorThemes[activeColorThemeId] || colorThemes["default_green"];
-
-  return {
-    ...baseTheme,
-    ...accentTheme,
-    // Für Text, Links und Icons in Akzentfarbe verwenden; primaryAccent bleibt für Flächen.
-    primaryAccentText: getAccentText(accentTheme.primaryAccent, baseTheme.background),
-    isDark: isDarkMode
-  };
+  return resolveTheme(isDarkMode, activeColorThemeId, designPresetId);
 };

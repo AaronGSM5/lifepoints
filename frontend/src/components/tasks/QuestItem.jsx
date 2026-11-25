@@ -84,13 +84,13 @@ const getStyles = (theme) =>
       flex: 1,
       height: 6,
       backgroundColor: theme.separator,
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       overflow: "hidden"
     },
     progressFill: {
       height: "100%",
       backgroundColor: theme.primaryAccent,
-      borderRadius: Spacing.borderRadius.lg
+      borderRadius: theme.radius.lg
     }
   });
 

@@ -39,7 +39,7 @@ const StatCard = memo(({ label, value, icon, color, blurred, isLoading, style })
             />
           )}
         </View>
-        <Icon name={icon} size={16} color={color} />
+        <Icon name={icon} size={16} color={MyTheme[color] ?? color} />
       </View>
       <AppText type="caption">{label}</AppText>
     </BaseCard>
@@ -74,7 +74,7 @@ const getStyles = (theme) =>
     },
     badge: {
       borderColor: theme.gold,
-      borderRadius: Spacing.borderRadius.sm,
+      borderRadius: theme.radius.sm,
       paddingHorizontal: Spacing.xs,
       paddingVertical: 2,
       marginLeft: Spacing.sm

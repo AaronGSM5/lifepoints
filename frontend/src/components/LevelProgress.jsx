@@ -21,10 +21,10 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, st
 
   const progressBarStyles = useMemo(
     () => ({
-      backgroundColor: !MyTheme.isDark ? MyTheme.background : "#333",
-      borderWidth: !MyTheme.isDark ? 0 : 1
+      backgroundColor: MyTheme.xpTrack,
+      borderWidth: MyTheme.xpTrackBorder === "transparent" ? 0 : 1
     }),
-    [MyTheme.isDark, MyTheme.background]
+    [MyTheme.xpTrack, MyTheme.xpTrackBorder]
   );
 
   const widthInterpolation = animatedWidth.interpolate({
@@ -79,7 +79,7 @@ const LevelProgress = memo(({ currentXp = 0, maxXp = 1000, isLoading = false, st
         ) : (
           <Animated.View style={[styles.progressBarFillContainer, { width: widthInterpolation }]}>
             <LinearGradient
-              colors={[MyTheme.primaryAccent, "#335399"]}
+              colors={MyTheme.xpGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={StyleSheet.absoluteFill}
@@ -104,13 +104,13 @@ const getStyles = (theme) =>
     },
     progressBarBg: {
       height: 8,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       overflow: "hidden",
-      borderColor: "#333"
+      borderColor: theme.xpTrackBorder
     },
     progressBarFillContainer: {
       height: "100%",
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       overflow: "hidden"
     },
     text: {

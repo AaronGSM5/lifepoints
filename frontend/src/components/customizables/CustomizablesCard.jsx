@@ -111,7 +111,7 @@ const getStyles = (theme) =>
       width: "100%",
       backgroundColor: theme.surface,
       padding: Spacing.sm,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       borderWidth: 1,
       borderColor: "transparent",
       height: 90,

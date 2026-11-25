@@ -87,7 +87,7 @@ const getStyles = (theme) =>
     iconWrapper: {
       marginBottom: Spacing.lg,
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       backgroundColor: theme.separator
     },
     title: {
@@ -103,7 +103,7 @@ const getStyles = (theme) =>
     errorBox: {
       backgroundColor: theme.separator,
       padding: Spacing.md,
-      borderRadius: Spacing.borderRadius.md,
+      borderRadius: theme.radius.md,
       maxHeight: 200,
       width: "100%",
       marginBottom: Spacing.xl,

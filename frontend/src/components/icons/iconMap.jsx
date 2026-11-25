@@ -20,6 +20,7 @@ export const IconMap = {
   add: ({ outline, ...props }) => <Icon name={getName("add", outline)} {...props} />,
   filter: ({ outline, ...props }) => <Icon name={getName("equalizer", outline)} {...props} />,
   checkmark: ({ outline, ...props }) => <Icon name={getName("check", outline)} {...props} />,
+  palette: ({ outline, ...props }) => <Icon name={getName("palette", outline)} {...props} />,
   close: ({ outline, ...props }) => <Icon name={getName("close", outline)} {...props} />,
   eyeOpen: ({ outline, ...props }) => <Icon name={getName("eye", outline)} {...props} />,
   eyeClosed: ({ outline, ...props }) => <Icon name={getName("eye-close", outline)} {...props} />,

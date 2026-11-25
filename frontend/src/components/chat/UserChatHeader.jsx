@@ -39,12 +39,12 @@ const UserChatHeader = memo(({ mockChatPartner, onProfilePress, onOptionsPress }
       {
         label: "Blockieren",
         icon: "ban",
-        color: "#EF4444",
+        color: MyTheme.danger,
         isDanger: true,
         onPress: handleBlock
       }
     ],
-    [handleMute, handleBlock]
+    [handleMute, handleBlock, MyTheme.danger]
   );
 
   const toggleMenu = useCallback(() => {

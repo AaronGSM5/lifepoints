@@ -97,7 +97,7 @@ const getStyles = (theme) =>
       marginHorizontal: -Spacing.md
     },
     progressShadow: {
-      boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.15)"
+      boxShadow: theme.subtleShadow
     },
     progressFill: {
       height: "100%",

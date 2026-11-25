@@ -99,7 +99,7 @@ const getStyles = (theme) =>
       backgroundColor: "rgba(0,0,0,0.6)",
       paddingHorizontal: Spacing.sm,
       paddingVertical: 4,
-      borderRadius: Spacing.borderRadius.sm
+      borderRadius: theme.radius.sm
     },
     videoBadgeText: {
       color: "#fff",
@@ -112,7 +112,7 @@ const getStyles = (theme) =>
       right: Spacing.sm,
       backgroundColor: "rgba(0,0,0,0.7)",
       padding: Spacing.sm,
-      borderRadius: Spacing.borderRadius.full
+      borderRadius: theme.radius.full
     }
   });
 

@@ -105,7 +105,7 @@ SubscriptionCard.displayName = "SubscriptionCard";
 const getStyles = (theme) =>
   StyleSheet.create({
     card: {
-      borderRadius: Spacing.borderRadius.lg,
+      borderRadius: theme.radius.lg,
       padding: Spacing.lg,
       borderWidth: 1,
       borderColor: theme.secondary,

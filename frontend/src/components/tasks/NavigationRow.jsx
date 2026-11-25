@@ -116,7 +116,7 @@ const getStyles = (theme) =>
       flexDirection: "row",
       borderWidth: 1,
       borderColor: theme.primary,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       padding: 2,
       backgroundColor: theme.background
     },
@@ -126,8 +126,8 @@ const getStyles = (theme) =>
       bottom: 2,
       left: 2,
       backgroundColor: theme.glas,
-      borderRadius: Spacing.borderRadius.full,
-      boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.15)"
+      borderRadius: theme.radius.full,
+      boxShadow: theme.subtleShadow
     },
     tabButton: {
       flex: 1,

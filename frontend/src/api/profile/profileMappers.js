@@ -21,7 +21,8 @@ export const mapUserProfileData = (data) => {
       label: stat.title.toUpperCase(),
       value: stat.value,
       icon: stat.title.includes("Streak") ? "fire" : stat.title.includes("Points") ? "gem" : "calendar",
-      color: stat.title.includes("Streak") ? "#FF5733" : "#007ec7"
+      // Theme-Token statt fester Farbe, damit Stats auf Design-Wechsel reagieren
+      color: stat.title.includes("Streak") ? "gold" : "primaryAccentText"
     })),
     customizables: data.customizables.map((c) => ({
       id: c.id,

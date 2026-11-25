@@ -76,7 +76,7 @@ const getStyles = (theme) =>
     dot: {
       width: DOT_SIZE,
       height: DOT_SIZE,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       borderWidth: 1,
       borderColor: "transparent"
     },
@@ -115,7 +115,7 @@ const getStyles = (theme) =>
     legendDot: {
       width: 12,
       height: 12,
-      borderRadius: Spacing.borderRadius.full,
+      borderRadius: theme.radius.full,
       borderWidth: 1,
       borderColor: "transparent"
     }
