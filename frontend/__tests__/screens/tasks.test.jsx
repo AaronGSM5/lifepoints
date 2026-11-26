@@ -7,6 +7,13 @@ const mockDisableInstaTrackingModal = jest.fn();
 const mockCompleteTask = jest.fn();
 const mockResetProfile = jest.fn();
 
+// Diese Tests decken den vollen Funktionsumfang ab – im MVP ausgeblendete Features werden hier aktiviert
+jest.mock("@/constants/FeatureFlags", () => {
+  const actual = jest.requireActual("@/constants/FeatureFlags");
+  const allEnabled = Object.fromEntries(Object.keys(actual.FEATURES).map((key) => [key, true]));
+  return { ...actual, FEATURES: allEnabled, isFeatureEnabled: () => true, isRouteEnabled: () => true };
+});
+
 jest.mock("@/store/useStore", () => {
   const store = jest.fn((selector) => {
     const state = {

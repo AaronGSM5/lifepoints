@@ -15,6 +15,7 @@ import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -29,21 +30,33 @@ export default function CreatePost() {
   const [caption, setCaption] = useState("");
   const [media, setMedia] = useState(null);
   const activities = useStore((state) => state.activities);
+  const profile = useStore((state) => state.profile);
+  const addPost = useStore((state) => state.addPost);
 
-  const availableTaskIds = useMemo(() => {
+  // Tasks, die in den letzten 24 Stunden erledigt wurden (aus der lokalen Activity-History)
+  const availableTasks = useMemo(() => {
     const oneDayInMs = 24 * 60 * 60 * 1000;
     // eslint-disable-next-line react-hooks/purity
     const now = Date.now();
+    const seen = new Set();
 
-    const todayActivityIds = activities
+    return activities
       .filter((entry) => {
-        const activityTime = new Date(entry.time).getTime();
-        const timeDifference = now - activityTime;
+        const timeDifference = now - new Date(entry.time).getTime();
         return timeDifference >= 0 && timeDifference <= oneDayInMs;
       })
-      .map((entry) => entry.taskId);
-
-    return [...new Set(todayActivityIds)];
+      .filter((entry) => {
+        const key = String(entry.taskId);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .map((entry) => ({
+        id: entry.taskId,
+        title: entry.title,
+        icon: typeof entry.icon === "string" ? entry.icon : undefined,
+        points: entry.points
+      }));
   }, [activities]);
 
   const isPostButtonEnabled = useMemo(
@@ -62,7 +75,7 @@ export default function CreatePost() {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: FEATURES.videoPosts ? ["images", "videos"] : ["images"],
       allowsEditing: true,
       quality: 0.8
       // videoMaxDuration: 60
@@ -78,9 +91,29 @@ export default function CreatePost() {
     }
   }, [t]);
 
+  // MVP: Post wird lokal gespeichert, bis es einen Posts-Endpoint gibt
   const handlePost = useCallback(() => {
+    const task = availableTasks.find((entry) => String(entry.id) === String(selectedTaskId));
+
+    addPost({
+      id: `post-${Date.now()}`,
+      type: media?.type === "video" ? "video" : "image",
+      username: profile?.username,
+      avatar: profile?.avatar || undefined,
+      badge: profile?.activeStatusBadge || undefined,
+      description: caption.trim(),
+      image: media?.type === "video" ? undefined : media?.uri,
+      videoUrl: media?.type === "video" ? media?.uri : undefined,
+      taskId: task?.id,
+      taskName: task?.title,
+      taskPoints: task?.points,
+      isPublic,
+      initialLikes: 0,
+      createdAt: new Date().toISOString()
+    });
+
     router.back();
-  }, [router]);
+  }, [addPost, availableTasks, caption, isPublic, media, profile, router, selectedTaskId]);
 
   return (
     <ScreenWrapper scrollable={false} withPaddingBottom={false}>
@@ -109,12 +142,8 @@ export default function CreatePost() {
 
           <View>
             <SectionHeader title={t("Select task")} />
-            {availableTaskIds && availableTaskIds.length !== 0 ? (
-              <TaskSelector
-                taskIds={availableTaskIds}
-                selectedTaskId={selectedTaskId}
-                onSelectTask={setSelectedTaskId}
-              />
+            {availableTasks.length !== 0 ? (
+              <TaskSelector tasks={availableTasks} selectedTaskId={selectedTaskId} onSelectTask={setSelectedTaskId} />
             ) : (
               <BaseCard style={styles.emptyTasksCard}>
                 <AppText type="title">{t("No available tasks")}</AppText>

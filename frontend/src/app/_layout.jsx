@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import { account } from "@/api/client/appwrite";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import TrophyPopup from "@/components/ui/TrophyPopup";
+import { FEATURES, isRouteEnabled } from "@/constants/FeatureFlags";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import useStore from "@/store/useStore";
@@ -136,6 +137,12 @@ export default function RootLayout() {
 
     const segment = segments[0];
 
+    // MVP: Routen deaktivierter Features (FeatureFlags.js) sind nicht erreichbar
+    if (!isRouteEnabled(segments)) {
+      router.replace(hasCompletedOnboarding && isAuthenticated ? "/(tabs)/home" : "/(onboarding)");
+      return;
+    }
+
     const isDevRoute = segment === "dev";
     if (isDevRoute) {
       console.log("🛠 Dev-Mode aktiv: Route wird ignoriert.");
@@ -169,7 +176,7 @@ export default function RootLayout() {
           <StatusBar style={"auto"} translucent backgroundColor="transparent" />
 
           <TopNotchMask />
-          <TrophyPopup />
+          {FEATURES.trophies && <TrophyPopup />}
 
           <Stack
             screenOptions={{

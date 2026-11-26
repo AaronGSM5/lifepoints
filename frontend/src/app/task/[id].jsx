@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,10 +20,12 @@ import BackButton from "@/components/ui/BackButton";
 import HistoryCard from "@/components/ui/HistoryCard";
 import LpPoints from "@/components/ui/LpPoints";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
 import { formatHistoryDate } from "@/utils/dateHelpers";
+import { triggerHaptic } from "@/utils/haptics";
 
 const mockSubSteps = [
   { title: "First things first", description: "This is first" },
@@ -40,12 +42,33 @@ export default function TaskDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const activities = useStore((state) => state.activities);
+  const trackTask = useStore((state) => state.trackTask);
+  const completeTask = useStore((state) => state.completeTask);
   const { data: tasks, isLoading } = useTasks();
   const { mutate: startTask } = useStartTaskActivity();
   const task = useMemo(() => {
     if (!tasks?.data) return null;
     return tasks?.data.find((t) => String(t._id) === String(id));
   }, [tasks?.data, id]);
+  const handleTrack = useCallback(() => {
+    if (!task) return;
+    trackTask(task);
+    startTask(task._id);
+    triggerHaptic("success");
+    router.back();
+  }, [task, trackTask, startTask, router]);
+
+  const handleComplete = useCallback(() => {
+    if (!task) return;
+    const completed = completeTask(task);
+    if (!completed) return;
+    triggerHaptic("success");
+    router.replace({
+      pathname: "/task-completed",
+      params: { title: completed.title, points: completed.lp, redirectUrl: "/(tabs)/tasks" }
+    });
+  }, [task, completeTask, router]);
+
   const taskTrackingHistory = useMemo(
     () => activities.filter((item) => String(item.taskId) === String(id)),
     [activities, id]
@@ -124,7 +147,7 @@ export default function TaskDetailScreen() {
               </AppText>
             </View>
 
-            {mockSubSteps && mockSubSteps.length > 0 && (
+            {FEATURES.taskSubsteps && mockSubSteps.length > 0 && (
               <View style={styles.section}>
                 <SectionHeader title={t("Process")} />
 
@@ -200,7 +223,7 @@ export default function TaskDetailScreen() {
             size="lg"
             disabled={task.isLocked}
             style={{ flex: 1 }}
-            onPress={() => startTask(task._id)}
+            onPress={handleTrack}
           />
           {!task.isLocked && (
             <AppButton
@@ -208,6 +231,7 @@ export default function TaskDetailScreen() {
               size="lg"
               icon={<Icon name={"checkmark"} size={28} color={MyTheme.primaryAccentText} />}
               accessibilityLabel={t("Complete task")}
+              onPress={handleComplete}
             />
           )}
         </ScreenFooter>

@@ -10,6 +10,7 @@ import PublicRoutineCard from "@/components/tasks/PublicRoutineCard";
 import TrophyCard from "@/components/trophies/TrophyCard";
 import AppSkeleton from "@/components/ui/AppSkeleton";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { trophiesCatalog } from "@/constants/TrophiesCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -38,14 +39,14 @@ export default function PublicProfileScreen() {
   );
 
   const pinnedTrophies = useMemo(() => {
-    if (!activePublicProfile?.pinnedTrophies) return [];
+    if (!FEATURES.trophies || !activePublicProfile?.pinnedTrophies) return [];
 
     return activePublicProfile.pinnedTrophies
       .map((trophy) => trophiesCatalog?.find((entry) => entry.id === trophy.id))
       .filter(Boolean);
   }, [activePublicProfile]);
 
-  const authorRoutines = useMemo(() => getPublicRoutinesByAuthor(username), [username]);
+  const authorRoutines = useMemo(() => (FEATURES.routines ? getPublicRoutinesByAuthor(username) : []), [username]);
   const adoptedIds = useMemo(
     () => new Set(routines.map((routine) => routine.source?.publicRoutineId).filter(Boolean)),
     [routines]
@@ -63,7 +64,7 @@ export default function PublicProfileScreen() {
     <ScreenWrapper scrollable>
       <ProfileHeader isLoading={isLoading} isExternUser sourceId={sourceId} profileData={activePublicProfile} />
       {/* Showroom: bis zu 3 ausgewählte Trophäen, zentriert präsentiert */}
-      {(isLoading || pinnedTrophies.length > 0) && (
+      {((FEATURES.trophies && isLoading) || pinnedTrophies.length > 0) && (
         <View style={styles.trophyShowroom}>
           {isLoading
             ? [1, 2, 3].map((i) => <AppSkeleton key={i} width={80} height={80} radius={Spacing.borderRadius.lg} />)

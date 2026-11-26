@@ -5,7 +5,6 @@ import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Touchabl
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 
-import { useMyProfile } from "@/api/profile/useMyProfile";
 import { useUpdateProfile } from "@/api/profile/useUpdateProfile";
 import { Icon } from "@/components/icons/Icon";
 import ScreenFooter from "@/components/layout/ScreenFooter";
@@ -17,6 +16,8 @@ import Avatar from "@/components/ui/Avatar";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useProfileView } from "@/hooks/useProfileView";
+import useStore from "@/store/useStore";
 import { triggerHaptic } from "@/utils/haptics";
 
 import EditProfileSkeleton from "./edit-profile-skeleton";
@@ -26,9 +27,9 @@ export default function EditProfileScreen() {
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const router = useRouter();
   const { t } = useTranslation("settings");
-  const { data: profileData, isLoading } = useMyProfile();
+  const { data: profileData, isLoading } = useProfileView();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
-  // const updateLocalStore = useStore((state) => state.updateProfile);
+  const updateLocalStore = useStore((state) => state.updateProfile);
 
   const initialData = useMemo(
     () => ({
@@ -51,18 +52,17 @@ export default function EditProfileScreen() {
 
   const hasChanges = useMemo(() => JSON.stringify(formData) !== JSON.stringify(initialData), [formData, initialData]);
 
+  // MVP: lokal speichern (sofort sichtbar), Backend-Sync best effort
   const handleSave = useCallback(() => {
     triggerHaptic();
+    updateLocalStore({ ...formData, hasLocalProfileEdits: true });
     updateProfile(formData, {
-      onSuccess: () => {
-        router.back();
-      },
       onError: (err) => {
-        Alert.alert(t("Error"), t("Failed to save profile."));
-        console.error(err);
+        console.warn("Profil konnte nicht mit dem Backend synchronisiert werden:", err?.message);
       }
     });
-  }, [formData, t, router, updateProfile]);
+    router.back();
+  }, [formData, router, updateProfile, updateLocalStore]);
 
   const handleChangeAvatar = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();

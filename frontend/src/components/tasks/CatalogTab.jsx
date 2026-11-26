@@ -11,6 +11,7 @@ import TaskItem from "@/components/tasks/TaskItem";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useStore from "@/store/useStore";
@@ -39,7 +40,8 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
     if (!isLoading && !tasks.length) {
       return [{ id: "empty_state", type: "empty_state" }];
     }
-    const topElements = [{ id: "search_bar", type: "search_bar" }];
+    // MVP: Suche ist noch ohne Funktion und daher ausgeblendet
+    const topElements = FEATURES.taskSearch ? [{ id: "search_bar", type: "search_bar" }] : [];
     const uniqueCategories = [
       ...new Set(
         tasks.flatMap((task) => {
@@ -81,16 +83,21 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
           status={item.limit}
           icon={item.icon}
           requiresInput={item.requiresInput}
-          onTrack={() => trackTask(item._id)}
+          onTrack={() => trackTask(item)}
           onInstaTrack={() => {
             if (showInstaTrackingModal) {
-              onOpenInstaTracking(item._id);
+              onOpenInstaTracking(item);
             } else {
-              triggerHaptic();
-              completeTask(item._id);
+              const completed = completeTask(item);
+              if (!completed) return;
+              triggerHaptic("success");
+              router.push({
+                pathname: "/task-completed",
+                params: { title: completed.title, points: completed.lp, redirectUrl: "/(tabs)/tasks" }
+              });
             }
           }}
-          onNavigate={() => router.push(`task/${item._id}`)}
+          onNavigate={() => router.push(`/task/${item._id}`)}
         />
       </View>
     ),
@@ -98,7 +105,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
   );
 
   const renderItem = useCallback(
-    ({ item }) => {
+    ({ item, index }) => {
       const topOffset = { marginTop: Spacing.md + 44 + Spacing.md };
       switch (item.type) {
         case "error_state":
@@ -138,7 +145,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
 
         case "category_row":
           return (
-            <View style={styles.categoryRow}>
+            <View style={[styles.categoryRow, index === 0 && topOffset]}>
               <SectionHeader title={item.title} isLoading={isLoading} style={styles.paddedContent} />
               <FlatList
                 horizontal
@@ -161,7 +168,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
   );
 
   const renderFooter = () => {
-    if (isError) return null;
+    if (isError || !FEATURES.suggestTask) return null;
     return (
       <View style={[styles.paddedContent, { marginTop: Spacing.md }]}>
         <AppText type="title" style={{ textAlign: "center", marginBottom: Spacing.md }}>

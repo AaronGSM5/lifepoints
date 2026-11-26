@@ -4,15 +4,28 @@ import { Animated, View } from "react-native";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import ConnectTab from "@/components/social/ConnectTab";
 import ExploreTab from "@/components/social/ExploreTab";
+import FriendsTab from "@/components/social/FriendsTab";
 import NavigationRow from "@/components/tasks/NavigationRow";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
 const TABS = ["Connect", "Explore"];
+
+// MVP: Chats & Communities ausgeblendet → Social zeigt nur Freunde (Folgen)
+const SHOW_COMMUNITY_TABS = FEATURES.chat || FEATURES.communities;
 
 const SocialScreen = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const scrollY = useMemo(() => new Animated.Value(0), []);
   const toolbarHeight = useToolbarPadding();
+
+  if (!SHOW_COMMUNITY_TABS) {
+    return (
+      <ScreenWrapper scrollable>
+        <FriendsTab />
+      </ScreenWrapper>
+    );
+  }
 
   const renderActiveTab = () => {
     switch (activeTabIndex) {

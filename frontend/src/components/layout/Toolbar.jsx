@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { router, usePathname } from "expo-router";
 
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
@@ -83,7 +84,7 @@ export default memo(function Toolbar({ scrollY }) {
     >
       <View style={styles.sideSection}>
         {isMainTab ? (
-          <LpPoints points={LP} onPress={() => router.push("/shop")} />
+          <LpPoints points={LP} onPress={FEATURES.shop ? () => router.push("/shop") : undefined} />
         ) : showBackButton ? (
           <BackButton />
         ) : null}
@@ -91,9 +92,10 @@ export default memo(function Toolbar({ scrollY }) {
 
       <View style={styles.centerSection}>
         <Pressable
-          onPress={() => router.push("/dev")}
-          accessibilityRole="button"
-          accessibilityLabel={`LifePoints, ${tc("Open developer menu")}`}
+          onPress={FEATURES.devTools ? () => router.push("/dev") : undefined}
+          disabled={!FEATURES.devTools}
+          accessibilityRole={FEATURES.devTools ? "button" : "image"}
+          accessibilityLabel={FEATURES.devTools ? `LifePoints, ${tc("Open developer menu")}` : "LifePoints"}
         >
           <AppImage
             source={require("@/../public/assets/lifepointsLogo.png")}
@@ -106,14 +108,16 @@ export default memo(function Toolbar({ scrollY }) {
       <View style={[styles.sideSection, { alignItems: "flex-end" }]}>
         {pathname === "/profile" ? (
           <View style={{ flexDirection: "row", gap: Spacing.lg }}>
-            <Icon name="reset" onPress={handleResetProfile} accessibilityLabel={tc("Reset profile")} />
-            <NotificationIcon onPress={handleToNotifications} />
+            {FEATURES.devTools && (
+              <Icon name="reset" onPress={handleResetProfile} accessibilityLabel={tc("Reset profile")} />
+            )}
+            {FEATURES.notifications && <NotificationIcon onPress={handleToNotifications} />}
             <Icon name="settings" onPress={handleToSettings} accessibilityLabel={tc("Settings")} />
           </View>
         ) : isMainTab && pathname !== "/profile" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: Spacing.lg }}>
             <Icon name="add" onPress={handleToCreatePost} accessibilityLabel={tc("Create post")} />
-            <Icon name="search" onPress={handleToSearch} accessibilityLabel={tc("Search")} />
+            {FEATURES.search && <Icon name="search" onPress={handleToSearch} accessibilityLabel={tc("Search")} />}
           </View>
         ) : (
           /* Placeholder for centered Logo */

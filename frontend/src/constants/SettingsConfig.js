@@ -4,17 +4,17 @@ export const settingsSections = [
     data: [
       { id: '1', label: 'Edit Profile', icon: 'user', type: 'link', route: '/setting/edit-profile' },
       { id: '2', label: 'Security & Login', icon: 'shield', type: 'link', route: '/setting/security' },
-      { id: '3', label: 'Linked Services', icon: 'link', type: 'link', route: '/setting/linked-services' },
-      { id: '4', label: 'Notifications', icon: 'bell', type: 'link', route: '/setting/notifications' },
-      { id: '5', label: 'Subscription', icon: 'star', type: 'link', route: '/setting/subscription' },
+      { id: '3', label: 'Linked Services', icon: 'link', type: 'link', route: '/setting/linked-services', feature: 'linkedServices' },
+      { id: '4', label: 'Notifications', icon: 'bell', type: 'link', route: '/setting/notifications', feature: 'notificationSettings' },
+      { id: '5', label: 'Subscription', icon: 'star', type: 'link', route: '/setting/subscription', feature: 'subscription' },
     ],
   },
   {
     title: 'App Experience',
     data: [
-      { id: '6', label: 'Appearance', icon: 'moon', type: 'link', route: '/setting/appearance' },
+      { id: '6', label: 'Appearance', icon: 'moon', type: 'link', route: '/setting/appearance', feature: 'appearance' },
       { id: '7', label: 'Language & Region', icon: 'globe', type: 'link', route: '/setting/language' },
-      { id: '8', label: 'Storage & Cache', icon: 'hardDrive', type: 'action', actionName: 'clearCache' },
+      { id: '8', label: 'Storage & Cache', icon: 'hardDrive', type: 'action', actionName: 'clearCache', feature: 'clearCache' },
     ],
   },
   {

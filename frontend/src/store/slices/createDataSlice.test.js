@@ -150,4 +150,70 @@ describe("createDataSlice", () => {
 
     expect(mockRemoveLp).not.toHaveBeenCalled();
   });
+
+  describe("MVP core loop", () => {
+    const apiTask = {
+      _id: "665f00000000000000000001",
+      title: "Morning Hydration",
+      description: "Drink water",
+      lifepoints: 10,
+      category: ["Health", "Morning Routine"],
+      icon: "water"
+    };
+
+    let mockAddExperience;
+    let mockNotifyQuestSystem;
+
+    beforeEach(() => {
+      mockAddExperience = jest.fn();
+      mockNotifyQuestSystem = jest.fn();
+      store.setState({ addExperience: mockAddExperience, notifyQuestSystem: mockNotifyQuestSystem });
+    });
+
+    it("should track an API task object and keep a normalized snapshot", () => {
+      store.getState().trackTask(apiTask);
+
+      expect(store.getState().activeTaskIds).toEqual([apiTask._id]);
+      expect(store.getState().trackedTasks[apiTask._id]).toMatchObject({
+        id: apiTask._id,
+        title: "Morning Hydration",
+        lp: 10,
+        xp: 10,
+        category: "Health"
+      });
+    });
+
+    it("should complete a tracked API task by ID and award LP, XP and quest progress", () => {
+      store.getState().trackTask(apiTask);
+      const completed = store.getState().completeTask(apiTask._id);
+
+      expect(completed).toMatchObject({ id: apiTask._id, lp: 10 });
+      expect(store.getState().activeTaskIds).toEqual([]);
+      expect(store.getState().trackedTasks).toEqual({});
+      expect(store.getState().activities[0]).toMatchObject({ taskId: apiTask._id, points: 10 });
+      expect(mockAddLp).toHaveBeenCalledWith(10);
+      expect(mockAddExperience).toHaveBeenCalledWith(10);
+      expect(mockNotifyQuestSystem).toHaveBeenCalledWith("TASK_COMPLETED", { category: "Health" });
+    });
+
+    it("should complete an untracked API task object directly (insta-track)", () => {
+      const completed = store.getState().completeTask(apiTask);
+
+      expect(completed?.id).toBe(apiTask._id);
+      expect(store.getState().completedTaskIds).toEqual([apiTask._id]);
+      expect(mockAddLp).toHaveBeenCalledWith(10);
+    });
+
+    it("should return null when completing an unknown task ID", () => {
+      expect(store.getState().completeTask("unknown")).toBeNull();
+      expect(mockAddExperience).not.toHaveBeenCalled();
+    });
+
+    it("should remove the snapshot when a task is cancelled", () => {
+      store.getState().trackTask(apiTask);
+      store.getState().cancelTask(apiTask._id);
+
+      expect(store.getState().trackedTasks).toEqual({});
+    });
+  });
 });

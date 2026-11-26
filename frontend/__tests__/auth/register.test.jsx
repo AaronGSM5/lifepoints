@@ -82,7 +82,7 @@ describe("RegisterScreen", () => {
     await waitFor(() => {
       expect(account.create).toHaveBeenCalledWith(expect.any(String), "test@test.test", "Password123!", "TestUser");
       expect(account.createEmailPasswordSession).toHaveBeenCalledWith("test@test.test", "Password123!");
-      expect(router.replace).toHaveBeenCalledWith("/auth/verify-email");
+      expect(router.replace).toHaveBeenCalledWith("/auth/email-verification");
     });
   });
 

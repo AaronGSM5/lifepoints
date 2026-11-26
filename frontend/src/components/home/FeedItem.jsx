@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useFeedItem } from "@/hooks/useFeedItem";
@@ -29,6 +30,9 @@ const FeedItem = memo(
     image,
     initialLikes = 120,
     id,
+    taskName,
+    taskId,
+    taskPoints,
     onOpenComments,
     onOpenOptions,
     isLoading,
@@ -40,7 +44,7 @@ const FeedItem = memo(
     const startLootGame = useStore((state) => state.startLootGame);
     const myUsername = useStore((state) => state.profile?.username);
     const isOwner = useMemo(() => username === myUsername, [username, myUsername]);
-    const hasChest = useMemo(() => id % 2 === 0, [id]);
+    const hasChest = useMemo(() => FEATURES.lootGame && id % 2 === 0, [id]);
     const {
       isLiked,
       isSaved,
@@ -54,11 +58,15 @@ const FeedItem = memo(
     } = useFeedItem({ initialLikes: initialLikes, username: username, description: description });
 
     const navigateToProfile = useCallback(() => {
+      if (isOwner) {
+        router.push("/profile");
+        return;
+      }
       router.push({
         pathname: `/user/${username}`,
         params: { sourceId: id }
       });
-    }, [username, id]);
+    }, [username, id, isOwner]);
 
     const handleOpenOptions = useCallback(() => {
       if (onOpenOptions) onOpenOptions(id, isOwner);
@@ -68,8 +76,9 @@ const FeedItem = memo(
       if (onOpenComments) onOpenComments(id);
     }, [onOpenComments, id]);
 
+    const handleTaskPress = useCallback(() => router.push(`/task/${taskId}`), [taskId]);
+
     if (isLoading) return <FeedItemSkeleton styles={styles} />;
-    const mockTask = `Gehe 10.000 Schritte`;
     return (
       <>
         <View style={styles.card}>
@@ -78,10 +87,11 @@ const FeedItem = memo(
             username={username}
             avatar={avatar}
             badge={badge}
-            taskName={mockTask}
+            taskName={taskName}
+            taskPoints={taskPoints}
             onPress={navigateToProfile}
-            onOpenOptions={handleOpenOptions}
-            onTaskPress={() => router.push("task/dasIstNurEinPlatzhalter")}
+            onOpenOptions={onOpenOptions ? handleOpenOptions : undefined}
+            onTaskPress={taskId ? handleTaskPress : undefined}
           />
 
           {hasChest && <LootGameTrigger isReady={isReady} onPress={startLootGame} />}
@@ -95,21 +105,21 @@ const FeedItem = memo(
               heartScale={heartScale}
               onPress={handleDoubleTap}
             />
-          ) : (
+          ) : image ? (
             <FeedImageContainer
               image={image}
               heartOpacity={heartOpacity}
               heartScale={heartScale}
               onPress={handleDoubleTap}
             />
-          )}
+          ) : null}
           <FeedItemActionBar
             handleLike={handleLike}
             isLiked={isLiked}
             handleShare={handleShare}
             isSaved={isSaved}
             handleSave={handleSave}
-            onOpenComments={handleOpenComments}
+            onOpenComments={onOpenComments ? handleOpenComments : undefined}
           />
           <FeedItemFooter
             likesCount={likesCount}

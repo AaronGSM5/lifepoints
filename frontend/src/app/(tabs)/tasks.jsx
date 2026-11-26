@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Animated, View } from "react-native";
 
+import { router } from "expo-router";
+
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import CatalogTab from "@/components/tasks/CatalogTab";
@@ -8,11 +10,18 @@ import NavigationRow from "@/components/tasks/NavigationRow";
 import QuestModal from "@/components/tasks/QuestModal";
 import RoutinesTab from "@/components/tasks/RoutinesTab";
 import TodayTab from "@/components/tasks/TodayTab";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { useTasks } from "@/hooks/useTasks";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import useStore from "@/store/useStore";
 
-const TABS = ["Today", "Catalog", "Routines"];
+// MVP: Routinen sind ausgeblendet (FeatureFlags.js)
+const TAB_CONFIG = [
+  { key: "today", label: "Today" },
+  { key: "catalog", label: "Catalog" },
+  { key: "routines", label: "Routines", feature: "routines" }
+].filter((tab) => !tab.feature || FEATURES[tab.feature]);
+const TABS = TAB_CONFIG.map((tab) => tab.label);
 
 const TasksScreen = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -34,16 +43,22 @@ const TasksScreen = () => {
       }
 
       if (taskToTrack) {
-        completeTask(taskToTrack);
+        const completed = completeTask(taskToTrack);
         setTaskToTrack(null);
+        if (completed) {
+          router.push({
+            pathname: "/task-completed",
+            params: { title: completed.title, points: completed.lp, redirectUrl: "/(tabs)/tasks" }
+          });
+        }
       }
     },
     [completeTask, taskToTrack, disableInstaTrackingModal]
   );
 
   const renderActiveTab = () => {
-    const handleOpenInstaTracking = (taskId) => {
-      setTaskToTrack(taskId);
+    const handleOpenInstaTracking = (task) => {
+      setTaskToTrack(task);
       setInstaTrackingModalVisible(true);
     };
 
@@ -51,25 +66,20 @@ const TasksScreen = () => {
       setQuestModalVisible(true);
     };
 
-    switch (activeTabIndex) {
-      case 0:
-        return (
-          <TodayTab
-            scrollY={scrollY}
-            onOpenInstaTracking={handleOpenInstaTracking}
-            onOpenQuestModal={handleOpenQuestModal}
-          />
-        );
-      case 1:
+    const catalogIndex = TAB_CONFIG.findIndex((tab) => tab.key === "catalog");
+
+    switch (TAB_CONFIG[activeTabIndex]?.key) {
+      case "catalog":
         return <CatalogTab scrollY={scrollY} onOpenInstaTracking={handleOpenInstaTracking} />;
-      case 2:
+      case "routines":
         return <RoutinesTab scrollY={scrollY} />;
+      case "today":
       default:
         return (
           <TodayTab
             scrollY={scrollY}
-            onOpenInstaTracking={handleOpenInstaTracking}
             onOpenQuestModal={handleOpenQuestModal}
+            onOpenCatalog={() => setActiveTabIndex(catalogIndex)}
           />
         );
     }
@@ -95,7 +105,9 @@ const TasksScreen = () => {
         onClose={() => setInstaTrackingModalVisible(false)}
         onConfirm={handleInstaTrackingConfirm}
       />
-      <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
+      {FEATURES.quests && (
+        <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
+      )}
     </ScreenWrapper>
   );
 };

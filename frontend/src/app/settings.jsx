@@ -10,9 +10,15 @@ import SettingsRow from "@/components/settings/SettingsRow";
 import AppText from "@/components/ui/AppText";
 import BaseCard from "@/components/ui/BaseCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import { isFeatureEnabled } from "@/constants/FeatureFlags";
 import { settingsSections } from "@/constants/SettingsConfig";
 import { Spacing } from "@/constants/Spacing";
 import useStore from "@/store/useStore";
+
+// MVP: Einträge deaktivierter Features ausblenden (FeatureFlags.js)
+const visibleSections = settingsSections
+  .map((section) => ({ ...section, data: section.data.filter((item) => isFeatureEnabled(item.feature)) }))
+  .filter((section) => section.data.length > 0);
 
 export default function SettingsScreen() {
   const { t } = useTranslation("settings");
@@ -63,7 +69,7 @@ export default function SettingsScreen() {
   return (
     <ScreenWrapper scrollable>
       <ScreenTitle title={t("Settings")} />
-      {settingsSections.map((cat) => (
+      {visibleSections.map((cat) => (
         <View key={cat.title} style={styles.section}>
           <AppText type="caption" style={styles.sectionHeader}>
             {t(cat.title).toUpperCase()}

@@ -12,57 +12,67 @@ import Avatar from "../ui/Avatar";
 import LpPoints from "../ui/LpPoints";
 import StatusBadge from "../ui/StatusBadge";
 
-const FeedItemHeader = memo(({ id, username, avatar, badge, taskName, onPress, onOpenOptions, onTaskPress }) => {
-  const MyTheme = useAppTheme();
-  const { t: tc } = useTranslation("common");
-  const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={username}>
-          <View style={styles.headerUser}>
-            <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
-              <Avatar source={avatar} />
-            </Animated.View>
-            {badge ? (
-              <View style={styles.badge}>
+const FeedItemHeader = memo(
+  ({ id, username, avatar, badge, taskName, taskPoints, onPress, onOpenOptions, onTaskPress }) => {
+    const MyTheme = useAppTheme();
+    const { t: tc } = useTranslation("common");
+    const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={username}>
+            <View style={styles.headerUser}>
+              <Animated.View style={styles.avatar} sharedTransitionTag={`avatar-${username}-${id}`}>
+                <Avatar source={avatar} />
+              </Animated.View>
+              {badge ? (
+                <View style={styles.badge}>
+                  <AppText bold style={styles.username}>
+                    {username}
+                  </AppText>
+                  <StatusBadge id={badge} />
+                </View>
+              ) : (
                 <AppText bold style={styles.username}>
                   {username}
                 </AppText>
-                <StatusBadge id={badge} />
-              </View>
-            ) : (
-              <AppText bold style={styles.username}>
-                {username}
-              </AppText>
-            )}
-          </View>
-        </Pressable>
-        <Icon
-          name={"dots"}
-          size={20}
-          color={MyTheme.muted}
-          onPress={onOpenOptions}
-          accessibilityLabel={tc("More options")}
-        />
+              )}
+            </View>
+          </Pressable>
+          {onOpenOptions && (
+            <Icon
+              name={"dots"}
+              size={20}
+              color={MyTheme.muted}
+              onPress={onOpenOptions}
+              accessibilityLabel={tc("More options")}
+            />
+          )}
+        </View>
+        {taskName && (
+          <Pressable
+            style={styles.taskRow}
+            onPress={onTaskPress}
+            disabled={!onTaskPress}
+            accessibilityRole={onTaskPress ? "link" : undefined}
+            accessibilityState={{ disabled: !onTaskPress }}
+          >
+            <Icon name="target" size={14} color={MyTheme.muted} />
+            <AppText style={styles.taskText} numberOfLines={1}>
+              {taskName}
+              {typeof taskPoints === "number" && (
+                <>
+                  {" • "}
+                  <LpPoints points={taskPoints} size="xs" />
+                </>
+              )}
+            </AppText>
+          </Pressable>
+        )}
       </View>
-      {taskName && (
-        <Pressable
-          style={styles.taskRow}
-          onPress={onTaskPress}
-          disabled={!onTaskPress}
-          accessibilityRole={onTaskPress ? "link" : undefined}
-          accessibilityState={{ disabled: !onTaskPress }}
-        >
-          <Icon name="target" size={14} color={MyTheme.muted} />
-          <AppText style={styles.taskText} numberOfLines={1}>
-            {taskName} • <LpPoints points={100} size="xs" />
-          </AppText>
-        </Pressable>
-      )}
-    </View>
-  );
-});
+    );
+  }
+);
 FeedItemHeader.displayName = "FeedItemHeader";
 
 const getStyles = (theme) =>

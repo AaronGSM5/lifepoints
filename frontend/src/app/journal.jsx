@@ -4,7 +4,6 @@ import { SectionList, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
-import { useMyProfile } from "@/api/profile/useMyProfile";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import AppText from "@/components/ui/AppText";
@@ -13,13 +12,14 @@ import HistoryCard from "@/components/ui/HistoryCard";
 import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useProfileView } from "@/hooks/useProfileView";
 import { groupDataByDate } from "@/utils/dateHelpers";
 
 const JournalPage = () => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
-  const { data: profileData, isLoading } = useMyProfile();
+  const { data: profileData, isLoading } = useProfileView();
   const activities = useMemo(() => profileData?.activities, [profileData?.activities]);
 
   const groupedActivities = useMemo(() => {

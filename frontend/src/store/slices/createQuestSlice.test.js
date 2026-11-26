@@ -1,6 +1,6 @@
 import { createStore } from "zustand/vanilla";
 
-import { createQuestSlice } from "./createQuestSlice";
+import { createQuestSlice, getQuestPeriodKeys } from "./createQuestSlice";
 
 jest.mock("@/constants/QuestCatalog", () => ({
   questCatalog: {
@@ -115,4 +115,36 @@ describe("createQuestSlice", () => {
     expect(mockAddLp).not.toHaveBeenCalled();
   });
 
+  describe("syncQuestPeriods", () => {
+    it("should keep progress within the same day", () => {
+      store.getState().syncQuestPeriods(new Date(2026, 10, 26, 9));
+      store.getState().updateQuestProgress("daily_login", 1);
+      store.getState().syncQuestPeriods(new Date(2026, 10, 26, 22));
+
+      expect(store.getState().questProgress.daily_login.progress).toBe(1);
+    });
+
+    it("should reset daily quests on a new day but keep weekly progress", () => {
+      store.getState().syncQuestPeriods(new Date(2026, 10, 24, 9)); // Dienstag
+      store.getState().updateQuestProgress("daily_login", 1);
+      store.getState().updateQuestProgress("weekly_login", 2);
+      store.getState().syncQuestPeriods(new Date(2026, 10, 25, 9)); // Mittwoch
+
+      expect(store.getState().questProgress.daily_login).toBeUndefined();
+      expect(store.getState().questProgress.weekly_login.progress).toBe(2);
+    });
+
+    it("should reset weekly quests when a new week starts", () => {
+      store.getState().syncQuestPeriods(new Date(2026, 10, 29, 9)); // Sonntag
+      store.getState().updateQuestProgress("weekly_login", 2);
+      store.getState().syncQuestPeriods(new Date(2026, 10, 30, 9)); // Montag
+
+      expect(store.getState().questProgress.weekly_login).toBeUndefined();
+    });
+  });
+
+  it("getQuestPeriodKeys should use Monday as week start", () => {
+    expect(getQuestPeriodKeys(new Date(2026, 10, 29, 12))).toEqual({ daily: "2026-11-29", weekly: "2026-11-23" });
+    expect(getQuestPeriodKeys(new Date(2026, 10, 30, 12))).toEqual({ daily: "2026-11-30", weekly: "2026-11-30" });
+  });
 });

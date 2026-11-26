@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import { Icon } from "@/components/icons/Icon";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { getLeagueData } from "@/constants/Progression";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -27,6 +28,7 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
   const profile = profileData || {};
   const { getFrameById } = useAvatarFrames();
   const addFriend = useStore((state) => state.addFriend);
+  const removeFriend = useStore((state) => state.removeFriend);
   const friendList = useStore((state) => state.profile?.friends);
   const isFriend = isExternUser ? friendList?.includes(profile.id) : false;
   const badgeToDisplay = isExternUser ? profile.badge : profile.activeStatusBadge;
@@ -53,11 +55,16 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
 
   const handlePrimaryAction = useCallback(() => {
     if (isExternUser) {
-      addFriend(profile.id);
+      // MVP: einseitiges Folgen (Toggle); Chat ist ausgeblendet
+      if (isFriend && !FEATURES.chat) {
+        removeFriend(profile.id);
+      } else {
+        addFriend(profile.id);
+      }
     } else {
       router.push("/setting/edit-profile");
     }
-  }, [isExternUser, addFriend, profile.id]);
+  }, [isExternUser, isFriend, addFriend, removeFriend, profile.id]);
 
   const AvatarWrapper = isExternUser ? Animated.View : View;
   const wrapperProps = isExternUser ? { sharedTransitionTag: transitionTag } : {};
@@ -108,11 +115,25 @@ const ProfileHeader = memo(({ isLoading, isExternUser = true, sourceId, profileD
 
           <View style={styles.actionButtons}>
             <AppButton
-              title={isExternUser ? (isFriend ? t("Message") : t("Add Friend")) : t("Edit Profile")}
+              title={
+                isExternUser
+                  ? isFriend
+                    ? FEATURES.chat
+                      ? t("Message")
+                      : t("Following")
+                    : FEATURES.chat
+                      ? t("Add Friend")
+                      : t("Follow")
+                  : t("Edit Profile")
+              }
               icon={
                 isExternUser ? (
                   isFriend ? (
-                    <Icon name="chat" size={16} color={MyTheme.isDark ? "black" : "white"} />
+                    <Icon
+                      name={FEATURES.chat ? "chat" : "checkmark"}
+                      size={16}
+                      color={MyTheme.isDark ? "black" : "white"}
+                    />
                   ) : (
                     <Icon name="add" size={16} color={MyTheme.isDark ? "black" : "white"} />
                   )

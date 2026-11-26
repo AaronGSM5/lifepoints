@@ -5,6 +5,13 @@ import SocialScreen from "@/app/(tabs)/social";
 const mockExploreTabFn = jest.fn();
 const getLastExploreTabProps = () => mockExploreTabFn.mock.calls.at(-1)[0];
 
+// Diese Tests decken den vollen Funktionsumfang ab – im MVP ausgeblendete Features werden hier aktiviert
+jest.mock("@/constants/FeatureFlags", () => {
+  const actual = jest.requireActual("@/constants/FeatureFlags");
+  const allEnabled = Object.fromEntries(Object.keys(actual.FEATURES).map((key) => [key, true]));
+  return { ...actual, FEATURES: allEnabled, isFeatureEnabled: () => true, isRouteEnabled: () => true };
+});
+
 jest.mock("@/hooks/useToolbarPadding", () => ({
   useToolbarPadding: jest.fn(() => 40)
 }));

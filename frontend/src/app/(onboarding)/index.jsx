@@ -9,7 +9,9 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import OnboardingItem from "@/components/onboarding/OnboardingItem";
 import SlidePaginator from "@/components/onboarding/SlidePaginator";
 import AppButton from "@/components/ui/AppButton";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { onboardingSlides } from "@/constants/OnboardingContent";
+import useStore from "@/store/useStore";
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
@@ -17,6 +19,7 @@ export default function OnboardingScreen() {
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const slidesRef = useRef(null);
+  const completeOnboarding = useStore((state) => state.setHasCompletedOnboarding);
 
   const viewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
@@ -44,10 +47,14 @@ export default function OnboardingScreen() {
         offset: nextOffset,
         animated: true
       });
-    } else {
+    } else if (FEATURES.onboardingSurvey) {
       router.replace("/survey");
+    } else {
+      // MVP: ohne Survey direkt zum Login
+      completeOnboarding(true);
+      router.replace("/auth/login");
     }
-  }, [currentIndex, width, router]);
+  }, [currentIndex, width, router, completeOnboarding]);
 
   const renderItem = useCallback(({ item }) => <OnboardingItem item={item} />, []);
 

@@ -36,4 +36,14 @@ describe("createFeedSlice", () => {
     expect(store.getState().videoProgress["vid_2"]).toBe(30)
   });
 
+  it("should add and remove own posts", () => {
+    store.getState().addPost({ id: "post-1", description: "Erste gute Tat" })
+    store.getState().addPost({ id: "post-2", description: "Zweite gute Tat" })
+
+    expect(store.getState().myPosts.map((post) => post.id)).toEqual(["post-2", "post-1"])
+
+    store.getState().removePost("post-1")
+
+    expect(store.getState().myPosts.map((post) => post.id)).toEqual(["post-2"])
+  });
 });

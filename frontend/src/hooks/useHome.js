@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { FEATURES } from "@/constants/FeatureFlags";
 import { mockFeedItems } from "@/mocks/FeedData";
 import useStore from "@/store/useStore";
 
@@ -9,12 +10,13 @@ export const useHome = () => {
 
   const feedItems = useStore((state) => state.feedItems);
   const setFeedItems = useStore((state) => state.setFeedItems);
+  const myPosts = useStore((state) => state.myPosts);
 
   useEffect(() => {
     if (!feedItems?.length) {
-      setIsLoading(true)
+      setIsLoading(true);
       setFeedItems(mockFeedItems);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [feedItems, setFeedItems]);
 
@@ -26,8 +28,14 @@ export const useHome = () => {
     }, 1000);
   }, [setFeedItems]);
 
+  // MVP: eigene Posts zuerst, Video-Posts nur wenn aktiviert
+  const visibleFeedItems = useMemo(() => {
+    const baseItems = feedItems.length > 0 ? feedItems : mockFeedItems;
+    return [...(myPosts || []), ...baseItems].filter((item) => FEATURES.videoPosts || item.type !== "video");
+  }, [feedItems, myPosts]);
+
   return {
-    feedItems: feedItems.length > 0 ? feedItems : mockFeedItems,
+    feedItems: visibleFeedItems,
     isLoading,
     isRefreshing,
     refreshHomeData

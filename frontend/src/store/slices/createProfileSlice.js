@@ -242,6 +242,14 @@ export const createProfileSlice = (set, get) => ({
     }))
   },
 
+  // MVP: einseitiges Folgen – `friends` enthält die IDs der Nutzer, denen man folgt
+  removeFriend: (userId) => set((state) => ({
+    profile: {
+      ...state.profile,
+      friends: state.profile.friends.filter((id) => id !== userId)
+    }
+  })),
+
   resetProfile: () => {
     const { updateProfile } = get()
     updateProfile(initialUserState)

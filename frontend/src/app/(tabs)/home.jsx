@@ -11,6 +11,7 @@ import LevelUpModal from "@/components/LevelUpModal";
 import AppLoadingSpinner from "@/components/ui/AppLoadingSpinner";
 import HeroCarousel from "@/components/ui/HeroCarousel";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { FEATURES } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useHome } from "@/hooks/useHome";
 import { HOME_HERO_DATA } from "@/mocks/HeroData";
@@ -37,6 +38,7 @@ export default function HomeScreen() {
     }
   }, [feedItems]);
 
+  // Simuliertes Nachladen der Mock-Daten (dupliziert Items) – im MVP deaktiviert
   const loadMoreItems = useCallback(() => {
     if (isBatchLoading || isLoading) return;
 
@@ -68,7 +70,7 @@ export default function HomeScreen() {
   const renderHeader = useMemo(
     () => (
       <>
-        <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
+        {FEATURES.heroCarousel && <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => {}} />}
         <SectionHeader title={"Feed"} style={styles.paddedContent} />
       </>
     ),
@@ -82,8 +84,8 @@ export default function HomeScreen() {
         <FeedItem
           {...item}
           isLoading={isLoading}
-          onOpenComments={(id) => setSelectedPostId(id)}
-          onOpenOptions={(id, isOwner) => setOptionsPostData({ id, isOwner })}
+          onOpenComments={FEATURES.comments ? (id) => setSelectedPostId(id) : undefined}
+          onOpenOptions={FEATURES.postOptions ? (id, isOwner) => setOptionsPostData({ id, isOwner }) : undefined}
           isReady={isItemVisible}
         />
       );
@@ -119,24 +121,28 @@ export default function HomeScreen() {
         ListFooterComponent={renderFooter}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewConfig}
-        onEndReached={loadMoreItems}
+        onEndReached={FEATURES.feedInfiniteScroll ? loadMoreItems : undefined}
         onEndReachedThreshold={0.5}
         onRefresh={refreshHomeData}
         refreshing={isRefreshing}
         renderItem={renderItem}
       />
-      <CommentSheet
-        isVisible={selectedPostId !== null}
-        onClose={() => setSelectedPostId(null)}
-        postId={selectedPostId}
-      />
-      <PostOptionsSheet
-        isVisible={optionsPostData !== null}
-        onClose={() => setOptionsPostData(null)}
-        postId={optionsPostData?.id}
-        isOwner={optionsPostData?.isOwner}
-      />
-      <LootGameModal />
+      {FEATURES.comments && (
+        <CommentSheet
+          isVisible={selectedPostId !== null}
+          onClose={() => setSelectedPostId(null)}
+          postId={selectedPostId}
+        />
+      )}
+      {FEATURES.postOptions && (
+        <PostOptionsSheet
+          isVisible={optionsPostData !== null}
+          onClose={() => setOptionsPostData(null)}
+          postId={optionsPostData?.id}
+          isOwner={optionsPostData?.isOwner}
+        />
+      )}
+      {FEATURES.lootGame && <LootGameModal />}
       <LevelUpModal visible={showLevelUpModal} level={level} onTransitionEnd={() => setShowLevelUpModal(false)} />
     </ScreenWrapper>
   );

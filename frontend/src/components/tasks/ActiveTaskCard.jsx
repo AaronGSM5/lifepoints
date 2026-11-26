@@ -28,6 +28,7 @@ const ActiveTaskCard = memo(
     onToggleSubStep,
     onAddSubStep,
     onDeleteSubStep,
+    showSubSteps = true,
     style
   }) => {
     const { t } = useTranslation("tasks");
@@ -54,21 +55,23 @@ const ActiveTaskCard = memo(
         />
         {isExpanded && (
           <>
-            <View style={styles.contentContainer}>
-              {subSteps.map((step) => {
-                return (
-                  <SubStepItem
-                    key={step._id}
-                    step={step}
-                    stepPoints={stepPoints}
-                    onToggle={onToggleSubStep}
-                    onDelete={onDeleteSubStep}
-                  />
-                );
-              })}
+            {showSubSteps && (
+              <View style={styles.contentContainer}>
+                {subSteps.map((step) => {
+                  return (
+                    <SubStepItem
+                      key={step._id}
+                      step={step}
+                      stepPoints={stepPoints}
+                      onToggle={onToggleSubStep}
+                      onDelete={onDeleteSubStep}
+                    />
+                  );
+                })}
 
-              <AddSubStepForm onAddSubStep={onAddSubStep} />
-            </View>
+                <AddSubStepForm onAddSubStep={onAddSubStep} />
+              </View>
+            )}
 
             <View style={styles.footer}>
               <AppButton title={t("Go to Task")} variant={"ghost"} onPress={handleGoToTask} size={"sm"} />

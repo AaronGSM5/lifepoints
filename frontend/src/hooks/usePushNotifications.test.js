@@ -5,6 +5,13 @@ import useStore from "@/store/useStore";
 
 import { usePushNotifications } from "./usePushNotifications";
 
+// Diese Tests decken den vollen Funktionsumfang ab – im MVP ausgeblendete Features werden hier aktiviert
+jest.mock("@/constants/FeatureFlags", () => {
+  const actual = jest.requireActual("@/constants/FeatureFlags");
+  const allEnabled = Object.fromEntries(Object.keys(actual.FEATURES).map((key) => [key, true]));
+  return { ...actual, FEATURES: allEnabled, isFeatureEnabled: () => true, isRouteEnabled: () => true };
+});
+
 jest.mock("expo-notifications", () => ({
   setNotificationHandler: jest.fn(),
   getPermissionsAsync: jest.fn(),

@@ -21,7 +21,7 @@ const FeedItemActionBar = memo(({ handleLike, handleSave, handleShare, isLiked, 
           onPress={handleLike}
           accessibilityLabel={isLiked ? tc("Remove like") : tc("Like")}
         />
-        <Icon name="chat" onPress={onOpenComments} accessibilityLabel={tc("Open comments")} />
+        {onOpenComments && <Icon name="chat" onPress={onOpenComments} accessibilityLabel={tc("Open comments")} />}
         <Icon name="forwardShare" onPress={handleShare} accessibilityLabel={tc("Share")} />
       </View>
 

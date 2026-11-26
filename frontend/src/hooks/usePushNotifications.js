@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import * as Notifications from "expo-notifications";
 
+import { FEATURES } from "@/constants/FeatureFlags";
 import useStore from "@/store/useStore";
 
 Notifications.setNotificationHandler({
@@ -18,7 +19,8 @@ export const usePushNotifications = () => {
 
   useEffect(() => {
     const registerForPushNotificationsAsync = async () => {
-      if (hasSeenPrompt) return;
+      // MVP: Push kommt erst mit V1.1 – kein Permission-Prompt beim App-Start
+      if (!FEATURES.notifications || hasSeenPrompt) return;
 
       try {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();

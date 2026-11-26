@@ -5,21 +5,29 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 
+import { isFeatureEnabled } from "@/constants/FeatureFlags";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
 import NavbarItem from "./NavbarItem";
 
+// MVP: Tabs, die an ein Feature-Flag gekoppelt sind
+const TAB_FEATURES = {
+  shop: "shop"
+};
+
 export default function Navbar({ state, navigation }) {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const insets = useSafeAreaInsets();
 
-  const orderedRoutes = [...state.routes].sort((a, b) => {
-    const order = ["home", "tasks", "social", "shop", "profile"];
-    return order.indexOf(a.name) - order.indexOf(b.name);
-  });
+  const orderedRoutes = state.routes
+    .filter((route) => isFeatureEnabled(TAB_FEATURES[route.name]))
+    .sort((a, b) => {
+      const order = ["home", "tasks", "social", "shop", "profile"];
+      return order.indexOf(a.name) - order.indexOf(b.name);
+    });
 
   const navbarBottomSpace = insets.bottom > 0 ? insets.bottom + 10 : 25;
 

@@ -1,9 +1,41 @@
 import { questCatalog } from '@/constants/QuestCatalog';
 
+const pad = (value) => String(value).padStart(2, "0");
+const toDayKey = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+
+// Schlüssel für den aktuellen Tag bzw. die aktuelle Woche (Wochenstart Montag, lokale Zeit)
+export const getQuestPeriodKeys = (now = new Date()) => {
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  return { daily: toDayKey(now), weekly: toDayKey(monday) };
+};
+
 export const createQuestSlice = (set, get) => ({
   questProgress: {},
+  questPeriods: null,
+
+  // MVP: Reset clientseitig beim Tages-/Wochenwechsel, bis das Backend Quests verwaltet
+  syncQuestPeriods: (now = new Date()) => {
+    const current = getQuestPeriodKeys(now);
+    const previous = get().questPeriods;
+
+    if (previous?.daily === current.daily && previous?.weekly === current.weekly) return;
+
+    set((state) => {
+      const newProgress = { ...state.questProgress };
+      if (previous && previous.daily !== current.daily) {
+        questCatalog.today.forEach((q) => delete newProgress[q.id]);
+      }
+      if (previous && previous.weekly !== current.weekly) {
+        questCatalog.week.forEach((q) => delete newProgress[q.id]);
+      }
+      return { questProgress: newProgress, questPeriods: current };
+    });
+  },
 
   notifyQuestSystem: (triggerType, data = {}) => {
+    get().syncQuestPeriods();
+
     const allQuests = [...questCatalog.today, ...questCatalog.week];
 
     const activeQuests = allQuests.filter(q => q.trigger === triggerType);
