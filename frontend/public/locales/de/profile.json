@@ -79,9 +79,12 @@
   "Following": "Folge ich",
   "Unfollow": "Entfolgen",
   "Find friends": "Freunde finden",
-  "Enter username": "Benutzername eingeben",
-  "No user found with this username.": "Kein Nutzer mit diesem Benutzernamen gefunden.",
   "You are not following anyone yet": "Du folgst noch niemandem",
   "Follow friends to see their good deeds in your feed.": "Folge Freunden, um ihre guten Taten in deinem Feed zu sehen.",
-  "Suggestions": "Vorschläge"
+  "Suggestions": "Vorschläge",
+  "Search by name or username": "Nach Name oder Benutzername suchen",
+  "Clear search": "Suche leeren",
+  "Search results": "Suchergebnisse",
+  "No users found": "Keine Nutzer gefunden",
+  "Check the spelling or invite your friends to LifePoints.": "Prüfe die Schreibweise oder lade deine Freunde zu LifePoints ein."
 }

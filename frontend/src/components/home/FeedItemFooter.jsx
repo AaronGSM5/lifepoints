@@ -7,15 +7,17 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 import AppText from "../ui/AppText";
 
-const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => {
+const FeedItemFooter = memo(({ likesCount, showLikes = true, username, description, onPress }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("home");
   return (
     <View style={styles.footer}>
-      <AppText bold style={styles.likesText}>
-        {likesCount} {likesCount === 1 ? "Like" : "Likes"}
-      </AppText>
+      {showLikes && (
+        <AppText bold style={styles.likesText}>
+          {likesCount} {likesCount === 1 ? "Like" : "Likes"}
+        </AppText>
+      )}
       <AppText style={styles.descriptionText}>
         <AppText bold onPress={onPress}>
           {username}{" "}

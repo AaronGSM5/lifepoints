@@ -61,11 +61,24 @@ export default function FriendsTab() {
   const myUsername = useStore((state) => state.profile?.username);
   const addFriend = useStore((state) => state.addFriend);
   const removeFriend = useStore((state) => state.removeFriend);
-  const [usernameInput, setUsernameInput] = useState("");
-  const [lookupError, setLookupError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const followedUsers = useMemo(() => publicProfiles.filter((user) => following.includes(user.id)), [following]);
   const suggestions = useMemo(() => publicProfiles.filter((user) => !following.includes(user.id)), [following]);
+
+  // Teilsuche über Anzeigename und Benutzername (ohne führendes @, Groß-/Kleinschreibung egal)
+  const normalizedQuery = searchQuery.trim().replace(/^@/, "").toLowerCase();
+  const isSearching = normalizedQuery.length > 0;
+  const searchResults = useMemo(
+    () =>
+      isSearching
+        ? publicProfiles.filter(
+            (user) =>
+              user.username.toLowerCase().includes(normalizedQuery) || user.name.toLowerCase().includes(normalizedQuery)
+          )
+        : [],
+    [isSearching, normalizedQuery]
+  );
 
   const handleToggleFollow = useCallback(
     (user) => {
@@ -79,76 +92,84 @@ export default function FriendsTab() {
     [following, addFriend, removeFriend]
   );
 
-  const handleFollowByUsername = useCallback(() => {
-    const query = usernameInput.trim().replace(/^@/, "").toLowerCase();
-    if (!query) return;
-
-    const user = publicProfiles.find((entry) => entry.username.toLowerCase() === query);
-    if (!user) {
-      setLookupError(t("No user found with this username."));
-      return;
-    }
-
-    addFriend(user.id);
-    triggerHaptic("success");
-    setLookupError(null);
-    setUsernameInput("");
-  }, [usernameInput, addFriend, t]);
-
   return (
     <View style={styles.container}>
       <View>
         <SectionHeader title={t("Find friends")} />
-        <View style={styles.searchRow}>
-          <AppInput
-            icon="profile"
-            placeholder={t("Enter username")}
-            value={usernameInput}
-            onChangeText={(text) => {
-              setUsernameInput(text);
-              if (lookupError) setLookupError(null);
-            }}
-            onSubmitEditing={handleFollowByUsername}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={lookupError}
-            bottomMargin={false}
-            containerStyle={styles.searchInput}
-            accessibilityLabel={t("Enter username")}
-          />
-          <AppButton title={t("Follow")} onPress={handleFollowByUsername} disabled={!usernameInput.trim()} />
-        </View>
+        <AppInput
+          icon="search"
+          placeholder={t("Search by name or username")}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="search"
+          rightIcon={isSearching ? "close" : undefined}
+          onRightIconPress={() => setSearchQuery("")}
+          rightIconLabel={t("Clear search")}
+          bottomMargin={false}
+          accessibilityLabel={t("Search by name or username")}
+        />
       </View>
 
-      <View>
-        <SectionHeader title={`${t("Following")} (${followedUsers.length})`} />
-        {followedUsers.length === 0 ? (
-          <EmptyView
-            icon="profile"
-            iconColor={MyTheme.primaryAccent}
-            iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
-            iconSize={24}
-            title={t("You are not following anyone yet")}
-            description={t("Follow friends to see their good deeds in your feed.")}
-          />
-        ) : (
-          <BaseCard>
-            {followedUsers.map((user) => (
-              <FriendRow key={user.id} user={user} isFollowing onToggleFollow={handleToggleFollow} />
-            ))}
-          </BaseCard>
-        )}
-      </View>
-
-      {suggestions.length > 0 && (
+      {isSearching ? (
         <View>
-          <SectionHeader title={t("Suggestions")} />
-          <BaseCard>
-            {suggestions.map((user) => (
-              <FriendRow key={user.id} user={user} isFollowing={false} onToggleFollow={handleToggleFollow} />
-            ))}
-          </BaseCard>
+          <SectionHeader title={`${t("Search results")} (${searchResults.length})`} />
+          {searchResults.length === 0 ? (
+            <EmptyView
+              icon="search"
+              iconColor={MyTheme.primaryAccent}
+              iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
+              iconSize={24}
+              title={t("No users found")}
+              description={t("Check the spelling or invite your friends to LifePoints.")}
+            />
+          ) : (
+            <BaseCard>
+              {searchResults.map((user) => (
+                <FriendRow
+                  key={user.id}
+                  user={user}
+                  isFollowing={following.includes(user.id)}
+                  onToggleFollow={handleToggleFollow}
+                />
+              ))}
+            </BaseCard>
+          )}
         </View>
+      ) : (
+        <>
+          <View>
+            <SectionHeader title={`${t("Following")} (${followedUsers.length})`} />
+            {followedUsers.length === 0 ? (
+              <EmptyView
+                icon="profile"
+                iconColor={MyTheme.primaryAccent}
+                iconBgColor={addOpacity(MyTheme.primaryAccent, 0.16)}
+                iconSize={24}
+                title={t("You are not following anyone yet")}
+                description={t("Follow friends to see their good deeds in your feed.")}
+              />
+            ) : (
+              <BaseCard>
+                {followedUsers.map((user) => (
+                  <FriendRow key={user.id} user={user} isFollowing onToggleFollow={handleToggleFollow} />
+                ))}
+              </BaseCard>
+            )}
+          </View>
+
+          {suggestions.length > 0 && (
+            <View>
+              <SectionHeader title={t("Suggestions")} />
+              <BaseCard>
+                {suggestions.map((user) => (
+                  <FriendRow key={user.id} user={user} isFollowing={false} onToggleFollow={handleToggleFollow} />
+                ))}
+              </BaseCard>
+            </View>
+          )}
+        </>
       )}
 
       <InviteFriendCard referralCode={myUsername} />
@@ -159,14 +180,6 @@ export default function FriendsTab() {
 const styles = StyleSheet.create({
   container: {
     gap: Spacing.lg
-  },
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: Spacing.sm
-  },
-  searchInput: {
-    flex: 1
   },
   row: {
     flexDirection: "row",

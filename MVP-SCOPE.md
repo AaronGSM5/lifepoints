@@ -24,10 +24,10 @@ Alles andere bleibt im Code, ist aber über Feature-Flags aus Navigation und UI 
 | Task-Detail | Beschreibung, eigene Historie, „Track now“, Erledigt-Haken |
 | Belohnung | LP, XP, Level, LevelUp-Modal, LP-Anzeige im Toolbar |
 | Quests | Daily/Weekly-Quests im QuestModal mit echtem Fortschritt und Einlösen. Nur Quests mit automatischem Trigger (`TASK_COMPLETED`) |
-| Home-Feed | Bild-Posts + Likes, eigene Posts zuerst |
+| Home-Feed | Bild-Posts, Aktionsleiste „Herz + Like-Zahl“ links und „Teilen“ rechts, eigene Posts zuerst |
 | Post erstellen | Bild + Beschreibung + ein in den letzten 24 h erledigter Task |
-| Social | „Freunde“: einseitig folgen, Suche per Benutzername, Vorschläge, Einladungslink |
-| Profil | Header (Avatar, Name, Level/XP), Journal, Einladen-Karte, Profil bearbeiten |
+| Social | „Freunde“: einseitig folgen, Live-Suche (Teil von Name oder Benutzername), Vorschläge, Einladen-Karte (nur hier, nicht im Profil) |
+| Profil | Header (Avatar, Name, Level/XP), Journal, Profil bearbeiten |
 | Settings | Profil, Sicherheit, Sprache, Hilfe, Datenschutz, AGB, Logout |
 
 ## SPÄTER (V1.1) – per Flag ausgeblendet
@@ -55,6 +55,7 @@ Alles andere bleibt im Code, ist aber über Feature-Flags aus Navigation und UI 
 | `videoPosts`, `feedInfiniteScroll` | Video-Posts, Reels, künstliches Nachladen | Media-Pipeline |
 | `lootGame` | Loot-Truhen im Feed | serverseitiger RNG, Anti-Cheat |
 | `postOptions` | Melden/Löschen-Sheet | Moderations-Workflow |
+| `savePosts` | Lesezeichen im Feed | ohne „Gespeichert“-Ansicht wirkungslos, bräuchte eigene Sammlung im Backend |
 | `search` | globale Suche | Volltextindex |
 | `taskSearch` | Catalog-Suchfeld (ohne Funktion) | Dummy |
 | `taskSubsteps` | Substeps an aktiven Tasks | Sub-Entities pro Activity |

@@ -20,6 +20,7 @@ export const FEATURES = {
   // Feed
   comments: false,
   postOptions: false,
+  savePosts: false, // Lesezeichen – ohne „Gespeichert“-Ansicht im MVP wirkungslos
   videoPosts: false,
   feedInfiniteScroll: false, // simuliertes Nachladen der Mock-Daten
   lootGame: false,

@@ -163,12 +163,12 @@ describe("MVP scope", () => {
     expect(queryByTestId("navigation-row")).toBeNull();
   });
 
-  it("Profile: shows header, journal and invite card only", async () => {
+  it("Profile: shows header and journal only (invite card lives on /social)", async () => {
     const { getByTestId, queryByTestId } = await render(<ProfileScreen />);
 
     expect(getByTestId("profile-header")).toBeTruthy();
     expect(getByTestId("journal-preview")).toBeTruthy();
-    expect(getByTestId("invite-friend-card")).toBeTruthy();
+    expect(queryByTestId("invite-friend-card")).toBeNull();
     expect(queryByTestId("onboarding-guide")).toBeNull();
     expect(queryByTestId("profile-stats")).toBeNull();
     expect(queryByTestId("profile-customizables")).toBeNull();

@@ -15,6 +15,8 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useProfileView } from "@/hooks/useProfileView";
 import { groupDataByDate } from "@/utils/dateHelpers";
 
+const ItemSeparator = () => <View style={{ height: Spacing.sm }} />;
+
 const JournalPage = () => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -99,6 +101,7 @@ const JournalPage = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
+        ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
       />
     </ScreenWrapper>

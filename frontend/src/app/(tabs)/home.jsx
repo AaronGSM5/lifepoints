@@ -71,7 +71,10 @@ export default function HomeScreen() {
     () => (
       <>
         {FEATURES.heroCarousel && <HeroCarousel data={HOME_HERO_DATA} isLoading={isLoading} onPressItem={() => {}} />}
-        <SectionHeader title={"Feed"} style={styles.paddedContent} />
+        <SectionHeader
+          title={"Feed"}
+          style={[styles.paddedContent, !FEATURES.heroCarousel && styles.feedHeaderOffset]}
+        />
       </>
     ),
     [isLoading]
@@ -151,6 +154,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   paddedContent: {
     paddingHorizontal: Spacing.md
+  },
+  // Ohne HeroCarousel fehlt sonst der Abstand zur Toolbar
+  feedHeaderOffset: {
+    marginTop: Spacing.md
   },
   loadingFooter: {
     marginTop: Spacing.md

@@ -21,7 +21,7 @@ const SocialScreen = () => {
 
   if (!SHOW_COMMUNITY_TABS) {
     return (
-      <ScreenWrapper scrollable>
+      <ScreenWrapper scrollable withOffset>
         <FriendsTab />
       </ScreenWrapper>
     );

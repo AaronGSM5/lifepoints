@@ -79,9 +79,12 @@
   "Following": "Following",
   "Unfollow": "Unfollow",
   "Find friends": "Find friends",
-  "Enter username": "Enter username",
-  "No user found with this username.": "No user found with this username.",
   "You are not following anyone yet": "You are not following anyone yet",
   "Follow friends to see their good deeds in your feed.": "Follow friends to see their good deeds in your feed.",
-  "Suggestions": "Suggestions"
+  "Suggestions": "Suggestions",
+  "Search by name or username": "Search by name or username",
+  "Clear search": "Clear search",
+  "Search results": "Search results",
+  "No users found": "No users found",
+  "Check the spelling or invite your friends to LifePoints.": "Check the spelling or invite your friends to LifePoints."
 }

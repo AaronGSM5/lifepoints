@@ -118,14 +118,13 @@ describe("ProfileScreen", () => {
       "profile-stats",
       "profile-customizables",
       "profile-trophies",
-      "journal-preview",
-      "invite-friend-card"
+      "journal-preview"
     ].forEach((testId) => {
       expect(screen.getByTestId(testId)).toBeTruthy();
     });
   });
 
-  it("should pass username from profile data as referral code to the invite friend card", async () => {
+  it("should not render the invite friend card (it lives on /social)", async () => {
     setMockProfileData({
       isLoading: false,
       data: {
@@ -135,6 +134,6 @@ describe("ProfileScreen", () => {
 
     await render(<ProfileScreen />);
 
-    expect(screen.getByTestId("referral-code").props.children).toBe("TestUser");
+    expect(screen.queryByTestId("invite-friend-card")).toBeNull();
   });
 });

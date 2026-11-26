@@ -13,7 +13,7 @@ import AppText from "../ui/AppText";
 import HistoryCard from "../ui/HistoryCard";
 import SectionHeader from "../ui/SectionHeader";
 
-const JournalPreview = ({ activities, isLoading }) => {
+const JournalPreview = ({ activities, isLoading, style }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const { t } = useTranslation("profile");
@@ -24,10 +24,16 @@ const JournalPreview = ({ activities, isLoading }) => {
 
   const renderData = isLoading && !previewData.length ? [1, 2, 3] : previewData;
 
-  if (isLoading) return <JournalPreviewSkeleton renderData={renderData} styles={styles} />;
+  if (isLoading) {
+    return (
+      <View style={style}>
+        <JournalPreviewSkeleton renderData={renderData} styles={styles} />
+      </View>
+    );
+  }
 
   return (
-    <View>
+    <View style={style}>
       <SectionHeader
         title={t("My Impact Journal")}
         icon={"journal"}

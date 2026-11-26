@@ -118,11 +118,13 @@ const FeedItem = memo(
             isLiked={isLiked}
             handleShare={handleShare}
             isSaved={isSaved}
-            handleSave={handleSave}
+            handleSave={FEATURES.savePosts ? handleSave : undefined}
+            likesCount={likesCount}
             onOpenComments={onOpenComments ? handleOpenComments : undefined}
           />
           <FeedItemFooter
             likesCount={likesCount}
+            showLikes={FEATURES.savePosts}
             username={username}
             description={description}
             onPress={navigateToProfile}
