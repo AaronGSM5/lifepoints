@@ -10,6 +10,7 @@ import { useUpdateProfile } from "@/api/profile/useUpdateProfile";
 import { Icon } from "@/components/icons/Icon";
 import ScreenFooter from "@/components/layout/ScreenFooter";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import EditProfileSkeleton from "@/components/settings/edit-profile-skeleton";
 import AppButton from "@/components/ui/AppButton";
 import AppInput from "@/components/ui/AppInput";
 import AppText from "@/components/ui/AppText";
@@ -18,8 +19,6 @@ import ScreenTitle from "@/components/ui/ScreenTitle";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
-
-import EditProfileSkeleton from "../../components/settings/edit-profile-skeleton";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
