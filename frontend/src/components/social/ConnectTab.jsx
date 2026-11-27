@@ -68,7 +68,11 @@ const ConnectTab = () => {
           </View>
         </View>
       </ScrollView>
-      <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
+      <CreateCommunityForm
+        visible={isCreateModalVisible}
+        onClose={() => setIsCreateModalVisible(false)}
+        onCreate={() => setIsCreateModalVisible(false)}
+      />
     </>
   );
 };
