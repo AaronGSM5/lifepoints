@@ -37,7 +37,7 @@ Appwrite handles authentication. The frontend (`src/api/client/appwrite.js`) cre
 - Theming: `useAppTheme()` plus `src/constants/Colors.js`, `Spacing.js`, `Typography.js`. Reusable primitives (`AppText`, `AppButton`, `BaseCard`, and others) are in `src/components/ui/`.
 
 ### Testing
-Tests live next to their source (`*.test.js[x]`) or in `__tests__/`. `jest.setup.js` sets the Appwrite env vars and auto-mocks AsyncStorage, safe-area-context, react-i18next and expo-router (manual mocks are in `__mocks__/`). Slice tests build an isolated store with `createStore` from `zustand/vanilla` and spread the slice into it, stubbing cross-slice functions such as `addLp` with `jest.fn()`.
+Tests live next to their source (`*.test.js[x]`) or in `__tests__/`. `jest.globalSetup.js` pins `TZ=Europe/Berlin` so date tests behave the same on every machine; expected times in tests are Berlin local time. `jest.setup.js` sets the Appwrite env vars and auto-mocks AsyncStorage, safe-area-context, react-i18next and expo-router (manual mocks are in `__mocks__/`). Slice tests build an isolated store with `createStore` from `zustand/vanilla` and spread the slice into it, stubbing cross-slice functions such as `addLp` with `jest.fn()`.
 
 Tests für Screens aus src/app/ liegen in frontend/__tests__/<bereich>/ (z. B. frontend/__tests__/community/), nie in src/app/. expo-router liest jede .js/.jsx-Datei in src/app/ als Route ein, auch Testdateien. Tests für Komponenten, Hooks, Slices und Utils liegen weiterhin direkt neben ihrer Quelldatei.
 

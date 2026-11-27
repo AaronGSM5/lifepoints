@@ -125,6 +125,7 @@ describe("getDateLabel", () => {
   })
 })
 
+// Erwartet Ortszeit Europe/Berlin (UTC+2 im August), siehe jest.globalSetup.js
 describe("formatHistoryDate", () => {
   it('should return "" on no isoString', () => {
     expect(formatHistoryDate(undefined)).toBe("")
