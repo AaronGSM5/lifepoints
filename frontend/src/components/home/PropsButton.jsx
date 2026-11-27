@@ -11,13 +11,13 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const POP_SCALE = 1.12;
 const POP_DURATION = 250;
-// Sichtbare Pille 36px + 4px hitSlop oben/unten = 44px Tippfläche
-const PILL_HEIGHT = 36;
-const HIT_SLOP = { top: 4, bottom: 4, left: 4, right: 4 };
-const WHITE = "#FFFFFF";
+// AppButton "sm" ist ca. 34-36px hoch, 6px hitSlop oben/unten ergibt mind. 44px Tippfläche
+const HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
 
 /**
  * Text-Pille "Props", ersetzt das Like-Herz. Intern weiterhin Like-Logik (isLiked / onToggle).
+ * Gestaltung nach DESIGN.md wie andere Toggle-Buttons (z.B. CategoryButtons):
+ * aktiv = Primary (Akzentfläche, dunkler Text), inaktiv = Secondary (glass + border-standard).
  * Pop + Haptik nur beim Aktivieren, nicht beim Zurücknehmen.
  */
 const PropsButton = memo(({ isActive, onToggle }) => {
@@ -56,15 +56,13 @@ const PropsButton = memo(({ isActive, onToggle }) => {
     <Animated.View style={{ transform: [{ scale: popAnim }] }}>
       <AppButton
         title={t("Props")}
-        variant="ghost"
+        variant={isActive ? "primary" : "secondary"}
         size="sm"
         onPress={handlePress}
         selected={isActive}
         hitSlop={HIT_SLOP}
         accessibilityLabel={isActive ? t("Take back props") : t("Give props")}
-        bgColor={isActive ? MyTheme.propsGreen : undefined}
-        borderStyle={[styles.pill, isActive ? styles.pillActive : styles.pillInactive]}
-        textStyle={[styles.label, { color: isActive ? WHITE : MyTheme.text }]}
+        borderStyle={isActive ? styles.pillActive : styles.pillInactive}
       />
     </Animated.View>
   );
@@ -73,21 +71,18 @@ PropsButton.displayName = "PropsButton";
 
 const getStyles = (theme) =>
   StyleSheet.create({
-    pill: {
-      minHeight: PILL_HEIGHT,
+    // Gleiche Rahmenbreite in beiden Zuständen, damit die Pille beim Umschalten nicht springt
+    pillInactive: {
       minWidth: 44,
       paddingHorizontal: Spacing.md,
-      paddingVertical: 0,
-      borderWidth: 1
-    },
-    pillInactive: {
-      borderColor: theme.muted
+      borderWidth: 1,
+      borderColor: theme.separator
     },
     pillActive: {
-      borderColor: theme.propsGreen
-    },
-    label: {
-      fontSize: 14
+      minWidth: 44,
+      paddingHorizontal: Spacing.md,
+      borderWidth: 1,
+      borderColor: theme.primaryAccent
     }
   });
 
