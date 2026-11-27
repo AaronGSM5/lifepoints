@@ -47,7 +47,7 @@ export default function RegisterScreen() {
         }
       });
 
-      router.replace("/auth/verify-email");
+      router.replace("/auth/email-verification");
     } catch (error) {
       console.error("register error ", error);
     } finally {
