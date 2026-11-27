@@ -3,9 +3,9 @@ import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 
+import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { MOCK_CHATS } from "@/mocks/UserChat";
 
 import ChatListItem from "./ChatListItem";
@@ -21,12 +21,10 @@ const MOCK_COMMUNITIES = [
 const ConnectTab = () => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
-  const toolbarHeight = useToolbarPadding();
+  const navbarPadding = useFloatingNavbarPadding();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
   const handleNavigation = useCallback((id) => router.push(`/mycommunity/${id}`), []);
-
-  const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
 
   const data = useMemo(() => {
     return [...MOCK_COMMUNITIES, { id: "create-card-marker", isCreateCard: true }];
@@ -45,7 +43,7 @@ const ConnectTab = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingTop: contentPaddingTop, paddingBottom: Spacing.xl }}
+        contentContainerStyle={{ paddingTop: Spacing.md, paddingBottom: navbarPadding }}
       >
         <View style={styles.section}>
           <FlatList
@@ -83,8 +81,7 @@ const getStyles = () =>
       gap: Spacing.md
     },
     chatList: {
-      paddingHorizontal: Spacing.md,
-      paddingBottom: Spacing.xl
+      paddingHorizontal: Spacing.md
     }
   });
 

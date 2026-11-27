@@ -1,9 +1,15 @@
 import React, { useRef } from "react";
 import { Animated, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useFloatingNavbarPadding } from "@/components/layout/ScreenWrapper";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 
+/**
+ * Scrollende Liste für Screens mit der Variante "list" bzw. für den Inhalt von SegmentedTabScreen.
+ * Der ScreenWrapper hält bereits den oberen Safe-Area-Abstand frei, daher reserviert die Liste
+ * oben nur die Höhe der Toolbar selbst (withTopPadding) und unten Platz für die schwebende Navbar.
+ */
 export default function AnimatedScreenList({
   scrollY,
   contentContainerStyle,
@@ -11,7 +17,8 @@ export default function AnimatedScreenList({
   withTopPadding = true,
   ...props
 }) {
-  const toolbarPadding = useToolbarPadding();
+  const insets = useSafeAreaInsets();
+  const toolbarPadding = useToolbarPadding() - insets.top;
   const topPadding = withTopPadding ? toolbarPadding : 0;
   const bottomPadding = useFloatingNavbarPadding();
   const flatListRef = useRef(null);

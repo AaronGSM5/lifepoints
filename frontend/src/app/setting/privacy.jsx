@@ -10,7 +10,7 @@ import { Spacing } from "@/constants/Spacing";
 export default function PrivacyScreen() {
   const { t } = useTranslation("settings");
   return (
-    <ScreenWrapper>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("Privacy Policy")} />
       <View style={styles.container}>
         <Text style={styles.emoji}>🚧</Text>

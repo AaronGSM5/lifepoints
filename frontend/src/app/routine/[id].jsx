@@ -41,7 +41,7 @@ export default function RoutineDetailScreen() {
 
   if (!routine) {
     return (
-      <ScreenWrapper scrollable={false} withToolbar={false}>
+      <ScreenWrapper variant="plain" scrollable={false}>
         <View style={styles.notFound}>
           <AppText type="h2">{t("Routine not found")}</AppText>
           <AppButton title={t("common:back")} onPress={() => router.back()} />
@@ -55,13 +55,7 @@ export default function RoutineDetailScreen() {
   const isDue = isRoutineDueOn(routine);
 
   return (
-    <ScreenWrapper
-      scrollable={false}
-      withPaddingSides={false}
-      withPaddingBottom={false}
-      withPaddingTop={false}
-      withToolbar={false}
-    >
+    <ScreenWrapper variant="immersive" scrollable={false}>
       <RoutineScreenHeader
         title={routine.title}
         rightAction={

@@ -104,13 +104,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <ScreenWrapper
-      scrollY={scrollY}
-      scrollable={false}
-      withPaddingBottom={false}
-      withPaddingSides={false}
-      withPaddingTop={false}
-    >
+    <ScreenWrapper variant="list" scrollY={scrollY} scrollable={false}>
       <AnimatedScreenList
         scrollY={scrollY}
         data={isLoading ? SKELETON_ITEMS : displayedItems}

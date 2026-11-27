@@ -39,7 +39,7 @@ export default function MyCommunityChatScreen() {
         onOptionsPress={() => console.log("mock options")}
       />
 
-      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
+      <ScreenWrapper variant="immersive" scrollable={false}>
         <ChatMessageList
           chatMessages={chatMessages}
           showSenderName={true}

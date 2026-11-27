@@ -47,7 +47,7 @@ export default function NotificationsScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper variant="stack" scrollable={false}>
       <ScreenTitle title={t("Announcements")} />
       {isLoading ? (
         <AppLoadingSpinner centered />

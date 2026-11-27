@@ -84,5 +84,9 @@
   "Mindset": "Mindset",
   "Productivity": "Produktivität",
   "Community not found": "Community nicht gefunden",
-  "Go Back": "Zurück"
+  "Go Back": "Zurück",
+  "Could not load community": "Community konnte nicht geladen werden",
+  "Please check your internet connection and try again.": "Bitte prüfe deine Internetverbindung und versuche es erneut.",
+  "Try again": "Erneut versuchen",
+  "This community has not added a description yet.": "Diese Community hat noch keine Beschreibung hinzugefügt."
 }

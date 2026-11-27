@@ -60,7 +60,7 @@ export default function PublicProfileScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack" style={styles.sections}>
       <ProfileHeader isLoading={isLoading} isExternUser sourceId={sourceId} profileData={activePublicProfile} />
       {/* Showroom: bis zu 3 ausgewählte Trophäen, zentriert präsentiert */}
       {(isLoading || pinnedTrophies.length > 0) && (
@@ -76,7 +76,7 @@ export default function PublicProfileScreen() {
       )}
 
       {!isLoading && authorRoutines.length > 0 && (
-        <View style={[styles.routinesSection, !pinnedTrophies.length && styles.routinesSectionStandalone]}>
+        <View>
           <SectionHeader title={t("Routines")} />
           <View style={styles.routinesList}>
             {authorRoutines.map((routine) => (
@@ -97,23 +97,17 @@ export default function PublicProfileScreen() {
 
 const getStyles = () =>
   StyleSheet.create({
-    // Gleiche Sektionsabstände wie im eigenen Profil (xl)
+    // Gleiche Sektionsabstände wie im eigenen Profil (xl), zentral über gap
+    sections: {
+      gap: Spacing.xl
+    },
     trophyShowroom: {
       flexDirection: "row",
       justifyContent: "center",
-      gap: Spacing.lg,
-      marginTop: Spacing.xl,
-      marginBottom: Spacing.xl
+      gap: Spacing.lg
     },
     trophyWrapper: {
       width: 80
-    },
-    routinesSection: {
-      marginBottom: Spacing.xl
-    },
-    // Ohne Trophy-Sektion fehlt sonst der Abstand zum ProfileHeader
-    routinesSectionStandalone: {
-      marginTop: Spacing.xl
     },
     routinesList: {
       gap: Spacing.md

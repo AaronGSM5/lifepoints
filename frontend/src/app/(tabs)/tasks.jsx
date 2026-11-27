@@ -1,15 +1,13 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Animated, View } from "react-native";
+import { Animated } from "react-native";
 
 import InstaTrackingModal from "@/components/home/InstaTrackingModal";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import SegmentedTabScreen from "@/components/layout/SegmentedTabScreen";
 import CatalogTab from "@/components/tasks/CatalogTab";
-import NavigationRow from "@/components/tasks/NavigationRow";
 import QuestModal from "@/components/tasks/QuestModal";
 import RoutinesTab from "@/components/tasks/RoutinesTab";
 import TodayTab from "@/components/tasks/TodayTab";
 import { useTasks } from "@/hooks/useTasks";
-import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import useStore from "@/store/useStore";
 
 const TABS = ["Today", "Catalog", "Routines"];
@@ -23,7 +21,6 @@ const TasksScreen = () => {
   const disableInstaTrackingModal = useStore((state) => state.disableInstaTrackingModal);
   const completeTask = useStore((state) => state.completeTask);
   const { quests } = useTasks();
-  const toolbarHeight = useToolbarPadding();
 
   const handleInstaTrackingConfirm = useCallback(
     (dontShowAgain) => {
@@ -76,19 +73,7 @@ const TasksScreen = () => {
   };
 
   return (
-    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false}>
-      <View
-        style={{
-          position: "absolute",
-          top: toolbarHeight,
-          left: 0,
-          right: 0,
-          zIndex: 10
-        }}
-        pointerEvents="box-none"
-      >
-        <NavigationRow tabs={TABS} activeIndex={activeTabIndex} onTabChange={setActiveTabIndex} />
-      </View>
+    <SegmentedTabScreen tabs={TABS} activeIndex={activeTabIndex} onTabChange={setActiveTabIndex} scrollY={scrollY}>
       {renderActiveTab()}
       <InstaTrackingModal
         visible={instaTrackingModalVisible}
@@ -96,7 +81,7 @@ const TasksScreen = () => {
         onConfirm={handleInstaTrackingConfirm}
       />
       <QuestModal visible={questmodalVisible} onClose={() => setQuestModalVisible(false)} mockQuests={quests} />
-    </ScreenWrapper>
+    </SegmentedTabScreen>
   );
 };
 

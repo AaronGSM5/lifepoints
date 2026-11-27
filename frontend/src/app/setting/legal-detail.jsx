@@ -91,7 +91,7 @@ export default function LegalDetailScreen() {
   const content = useMemo(() => LEGAL_CONTENT[type] || LEGAL_CONTENT.terms, [type, LEGAL_CONTENT]);
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <View style={styles.container}>
         <View style={styles.header}>
           <AppText type="h1">{content.title}</AppText>

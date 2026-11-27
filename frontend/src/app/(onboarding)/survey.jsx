@@ -57,7 +57,7 @@ export default function SurveyScreen() {
   }, [step, totalSteps, completeOnboarding]);
 
   return (
-    <ScreenWrapper withPaddingBottom={false}>
+    <ScreenWrapper variant="stack">
       <View style={styles.content}>
         <SurveyProgressBar currentStep={step} totalSteps={totalSteps} />
         <SurveyQuestion question={currentQuestion} answers={answers} onSelect={handleSelect} />

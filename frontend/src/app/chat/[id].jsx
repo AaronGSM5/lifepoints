@@ -35,7 +35,7 @@ const UserChatScreen = () => {
         onOptionsPress={() => console.log("open Options")}
       />
 
-      <ScreenWrapper scrollable={false} withPaddingSides={false} withPaddingBottom={false} withToolbar={false}>
+      <ScreenWrapper variant="immersive" scrollable={false}>
         <ChatMessageList chatMessages={chatMessages} contentContainerStyle={styles.chatListContent} />
         <ChatInputBar
           value={inputText}

@@ -11,7 +11,7 @@ export default function AppearanceScreen() {
   const { t } = useTranslation("settings");
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("Appearance")} subtitle={t("Customize the app's design to suit your preferences.")} />
       <ColorModePicker />
       <ColorThemePicker />

@@ -29,7 +29,7 @@ export default function TrophyScreen() {
   if (!trophy) return null;
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper variant="stack">
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.iconShowcase}>
           <Animated.Image

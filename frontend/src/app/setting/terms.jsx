@@ -48,7 +48,7 @@ export default function TermsScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle
         title={"Rechtliches"}
         subtitle={"Hier findest du alle wichtigen Informationen zu LifePoints und dem Schutz deiner Privatsphäre."}

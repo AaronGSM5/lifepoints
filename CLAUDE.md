@@ -34,6 +34,7 @@ Appwrite handles authentication. The frontend (`src/api/client/appwrite.js`) cre
 - Much of the UI still runs on mock and static data from `src/mocks/` and `src/constants/` (catalogs for tasks, quests, trophies, ranks, rewards). Game logic (XP, ranks, loot, tasks) is in `src/utils/*Helpers.js`.
 - Routing: expo-router file-based routes in `src/app/`, with the groups `(tabs)` (home, tasks, social, shop, profile), `(onboarding)`, `auth/`, `setting/`. The root `_layout.jsx` sets up the QueryClient, fonts, the theme, and auth/onboarding redirects.
 - i18n: `src/utils/i18n.js` statically imports the namespaces from `public/locales/{de,en}/*.json`. A new namespace must be added for both languages and registered there.
+- Screen layout: wrap screens in `ScreenWrapper` with a fixed `variant` (`tab`, `list`, `stack`, `plain`, `immersive`; see `SCREEN_VARIANTS` in `src/components/layout/ScreenWrapper.jsx`) instead of per-screen padding/toolbar flags. Tabs with a segment switch use `SegmentedTabScreen`; image-hero detail pages use `DetailScreen`, which also handles the loading and not-found states. Set section spacing on the parent with `gap`, not with margins inside each section.
 - Theming: `useAppTheme()` plus `src/constants/Colors.js`, `Spacing.js`, `Typography.js`. Reusable primitives (`AppText`, `AppButton`, `BaseCard`, and others) are in `src/components/ui/`.
 
 ### Testing

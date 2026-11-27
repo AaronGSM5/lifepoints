@@ -95,7 +95,7 @@ export default function EditProfileScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
+    <ScreenWrapper variant="stack" scrollable={false}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <ScreenTitle title={t("Edit Profile")} />
         <ScrollView

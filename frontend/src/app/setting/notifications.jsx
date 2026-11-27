@@ -33,7 +33,7 @@ export default function NotificationsScreen() {
   }, []);
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("Notifications")} subtitle={t("Choose how and when LifePoints keeps you up to date.")} />
       <SettingsSection cardProps={{ padding: 0 }}>
         {options.map((option, index) => {

@@ -32,7 +32,7 @@ const OnboardingGuide = ({ tutorialSteps = [], isLoading }) => {
   if (isLoading) return <OnboardingGuideSkeleton stepsCount={tutorialSteps?.length || 3} />;
 
   return (
-    <BaseCard style={{ marginTop: Spacing.xl }}>
+    <BaseCard>
       <View style={styles.guideHeader}>
         <AppText type="h2">{t("Your Guide")}</AppText>
         <AppButton

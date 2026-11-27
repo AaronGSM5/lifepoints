@@ -29,7 +29,7 @@ export default function DevEntryScreen() {
   );
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper variant="stack">
       <View style={styles.container}>
         <View style={styles.header}>
           <AppText type="h1">LifePoints Dev-Menu</AppText>

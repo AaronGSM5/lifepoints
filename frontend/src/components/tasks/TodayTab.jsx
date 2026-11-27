@@ -8,9 +8,9 @@ import { Icon } from "@/components/icons/Icon";
 import AnimatedScreenList from "@/components/layout/AnimatedScreenList";
 import ActiveTaskCard from "@/components/tasks/ActiveTaskCard";
 import HeroCarousel from "@/components/ui/HeroCarousel";
+import HistoryCard from "@/components/ui/HistoryCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Spacing } from "@/constants/Spacing";
-import { tasksCatalog } from "@/constants/TasksCatalog";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTasks } from "@/hooks/useTasks";
 import { TASKS_HERO_DATA } from "@/mocks/HeroData";
@@ -18,6 +18,7 @@ import { mockActiveTasks } from "@/mocks/Tasks";
 import { mockFYTasks } from "@/mocks/Tasks";
 import useStore from "@/store/useStore";
 import { addOpacity } from "@/utils/colorHelpers";
+import { formatTimeOrDate } from "@/utils/dateHelpers";
 import { triggerHaptic } from "@/utils/haptics";
 import { calculateTaskProgress } from "@/utils/taskHelpers";
 
@@ -39,12 +40,12 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const trackTask = useStore((state) => state.trackTask);
   const completeTask = useStore((state) => state.completeTask);
   const { isLoading, isRefreshing, refreshTasks } = useTasks();
-  const activeTaskIds = useStore((state) => state.activeTaskIds);
   const addExperience = useStore((state) => state.addExperience);
-  const myActiveTasks = useMemo(() => tasksCatalog.filter((t) => activeTaskIds.includes(t.id)), [activeTaskIds]);
   const notifyQuestSystem = useStore((state) => state.notifyQuestSystem);
 
   const [activeTasks, setActiveTasks] = useState(mockActiveTasks);
+  // Heute erledigte Tasks (lokal, solange die Active Tasks noch Mock-Daten sind)
+  const [doneTasks, setDoneTasks] = useState([]);
 
   const handleToggleDoneTasks = () => {
     setIsDoneTasksVisible((prev) => !prev);
@@ -95,6 +96,8 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
   const handleTaskFinished = useCallback(
     (task) => {
       completeTask(task.id);
+      setActiveTasks((prev) => prev.filter((activeTask) => activeTask.id !== task.id));
+      setDoneTasks((prev) => [{ ...task, completedAt: new Date().toISOString() }, ...prev]);
       triggerHaptic("success");
       notifyQuestSystem("TASK_COMPLETED", { category: task.category });
       addExperience(task.xp);
@@ -115,7 +118,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       switch (item.type) {
         case "event_banner":
           return (
-            <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
+            <View style={{ marginTop: Spacing.md }}>
               <HeroCarousel data={TASKS_HERO_DATA} isLoading={isLoading} onPressItem={() => console.log("Test")} />
             </View>
           );
@@ -128,7 +131,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
                 rightIcon={<Icon name={"survey"} />}
                 onRightPress={onOpenQuestModal}
               />
-              {myActiveTasks.length === 1 ? (
+              {activeTasks.length === 0 ? (
                 <EmptyView
                   icon="flower"
                   iconColor={MyTheme.primaryAccent}
@@ -164,14 +167,32 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
             </View>
           );
         case "done_tasks":
+          // Ohne erledigte Tasks wird die Sektion ausgeblendet statt einer leeren Überschrift.
+          if (!doneTasks.length) return null;
           return (
-            <SectionHeader
-              title={t("Done Tasks")}
-              rightIcon={<Icon name={isDoneTasksVisible ? "down" : "right"} color={MyTheme.muted} />}
-              onRightPress={handleToggleDoneTasks}
-              style={styles.paddedContent}
-              textStyle={{ color: MyTheme.muted }}
-            />
+            <View style={styles.paddedContent} testID="done-tasks-section">
+              <SectionHeader
+                title={`${t("Done Tasks")} (${doneTasks.length})`}
+                rightIcon={<Icon name={isDoneTasksVisible ? "down" : "right"} color={MyTheme.muted} />}
+                onRightPress={handleToggleDoneTasks}
+                textStyle={{ color: MyTheme.muted }}
+              />
+              {isDoneTasksVisible && (
+                <View style={styles.tasksList}>
+                  {doneTasks.map((task) => (
+                    <HistoryCard
+                      key={`done-${task.id}`}
+                      title={task.title}
+                      time={formatTimeOrDate(task.completedAt)}
+                      points={task.lp}
+                      type="earn"
+                      pointsSuffix="LP"
+                      iconNode={<Icon name="checkmark" size={16} color={MyTheme.primaryAccentText} />}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
           );
         case "for_you":
           return (
@@ -204,7 +225,7 @@ const TodayTab = ({ scrollY, onOpenQuestModal }) => {
       isLoading,
       onOpenQuestModal,
       isDoneTasksVisible,
-      myActiveTasks,
+      doneTasks,
       MyTheme,
       t,
       styles,

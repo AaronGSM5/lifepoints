@@ -99,7 +99,7 @@ const CatalogTab = ({ scrollY, onOpenInstaTracking }) => {
 
   const renderItem = useCallback(
     ({ item }) => {
-      const topOffset = { marginTop: Spacing.md + 44 + Spacing.md };
+      const topOffset = { marginTop: Spacing.md };
       switch (item.type) {
         case "error_state":
           return (

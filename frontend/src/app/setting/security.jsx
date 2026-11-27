@@ -39,7 +39,7 @@ export default function SecurityScreen() {
   });
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("Security & Login")} subtitle={t("Manage your password and how you sign in.")} />
       <SettingsSection title={t("Change Password")}>
         <AppInput

@@ -74,7 +74,7 @@ export default function SupportScreen() {
     []
   );
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("How can we help?")} subtitle={t("Search our FAQs or contact us directly.")} />
       <AppInput
         icon="search"

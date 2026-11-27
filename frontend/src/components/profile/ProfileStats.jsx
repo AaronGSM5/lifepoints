@@ -17,7 +17,7 @@ const ProfileStats = memo(({ stats = [], isLoading }) => {
 
   const displayStats = isLoading && !stats.length ? Array.from({ length: 4 }) : stats;
   return (
-    <View style={styles.container}>
+    <View>
       <SectionHeader
         title={t("Your Stats")}
         icon={"statsChart"}
@@ -45,9 +45,6 @@ ProfileStats.displayName = "ProfileStats";
 
 const getStyles = () =>
   StyleSheet.create({
-    container: {
-      marginTop: Spacing.xl
-    },
     statsWrapper: {
       flexDirection: "row",
       flexWrap: "wrap",

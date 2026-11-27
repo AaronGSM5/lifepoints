@@ -65,7 +65,7 @@ const JournalPage = () => {
 
   if (isLoading) {
     return (
-      <ScreenWrapper style={styles.wrapper}>
+      <ScreenWrapper variant="stack" scrollable={false} style={styles.wrapper}>
         <ScreenTitle title={t("My Impact Journal")} />
         <View style={styles.centerContent}>
           <AppLoadingSpinner />
@@ -76,7 +76,7 @@ const JournalPage = () => {
 
   if (!activities?.length) {
     return (
-      <ScreenWrapper style={styles.wrapper}>
+      <ScreenWrapper variant="stack" scrollable={false} style={styles.wrapper}>
         <ScreenTitle title={t("My Impact Journal")} />
         <View style={styles.centerContent}>
           <EmptyView
@@ -92,7 +92,7 @@ const JournalPage = () => {
   }
 
   return (
-    <ScreenWrapper style={styles.wrapper} withPaddingBottom={false}>
+    <ScreenWrapper variant="stack" scrollable={false} style={styles.wrapper}>
       <ScreenTitle title={t("My Impact Journal")} />
       <SectionList
         sections={groupedActivities}

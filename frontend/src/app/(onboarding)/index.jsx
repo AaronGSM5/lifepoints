@@ -52,7 +52,7 @@ export default function OnboardingScreen() {
   const renderItem = useCallback(({ item }) => <OnboardingItem item={item} />, []);
 
   return (
-    <ScreenWrapper withPaddingSides={false} withPaddingBottom={false}>
+    <ScreenWrapper variant="stack" style={styles.edgeToEdge}>
       <View style={styles.container}>
         <View style={styles.content}>
           <FlatList
@@ -83,6 +83,10 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Die Slides nutzen die volle Bildschirmbreite (pagingEnabled).
+  edgeToEdge: {
+    paddingHorizontal: 0
+  },
   container: {
     flex: 1
   },

@@ -83,7 +83,7 @@ export default function CreatePost() {
   }, [router]);
 
   return (
-    <ScreenWrapper scrollable={false} withPaddingBottom={false}>
+    <ScreenWrapper variant="stack" scrollable={false}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <ScreenTitle title={t("Create Post")} />
 

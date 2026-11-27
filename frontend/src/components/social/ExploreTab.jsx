@@ -80,7 +80,7 @@ const ExploreTab = ({ scrollY }) => {
       switch (item.type) {
         case "hero":
           return (
-            <View style={{ marginTop: Spacing.md + 44 + Spacing.md }}>
+            <View style={{ marginTop: Spacing.md }}>
               <HeroCarousel
                 data={COMMUNITIES_HERO_DATA}
                 isLoading={isLoading}

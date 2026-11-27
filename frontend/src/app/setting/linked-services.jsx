@@ -42,7 +42,7 @@ export default function LinkedServicesScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle
         title={t("Linked Services")}
         subtitle={t("Connect your favorite apps to automatically earn LifePoints through your activities.")}

@@ -23,7 +23,7 @@ export default function LanguageScreen() {
   );
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper variant="stack">
       <ScreenTitle
         title={t("Language & Region")}
         subtitle={t("Select the language in which you want LifePoints to be displayed.")}

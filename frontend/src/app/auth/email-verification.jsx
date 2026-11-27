@@ -82,7 +82,7 @@ const EmailVerification = ({ onResendEmail, onLogout }) => {
   const isResendDisabled = isSending || timeLeft > 0;
 
   return (
-    <ScreenWrapper withPaddingBottom={false}>
+    <ScreenWrapper variant="stack">
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "space-between" }}>
           <View>

@@ -32,7 +32,7 @@ const CustomizablesPreview = memo(({ isLoading, customizables }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <SectionHeader
         title={t("Customizables")}
         icon={"star"}
@@ -70,10 +70,6 @@ CustomizablesPreview.displayName = "CustomizablesPreview";
 
 const getStyles = () =>
   StyleSheet.create({
-    container: {
-      marginTop: Spacing.xl,
-      marginBottom: Spacing.md
-    },
     scrollContent: {
       gap: Spacing.md
     },

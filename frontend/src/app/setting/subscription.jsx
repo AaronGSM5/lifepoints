@@ -37,7 +37,7 @@ export default function SubscriptionScreen() {
   }, []);
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <View style={styles.header}>
         <ScreenTitle
           title={t("Reach the next level")}

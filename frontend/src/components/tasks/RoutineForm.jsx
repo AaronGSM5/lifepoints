@@ -78,13 +78,7 @@ const RoutineForm = ({ title, initialRoutine, submitLabel, onSubmit, onDelete })
   }, [isConfirmingDelete, onDelete]);
 
   return (
-    <ScreenWrapper
-      scrollable={false}
-      withPaddingSides={false}
-      withPaddingBottom={false}
-      withPaddingTop={false}
-      withToolbar={false}
-    >
+    <ScreenWrapper variant="immersive" scrollable={false}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <RoutineScreenHeader title={title} />
 

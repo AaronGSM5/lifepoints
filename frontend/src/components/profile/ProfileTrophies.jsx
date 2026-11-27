@@ -32,7 +32,7 @@ const ProfileTrophies = memo(({ isLoading, trophies = [] }) => {
   if (!isLoading && !mergedTrophies.length) return null;
 
   return (
-    <View style={styles.container}>
+    <View>
       <SectionHeader
         title={t("Trophies")}
         icon={"trophy"}
@@ -66,10 +66,6 @@ const ProfileTrophies = memo(({ isLoading, trophies = [] }) => {
 ProfileTrophies.displayName = "ProfileTrophies";
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: Spacing.xl,
-    marginBottom: Spacing.xl
-  },
   scrollContent: {
     gap: Spacing.md
   },

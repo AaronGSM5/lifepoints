@@ -252,7 +252,7 @@ const getStyles = () =>
       paddingHorizontal: Spacing.md
     },
     topOffset: {
-      marginTop: Spacing.md + 44 + Spacing.md
+      marginTop: Spacing.md
     },
     itemSpacing: {
       marginBottom: Spacing.md

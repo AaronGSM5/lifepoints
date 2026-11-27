@@ -38,7 +38,7 @@ export const ErrorFallback = memo(({ error, resetError }) => {
   }, []);
 
   return (
-    <ScreenWrapper withToolbar={false}>
+    <ScreenWrapper variant="plain" scrollable={false}>
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false} bounces={false}>
         <View style={styles.iconWrapper}>
           <Icon name="infoCircle" size={72} color={MyTheme.warning} />

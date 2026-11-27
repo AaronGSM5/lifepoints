@@ -61,7 +61,7 @@ export default function SettingsScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable>
+    <ScreenWrapper variant="stack">
       <ScreenTitle title={t("Settings")} />
       {settingsSections.map((cat) => (
         <View key={cat.title} style={styles.section}>

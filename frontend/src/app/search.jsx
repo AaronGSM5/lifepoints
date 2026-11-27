@@ -49,7 +49,7 @@ export default function SearchScreen() {
   );
 
   return (
-    <ScreenWrapper scrollable={false}>
+    <ScreenWrapper variant="stack" scrollable={false}>
       <View style={styles.inputContainer}>
         <AppInput
           autoFocus={true}

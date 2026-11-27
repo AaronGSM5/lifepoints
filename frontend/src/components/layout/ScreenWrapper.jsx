@@ -18,32 +18,55 @@ export const useFloatingNavbarPadding = () => {
   return navbarBottomSpace + navbarHeight + extraClearance;
 };
 
+/**
+ * Feste Screen-Varianten. Jede Variante legt Toolbar und Innenabstände fest,
+ * damit Screens nicht mehr einzelne Boolean-Props kombinieren müssen.
+ *
+ * - tab:       Tab-Screen mit Toolbar; Inhalt scrollt über der schwebenden Navbar.
+ * - list:      Tab-Screen, dessen Liste (AnimatedScreenList) Abstände selbst verwaltet.
+ * - stack:     Unterseite mit Toolbar (Zurück-Button), ohne Navbar.
+ * - plain:     Ohne Toolbar, mit seitlichem Abstand (Auth, Fehler, "nicht gefunden").
+ * - immersive: Ohne Toolbar und ohne seitlichen Abstand; der Screen bringt eigenen Header mit.
+ */
+export const SCREEN_VARIANTS = {
+  tab: { toolbar: true, sides: true, top: "toolbar", bottom: "navbar" },
+  list: { toolbar: true, sides: false, top: "inset", bottom: "none" },
+  stack: { toolbar: true, sides: true, top: "toolbar", bottom: "inset" },
+  plain: { toolbar: false, sides: true, top: "inset", bottom: "inset" },
+  immersive: { toolbar: false, sides: false, top: "inset", bottom: "inset" }
+};
+
 export default function ScreenWrapper({
   children,
+  variant = "stack",
   scrollY: externalScrollY,
   scrollable = true,
-  withOffset = false,
-  withPaddingBottom = true,
-  withPaddingSides = true,
   useGradient = true,
-  withPaddingTop = true,
-  withToolbar = true,
   style
 }) {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const insets = useSafeAreaInsets();
-  const totalBottomPadding = useFloatingNavbarPadding();
+  const navbarPadding = useFloatingNavbarPadding();
   const toolbarTopPadding = useToolbarPadding();
   const [internalScrollY] = useState(() => new Animated.Value(0));
   const scrollY = externalScrollY || internalScrollY;
+  const config = SCREEN_VARIANTS[variant] || SCREEN_VARIANTS.stack;
+
+  const paddingTop = config.top === "toolbar" ? toolbarTopPadding : insets.top;
+
+  let paddingBottom = 0;
+  if (config.bottom === "navbar") {
+    paddingBottom = scrollable ? navbarPadding : insets.bottom;
+  } else if (config.bottom === "inset") {
+    paddingBottom = insets.bottom + (scrollable ? Spacing.lg : 0);
+  }
+
   const contentStyles = [
     {
-      paddingHorizontal: withPaddingSides ? Spacing.md : 0,
-      paddingTop: withPaddingTop
-        ? (withToolbar ? toolbarTopPadding : insets.top) + (withOffset ? Spacing.md : 0)
-        : insets.top,
-      paddingBottom: scrollable && withPaddingBottom ? totalBottomPadding : insets.bottom
+      paddingHorizontal: config.sides ? Spacing.md : 0,
+      paddingTop,
+      paddingBottom
     },
     style
   ];
@@ -53,7 +76,7 @@ export default function ScreenWrapper({
       {useGradient && (
         <LinearGradient colors={[MyTheme.background, MyTheme.backgroundBottom]} style={StyleSheet.absoluteFillObject} />
       )}
-      {withToolbar && <Toolbar scrollY={scrollY} />}
+      {config.toolbar && <Toolbar scrollY={scrollY} />}
       {scrollable ? (
         <Animated.ScrollView
           style={{ flex: 1 }}

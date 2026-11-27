@@ -84,5 +84,9 @@
   "Leaderboard": "Leaderboard",
   "Leave Community": "Leave",
   "Community not found": "Community not found",
-  "Go Back": "Go Back"
+  "Go Back": "Go Back",
+  "Could not load community": "Could not load community",
+  "Please check your internet connection and try again.": "Please check your internet connection and try again.",
+  "Try again": "Try again",
+  "This community has not added a description yet.": "This community has not added a description yet."
 }

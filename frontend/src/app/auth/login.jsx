@@ -66,7 +66,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{ flex: 1, pointerEvents: "box-none" }}>
-        <ScreenWrapper scrollable withToolbar={false} withPaddingBottom={false}>
+        <ScreenWrapper variant="plain">
           <AuthHeader showImageLogo={true} subtitle={t("Log in to continue")} />
 
           <BaseCard

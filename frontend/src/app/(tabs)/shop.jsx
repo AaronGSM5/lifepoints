@@ -118,7 +118,7 @@ export default function ShopScreen() {
   }, [isFetchingMore]);
 
   return (
-    <ScreenWrapper scrollY={scrollY} scrollable={false} withPaddingSides={false} withPaddingTop={false}>
+    <ScreenWrapper variant="list" scrollY={scrollY} scrollable={false}>
       <AnimatedScreenList
         scrollY={scrollY}
         data={isLoading ? SKELETON_REWARDS : rewards}

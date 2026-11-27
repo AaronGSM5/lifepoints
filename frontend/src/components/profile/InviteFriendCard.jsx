@@ -51,8 +51,6 @@ const InviteFriendCard = ({ referralCode }) => {
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: Spacing.md,
-    marginHorizontal: Spacing.md,
     alignItems: "center"
   },
   iconContainer: {

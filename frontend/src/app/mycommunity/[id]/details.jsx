@@ -60,7 +60,7 @@ export default function MyCommunityDetailScreen() {
     return (
       <>
         <Stack.Screen options={{ headerShown: false }} />
-        <ScreenWrapper>
+        <ScreenWrapper variant="stack">
           <View style={styles.errorContainer}>
             <AppText bold type={"h2"}>
               {t("Community not found")}
@@ -79,7 +79,7 @@ export default function MyCommunityDetailScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ScreenWrapper scrollable withPaddingSides={false} withPaddingTop={false} withToolbar={false}>
+      <ScreenWrapper variant="immersive">
         <CommunityHeader community={community} />
 
         <View style={styles.contentContainer}>

@@ -11,7 +11,7 @@ const OnboardingGuideSkeleton = memo(({ stepsCount = 3 }) => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   return (
-    <BaseCard style={{ marginTop: Spacing.xl }}>
+    <BaseCard>
       <View style={styles.guideHeader}>
         <AppSkeleton width={140} height={28} borderRadius={6} />
         <AppSkeleton width={80} height={16} borderRadius={4} />
