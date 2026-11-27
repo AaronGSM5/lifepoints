@@ -13,9 +13,11 @@ const FeedItemFooter = memo(({ likesCount, username, description, onPress }) => 
   const { t } = useTranslation("home");
   return (
     <View style={styles.footer}>
-      <AppText bold style={styles.likesText}>
-        {likesCount} {likesCount === 1 ? "Like" : "Likes"}
-      </AppText>
+      {likesCount > 0 && (
+        <AppText bold style={styles.likesText}>
+          {t("{{count}} Props", { count: likesCount })}
+        </AppText>
+      )}
       <AppText style={styles.descriptionText}>
         <AppText bold onPress={onPress}>
           {username}{" "}

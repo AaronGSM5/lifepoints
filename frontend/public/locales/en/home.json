@@ -35,5 +35,9 @@
   "Not interested": "Not interested",
   "Report post": "Report post",
   "Block user": "Block user",
-  "Coming Soon": "Coming Soon"
+  "Coming Soon": "Coming Soon",
+  "Props": "Props",
+  "Give props": "Give props",
+  "Take back props": "Take back props",
+  "{{count}} Props": "{{count}} Props"
 }

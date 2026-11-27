@@ -35,5 +35,9 @@
   "Not interested": "Interessiert mich nicht",
   "Report post": "Beitrag melden",
   "Block user": "Nutzer blockieren",
-  "Coming Soon": "Demnächst"
+  "Coming Soon": "Demnächst",
+  "Props": "Props",
+  "Give props": "Props geben",
+  "Take back props": "Props zurücknehmen",
+  "{{count}} Props": "{{count}} Props"
 }

@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
+import PropsButton from "./PropsButton";
 import { Icon } from "../icons/Icon";
 
 const FeedItemActionBar = memo(({ handleLike, handleSave, handleShare, isLiked, isSaved, onOpenComments }) => {
@@ -14,13 +15,7 @@ const FeedItemActionBar = memo(({ handleLike, handleSave, handleShare, isLiked, 
   return (
     <View style={styles.actionBar}>
       <View style={styles.actionLeft}>
-        <Icon
-          outline={!isLiked}
-          name="heart"
-          color={isLiked ? "red" : undefined}
-          onPress={handleLike}
-          accessibilityLabel={isLiked ? tc("Remove like") : tc("Like")}
-        />
+        <PropsButton isActive={isLiked} onToggle={handleLike} />
         <Icon name="chat" onPress={onOpenComments} accessibilityLabel={tc("Open comments")} />
         <Icon name="forwardShare" onPress={handleShare} accessibilityLabel={tc("Share")} />
       </View>

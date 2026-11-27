@@ -27,7 +27,9 @@ const AppButton = memo(
     textStyle,
     borderStyle,
     bgColor,
-    accessibilityLabel
+    accessibilityLabel,
+    hitSlop,
+    selected
   }) => {
     const MyTheme = useAppTheme();
     const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
@@ -86,10 +88,10 @@ const AppButton = memo(
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           disabled={isDisabled}
-          hitSlop={isIconOnly && size === "sm" ? 8 : undefined}
+          hitSlop={hitSlop ?? (isIconOnly && size === "sm" ? 8 : undefined)}
           accessibilityRole="button"
           accessibilityLabel={accessibilityLabel || title}
-          accessibilityState={{ disabled: isDisabled, busy: loading }}
+          accessibilityState={{ disabled: isDisabled, busy: loading, selected }}
           style={[
             styles.base,
             styles[size],
