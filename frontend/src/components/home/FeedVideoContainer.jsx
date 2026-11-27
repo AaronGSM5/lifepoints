@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, Dimensions, Image, Pressable, StyleSheet } from "react-native";
+import { Animated, Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 
 import { router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -97,8 +97,7 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
     player.muted = isMuted;
   }, [isMuted, player]);
 
-  const toggleMute = useCallback((e) => {
-    e.stopPropagation();
+  const toggleMute = useCallback(() => {
     setIsMuted((prev) => !prev);
   }, []);
 
@@ -132,12 +131,7 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
   const showThumbnail = !isPlaying && thumbnail;
 
   return (
-    <Pressable
-      style={styles.videoContainer}
-      onPress={handleContainerPress}
-      accessibilityRole="button"
-      accessibilityLabel={t("Open video")}
-    >
+    <View style={styles.videoContainer}>
       <VideoView
         style={styles.video}
         player={player}
@@ -162,6 +156,15 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
       >
         <Icon name="heart" size={100} color="#FFFFFF" outline={false} />
       </Animated.View>
+
+      {/* Tap-Fläche als Geschwister des Mute-Buttons: auf Web werden beide zu <button>, die nicht verschachtelt sein dürfen */}
+      <Pressable
+        style={styles.pressLayer}
+        onPress={handleContainerPress}
+        accessibilityRole="button"
+        accessibilityLabel={t("Open video")}
+      />
+
       <Pressable
         style={styles.muteButton}
         onPress={toggleMute}
@@ -171,7 +174,7 @@ const FeedVideoContainer = memo(({ id, videoUrl, thumbnail, isReady, heartOpacit
       >
         <Icon name={isMuted ? "volumeMute" : "volumeHigh"} size={20} />
       </Pressable>
-    </Pressable>
+    </View>
   );
 });
 FeedVideoContainer.displayName = "FeedVideoContainer";
@@ -200,6 +203,10 @@ const getStyles = () =>
       justifyContent: "center",
       alignItems: "center",
       zIndex: 10
+    },
+    pressLayer: {
+      ...StyleSheet.absoluteFillObject,
+      zIndex: 15
     },
     muteButton: {
       position: "absolute",
