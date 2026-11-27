@@ -150,7 +150,7 @@ export default function RootLayout() {
       router.replace("/(onboarding)");
     } else if (hasCompletedOnboarding && !isAuthenticated && !inAuthGroup) {
       console.log("➡️ Türsteher: Leite um zu /auth");
-      router.replace("/auth");
+      router.replace("/auth/login");
     } else if (hasCompletedOnboarding && isAuthenticated && (inAuthGroup || inOnboardingGroup) && !__DEV__) {
       router.replace("/(tabs)/home");
     }

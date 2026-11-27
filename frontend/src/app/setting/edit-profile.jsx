@@ -19,7 +19,7 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { triggerHaptic } from "@/utils/haptics";
 
-import EditProfileSkeleton from "./edit-profile-skeleton";
+import EditProfileSkeleton from "../../components/settings/edit-profile-skeleton";
 
 export default function EditProfileScreen() {
   const MyTheme = useAppTheme();
@@ -44,7 +44,6 @@ export default function EditProfileScreen() {
 
   useEffect(() => {
     if (profileData) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData(initialData);
     }
   }, [profileData, initialData]);
