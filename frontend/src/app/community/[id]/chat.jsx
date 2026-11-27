@@ -22,7 +22,7 @@ export default function MyCommunityChatScreen() {
   const community = useMemo(() => myCommunities.find((c) => c._id === id) || {}, [id, myCommunities]);
 
   const openDetails = useCallback(() => {
-    router.push(`/mycommunity/${id}/details`);
+    router.push(`/community/${id}/details`);
   }, [id, router]);
 
   return (

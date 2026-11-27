@@ -52,7 +52,7 @@ export default function SurveyScreen() {
       setStep((prev) => prev + 1);
     } else {
       completeOnboarding(true);
-      router.push("/auth/login");
+      router.replace("/auth/login");
     }
   }, [step, totalSteps, completeOnboarding]);
 

@@ -184,7 +184,7 @@ export default function RootLayout() {
             <Stack.Screen name="auth" />
             <Stack.Screen name="post/create" />
             <Stack.Screen name="notifications" />
-            <Stack.Screen name="settings" />
+            <Stack.Screen name="setting" />
             <Stack.Screen name="journal" />
             <Stack.Screen
               name="task-completed"

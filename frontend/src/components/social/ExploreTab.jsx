@@ -71,7 +71,7 @@ const ExploreTab = ({ scrollY }) => {
 
   const handleSearchPress = useCallback(() => router.push("/search"), []);
   const handleCommunityPress = useCallback((community) => router.push(`/community/${community._id}`), []);
-  const handleMyCommunityPress = useCallback((community) => router.push(`/mycommunity/${community._id}`), []);
+  const handleMyCommunityPress = useCallback((community) => router.push(`/community/${community._id}/chat`), []);
 
   const renderSkeletonItem = useCallback(() => <RecommendedCommunity isLoading={true} />, []);
 

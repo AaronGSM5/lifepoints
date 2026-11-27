@@ -59,7 +59,7 @@ export default memo(function Toolbar({ scrollY }) {
   }, [resetProfile]);
 
   const handleToNotifications = useCallback(() => router.push("/notifications"), []);
-  const handleToSettings = useCallback(() => router.push("/settings"), []);
+  const handleToSettings = useCallback(() => router.push("/setting"), []);
   const handleToCreatePost = useCallback(() => router.push("/post/create"), []);
   const handleToSearch = useCallback(() => router.push("/search"), []);
 

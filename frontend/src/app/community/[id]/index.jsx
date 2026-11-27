@@ -6,9 +6,9 @@ import { router, Stack, useLocalSearchParams } from "expo-router";
 
 // import { apiRequest } from "@/api/client/api";
 import { useCommunityDetail } from "@/api/communities/useCommunityDetail";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 // import { useCommunities } from "@/api/communities/useCommunities";
 import CommunityHeader from "@/components/social/CommunityDetailsHeader";
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppButton from "@/components/ui/AppButton";
 import AppText from "@/components/ui/AppText";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -27,8 +27,14 @@ export default function CommunityDetailScreen() {
     triggerHaptic("medium");
     // await apiRequest(`communities/${data._id}/join`, { method: "POST" })
     joinCommunity(data);
-    router.push("/social");
+    router.replace(`/community/${data._id}/chat`);
   }, [data, joinCommunity]);
+
+  const handleOpenChat = useCallback(() => {
+    router.push(`/community/${data._id}/chat`);
+  }, [data]);
+
+  const isMember = myCommunities.some((c) => c?._id === data?._id);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -47,7 +53,9 @@ export default function CommunityDetailScreen() {
           </View>
 
           {/* Action Button */}
-          {!myCommunities.some((c) => c?._id === data?._id) && (
+          {isMember ? (
+            <AppButton title={t("Open Chat")} style={styles.joinButton} onPress={handleOpenChat} />
+          ) : (
             <AppButton title={t("Join Community")} style={styles.joinButton} onPress={handleJoinCommunity} />
           )}
 
