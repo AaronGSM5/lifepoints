@@ -4,6 +4,7 @@ const mockPush = jest.fn();
 const mockBack = jest.fn();
 const mockCanGoBack = jest.fn(() => true);
 const mockUsePathname = jest.fn(() => "/");
+const mockUseLocalSearchParams = jest.fn(() => ({}));
 
 module.exports = {
   useRouter: () => ({
@@ -19,4 +20,8 @@ module.exports = {
     canGoBack: mockCanGoBack,
   },
   usePathname: mockUsePathname,
+  useLocalSearchParams: mockUseLocalSearchParams,
+  Stack: {
+    Screen: () => null,
+  },
 };
