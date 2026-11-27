@@ -44,7 +44,7 @@ const MyCommunityCard = memo(({ item, isLoading, onPress }) => {
               </AppText>
             </>
           ) : (
-            <AppText type="caption">{item.members}</AppText>
+            <AppText type="caption">{item.memberCount ?? item.members}</AppText>
           )}
         </View>
       </View>

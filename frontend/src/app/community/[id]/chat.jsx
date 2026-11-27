@@ -19,7 +19,7 @@ export default function MyCommunityChatScreen() {
   const router = useRouter();
   const { chatMessages, inputText, setInputText, sendMessage } = useCommunityChat(DUMMY_MESSAGES);
   const myCommunities = useStore((state) => state.myCommunities);
-  const community = useMemo(() => myCommunities.find((c) => c._id === id) || {}, [id, myCommunities]);
+  const community = useMemo(() => myCommunities.find((c) => c._id === id || c.id === id) || {}, [id, myCommunities]);
 
   const openDetails = useCallback(() => {
     router.push(`/community/${id}/details`);

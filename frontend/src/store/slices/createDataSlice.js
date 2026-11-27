@@ -54,18 +54,25 @@ export const createDataSlice = (set, get) => ({
 
   leaveCommunity: (communityId) => set((state) => {
     return {
-      myCommunities: state.myCommunities.filter(c => c._id !== communityId)
+      myCommunities: state.myCommunities.filter(c => c?._id !== communityId && c?.id !== communityId)
     }
   }),
 
   createCommunity: (data) => set((state) => {
+    // Lokale ID, bis Communities über das Backend erstellt werden
+    const localId = `local_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const newCommunity = {
-      id: data.name,
+      _id: localId,
+      id: localId,
       title: data.name,
-      desc: data.description,
+      description: data.description,
       icon: data.icon,
       banner: data.banner,
-      badges: data.badges
+      badges: data.badges,
+      size: data.size,
+      memberCount: 1,
+      onlineCount: 0,
+      isOwner: true
     }
     return {
       myCommunities: [newCommunity, ...state.myCommunities]

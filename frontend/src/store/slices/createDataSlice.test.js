@@ -120,9 +120,36 @@ describe("createDataSlice", () => {
 
     const createdCommunity = store.getState().myCommunities[0];
 
-    expect(createdCommunity.id).toBe("Devs");
+    expect(createdCommunity._id).toMatch(/^local_/);
+    expect(createdCommunity.id).toBe(createdCommunity._id);
     expect(createdCommunity.title).toBe("Devs");
-    expect(createdCommunity.desc).toBe("Test description");
+    expect(createdCommunity.description).toBe("Test description");
+    expect(createdCommunity.memberCount).toBe(1);
+    expect(createdCommunity.isOwner).toBe(true);
+  });
+
+  it("should give communities with the same name different IDs", () => {
+    store.getState().createCommunity({ name: "Devs", badges: [] });
+    store.getState().createCommunity({ name: "Devs", badges: [] });
+
+    const [first, second] = store.getState().myCommunities;
+
+    expect(store.getState().myCommunities.length).toBe(2);
+    expect(first._id).not.toBe(second._id);
+  });
+
+  it("should leave a created community by its ID", () => {
+    store.getState().createCommunity({ name: "Devs", badges: [] });
+    store.getState().leaveCommunity(store.getState().myCommunities[0]._id);
+
+    expect(store.getState().myCommunities.length).toBe(0);
+  });
+
+  it("should leave a community that only has an id field", () => {
+    store.getState().joinCommunity({ id: "comm_2", title: "Legacy" });
+    store.getState().leaveCommunity("comm_2");
+
+    expect(store.getState().myCommunities.length).toBe(0);
   });
 
   it("should redeem a standard reward and deduct the correct points", () => {

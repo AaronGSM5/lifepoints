@@ -7,21 +7,22 @@ import { Spacing } from "@/constants/Spacing";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useToolbarPadding } from "@/hooks/useToolbarPadding";
 import { MOCK_CHATS } from "@/mocks/UserChat";
+import useStore from "@/store/useStore";
 
 import ChatListItem from "./ChatListItem";
 import CreateCommunityCard from "./CreateCommunityCard";
 import MyCommunityCard from "./MyCommunityCard";
 import CreateCommunityForm from "../forms/community/CreateCommunityForm";
 
-const MOCK_COMMUNITIES = [
-  { id: "1", title: "React Native Devs", members: 124, onlineCount: 21, icon: "leaf", hasUnread: false },
-  { id: "2", title: "Design Thinkers", members: 89, onlineCount: 4, icon: "music", hasUnread: true }
-];
+const CREATE_CARD_ID = "create-card-marker";
+const getCommunityId = (community) => community?._id || community?.id;
 
 const ConnectTab = () => {
   const MyTheme = useAppTheme();
   const styles = useMemo(() => getStyles(MyTheme), [MyTheme]);
   const toolbarHeight = useToolbarPadding();
+  const myCommunities = useStore((state) => state.myCommunities);
+  const createCommunity = useStore((state) => state.createCommunity);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const handleCreateCommunity = useCallback(() => setIsCreateModalVisible(true), []);
   const handleNavigation = useCallback((id) => router.push(`/community/${id}/chat`), []);
@@ -29,15 +30,15 @@ const ConnectTab = () => {
   const contentPaddingTop = toolbarHeight + Spacing.xl + 4;
 
   const data = useMemo(() => {
-    return [...MOCK_COMMUNITIES, { id: "create-card-marker", isCreateCard: true }];
-  }, []);
+    return [...myCommunities, { id: CREATE_CARD_ID, isCreateCard: true }];
+  }, [myCommunities]);
 
   const renderCommunityCard = ({ item }) => {
     if (item.isCreateCard) {
       return <CreateCommunityCard onPress={handleCreateCommunity} />;
     }
 
-    return <MyCommunityCard item={item} onPress={() => handleNavigation(item.id)} />;
+    return <MyCommunityCard item={item} onPress={() => handleNavigation(getCommunityId(item))} />;
   };
 
   return (
@@ -50,7 +51,7 @@ const ConnectTab = () => {
         <View style={styles.section}>
           <FlatList
             data={data}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => String(getCommunityId(item))}
             renderItem={renderCommunityCard}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -68,7 +69,11 @@ const ConnectTab = () => {
           </View>
         </View>
       </ScrollView>
-      <CreateCommunityForm visible={isCreateModalVisible} onClose={() => setIsCreateModalVisible(false)} />
+      <CreateCommunityForm
+        visible={isCreateModalVisible}
+        onClose={() => setIsCreateModalVisible(false)}
+        onCreate={createCommunity}
+      />
     </>
   );
 };
